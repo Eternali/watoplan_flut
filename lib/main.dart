@@ -17,56 +17,37 @@ class Watoplan extends StatelessWidget {
   final List<ActivityType> ACTIVITY_TYPES = [
     new ActivityType(
       "activity",
-      params: [
-        new TypeParam.ext(
-          parent: VALID_PARAMS['name'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['desc'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['color'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['location'],
-          isOptional: false
-        ),
-      ]),
+      params: {
+        'name': String,
+        'desc': String,
+        'color': Color,
+        'location': String
+      }
+    ),
     new ActivityType(
       "event",
-      params: [
-        new TypeParam.ext(
-          parent: VALID_PARAMS['name'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['desc'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['color'],
-          isOptional: false
-        ),
-      ]),
-    new ActivityType(
-      "meeting",
-      params: [
-        new TypeParam.ext(
-          parent: VALID_PARAMS['name'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['desc'],
-          isOptional: false
-        ),
-        new TypeParam.ext(
-          parent: VALID_PARAMS['color'],
-          isOptional: false
-        ),
-      ]),
+      params: {
+        'name': String,
+        'desc': String,
+        'color': Color,
+      }
+    ),
+    // new ActivityType(
+    //   "meeting",
+    //   params: [
+    //     new TypeParam.ext(
+    //       parent: VALID_PARAMS['name'],
+    //       isOptional: false
+    //     ),
+    //     new TypeParam.ext(
+    //       parent: VALID_PARAMS['desc'],
+    //       isOptional: false
+    //     ),
+    //     new TypeParam.ext(
+    //       parent: VALID_PARAMS['color'],
+    //       isOptional: false
+    //     ),
+    //   ]),
     // new ActivityType("assessment"),
     // new ActivityType("project"),
   ];

@@ -17,7 +17,7 @@ class ActivityCard extends StatelessWidget {
       color: Colors.redAccent,
       elevation: 6.0,
       child: new ListTile(
-        leading: new Icon(Icons.star),
+        leading: new Icon(state.activities[idx].data['icon']),
         isThreeLine: true,
         title: new Text('Test'),
         subtitle: new Text('subtitle'),
