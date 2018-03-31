@@ -22,8 +22,8 @@ class HomeScreen extends StatelessWidget {
       body: new ListView(
         padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
         children: <Widget>[
-          // new ActivityCard(0)
-          new Text(stateVal.activities[0].data['name'])
+          new ActivityCard(0)
+          // new Text(stateVal.activities[0].data['name'])
         ],
       ),
       floatingActionButton: new FloatingActionButton(

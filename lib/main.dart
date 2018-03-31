@@ -16,40 +16,32 @@ class Watoplan extends StatelessWidget {
 
   final List<ActivityType> ACTIVITY_TYPES = [
     new ActivityType(
-      "activity",
+      'activity',
       params: {
-        'name': String,
-        'desc': String,
-        'color': Color,
-        'location': String
+        'name': '',
+        'desc': '',
+        'color': new Color(0xFFFF9000),
+        'icon': Icons.person_outline,
+        'location': '',
       }
     ),
     new ActivityType(
-      "event",
+      'event',
       params: {
-        'name': String,
-        'desc': String,
-        'color': Color,
+        'name': '',
+        'desc': '',
+        'color': new Color(0xFFFFFFFF),
+        'icon': Icons.star,
       }
     ),
     // new ActivityType(
-    //   "meeting",
-    //   params: [
-    //     new TypeParam.ext(
-    //       parent: VALID_PARAMS['name'],
-    //       isOptional: false
-    //     ),
-    //     new TypeParam.ext(
-    //       parent: VALID_PARAMS['desc'],
-    //       isOptional: false
-    //     ),
-    //     new TypeParam.ext(
-    //       parent: VALID_PARAMS['color'],
-    //       isOptional: false
-    //     ),
-    //   ]),
-    // new ActivityType("assessment"),
-    // new ActivityType("project"),
+    //   'meeting',
+    //   params: {
+
+    //   }
+    // ),
+    // new ActivityType('assessment'),
+    // new ActivityType('project'),
   ];
   
   @override
@@ -59,11 +51,11 @@ class Watoplan extends StatelessWidget {
         new AppState(
           activities: [
             new Activity(
-              type: ACTIVITY_TYPES[1],
+              type: ACTIVITY_TYPES[0],
               data: {
                 'name': 'TEST NAMEsjdkfk',
                 'desc': 'TEST DESCRIPTION',
-                'color': new Color(0xFFFF9000)
+                'color': new Color(Colors.amberAccent.value)
               }
             )
           ],

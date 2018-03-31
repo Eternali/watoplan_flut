@@ -20,24 +20,6 @@ class AppStateObservable extends ValueNotifier {
 }
 
 
-class Param {
-  final String name;
-  final Object type;
-  const Param(this.name, this.type);
-
-  @override
-  int get hashCode => name.hashCode + type.hashCode;
-}
-
-// const Map<String, Param> VALID_PARAMS = const {
-//   'name': const Param('name', String),
-//   'desc': const Param('desc', String),
-//   'tags': const Param('tags', List),
-//   'color': const Param('color', Color),
-//   'icon': const Param('icon', IconData),
-//   'datetime': const Param('datetime', DateTime),
-//   'location': const Param('location', String),
-// };
 const Map<String, Object> VALID_PARAMS = const {
   'name': String,
   'desc': String,
@@ -47,23 +29,6 @@ const Map<String, Object> VALID_PARAMS = const {
   'datetime': DateTime,
   'location': String,
 };
-
-class TypeParam extends Param {
-  final bool isOptional;
-
-  const TypeParam({
-    String name,
-    Object type,
-    this.isOptional
-  }) : super(name, type);
-  TypeParam.ext({
-    Param parent,
-    this.isOptional
-  }) : super(parent.name, parent.type);
-
-  @override
-  int get hashCode => isOptional.hashCode + super.hashCode;
-}
 
 class ActivityType {
 
@@ -76,13 +41,12 @@ class ActivityType {
     this.converters = const Converters()
   }) {
     params.forEach((name, type) {
-      if (!(VALID_PARAMS.keys.contains(name) && VALID_PARAMS[name] == type))
+      if (!VALID_PARAMS.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
+      else if (!(type == VALID_PARAMS[name] || type.runtimeType == VALID_PARAMS[name]))
+        throw new Exception('$name is not a supported type of parameter');
     });
   }
-
-  // @override
-  // int get hashCode => name.hashCode + params.hashCode;
 
 }
 
@@ -93,43 +57,23 @@ class Activity {
 
   Activity({
     this.type,
-    this.data
+    Map<String, Object> data
   }) {
-    if (data == null) {
-      data = type.params;
-    } else {
-      data.forEach((String name, Object value) {
-        int idx = type.params.keys.toList().indexOf(name);
-        type.params.values.toList()[0];
-        if (idx < 0)
-          throw new Exception('$name is not a parameter of ${type.name}');
-        else if (value.runtimeType != type.params[name])
-          throw new Exception('$name is not a valid parameter for ${type.name}');
-      });
-      // var paramNames = type.params.map((TypeParam param) => param.name).toList();
-      // data.forEach((String name, Object value) {
-      //   if (!paramNames.contains(name))
-      //     throw new Exception('$name is not a parameter of ${type.name}');
-      //   else if (value == type.params[paramNames.indexOf(name)].type)
-      //     throw new Exception('$name is not a valid parameter for ${type.name}');          
-      // });
-    }
+    var tmpData = type.params;
 
-    // List<String> typeParamNames = type.params
-    //   .where((TypeParam tp) => !tp.isOptional)//.toList()
-    //   .map((TypeParam tp) => tp.name).toList();
-    // var requiredParamTypes = type.params.where((TypeParam tp) => !tp.isOptional).toList();
-    // data.forEach((String name, Object value) {
-    //   if (!typeParamNames.contains(name)) {
-    //     throw new Exception('$name is not a parameter for ${type.name}');
-    //   } else if (value.runtimeType != type.params[typeParamNames.indexOf(name)].type.runtimeType) {
-    //     throw new Exception('$name is not a valid parameter for ${type.name}');        
-    //   }
-    // });
+    data.forEach((String name, Object value) {
+      int idx = tmpData.keys.toList().indexOf(name);
+      type.params.values.toList()[0];
+      if (idx < 0)
+        throw new Exception('$name is not a parameter of ${type.name}');
+      else if (!(value.runtimeType == type.params[name] || value.runtimeType == type.params[name].runtimeType))
+        throw new Exception('$name is not a valid parameter for ${type.name}');
+      else
+        tmpData[name] = value;
+    });
+
+    this.data = tmpData;
   }
-
-  // @override
-  // int get hashCode => type.hashCode + data.hashCode;
 
 }
 

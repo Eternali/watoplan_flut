@@ -11,16 +11,16 @@ class ActivityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var state = Provider.of(context);
+    var state = Provider.of(context).value;
 
     return new Card(
-      color: Colors.redAccent,
+      color: state.activities[idx].data['color'],
       elevation: 6.0,
       child: new ListTile(
         leading: new Icon(state.activities[idx].data['icon']),
         isThreeLine: true,
-        title: new Text('Test'),
-        subtitle: new Text('subtitle'),
+        title: new Text(state.activities[idx].data['name']),
+        subtitle: new Text(state.activities[idx].data['desc']),
         trailing: new Icon(Icons.check),
       ),
     );
