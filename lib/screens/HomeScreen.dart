@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/routes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
@@ -21,16 +22,13 @@ class HomeScreen extends StatelessWidget {
       ),
       body: new ListView(
         padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-        children: <Widget>[
-          new ActivityCard(0)
-          // new Text(stateVal.activities[0].data['name'])
-        ],
+        children: new Iterable.generate(stateVal.activities.length).map((it) => new ActivityCard(it)).toList()
       ),
       floatingActionButton: new FloatingActionButton(
         tooltip: WatoplanLocalizations.of(context).addActivity,
         child: new Icon(Icons.add),
         onPressed: () {
-          Provider.of(context).value += 1;
+          Navigator.of(context).pushNamed(Routes.addEditActivity);
         },
       ),
     );

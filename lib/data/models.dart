@@ -20,14 +20,16 @@ class AppStateObservable extends ValueNotifier {
 }
 
 
-const Map<String, Object> VALID_PARAMS = const {
-  'name': String,
-  'desc': String,
-  'tags': List,
-  'color': Color,
-  'icon': IconData,
-  'datetime': DateTime,
-  'location': String,
+// this workaround is required because apparently [].runtimeType != List
+// even though ''.runtimeType == String, and print('${[].runtimeType}') => List
+final Map<String, Object> VALID_PARAMS = {
+  'name': '',
+  'desc': '',
+  'tags': [],
+  'color': const Color(0x00000000),
+  'icon': Icons.star,
+  'datetime': new DateTime.now(),
+  'location': '',
 };
 
 class ActivityType {
@@ -43,7 +45,7 @@ class ActivityType {
     params.forEach((name, type) {
       if (!VALID_PARAMS.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
-      else if (!(type == VALID_PARAMS[name] || type.runtimeType == VALID_PARAMS[name]))
+      else if (type.runtimeType != VALID_PARAMS[name].runtimeType)
         throw new Exception('$name is not a supported type of parameter');
     });
   }
@@ -59,14 +61,14 @@ class Activity {
     this.type,
     Map<String, Object> data
   }) {
-    var tmpData = type.params;
+    Map<String, Object> tmpData = new Map.from(type.params);
 
     data.forEach((String name, Object value) {
       int idx = tmpData.keys.toList().indexOf(name);
-      type.params.values.toList()[0];
+      // type.params.values.toList()[0];
       if (idx < 0)
         throw new Exception('$name is not a parameter of ${type.name}');
-      else if (!(value.runtimeType == type.params[name] || value.runtimeType == type.params[name].runtimeType))
+      else if (value.runtimeType != tmpData[name].runtimeType)
         throw new Exception('$name is not a valid parameter for ${type.name}');
       else
         tmpData[name] = value;

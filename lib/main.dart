@@ -5,6 +5,7 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/screens/HomeScreen.dart';
+import 'package:watoplan/screens/AddEditScreen.dart';
 
 void main() {
   return runApp(
@@ -20,8 +21,8 @@ class Watoplan extends StatelessWidget {
       params: {
         'name': '',
         'desc': '',
-        'color': new Color(0xFFFF9000),
-        'icon': Icons.person_outline,
+        'color': new Color(Colors.blueGrey.value),
+        'icon': Icons.time_to_leave,
         'location': '',
       }
     ),
@@ -30,18 +31,40 @@ class Watoplan extends StatelessWidget {
       params: {
         'name': '',
         'desc': '',
-        'color': new Color(0xFFFFFFFF),
+        'color': new Color(Colors.deepOrange.value),
         'icon': Icons.star,
       }
     ),
-    // new ActivityType(
-    //   'meeting',
-    //   params: {
-
-    //   }
-    // ),
-    // new ActivityType('assessment'),
-    // new ActivityType('project'),
+    new ActivityType(
+      'meeting',
+      params: {
+        'name': '',
+        'desc': '',
+        'tags': new List(),
+        'color': new Color(Colors.green.value),
+        'icon': Icons.people_outline
+      }
+    ),
+    new ActivityType(
+      'assessment',
+      params: {
+        'name': '',
+        'desc': '',
+        'tags': new List(),
+        'color': new Color(Colors.purple.value),
+        'icon': Icons.note
+      }
+    ),
+    new ActivityType(
+      'project',
+      params: {
+        'name': '',
+        'desc': '',
+        'tags': new List(),
+        'color': new Color(Colors.pink.value),
+        'icon': Icons.present_to_all
+      }
+    ),
   ];
   
   @override
@@ -53,11 +76,59 @@ class Watoplan extends StatelessWidget {
             new Activity(
               type: ACTIVITY_TYPES[0],
               data: {
-                'name': 'TEST NAMEsjdkfk',
+                'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'color': new Color(Colors.amberAccent.value)
+                'icon': Icons.star_border
               }
-            )
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[1],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.star_border
+              }
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[0],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.star_border
+              }
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[2],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.star_border
+              }
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[0],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.star_border
+              }
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[1],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.backup
+              }
+            ),
+            new Activity(
+              type: ACTIVITY_TYPES[0],
+              data: {
+                'name': 'TEST NAME',
+                'desc': 'TEST DESCRIPTION',
+                'icon': Icons.local_cafe
+              }
+            ),
           ],
           activityTypes: ACTIVITY_TYPES,
           focused: 0
@@ -71,6 +142,7 @@ class Watoplan extends StatelessWidget {
         ],
         routes: {
           Routes.home: (context) => new HomeScreen(title: 'WAToPlan'),
+          Routes.addEditActivity: (context) => new AddEditScreen(),
         }
       ),
     );
