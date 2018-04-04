@@ -10,6 +10,7 @@ class AppState {
 
   AppState({this.activities, this.activityTypes, this.focused});
   factory AppState.from(AppState prev) {
+    // watch out for reference copies of parameters
     return new AppState(
       activities: prev.activities,
       activityTypes: prev.activityTypes,
@@ -56,6 +57,13 @@ class ActivityType {
         throw new Exception('$name is not a supported type of parameter');
     });
   }
+  factory ActivityType.from(ActivityType prev) {
+    return new ActivityType(
+      prev.name,
+      params: Map.from(prev.params),
+      converters: prev.converters,
+    );
+  }
 
 }
 
@@ -82,6 +90,12 @@ class Activity {
     });
 
     this.data = tmpData;
+  }
+  factory Activity.from(Activity prev) {
+    return new Activity(
+      type: prev.type,
+      data: new Map.from(prev.data),
+    );
   }
 
 }

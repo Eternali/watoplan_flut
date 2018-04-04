@@ -23,6 +23,13 @@ class Reducers {
     return newState;    
   }
 
+  static AppState changeActivityType(AppState oldState, int indice, ActivityType newType) {
+    AppState newState = new AppState.from(oldState);
+    newState.activityTypes[indice] = ActivityType.from(newType);  // newType;
+
+    return newState;
+  }
+
   static AppState addActivities(AppState oldState, List<Activity> toadd) {
     AppState newState = new AppState.from(oldState);
     newState.activities.addAll(toadd);
@@ -42,6 +49,13 @@ class Reducers {
     }
 
     return newState;    
+  }
+
+  static AppState changeActivity(AppState oldState, int indice, Activity newActivity) {
+    AppState newState = new AppState.from(oldState);
+    newState.activities[indice] = Activity.from(newActivity);
+
+    return newState;
   }
 
   static AppState setFocused(AppState oldState, int indice) {

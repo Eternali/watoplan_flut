@@ -8,7 +8,8 @@ class WatoplanLocalizations {
   }
 
   String get appTitle => 'WAToPlan';
-  String get addActivity => 'Add';  
+  String get addActivity => 'Add Activity';
+  String get newActivity => 'New Activity';
 
 }
 

@@ -18,6 +18,10 @@ class Intents {
       appState.value = Reducers.removeActivityTypes(appState.value, activityTypes: activityTypes);
   }
 
+  static void changeActivityType(AppStateObservable appState, int indice, ActivityType newType) {
+    appState.value = Reducers.changeActivityType(appState.value, indice, newType);
+  }
+
   static void addActivities(AppStateObservable appState, List<Activity> activities) {
     appState.value = Reducers.addActivities(appState.value, activities);
   }
@@ -28,6 +32,10 @@ class Intents {
       appState.value = Reducers.removeActivities(appState.value, indices: indices);    
     else if (activities.length > 0)
       appState.value = Reducers.removeActivities(appState.value, activities: activities);
+  }
+
+  static void changeActivity(AppStateObservable appState, int indice, Activity newActivity) {
+    appState.value = Reducers.changeActivity(appState.value, indice, newActivity);
   }
 
   static void setFocused(AppStateObservable appState, int indice) {
