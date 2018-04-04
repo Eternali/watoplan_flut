@@ -5,10 +5,17 @@ import 'package:watoplan/data/converters.dart';
 
 class AppState {
   final List<Activity> activities;
-  final List<ActivityType> activityTypes;  // ACTIVITY, EVENT, MEETING, ASSESSMENT, PROJECT
+  final List<ActivityType> activityTypes;
   final int focused;
 
   AppState({this.activities, this.activityTypes, this.focused});
+  factory AppState.from(AppState prev) {
+    return new AppState(
+      activities: prev.activities,
+      activityTypes: prev.activityTypes,
+      focused: prev.focused
+    );
+  }
 
   @override
   int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/widgets/ActivityCard.dart';
 
@@ -28,6 +29,7 @@ class HomeScreen extends StatelessWidget {
         tooltip: WatoplanLocalizations.of(context).addActivity,
         child: new Icon(Icons.add),
         onPressed: () {
+          Intents.setFocused(Provider.of(context), -1);
           Navigator.of(context).pushNamed(Routes.addEditActivity);
         },
       ),
