@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
+import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/data/models.dart';
 
@@ -24,6 +25,7 @@ class ActivityCard extends StatelessWidget {
         subtitle: new Text(state.activities[idx].data['desc']),
         trailing: new Icon(Icons.check),
         onTap: () {
+          Intents.setFocused(Provider.of(context), idx);
           Navigator.of(context).pushNamed(Routes.addEditActivity);
         },
       ),
