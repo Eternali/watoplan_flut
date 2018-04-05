@@ -80,7 +80,6 @@ class Activity {
 
     data.forEach((String name, Object value) {
       int idx = tmpData.keys.toList().indexOf(name);
-      // type.params.values.toList()[0];
       if (idx < 0)
         throw new Exception('$name is not a parameter of ${type.name}');
       else if (value.runtimeType != tmpData[name].runtimeType)

@@ -14,13 +14,12 @@ class AddEditScreen extends StatefulWidget {
 
 class AddEditScreenState extends State<AddEditScreen> {
 
-
   @override
   Widget build(BuildContext context) {
     var stateVal = Provider.of(context).value;
     Activity tmpActivity = stateVal.focused >= 0
         ? Activity.from(stateVal.activities[stateVal.focused])
-        : new Activity();
+        : new Activity(type: stateVal.activityTypes[0]);
     
     return new Scaffold(
       appBar: new AppBar(

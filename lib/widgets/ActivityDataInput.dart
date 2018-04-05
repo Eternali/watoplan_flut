@@ -16,6 +16,7 @@ class ActivityDataInput extends StatelessWidget {
 
   ActivityDataInput({this.activity, this.field});
   
+  @override
   Widget build(BuildContext context) {
     return new Padding(
       padding: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
