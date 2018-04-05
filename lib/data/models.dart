@@ -6,6 +6,7 @@ import 'package:watoplan/data/converters.dart';
 class AppState {
   final List<Activity> activities;
   final List<ActivityType> activityTypes;
+  // negative values denote activityTypes (-1 = index 0) while zero and positives indicate activities
   final int focused;
 
   AppState({this.activities, this.activityTypes, this.focused});

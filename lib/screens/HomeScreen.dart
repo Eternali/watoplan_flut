@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           icon: it.params['icon'],
           color: it.params['color'],
           onPressed: () {
-            Intents.setFocused(Provider.of(context), -1);
+            Intents.setFocused(Provider.of(context), -(types.indexOf(it) + 1));
             Navigator.of(context).pushNamed(Routes.addEditActivity);
           },
         )
