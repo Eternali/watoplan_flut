@@ -44,6 +44,8 @@ final Map<String, Object> VALID_PARAMS = {
 class ActivityType {
 
   final String name;
+  final IconData icon;
+  final Color color;
   final converters;
   final Map<String, Object> params;
 

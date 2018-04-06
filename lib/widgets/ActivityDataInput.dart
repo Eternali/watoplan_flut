@@ -19,7 +19,7 @@ class ActivityDataInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+      padding: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
       child: new TextField(
         textAlign: TextAlign.center,
         style: new TextStyle(
