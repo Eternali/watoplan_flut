@@ -33,7 +33,13 @@ class HomeScreen extends StatelessWidget {
 
     return new Scaffold(
       appBar: new AppBar(
+        centerTitle: true,
         title: new Text(title ?? WatoplanLocalizations.of(context).appTitle),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Icon(Icons.more_horiz),
+          )
+        ],
       ),
       body: new ListView(
         padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),

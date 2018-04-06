@@ -63,7 +63,10 @@ class FloatingActionMenuState
               backgroundColor: widget.entries[indice].color,
               mini: true,
               child: new Icon(widget.entries[indice].icon),
-              onPressed: widget.entries[indice].onPressed,
+              onPressed: () {
+                _controller.reverse();
+                widget.entries[indice].onPressed();
+                },
             )
           ),
         );

@@ -29,40 +29,6 @@ class AppStateObservable extends ValueNotifier {
 }
 
 
-class Param {
-  final String name;
-  final Object type;
-  WidgetBuilder display;
-  WidgetBuilder edit;
-  Param({
-    this.name,
-    this.type
-  });
-
-  factory Param.create({ String name, String type, WidgetBuilder display, WidgetBuilder edit }) {
-    return Param(
-      name: name,
-      type: type
-    )..build(display: display, edit: edit);
-  }
-
-  void build({ WidgetBuilder display, WidgetBuilder edit }) {
-    this.display = display;
-    this.edit = edit;
-  }
-}
-
-final List<Param> VALID_PARAMS = [
-  new Param(
-    name: 'name',
-    type: ''
-  )..build(
-    display: (BuildContext context) {
-      return new Text()
-    }
-  )
-];
-
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, Object> VALID_PARAMS = {

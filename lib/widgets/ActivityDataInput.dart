@@ -9,13 +9,39 @@ import 'package:watoplan/data/Provider.dart';
  *   generate a new state on every character change, instead we have a temporary object
  *   not part of the app state that holds data entry (this may not be the best solution though).
  */
-class ActivityDataInput extends StatelessWidget {
-
+class ActivityDataInput extends StatefulWidget {
   final Activity activity;
   final String field;
 
   ActivityDataInput({this.activity, this.field});
-  
+
+  @override
+  State<ActivityDataInput> createState() => new ActivityDataInputState();
+}
+
+class ActivityDataInputState extends State<ActivityDataInput> {
+
+  // has both controller and onChanged because controller is for setting an initial value,
+  // but I'll have extend the class if I want to override what it does on text change.
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TextEditingController(text: widget.activity.data[widget.field])
+    ..addListener(
+      () {
+        widget.activity.data[widget.field] = _controller.value;
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Padding(
@@ -26,11 +52,9 @@ class ActivityDataInput extends StatelessWidget {
           fontSize: 20.0,
         ),
         decoration: new InputDecoration(
-          hintText: field
+          hintText: widget.field,
         ),
-        onChanged: (String changed) {
-          activity.data[field] = changed;
-        },
+        controller: _controller,
       ),
     );
   }

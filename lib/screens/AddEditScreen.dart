@@ -18,7 +18,7 @@ class AddEditScreenState extends State<AddEditScreen> {
   @override
   Widget build(BuildContext context) {
     var stateVal = Provider.of(context).value;
-    print(stateVal.focused.toString());
+
     Activity tmpActivity = stateVal.focused >= 0
         ? Activity.from(stateVal.activities[stateVal.focused])
         : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
@@ -126,9 +126,15 @@ class AddEditScreenState extends State<AddEditScreen> {
       ),
       floatingActionButton: new FloatingActionButton(
         child: new Icon(Icons.save),
-        backgroundColor: tmpActivity.data['color'],
+        backgroundColor: tmpActivity.type.color,
         onPressed: () {
-          Intents.setFocused(Provider.of(context), stateVal.focused + 1);
+          if (stateVal.focused < 0) {
+            Intents.setFocused(Provider.of(context), stateVal.activities.length);
+            Intents.addActivities(Provider.of(context), [tmpActivity]);
+          } else {
+            Intents.changeActivity(Provider.of(context), stateVal.focused, tmpActivity);
+          }
+          Navigator.pop(context);
         },
       ),
     );
