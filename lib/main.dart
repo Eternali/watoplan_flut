@@ -17,52 +17,52 @@ class Watoplan extends StatelessWidget {
 
   final List<ActivityType> ACTIVITY_TYPES = [
     new ActivityType(
-      'activity',
+      name: 'activity',
+      icon: Icons.time_to_leave,
+      color: new Color(Colors.blueGrey.value),
       params: {
         'name': '',
         'desc': '',
-        'color': new Color(Colors.blueGrey.value),
-        'icon': Icons.time_to_leave,
         'location': '',
       }
     ),
     new ActivityType(
-      'event',
+      name: 'event',
+      icon: Icons.star,
+      color: new Color(Colors.deepOrange.value),
       params: {
         'name': '',
         'desc': '',
-        'color': new Color(Colors.deepOrange.value),
-        'icon': Icons.star,
       }
     ),
     new ActivityType(
-      'meeting',
+      name: 'meeting',
+      icon: Icons.people_outline,
+      color: new Color(Colors.green.value),
       params: {
         'name': '',
         'desc': '',
         'tags': new List(),
-        'color': new Color(Colors.green.value),
-        'icon': Icons.people_outline
       }
     ),
     new ActivityType(
-      'assessment',
+      name: 'assessment',
+      icon: Icons.note,
+      color: new Color(Colors.purple.value),
       params: {
         'name': '',
         'desc': '',
         'tags': new List(),
-        'color': new Color(Colors.purple.value),
-        'icon': Icons.note
       }
     ),
     new ActivityType(
-      'project',
+      name: 'project',
+      icon: Icons.present_to_all,
+      color: new Color(Colors.pink.value),
       params: {
         'name': '',
         'desc': '',
         'tags': new List(),
-        'color': new Color(Colors.pink.value),
-        'icon': Icons.present_to_all
       }
     ),
   ];
@@ -78,7 +78,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.star_border
               }
             ),
             new Activity(
@@ -86,7 +85,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.star_border
               }
             ),
             new Activity(
@@ -94,7 +92,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.star_border
               }
             ),
             new Activity(
@@ -102,7 +99,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.star_border
               }
             ),
             new Activity(
@@ -110,7 +106,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.star_border
               }
             ),
             new Activity(
@@ -118,7 +113,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.backup
               }
             ),
             new Activity(
@@ -126,7 +120,6 @@ class Watoplan extends StatelessWidget {
               data: {
                 'name': 'TEST NAME',
                 'desc': 'TEST DESCRIPTION',
-                'icon': Icons.local_cafe
               }
             ),
           ],

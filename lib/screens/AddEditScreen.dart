@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/flutter_color_picker.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';

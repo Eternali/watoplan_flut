@@ -35,24 +35,24 @@ final Map<String, Object> VALID_PARAMS = {
   'name': '',
   'desc': '',
   'tags': [],
-  'color': const Color(0x00000000),
-  'icon': Icons.star,
   'datetime': new DateTime.now(),
   'location': '',
 };
 
 class ActivityType {
 
-  final String name;
-  final IconData icon;
-  final Color color;
+  final Map<String, Object> data = {  };
   final converters;
   final Map<String, Object> params;
 
-  ActivityType(this.name, {
+  ActivityType({
+    name, icon, color,
     this.params,
     this.converters = const Converters()
   }) {
+    data['name'] = name;
+    data['icon'] = icon;
+    data['color'] = color;
     params.forEach((name, type) {
       if (!VALID_PARAMS.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
@@ -62,7 +62,9 @@ class ActivityType {
   }
   factory ActivityType.from(ActivityType prev) {
     return new ActivityType(
-      prev.name,
+      name: prev.data['name'],
+      icon: prev.data['icon'],
+      color: prev.data['color'],
       params: Map.from(prev.params),
       converters: prev.converters,
     );
@@ -84,9 +86,9 @@ class Activity {
     data.forEach((String name, Object value) {
       int idx = tmpData.keys.toList().indexOf(name);
       if (idx < 0)
-        throw new Exception('$name is not a parameter of ${type.name}');
+        throw new Exception('$name is not a parameter of ${type.data['name']}');
       else if (value.runtimeType != tmpData[name].runtimeType)
-        throw new Exception('$name is not a valid parameter for ${type.name}');
+        throw new Exception('$name is not a valid parameter for ${type.data['name']}');
       else
         tmpData[name] = value;
     });
