@@ -29,6 +29,40 @@ class AppStateObservable extends ValueNotifier {
 }
 
 
+class Param {
+  final String name;
+  final Object type;
+  WidgetBuilder display;
+  WidgetBuilder edit;
+  Param({
+    this.name,
+    this.type
+  });
+
+  factory Param.create({ String name, String type, WidgetBuilder display, WidgetBuilder edit }) {
+    return Param(
+      name: name,
+      type: type
+    )..build(display: display, edit: edit);
+  }
+
+  void build({ WidgetBuilder display, WidgetBuilder edit }) {
+    this.display = display;
+    this.edit = edit;
+  }
+}
+
+final List<Param> VALID_PARAMS = [
+  new Param(
+    name: 'name',
+    type: ''
+  )..build(
+    display: (BuildContext context) {
+      return new Text()
+    }
+  )
+];
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, Object> VALID_PARAMS = {
@@ -41,18 +75,19 @@ final Map<String, Object> VALID_PARAMS = {
 
 class ActivityType {
 
-  final Map<String, Object> data = {  };
-  final converters;
+  final String name;
+  final IconData icon;
+  final Color color;
   final Map<String, Object> params;
+  final converters;
 
   ActivityType({
-    name, icon, color,
+    this.name,
+    this.icon,
+    this.color,
     this.params,
     this.converters = const Converters()
   }) {
-    data['name'] = name;
-    data['icon'] = icon;
-    data['color'] = color;
     params.forEach((name, type) {
       if (!VALID_PARAMS.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
@@ -62,9 +97,9 @@ class ActivityType {
   }
   factory ActivityType.from(ActivityType prev) {
     return new ActivityType(
-      name: prev.data['name'],
-      icon: prev.data['icon'],
-      color: prev.data['color'],
+      name: prev.name,
+      icon: prev.icon,
+      color: prev.color,
       params: Map.from(prev.params),
       converters: prev.converters,
     );
@@ -86,9 +121,9 @@ class Activity {
     data.forEach((String name, Object value) {
       int idx = tmpData.keys.toList().indexOf(name);
       if (idx < 0)
-        throw new Exception('$name is not a parameter of ${type.data['name']}');
+        throw new Exception('$name is not a parameter of ${type.name}');
       else if (value.runtimeType != tmpData[name].runtimeType)
-        throw new Exception('$name is not a valid parameter for ${type.data['name']}');
+        throw new Exception('$name is not a valid parameter for ${type.name}');
       else
         tmpData[name] = value;
     });

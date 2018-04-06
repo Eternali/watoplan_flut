@@ -72,6 +72,7 @@ class FloatingActionMenuState
       ..add(
         new FloatingActionButton(
           heroTag: null,
+          backgroundColor: widget.color,
           child: new AnimatedBuilder(
             animation: _controller,
             builder: (BuildContext context, Widget child) {

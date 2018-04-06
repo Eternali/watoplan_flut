@@ -16,10 +16,10 @@ class ActivityCard extends StatelessWidget {
     var state = Provider.of(context).value;
 
     return new Card(
-      color: state.activities[idx].data['color'],
+      color: state.activities[idx].type.color,
       elevation: 6.0,
       child: new ListTile(
-        leading: new Icon(state.activities[idx].data['icon']),
+        leading: new Icon(state.activities[idx].type.icon),
         isThreeLine: true,
         title: new Text(state.activities[idx].data['name']),
         subtitle: new Text(state.activities[idx].data['desc']),

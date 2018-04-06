@@ -42,7 +42,7 @@ class Watoplan extends StatelessWidget {
       params: {
         'name': '',
         'desc': '',
-        'tags': new List(),
+        'tags': [],
       }
     ),
     new ActivityType(
@@ -52,7 +52,7 @@ class Watoplan extends StatelessWidget {
       params: {
         'name': '',
         'desc': '',
-        'tags': new List(),
+        'tags': [],
       }
     ),
     new ActivityType(
@@ -62,7 +62,7 @@ class Watoplan extends StatelessWidget {
       params: {
         'name': '',
         'desc': '',
-        'tags': new List(),
+        'tags': [],
       }
     ),
   ];

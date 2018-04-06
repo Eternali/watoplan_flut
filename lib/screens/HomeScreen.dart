@@ -21,8 +21,8 @@ class HomeScreen extends StatelessWidget {
     List<SubFAB> typesToSubFABS(List<ActivityType> types) {
       return types.map(
         (it) => new SubFAB(
-          icon: it.params['icon'],
-          color: it.params['color'],
+          icon: it.icon,
+          color: it.color,
           onPressed: () {
             Intents.setFocused(Provider.of(context), -(types.indexOf(it) + 1));
             Navigator.of(context).pushNamed(Routes.addEditActivity);
