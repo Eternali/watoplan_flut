@@ -21,8 +21,6 @@ class ActivityDataInput extends StatefulWidget {
 
 class ActivityDataInputState extends State<ActivityDataInput> {
 
-  // has both controller and onChanged because controller is for setting an initial value,
-  // but I'll have extend the class if I want to override what it does on text change.
   TextEditingController _controller;
 
   @override
@@ -31,7 +29,7 @@ class ActivityDataInputState extends State<ActivityDataInput> {
     _controller = new TextEditingController(text: widget.activity.data[widget.field])
     ..addListener(
       () {
-        widget.activity.data[widget.field] = _controller.value;
+        widget.activity.data[widget.field] = _controller.value.text;
       }
     );
   }
