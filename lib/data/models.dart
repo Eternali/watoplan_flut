@@ -29,6 +29,17 @@ class AppStateObservable extends ValueNotifier {
 }
 
 
+class MenuChoice {
+  final String title;
+  final IconData icon;
+  final String route;  
+  const MenuChoice({
+    this.title,
+    this.icon,
+    this.route,
+  });
+}
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, Object> VALID_PARAMS = {
@@ -66,7 +77,7 @@ class ActivityType {
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
-      params: Map.from(prev.params),
+      params: new Map.from(prev.params),
       converters: prev.converters,
     );
   }

@@ -14,6 +14,11 @@ class HomeScreen extends StatelessWidget {
 
   HomeScreen({Key key, this.title}) : super(key: key);
 
+  List<MenuChoice> overflow = const <MenuChoice>[
+    const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
+    const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
+  ];
+
   @override
   Widget build(BuildContext context) {
     var stateVal = Provider.of(context).value;
@@ -36,9 +41,24 @@ class HomeScreen extends StatelessWidget {
         centerTitle: true,
         title: new Text(title ?? WatoplanLocalizations.of(context).appTitle),
         actions: <Widget>[
-          new FlatButton(
-            child: new Icon(Icons.more_horiz),
-          )
+          new PopupMenuButton<MenuChoice>(
+            onSelected: (MenuChoice choice) {
+              Navigator.of(context).pushNamed(choice.route);
+            },
+            itemBuilder: (BuildContext context) =>
+              overflow.map((MenuChoice choice) =>
+                new PopupMenuItem<MenuChoice>(
+                value: choice,
+                child: new Row(
+                  children: <Widget>[
+                    new Icon(choice.icon),
+                    new Padding(padding: new EdgeInsets.symmetric(horizontal: 8.0),),
+                    new Text(choice.title)
+                  ],
+                ),
+                )
+              ).toList(),
+          ),
         ],
       ),
       body: new ListView(

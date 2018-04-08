@@ -6,6 +6,7 @@ import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/screens/HomeScreen.dart';
 import 'package:watoplan/screens/AddEditScreen.dart';
+import 'package:watoplan/screens/SettingsScreen.dart';
 
 void main() {
   return runApp(
@@ -28,7 +29,7 @@ class Watoplan extends StatelessWidget {
     ),
     new ActivityType(
       name: 'event',
-      icon: Icons.star,
+      icon: Icons.settings,
       color: new Color(Colors.deepOrange.value),
       params: {
         'name': '',
@@ -136,6 +137,7 @@ class Watoplan extends StatelessWidget {
         routes: {
           Routes.home: (context) => new HomeScreen(title: 'WAToPlan'),
           Routes.addEditActivity: (context) => new AddEditScreen(),
+          Routes.settings: (context) => new SettingsScreen()
         }
       ),
     );

@@ -1,6 +1,7 @@
 class Routes {
-  static final home = '/';
-  static final details = '/details';
-  static final addEditActivity = '/addEditActivity';
-  static final settings = '/settings';
+  static const home = '/';
+  static const details = '/details';
+  static const addEditActivity = '/addEditActivity';
+  static const settings = '/settings';
+  static const about = '/about';
 }
