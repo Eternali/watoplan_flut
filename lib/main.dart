@@ -4,9 +4,11 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/routes.dart';
+import 'package:watoplan/themes.dart';
 import 'package:watoplan/screens/HomeScreen.dart';
 import 'package:watoplan/screens/AddEditScreen.dart';
 import 'package:watoplan/screens/SettingsScreen.dart';
+import 'package:watoplan/screens/AboutScreen.dart';
 
 void main() {
   return runApp(
@@ -130,14 +132,15 @@ class Watoplan extends StatelessWidget {
       ),
       child: new MaterialApp(
         title: 'watoplan',
-        theme: new ThemeData.dark(),
+        theme: LightTheme,
         localizationsDelegates: [
           new WatoplanLocalizationsDelegate()
         ],
         routes: {
           Routes.home: (context) => new HomeScreen(title: 'WAToPlan'),
           Routes.addEditActivity: (context) => new AddEditScreen(),
-          Routes.settings: (context) => new SettingsScreen()
+          Routes.settings: (context) => new SettingsScreen(),
+          Routes.about: (context) => new AboutScreen(),
         }
       ),
     );

@@ -16,9 +16,21 @@ class SettingsScreenState extends State<SettingsScreen> {
     return new Scaffold(
       appBar: new AppBar(
         leading: new BackButton(),
+        centerTitle: true,
         title: new Text(
           WatoplanLocalizations.of(context).settingsTitle
-        )
+        ),
+      ),
+      body: new Column(
+        children: <Widget>[
+          new SwitchListTile(
+            title: new Text('Join the dark side?'),
+            value: true,
+            selected: true,
+            activeColor: Theme.of(context).accentColor,
+            onChanged: (newVal) {},
+          )
+        ],
       ),
     );
   }

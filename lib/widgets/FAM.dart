@@ -80,9 +80,9 @@ class FloatingActionMenuState
             animation: _controller,
             builder: (BuildContext context, Widget child) {
               return new Transform(
-                transform: new Matrix4.rotationZ(_controller.value * 0.5 * math.PI),
+                transform: new Matrix4.rotationZ(_controller.value * 0.75 * math.PI),
                 alignment: FractionalOffset.center,
-                child: new Icon(_controller.isDismissed ? Icons.add : Icons.close),
+                child: new Icon(Icons.add),
               );
             },
           ),

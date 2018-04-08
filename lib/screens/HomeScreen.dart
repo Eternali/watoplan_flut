@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
+import 'package:watoplan/themes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/intents.dart';
@@ -67,7 +68,7 @@ class HomeScreen extends StatelessWidget {
           .map((it) => new ActivityCard(it)).toList()
       ),
       floatingActionButton: new FloatingActionMenu(
-        color: Colors.amber,
+        color: Theme.of(context).accentColor,
         width: 56.0,
         height: 70.0,
         entries: typesToSubFABS(stateVal.activityTypes),

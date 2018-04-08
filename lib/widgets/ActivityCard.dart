@@ -23,7 +23,7 @@ class ActivityCard extends StatelessWidget {
         isThreeLine: true,
         title: new Text(state.activities[idx].data['name']),
         subtitle: new Text(state.activities[idx].data['desc']),
-        trailing: new Icon(Icons.check),
+        // trailing: new Icon(Icons.check),
         onTap: () {
           Intents.setFocused(Provider.of(context), idx);
           Navigator.of(context).pushNamed(Routes.addEditActivity);
