@@ -28,7 +28,9 @@ class SettingsScreenState extends State<SettingsScreen> {
             value: true,
             selected: true,
             activeColor: Theme.of(context).accentColor,
-            onChanged: (newVal) {},
+            onChanged: (newVal) {
+              Theme
+            },
           )
         ],
       ),

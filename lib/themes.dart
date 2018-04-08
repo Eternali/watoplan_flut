@@ -1,5 +1,36 @@
 import 'package:flutter/material.dart';
 
+final themeKey = new GlobalKey(debugLabel: 'app_theme');
+
+class AppTheme extends StatefulWidget {
+
+  final child;
+  
+  AppTheme({
+    this.child
+  }) : super(key: themeKey);
+
+  @override
+  State<AppTheme> createState() => new AppThemeState();
+
+}
+
+class AppThemeState extends State<AppTheme> {
+
+  ThemeData _theme = LightTheme;
+  set theme(ThemeData newTheme) {
+    if (newTheme != _theme)
+      setState(() => _theme = newTheme);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container();
+  }
+
+}
+
+
 final ThemeData DarkTheme = new ThemeData(
   brightness: Brightness.dark,
   primaryColor: WatoplanColors.purple[400],

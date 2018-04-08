@@ -6,21 +6,25 @@ import 'package:watoplan/data/converters.dart';
 class AppState {
   final List<Activity> activities;
   final List<ActivityType> activityTypes;
+
   // negative values denote activityTypes (-1 = index 0) while zero and positives indicate activities
   final int focused;
 
-  AppState({this.activities, this.activityTypes, this.focused});
+  final ThemeData theme;
+
+  AppState({ this.activities, this.activityTypes, this.focused, this.theme });
   factory AppState.from(AppState prev) {
     // watch out for reference copies of parameters
     return new AppState(
       activities: prev.activities,
       activityTypes: prev.activityTypes,
-      focused: prev.focused
+      focused: prev.focused,
+      theme: prev.theme,
     );
   }
 
   @override
-  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode;
+  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode;
 
 }
 

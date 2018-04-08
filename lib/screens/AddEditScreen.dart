@@ -25,7 +25,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: tmpActivity.data['color'],
+        backgroundColor:  tmpActivity.type.color,
         leading: new BackButton(),
         title: new Text(stateVal.focused >= 0
             ? stateVal.activities[stateVal.focused].data['name']

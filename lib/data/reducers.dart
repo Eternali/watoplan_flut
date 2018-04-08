@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/data/models.dart';
 
@@ -59,10 +61,23 @@ class Reducers {
   }
 
   static AppState setFocused(AppState oldState, int indice) {
+    // we can't use AppState.from since focused is a single layer final field.
     return new AppState(
       activities: oldState.activities,
       activityTypes: oldState.activityTypes,
-      focused: indice);
+      focused: indice,
+      theme: oldState.theme,
+    );
+  }
+
+  static AppState setTheme(AppState oldState, ThemeData theme) {
+    // we can't use AppState.from since theme is final.
+    return new AppState(
+      activities: oldState.activities,
+      activityTypes: oldState.activityTypes,
+      focused: oldState.focused,
+      theme: theme,
+    );
   }
 
 }
