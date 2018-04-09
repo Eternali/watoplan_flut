@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final themeKey = new GlobalKey(debugLabel: 'app_theme');
+final globalThemeKey = new GlobalKey(debugLabel: 'app_theme');
 
 class AppTheme extends StatefulWidget {
 
@@ -8,7 +8,7 @@ class AppTheme extends StatefulWidget {
   
   AppTheme({
     this.child
-  }) : super(key: themeKey);
+  }) : super(key: globalThemeKey);
 
   @override
   State<AppTheme> createState() => new AppThemeState();

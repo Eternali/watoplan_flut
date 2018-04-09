@@ -7,7 +7,7 @@ class Provider extends StatefulWidget {
   final state;
   final child;
 
-  const Provider({this.state, this.child});
+  const Provider({ this.state, this.child });
 
   static of(BuildContext context) {
     _InheritedProvider ip = 
@@ -53,7 +53,7 @@ class _InheritedProvider extends InheritedWidget {
   final child;
 
   _InheritedProvider({this.state, this.child})
-    : _stateVal = state.value, super(child: child);  
+    : _stateVal = state.value, super(child: child);
 
   @override
   bool updateShouldNotify(_InheritedProvider oldWidget) {

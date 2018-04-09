@@ -40,6 +40,11 @@ class FloatingActionMenuState
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return new Column(

@@ -120,7 +120,7 @@ final List<Activity> activities = [
   ),
 ];
 
-class Watoplan extends StatelessWidget {
+class Watoplan extends StatefulWidget {
 
   final watoplanState = new AppStateObservable(
     new AppState(
@@ -132,12 +132,19 @@ class Watoplan extends StatelessWidget {
   );
   
   @override
+  State<Watoplan> createState() => new WatoplanState();
+
+}
+
+class WatoplanState extends State<Watoplan> {
+
+  @override
   Widget build(BuildContext context) {
     return new Provider(
-      state: watoplanState,
+      state: widget.watoplanState,
       child: new MaterialApp(
         title: 'watoplan',
-        theme: DarkTheme,  // change to watoplanState.value.theme after testing
+        theme: widget.watoplanState.value.theme,
         localizationsDelegates: [
           new WatoplanLocalizationsDelegate()
         ],
