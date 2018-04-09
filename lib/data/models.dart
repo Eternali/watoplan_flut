@@ -44,6 +44,7 @@ class MenuChoice {
   });
 }
 
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, Object> VALID_PARAMS = {
