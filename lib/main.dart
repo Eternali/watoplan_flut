@@ -7,6 +7,7 @@ import 'package:watoplan/routes.dart';
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/screens/HomeScreen.dart';
 import 'package:watoplan/screens/AddEditScreen.dart';
+import 'package:watoplan/screens/AddEditTypeScreen.dart';
 import 'package:watoplan/screens/SettingsScreen.dart';
 import 'package:watoplan/screens/AboutScreen.dart';
 
@@ -151,6 +152,7 @@ class WatoplanState extends State<Watoplan> {
         routes: {
           Routes.home: (context) => new HomeScreen(title: 'WAToPlan'),
           Routes.addEditActivity: (context) => new AddEditScreen(),
+          Routes.addEditActivityType: (context) => new AddEditTypeScreen(),
           Routes.settings: (context) => new SettingsScreen(),
           Routes.about: (context) => new AboutScreen(),
         }

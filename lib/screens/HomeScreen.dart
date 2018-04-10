@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           icon: it.icon,
           color: it.color,
           onPressed: () {
-            Intents.setFocused(Provider.of(context), -(types.indexOf(it) + 1));
+            Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
             Navigator.of(context).pushNamed(Routes.addEditActivity);
           },
         )
@@ -62,10 +62,13 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: new ListView(
+      body: new ListView.builder(
         padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
-        children: new Iterable.generate(stateVal.activities.length)
-          .map((it) => new ActivityCard(it)).toList()
+        shrinkWrap: true,
+        itemCount: stateVal.activities.length,
+        itemBuilder: (BuildContext context, int indice) {
+          return new ActivityCard(stateVal.activities[indice]);
+        },
       ),
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,
