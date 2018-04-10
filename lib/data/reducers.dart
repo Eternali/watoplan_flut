@@ -60,12 +60,12 @@ class Reducers {
     return newState;
   }
 
-  static AppState setFocused(AppState oldState, int indice, Activity activity) {
+  static AppState setFocused(AppState oldState, int indice, Activity activity, ActivityType activityType) {
     // we can't use AppState.from since focused is a single layer final field.
     return new AppState(
       activities: oldState.activities,
       activityTypes: oldState.activityTypes,
-      focused: indice ?? oldState.activities.indexOf(activity),
+      focused: indice ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
       theme: oldState.theme,
     );
   }

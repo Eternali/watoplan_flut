@@ -57,17 +57,17 @@ final Map<String, Object> VALID_PARAMS = {
 
 class ActivityType {
 
-  final String name;
-  final IconData icon;
-  final Color color;
-  final Map<String, Object> params;
-  final converters;
+  String name;
+  IconData icon;
+  Color color;
+  Map<String, Object> params;
+  Converters converters;
 
   ActivityType({
     this.name,
     this.icon,
     this.color,
-    this.params,
+    this.params = const {  },
     this.converters = const Converters()
   }) {
     params.forEach((name, type) {

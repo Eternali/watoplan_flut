@@ -11,6 +11,7 @@ class AddEditScreen extends StatefulWidget {
 
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
+
 }
 
 class AddEditScreenState extends State<AddEditScreen> {
@@ -27,9 +28,11 @@ class AddEditScreenState extends State<AddEditScreen> {
       appBar: new AppBar(
         backgroundColor:  tmpActivity.type.color,
         leading: new BackButton(),
+        centerTitle: true,
         title: new Text(stateVal.focused >= 0
             ? stateVal.activities[stateVal.focused].data['name']
-            : WatoplanLocalizations.of(context).newActivity),
+            : WatoplanLocalizations.of(context).newActivity
+        ),
       ),
       body: new Padding(
         padding: new EdgeInsets.all(8.0),
@@ -57,37 +60,6 @@ class AddEditScreenState extends State<AddEditScreen> {
                 padding: new EdgeInsets.symmetric(vertical: 8.0),
                 child: new Container(),
               ) : null,
-            // tmpActivity.data.containsKey('color')
-            //   ? new Padding(
-            //     padding: new EdgeInsets.symmetric(vertical: 20.0),
-            //     child: new RaisedButton(
-            //       padding: new EdgeInsets.all(8.0),
-            //       child: new Text(
-            //         'CHOOSE COLOR',
-            //         style: new TextStyle(
-            //           fontSize: 20.0,
-            //           letterSpacing: 1.2,
-            //         ),
-            //       ),
-            //       color: tmpActivity.data['color'],
-            //       onPressed: () {
-            //         ColorPicker picker = new ColorPicker(
-            //           (tmpActivity.data['color'] as Color).red.toDouble(),
-            //           (tmpActivity.data['color'] as Color).green.toDouble(),
-            //           (tmpActivity.data['color'] as Color).blue.toDouble());
-            //         showDialog<Color>(context: context, child: picker)
-            //           .then((Color c) {
-            //             if (c != null)
-            //               setState(() { tmpActivity.data['color'] = c; });
-            //           });
-            //       },
-            //     )
-            //   ) : null,
-            // tmpActivity.data.containsKey('icon')
-            //   ? new Padding(
-            //     padding: new EdgeInsets.symmetric(vertical: 8.0),
-            //     child: new Container()
-            //   ) : null,
             tmpActivity.data.containsKey('datetime')
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 8.0),

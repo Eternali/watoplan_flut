@@ -38,8 +38,8 @@ class Intents {
     appState.value = Reducers.changeActivity(appState.value, indice, newActivity);
   }
 
-  static void setFocused(AppStateObservable appState, {int indice, Activity activity}) {
-    appState.value = Reducers.setFocused(appState.value, indice, activity);
+  static void setFocused(AppStateObservable appState, {int indice, Activity activity, ActivityType activityType}) {
+    appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
   }
 
   static void setTheme(AppStateObservable appState, ThemeData theme) {

@@ -75,7 +75,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   shrinkWrap: true,
                   padding: EdgeInsets.symmetric(horizontal: 24.0),
                   children: stateVal.activityTypes.map(
-                    (it) => new ActivityTypeCard(it)
+                    (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
                   ).toList(),
                 ),
                 new Padding(
@@ -90,6 +90,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: new Icon(Icons.add, size: 34.0),
                     onPressed: () {
+                      Intents.setFocused(Provider.of(context),indice: -1);
                       Navigator.of(context).pushNamed(Routes.addEditActivityType);
                     },
                   ),
