@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var stateVal = Provider.of(context).value;
+    AppState stateVal = Provider.of(context).value;
 
     List<SubFAB> typesToSubFABS(List<ActivityType> types) {
       return types.map(
@@ -62,6 +62,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+      // body: new ListView(
+      //   padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),        
+      //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),
+      // ),
       body: new ListView.builder(
         padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
         shrinkWrap: true,

@@ -15,6 +15,8 @@ class WatoplanLocalizations {
   String get settingsTitle => 'Settings';
   String get aboutTitle => 'About';
 
+  String get chooseColor => 'Choose Color';
+
 }
 
 class WatoplanLocalizationsDelegate

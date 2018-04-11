@@ -4,7 +4,7 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
-import 'package:watoplan/widgets/ColorPicker.dart';
+import 'package:watoplan/widgets/ColorPickButton.dart';
 
 class AddEditTypeScreen extends StatefulWidget {
 
@@ -17,6 +17,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // watch out since every time setState is called on this screen, this will be regenerated    
     AppState stateVal = Provider.of(context).value;
     ThemeData theme = Theme.of(context);
 
@@ -39,31 +40,10 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 20.0),
-              child: new RaisedButton(
-                padding: new EdgeInsets.all(8.0),
-                color: tmpType.color ?? theme.primaryColor,
-                child: new Text(
-                  'CHOOSE COLOR',
-                  style: new TextStyle(
-                    fontSize: 20.0,
-                    letterSpacing: 1.2,
-                  ),
-                ),
-                onPressed: () {
-                  ColorPicker picker = new ColorPicker(
-                    (tmpType.color ?? theme.primaryColor).red.toDouble(),
-                    (tmpType.color ?? theme.primaryColor).green.toDouble(),
-                    (tmpType.color ?? theme.primaryColor).blue.toDouble()
-                  );
-                  showDialog<Color>(context: context, child: picker)
-                    .then((Color c) {
-                      print(c);
-                      if (c != null)
-                        setState( () => tmpType.color = c );
-                    });
-                },
+            new Center(
+              child: new Padding(
+                padding: new EdgeInsets.symmetric(vertical: 20.0),
+                child: new ColorPickButton(activityType: tmpType),
               ),
             ),
           ],
@@ -77,6 +57,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
             Intents.changeActivityType(Provider.of(context), stateVal.focused, tmpType);
           else
             Intents.addActivityTypes(Provider.of(context), [tmpType]);
+          Navigator.pop(context);
         },
       ),
     );

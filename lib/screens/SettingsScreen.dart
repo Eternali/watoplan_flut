@@ -24,7 +24,12 @@ class SettingsScreenState extends State<SettingsScreen> {
 
     return new Scaffold(
       appBar: new AppBar(
-        leading: new BackButton(),
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
         title: new Text(
           WatoplanLocalizations.of(context).settingsTitle

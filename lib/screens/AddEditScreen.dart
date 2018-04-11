@@ -21,8 +21,8 @@ class AddEditScreenState extends State<AddEditScreen> {
     var stateVal = Provider.of(context).value;
 
     Activity tmpActivity = stateVal.focused >= 0
-        ? Activity.from(stateVal.activities[stateVal.focused])
-        : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
+      ? Activity.from(stateVal.activities[stateVal.focused])
+      : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
     
     return new Scaffold(
       appBar: new AppBar(
