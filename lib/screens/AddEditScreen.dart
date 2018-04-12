@@ -32,8 +32,8 @@ class AddEditScreenState extends State<AddEditScreen> {
         leading: new BackButton(),
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
-            ? stateVal.activities[stateVal.focused].data['name']
-            : WatoplanLocalizations.of(context).newActivity
+          ? stateVal.activities[stateVal.focused].data['name']
+          : WatoplanLocalizations.of(context).newActivity
         ),
       ),
       body: new Padding(
@@ -81,14 +81,15 @@ class AddEditScreenState extends State<AddEditScreen> {
                         ),
                       ),
                       onPressed: () {
-                        showDatePicker(
+                        showTimePicker(
                           context: context,
-                          initialDate: tmpActivity.data['datetime'],
-                          firstDate: new DateTime(2018, 1),
-                          lastDate: new DateTime(2100),
+                          initialTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
                         ).then(
                           (picked) {
-                            tmpActivity.data['datetime'] = picked;
+                            if (picked != null) {
+                              tmpActivity.data['datetime'].hour = picked.hour;
+                              tmpActivity.data['datetime'].minute = picked.minute;
+                            }
                           }
                         );
                       },
@@ -105,7 +106,17 @@ class AddEditScreenState extends State<AddEditScreen> {
                         ),
                       ),
                       onPressed: () {
-
+                        showDatePicker(
+                          context: context,
+                          initialDate: tmpActivity.data['datetime'],
+                          firstDate: new DateTime(2013, 1),
+                          lastDate: new DateTime(2100),
+                        ).then(
+                          (picked) {
+                            if (picked != null)
+                              tmpActivity.data['datetime'] = picked;
+                          }  
+                        );
                       },
                     ),
                     new Expanded(child: new Container()),
