@@ -60,8 +60,8 @@ class AddEditScreenState extends State<AddEditScreen> {
               ) : null,
             tmpActivity.data.containsKey('tags')
               ? new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 8.0),
-                child: new Container(),
+                padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+                child: new ,
               ) : null,
             tmpActivity.data.containsKey('datetime')
               ? new Padding(

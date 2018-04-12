@@ -17,6 +17,8 @@ class WatoplanLocalizations {
 
   String get chooseColor => 'Choose Color';
 
+  String get remove => 'Remove';
+
 }
 
 class WatoplanLocalizationsDelegate
