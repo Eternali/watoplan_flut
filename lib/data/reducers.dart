@@ -80,4 +80,8 @@ class Reducers {
     );
   }
 
+  static AppState removeTags(AppState oldState, Activity activity, List<int> indices) {
+  
+  }
+
 }
