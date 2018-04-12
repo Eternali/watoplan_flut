@@ -25,7 +25,7 @@ final List<ActivityType> ACTIVITY_TYPES = [
     params: {
       'name': '',
       'desc': '',
-      'location': '',
+      'datetime': new DateTime.now(),
     }
   ),
   new ActivityType(

@@ -50,7 +50,7 @@ class ActivityDataInputState extends State<ActivityDataInput> {
           fontSize: 20.0,
         ),
         decoration: new InputDecoration(
-          hintText: widget.field,
+          labelText: widget.field,
         ),
         controller: _controller,
       ),

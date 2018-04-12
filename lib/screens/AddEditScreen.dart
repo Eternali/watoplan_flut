@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/intents.dart';
@@ -38,6 +40,7 @@ class AddEditScreenState extends State<AddEditScreen> {
         padding: new EdgeInsets.all(8.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             tmpActivity.data.containsKey('name')
               ? new Padding(
@@ -62,29 +65,50 @@ class AddEditScreenState extends State<AddEditScreen> {
               ) : null,
             tmpActivity.data.containsKey('datetime')
               ? new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 8.0),
+                padding: new EdgeInsets.symmetric(vertical: 16.0),
                 child: new Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new RaisedButton(
-                      padding: new EdgeInsets.all(8.0),
+                    new Expanded(child: new Container()),
+                    new MaterialButton(
+                      padding: new EdgeInsets.all(12.0),
                       child: new Text(
-                        'TIME',
+                        '${(tmpActivity.data['datetime'] as DateTime).hour.toString().padLeft(2, '0')}:'
+                        '${(tmpActivity.data['datetime'] as DateTime).minute.toString().padLeft(2, '0')}',
                         style: new TextStyle(
-
+                          fontSize: 20.0,
                         ),
                       ),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: tmpActivity.data['datetime'],
+                          firstDate: new DateTime(2018, 1),
+                          lastDate: new DateTime(2100),
+                        ).then(
+                          (picked) {
+                            tmpActivity.data['datetime'] = picked;
+                          }
+                        );
+                      },
                     ),
-                    new Padding(padding: EdgeInsets.symmetric(horizontal: 12.0)),
-                    new RaisedButton(
-                      padding: new EdgeInsets.all(8.0),
+                    new Expanded(child: new Container()),
+                    new MaterialButton(
+                      padding: new EdgeInsets.all(12.0),
                       child: new Text(
-                        'DATE',
+                        '${(tmpActivity.data['datetime'] as DateTime).day.toString().padLeft(2, '0')}/'
+                        '${(tmpActivity.data['datetime'] as DateTime).month.toString().padLeft(2, '0')}/'
+                        '${(tmpActivity.data['datetime'] as DateTime).year.toString()}',
                         style: new TextStyle(
-
+                          fontSize: 20.0,
                         ),
                       ),
+                      onPressed: () {
+
+                      },
                     ),
+                    new Expanded(child: new Container()),
                   ],
                 )
               ) : null,
