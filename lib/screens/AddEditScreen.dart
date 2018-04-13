@@ -8,6 +8,7 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/widgets/ActivityDataInput.dart';
 import 'package:watoplan/widgets/ColorPicker.dart';
+import 'package:watoplan/widgets/DateTimePicker.dart';
 import 'package:watoplan/utils/DataUtils.dart';
 
 class AddEditScreen extends StatefulWidget {
@@ -67,64 +68,81 @@ class AddEditScreenState extends State<AddEditScreen> {
             tmpActivity.data.containsKey('datetime')
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 16.0),
-                child: new Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new Expanded(child: new Container()),
-                    new MaterialButton(
-                      padding: new EdgeInsets.all(12.0),
-                      child: new Text(
-                        '${(tmpActivity.data['datetime'] as DateTime).hour.toString().padLeft(2, '0')}:'
-                        '${(tmpActivity.data['datetime'] as DateTime).minute.toString().padLeft(2, '0')}',
-                        style: new TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      onPressed: () {
-                        showTimePicker(
-                          context: context,
-                          initialTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
-                        ).then(
-                          (picked) {
-                            if (picked != null) {
-                              tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(
-                                tmpActivity.data['datetime'],
-                                picked
-                              );
-                            }
-                          }
-                        );
-                      },
-                    ),
-                    new Expanded(child: new Container()),
-                    new MaterialButton(
-                      padding: new EdgeInsets.all(12.0),
-                      child: new Text(
-                        '${(tmpActivity.data['datetime'] as DateTime).day.toString().padLeft(2, '0')}/'
-                        '${(tmpActivity.data['datetime'] as DateTime).month.toString().padLeft(2, '0')}/'
-                        '${(tmpActivity.data['datetime'] as DateTime).year.toString()}',
-                        style: new TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      onPressed: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: tmpActivity.data['datetime'],
-                          firstDate: new DateTime(2013, 1),
-                          lastDate: new DateTime(2100),
-                        ).then(
-                          (picked) {
-                            if (picked != null)
-                              tmpActivity.data['datetime'] = picked;
-                          }  
-                        );
-                      },
-                    ),
-                    new Expanded(child: new Container()),
-                  ],
-                )
+                child: new DateTimePicker(
+                  selectedDate: tmpActivity.data['datetime'],
+                  selectedTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
+                  selectDate: (DateTime date) {
+                    setState(() {
+                      tmpActivity.data['datetime'] = date;
+                    });
+                  },
+                  selectTime: (TimeOfDay time) {
+                    setState(() {
+                      tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(
+                        tmpActivity.data['datetime'],
+                        time
+                      );
+                    });
+                  },
+                ),
+                // child: new Row(
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: <Widget>[
+                //     new Expanded(child: new Container()),
+                //     new MaterialButton(
+                //       padding: new EdgeInsets.all(12.0),
+                //       child: new Text(
+                //         '${(tmpActivity.data['datetime'] as DateTime).hour.toString().padLeft(2, '0')}:'
+                //         '${(tmpActivity.data['datetime'] as DateTime).minute.toString().padLeft(2, '0')}',
+                //         style: new TextStyle(
+                //           fontSize: 20.0,
+                //         ),
+                //       ),
+                //       onPressed: () {
+                //         showTimePicker(
+                //           context: context,
+                //           initialTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
+                //         ).then(
+                //           (picked) {
+                //             if (picked != null) {
+                //               tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(
+                //                 tmpActivity.data['datetime'],
+                //                 picked
+                //               );
+                //             }
+                //           }
+                //         );
+                //       },
+                //     ),
+                //     new Expanded(child: new Container()),
+                //     new MaterialButton(
+                //       padding: new EdgeInsets.all(12.0),
+                //       child: new Text(
+                //         '${(tmpActivity.data['datetime'] as DateTime).day.toString().padLeft(2, '0')}/'
+                //         '${(tmpActivity.data['datetime'] as DateTime).month.toString().padLeft(2, '0')}/'
+                //         '${(tmpActivity.data['datetime'] as DateTime).year.toString()}',
+                //         style: new TextStyle(
+                //           fontSize: 20.0,
+                //         ),
+                //       ),
+                //       onPressed: () {
+                //         showDatePicker(
+                //           context: context,
+                //           initialDate: tmpActivity.data['datetime'],
+                //           firstDate: new DateTime(2013, 1),
+                //           lastDate: new DateTime(2100),
+                //         ).then(
+                //           (picked) {
+                //             if (picked != null)
+                //               tmpActivity.data['datetime'] = picked;
+                //           }  
+                //         );
+                //       },
+                //     ),
+                //     new Expanded(child: new Container()),
+                //   ],
+                // )
               ) : null,
             tmpActivity.data.containsKey('location')
               ? new Padding(
