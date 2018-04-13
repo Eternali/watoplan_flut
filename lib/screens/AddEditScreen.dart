@@ -8,6 +8,7 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/widgets/ActivityDataInput.dart';
 import 'package:watoplan/widgets/ColorPicker.dart';
+import 'package:watoplan/utils/DataUtils.dart';
 
 class AddEditScreen extends StatefulWidget {
 
@@ -61,7 +62,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             tmpActivity.data.containsKey('tags')
               ? new Padding(
                 padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-                child: new ,
+                child: new Container(),
               ) : null,
             tmpActivity.data.containsKey('datetime')
               ? new Padding(
@@ -87,8 +88,10 @@ class AddEditScreenState extends State<AddEditScreen> {
                         ).then(
                           (picked) {
                             if (picked != null) {
-                              tmpActivity.data['datetime'].hour = picked.hour;
-                              tmpActivity.data['datetime'].minute = picked.minute;
+                              tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(
+                                tmpActivity.data['datetime'],
+                                picked
+                              );
                             }
                           }
                         );
