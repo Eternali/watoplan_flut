@@ -1,3 +1,5 @@
+import 'dart:convert' show JSON;
+
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/converters.dart';
@@ -77,6 +79,7 @@ class ActivityType {
         throw new Exception('$name is not a supported type of parameter');
     });
   }
+
   factory ActivityType.from(ActivityType prev) {
     return new ActivityType(
       name: prev.name,
@@ -85,6 +88,12 @@ class ActivityType {
       params: new Map.from(prev.params),
       converters: prev.converters,
     );
+  }
+
+  ActivityType.fromJson(String toParse) {
+    var parsed = JSON.decode(toParse);
+    this.name = parsed['name'];
+    this.icon = parsed['icon'];
   }
 
 }

@@ -73,6 +73,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                   selectedTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
                   selectDate: (DateTime date) {
                     setState(() {
+                      print('date set');
                       tmpActivity.data['datetime'] = date;
                     });
                   },
