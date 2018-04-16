@@ -22,6 +22,10 @@ class AddEditScreenState extends State<AddEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('');
+    var col = IconData(0E145);
+    print(col.toString());
+    print('');
     var stateVal = Provider.of(context).value;
 
     Activity tmpActivity = stateVal.focused >= 0

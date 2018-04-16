@@ -2,7 +2,7 @@ import 'dart:convert' show JSON;
 
 import 'package:flutter/material.dart';
 
-import 'package:watoplan/data/converters.dart';
+import 'package:watoplan/data/Converters.dart';
 
 
 class AppState {
@@ -49,7 +49,7 @@ class MenuChoice {
 
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
-final Map<String, Object> VALID_PARAMS = {
+final Map<String, dynamic> VALID_PARAMS = {
   'name': '',
   'desc': '',
   'tags': [],
@@ -62,15 +62,13 @@ class ActivityType {
   String name;
   IconData icon;
   Color color;
-  Map<String, Object> params;
-  Converters converters;
+  Map<String, dynamic> params;
 
   ActivityType({
     this.name,
     this.icon,
     this.color,
     this.params = const {  },
-    this.converters = const Converters()
   }) {
     params.forEach((name, type) {
       if (!VALID_PARAMS.keys.contains(name))
@@ -86,30 +84,39 @@ class ActivityType {
       icon: prev.icon,
       color: prev.color,
       params: new Map.from(prev.params),
-      converters: prev.converters,
     );
   }
 
-  ActivityType.fromJson(String toParse) {
-    var parsed = JSON.decode(toParse);
-    this.name = parsed['name'];
-    this.icon = parsed['icon'];
+  ActivityType.fromJson(String json) {
+    var parsed = JSON.decode(json);
+    name = parsed['name'];
+    icon = Converters.iconFromString(parsed['icon']);
+    color = Converters.colorFromHex(parsed['color']);
+    params = Converters.paramsFromJson(parsed['params']);
+  }
+
+  @override
+  String toString() {
+    return name +
+      Converters.iconToString(icon) +
+      Converters.colorToString(color);
+      // Converters.paramsToJson(params);
   }
 
 }
 
 class Activity {
 
-  final ActivityType type;
-  Map<String, Object> data;
+  ActivityType type;
+  Map<String, dynamic> data;
 
   Activity({
     this.type,
-    Map<String, Object> data
+    Map<String, dynamic> data
   }) {
-    Map<String, Object> tmpData = new Map.from(type.params);
+    Map<String, dynamic> tmpData = new Map.from(type.params);
 
-    data.forEach((String name, Object value) {
+    data.forEach((String name, dynamic value) {
       int idx = tmpData.keys.toList().indexOf(name);
       if (idx < 0)
         throw new Exception('$name is not a parameter of ${type.name}');
@@ -121,12 +128,21 @@ class Activity {
 
     this.data = tmpData;
   }
+
   factory Activity.from(Activity prev) {
     return new Activity(
       type: prev.type,
       data: new Map.from(prev.data),
     );
   }
+
+  Activity.fromJson(String json) {
+    var parsed = JSON.decode(json);
+    type = new ActivityType.fromJson(parsed['type']);
+    data = Converters.paramsFromJson(parsed['data']);
+  }
+
+
 
 }
 
