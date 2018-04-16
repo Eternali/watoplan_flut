@@ -1,4 +1,4 @@
-import 'dart:convert' show JSON;
+import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 
@@ -87,20 +87,21 @@ class ActivityType {
     );
   }
 
-  ActivityType.fromJson(String json) {
-    var parsed = JSON.decode(json);
+  ActivityType.fromJson(String jsonStr) {
+    var parsed = json.decode(jsonStr);
     name = parsed['name'];
     icon = Converters.iconFromString(parsed['icon']);
-    color = Converters.colorFromHex(parsed['color']);
+    color = Converters.colorFromString(parsed['color']);
     params = Converters.paramsFromJson(parsed['params']);
   }
 
-  @override
-  String toString() {
-    return name +
-      Converters.iconToString(icon) +
-      Converters.colorToString(color);
-      // Converters.paramsToJson(params);
+  String toJson() {
+    return json.encode({
+      'name': name,
+      'icon': Converters.iconToString(icon),
+      'colors': Converters.colorToString(color),
+      'params': Converters.paramsToJson(params),
+    });
   }
 
 }
@@ -136,13 +137,18 @@ class Activity {
     );
   }
 
-  Activity.fromJson(String json) {
-    var parsed = JSON.decode(json);
+  Activity.fromJson(String jsonStr) {
+    var parsed = json.decode(jsonStr);
     type = new ActivityType.fromJson(parsed['type']);
     data = Converters.paramsFromJson(parsed['data']);
   }
 
-
+  String toJson() {
+    return json.encode({
+      'type': type.toJson(),
+      'data': Converters.paramsToJson(data),
+    });
+  }
 
 }
 
