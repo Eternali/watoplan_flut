@@ -59,12 +59,15 @@ final Map<String, dynamic> VALID_PARAMS = {
 
 class ActivityType {
 
+  int _id;
+  int get id => _id;
   String name;
   IconData icon;
   Color color;
   Map<String, dynamic> params;
 
   ActivityType({
+    int id,
     this.name,
     this.icon,
     this.color,
@@ -76,10 +79,12 @@ class ActivityType {
       else if (type.runtimeType != VALID_PARAMS[name].runtimeType)
         throw new Exception('$name is not a supported type of parameter');
     });
+    _id = id ?? new DateTime.now().millisecondsSinceEpoch;
   }
 
   factory ActivityType.from(ActivityType prev) {
     return new ActivityType(
+      id: prev.id,
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
@@ -88,6 +93,7 @@ class ActivityType {
   }
 
   ActivityType.fromJson(Map<String, dynamic> jsonMap) {
+    _id = jsonMap['id'];
     name = jsonMap['name'];
     icon = Converters.iconFromString(jsonMap['icon']);
     color = Converters.colorFromString(jsonMap['color']);
@@ -95,6 +101,7 @@ class ActivityType {
   }
 
   Map<String, dynamic> toJson() => {
+    'id': _id,
     'name': name,
     'icon': Converters.iconToString(icon),
     'colors': Converters.colorToString(color),
@@ -105,10 +112,13 @@ class ActivityType {
 
 class Activity {
 
+  int _id;
+  int get id => _id;
   ActivityType type;
   Map<String, dynamic> data;
 
   Activity({
+    int id,
     this.type,
     Map<String, dynamic> data
   }) {
@@ -125,21 +135,25 @@ class Activity {
     });
 
     this.data = tmpData;
+    _id = id ?? new DateTime.now().millisecondsSinceEpoch;
   }
 
   factory Activity.from(Activity prev) {
     return new Activity(
+      id: prev.id,
       type: prev.type,
       data: new Map.from(prev.data),
     );
   }
 
   Activity.fromJson(Map<String, dynamic> jsonMap) {
+    _id = jsonMap['id'];
     type = new ActivityType.fromJson(jsonMap['type']);
     data = Converters.paramsFromJson(jsonMap['data']);
   }
 
   Map<String, dynamic> toJson() => {
+    'id': _id,
     'type': type.toJson(),
     'data': Converters.paramsToJson(data),
   };

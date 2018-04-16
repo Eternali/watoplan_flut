@@ -41,7 +41,9 @@ class WatoplanDb {
   }
 
   Future<bool> update({ ActivityType activityType, Activity activity }) async {
-  
+    if (activityType != null) {
+      typeCollection.update(where.eq('id', ), document)
+    }
   }
 
 }
