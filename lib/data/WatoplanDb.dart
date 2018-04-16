@@ -40,4 +40,8 @@ class WatoplanDb {
     return true;
   }
 
+  Future<bool> update({ ActivityType activityType, Activity activity }) async {
+  
+  }
+
 }
