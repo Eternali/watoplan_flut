@@ -10,25 +10,34 @@ class WatoplanDb {
   final String loc;
   Db _db;
 
-  List<ActivityType> activityTypes;
-  List<Activity> activities;
+  DbCollection typeCollection;
+  DbCollection activityCollection;
 
   WatoplanDb(this.loc) {
     _db = new Db(loc);
   }
 
-  Future<bool> load() async =>
+  Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) =>
     _db.open()
       .then((success) {
         if (!success) return false;
-        DbCollection typeCollection = _db.collection('activityTypes');
-        DbCollection activityCollection = _db.collection('activities');
-        
+
+        typeCollection = _db.collection('activityTypes');
+        activityCollection = _db.collection('activities');
+
         return true;
       });
 
-  void save() {
+  Future<bool> save(List<ActivityType> activityTypes, List<Activity> activities) async {
+    bool success = await typeCollection.drop();
+    if (!success) return false;
+    await typeCollection.insertAll(activityTypes.map((type) => type.toJson()).toList());
 
+    success = await activityCollection.drop();
+    if (!success) return false;
+    await activityCollection.insertAll(activities.map((activity) => activity.toJson()).toList());
+
+    return true;
   }
 
 }

@@ -87,22 +87,19 @@ class ActivityType {
     );
   }
 
-  ActivityType.fromJson(String jsonStr) {
-    var parsed = json.decode(jsonStr);
-    name = parsed['name'];
-    icon = Converters.iconFromString(parsed['icon']);
-    color = Converters.colorFromString(parsed['color']);
-    params = Converters.paramsFromJson(parsed['params']);
+  ActivityType.fromJson(Map<String, dynamic> jsonMap) {
+    name = jsonMap['name'];
+    icon = Converters.iconFromString(jsonMap['icon']);
+    color = Converters.colorFromString(jsonMap['color']);
+    params = Converters.paramsFromJson(jsonMap['params']);
   }
 
-  String toJson() {
-    return json.encode({
-      'name': name,
-      'icon': Converters.iconToString(icon),
-      'colors': Converters.colorToString(color),
-      'params': Converters.paramsToJson(params),
-    });
-  }
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'icon': Converters.iconToString(icon),
+    'colors': Converters.colorToString(color),
+    'params': Converters.paramsToJson(params),
+  };
 
 }
 
@@ -137,18 +134,15 @@ class Activity {
     );
   }
 
-  Activity.fromJson(String jsonStr) {
-    var parsed = json.decode(jsonStr);
-    type = new ActivityType.fromJson(parsed['type']);
-    data = Converters.paramsFromJson(parsed['data']);
+  Activity.fromJson(Map<String, dynamic> jsonMap) {
+    type = new ActivityType.fromJson(jsonMap['type']);
+    data = Converters.paramsFromJson(jsonMap['data']);
   }
 
-  String toJson() {
-    return json.encode({
-      'type': type.toJson(),
-      'data': Converters.paramsToJson(data),
-    });
-  }
+  Map<String, dynamic> toJson() => {
+    'type': type.toJson(),
+    'data': Converters.paramsToJson(data),
+  };
 
 }
 
