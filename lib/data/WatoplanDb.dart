@@ -7,13 +7,18 @@ import 'package:watoplan/data/models.dart';
 
 class WatoplanDb {
   
+  static WatoplanDb _watoplandb;
+
   final String loc;
   Db _db;
 
   DbCollection typeCollection;
   DbCollection activityCollection;
 
-  WatoplanDb(this.loc) {
+  factory WatoplanDb(String loc) =>
+    _watoplandb ?? new WatoplanDb._internal(loc);
+
+  WatoplanDb._internal(this.loc) {
     _db = new Db(loc);
   }
 
@@ -27,6 +32,8 @@ class WatoplanDb {
 
         return true;
       });
+
+  Future<destroy> 
 
   Future<bool> save(List<ActivityType> activityTypes, List<Activity> activities) async {
     bool success = await typeCollection.drop();
