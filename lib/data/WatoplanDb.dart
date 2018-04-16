@@ -33,7 +33,7 @@ class WatoplanDb {
         return true;
       });
 
-  Future<destroy> 
+  Future<bool> close() => _db.close();
 
   Future<bool> save(List<ActivityType> activityTypes, List<Activity> activities) async {
     bool success = await typeCollection.drop();
@@ -48,9 +48,21 @@ class WatoplanDb {
   }
 
   Future<bool> update({ ActivityType activityType, Activity activity }) async {
+    Map success = {  };
     if (activityType != null) {
-      typeCollection.update(where.eq('id', ), document)
+      success = await typeCollection.update(where.eq('id', activityType.id), activityType);
+    } else if (activity != null) {
+      success = await activityCollection.update(where.eq('id', activity.id), activity);
     }
+
+    return success.isNotEmpty;
   }
+
+  // uneeded
+  // Future<bool> clear() {}
+
+  Future<bool> add() {}
+
+  Future<bool> remove() {}
 
 }

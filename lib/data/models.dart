@@ -93,7 +93,7 @@ class ActivityType {
   }
 
   ActivityType.fromJson(Map<String, dynamic> jsonMap) {
-    _id = jsonMap['id'];
+    _id = jsonMap['_id'];
     name = jsonMap['name'];
     icon = Converters.iconFromString(jsonMap['icon']);
     color = Converters.colorFromString(jsonMap['color']);
@@ -101,7 +101,7 @@ class ActivityType {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': _id,
+    '_id': _id,
     'name': name,
     'icon': Converters.iconToString(icon),
     'colors': Converters.colorToString(color),
@@ -147,13 +147,13 @@ class Activity {
   }
 
   Activity.fromJson(Map<String, dynamic> jsonMap) {
-    _id = jsonMap['id'];
+    _id = jsonMap['_id'];
     type = new ActivityType.fromJson(jsonMap['type']);
     data = Converters.paramsFromJson(jsonMap['data']);
   }
 
   Map<String, dynamic> toJson() => {
-    'id': _id,
+    '_id': _id,
     'type': type.toJson(),
     'data': Converters.paramsToJson(data),
   };
