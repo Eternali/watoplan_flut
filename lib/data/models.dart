@@ -79,7 +79,10 @@ class ActivityType {
       else if (type.runtimeType != VALID_PARAMS[name].runtimeType)
         throw new Exception('$name is not a supported type of parameter');
     });
-    _id = id ?? int.parse((new DateTime.now().millisecondsSinceEpoch).toString() + Random().);
+    _id = id ?? int.parse(
+      DateTime.now().millisecondsSinceEpoch.toString() +
+      Random().nextInt(10000).toString().padLeft(5, '0')
+    );
   }
 
   factory ActivityType.from(ActivityType prev) {
@@ -145,7 +148,10 @@ class Activity {
     });
 
     this.data = tmpData;
-    _id = id ?? int.parse((new DateTime.now().millisecondsSinceEpoch).toString() + Random(1).);
+    _id = id ?? int.parse(
+      DateTime.now().millisecondsSinceEpoch.toString() +
+      Random().nextInt(10000).toString().padLeft(5, '0')
+    );
   }
 
   factory Activity.from(Activity prev) {
