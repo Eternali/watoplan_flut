@@ -22,69 +22,82 @@ class WatoplanDb {
     _db = new Db(loc);
   }
 
+  void destroy() {
+    _watoplandb = null;
+  }
+
   Future<bool> open() => _db.open();
 
   Future<bool> close() => _db.close();
 
-  Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) =>
-    _db.open()
-      .then((success) {
-        if (!success) return false;
-
-        typeCollection = _db.collection('activityTypes');
-        activityCollection = _db.collection('activities');
-
-        return true;
-      });
-
-  Future<bool> save(List<ActivityType> activityTypes, List<Activity> activities) async {
-    bool success = await typeCollection.drop();
-    if (!success) return false;
-    await typeCollection.insertAll(activityTypes.map((type) => type.toJson()).toList());
-
-    success = await activityCollection.drop();
-    if (!success) return false;
-    await activityCollection.insertAll(activities.map((activity) => activity.toJson()).toList());
-
-    return true;
-  }
-
-  Future<bool> clear() async {
-  
-  }
-
-  Future<bool> update({ ActivityType activityType, Activity activity }) async {
+  Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) async {
     Map success = {  };
 
-    if (activityType != null) {
-      success = await typeCollection.update(where.eq('id', activityType.id), activityType);
-    } else if (activity != null) {
-      success = await activityCollection.update(where.eq('id', activity.id), activity);
+    typeCollection = _db.collection('activityTypes');
+    activityCollection = _db.collection('activities');
+    
+    success = await typeCollection.find().forEach((type) {
+      activityTypes.add(new ActivityType.fromJson(type));
+    });
+    success = await activityCollection.find().forEach((activity) {
+      activities.add(new Activity.fromJson(activity, activityTypes));
+    });
+
+    return success.isNotEmpty;
+  }
+
+  Future<bool> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {
+    bool successDrop = false;
+    Map successSave = {  };
+
+    successDrop = await typeCollection.drop();
+    successDrop = await activityCollection.drop();
+    if (successDrop) {
+      successSave = await typeCollection.insertAll(
+        activityTypes.map((type) => type.toJson()).toList()
+      );
+      successSave = await activityCollection.insertAll(
+        activities.map((activity) => activity.toJson()).toList()
+      );
     }
 
+    return successDrop && successSave.isNotEmpty;
+  }
+
+  void clear() async {
+    await _db.dropCollection('activityTypes');
+    await _db.dropCollection('activities');
+  }
+
+  Future<bool> update(dynamic item) async {
+    Map success = {  };
+
+    if (item is Activity)
+      success = await activityCollection.update(where.eq('_id', item.id), item);
+    else if (item is ActivityType)
+      success = await typeCollection.update(where.eq('_id', item.id), item);
+
     return success.isNotEmpty;
   }
 
-  Future<bool> add(List<dynamic> items) async {
+  Future<bool> add(dynamic item) async {
     Map success = {  };
 
-    if (items is List<Activity>)
-      success = await activityCollection.insertAll(
-        items.map((activity) => activity.toJson()).toList()
-      );
-    else if (items is List<ActivityType>)
-      success = await typeCollection.insertAll(
-        items.map((type) => type.toJson()).toList()
-      );
+    if (item is Activity)
+      success = await activityCollection.insert(item.toJson());
+    else if (item is ActivityType)
+      success = await typeCollection.insert(item.toJson());
 
     return success.isNotEmpty;
   }
 
-  Future<bool> remove(List<dynamic> items) async {
+  Future<bool> remove(dynamic item) async {
     Map success = {  };
 
-    if (items is List<Activity>)
-    else if (items is List<ActivityType>)
+    if (item is Activity)
+      success = await activityCollection.remove(where.eq('_id', item.id));
+    else if (item is ActivityType)
+      success = await typeCollection.remove(where.eq('_id', item.id));    
 
     return success.isNotEmpty;
   }

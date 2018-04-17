@@ -146,15 +146,15 @@ class Activity {
     );
   }
 
-  Activity.fromJson(Map<String, dynamic> jsonMap) {
+  Activity.fromJson(Map<String, dynamic> jsonMap, List<ActivityType> activityTypes) {
     _id = jsonMap['_id'];
-    type = new ActivityType.fromJson(jsonMap['type']);
+    type = activityTypes.firstWhere((activityType) => activityType.id == jsonMap['typeid']);
     data = Converters.paramsFromJson(jsonMap['data']);
   }
 
   Map<String, dynamic> toJson() => {
     '_id': _id,
-    'type': type.toJson(),
+    'typeid': type.id,
     'data': Converters.paramsToJson(data),
   };
 

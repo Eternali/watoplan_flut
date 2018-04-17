@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
+import 'package:watoplan/data/WatoplanDb.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/routes.dart';
@@ -141,6 +142,8 @@ class WatoplanState extends State<Watoplan> {
 
   @override
   Widget build(BuildContext context) {
+    final db = new WatoplanDb('where the fuck should this point to?');
+    db.load(activityTypes, activities);
     return new Provider(
       state: widget.watoplanState,
       child: new MaterialApp(
