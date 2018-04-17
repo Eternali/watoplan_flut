@@ -48,7 +48,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             tmpActivity.data.containsKey('name')
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 8.0),
-                child: ActivityDataInput(
+                child: new ActivityDataInput(
                   activity: tmpActivity,
                   field: 'name',
                 )
