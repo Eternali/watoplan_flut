@@ -1,4 +1,4 @@
-import 'dart:convert' show json;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -79,7 +79,7 @@ class ActivityType {
       else if (type.runtimeType != VALID_PARAMS[name].runtimeType)
         throw new Exception('$name is not a supported type of parameter');
     });
-    _id = id ?? new DateTime.now().millisecondsSinceEpoch;
+    _id = id ?? int.parse((new DateTime.now().millisecondsSinceEpoch).toString() + Random().);
   }
 
   factory ActivityType.from(ActivityType prev) {
@@ -110,18 +110,28 @@ class ActivityType {
 
 }
 
+// NOTE: I am only storing the ActivityType id because this way I don't need a
+// reference to the same exact object all the time (when an activityType changes, since everything
+// is immutable, a new object gets generated with similar properties, but this breaks its reference to activities,
+// since a activityType's id never changes, an activity can always have an unbroken reference to its type).
 class Activity {
 
   int _id;
   int get id => _id;
-  ActivityType type;
+  int typeId;
   Map<String, dynamic> data;
 
   Activity({
     int id,
-    this.type,
+    dynamic type,
     Map<String, dynamic> data
   }) {
+    if (type is int) {
+      this.data = data;
+      return;
+    }
+
+    typeId = type.id;
     Map<String, dynamic> tmpData = new Map.from(type.params);
 
     data.forEach((String name, dynamic value) {
@@ -135,26 +145,26 @@ class Activity {
     });
 
     this.data = tmpData;
-    _id = id ?? new DateTime.now().millisecondsSinceEpoch;
+    _id = id ?? int.parse((new DateTime.now().millisecondsSinceEpoch).toString() + Random(1).);
   }
 
   factory Activity.from(Activity prev) {
     return new Activity(
       id: prev.id,
-      type: prev.type,
+      type: prev.typeId,
       data: new Map.from(prev.data),
     );
   }
 
   Activity.fromJson(Map<String, dynamic> jsonMap, List<ActivityType> activityTypes) {
     _id = jsonMap['_id'];
-    type = activityTypes.firstWhere((activityType) => activityType.id == jsonMap['typeid']);
+    typeId = jsonMap['typeId'];
     data = Converters.paramsFromJson(jsonMap['data']);
   }
 
   Map<String, dynamic> toJson() => {
     '_id': _id,
-    'typeid': type.id,
+    'typeId': typeId,
     'data': Converters.paramsToJson(data),
   };
 

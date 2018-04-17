@@ -12,12 +12,14 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppState stateVal = Provider.of(context).value;
+    ActivityType tmpType = stateVal.activityTypes.firstWhere((type) => type.id == activity.typeId);
 
     return new Card(
-      color: activity.type.color,
+      color: tmpType.color,
       elevation: 6.0,
       child: new ListTile(
-        leading: new Icon(activity.type.icon),
+        leading: new Icon(tmpType.icon),
         isThreeLine: true,
         title: new Text(activity.data['name']),
         subtitle: new Text(activity.data['desc']),

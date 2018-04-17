@@ -143,7 +143,7 @@ class WatoplanState extends State<Watoplan> {
   @override
   Widget build(BuildContext context) {
     final db = new WatoplanDb('where the fuck should this point to?');
-    db.load(activityTypes, activities);
+    // db.load(activityTypes, activities);
     return new Provider(
       state: widget.watoplanState,
       child: new MaterialApp(

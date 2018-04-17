@@ -22,15 +22,16 @@ class AddEditScreenState extends State<AddEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var stateVal = Provider.of(context).value;
+    AppState stateVal = Provider.of(context).value;
 
     Activity tmpActivity = stateVal.focused >= 0
       ? Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
+    Color activityColor = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId).color;
     
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor:  tmpActivity.type.color,
+        backgroundColor: activityColor,
         leading: new BackButton(),
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
@@ -155,7 +156,7 @@ class AddEditScreenState extends State<AddEditScreen> {
       ),
       floatingActionButton: new FloatingActionButton(
         child: new Icon(Icons.save),
-        backgroundColor: tmpActivity.type.color,
+        backgroundColor: activityColor,
         onPressed: () {
           if (stateVal.focused < 0) {
             Intents.setFocused(Provider.of(context), indice: stateVal.activities.length);
