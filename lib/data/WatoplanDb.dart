@@ -22,6 +22,10 @@ class WatoplanDb {
     _db = new Db(loc);
   }
 
+  Future<bool> open() => _db.open();
+
+  Future<bool> close() => _db.close();
+
   Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) =>
     _db.open()
       .then((success) {
@@ -32,8 +36,6 @@ class WatoplanDb {
 
         return true;
       });
-
-  Future<bool> close() => _db.close();
 
   Future<bool> save(List<ActivityType> activityTypes, List<Activity> activities) async {
     bool success = await typeCollection.drop();
@@ -47,8 +49,13 @@ class WatoplanDb {
     return true;
   }
 
+  Future<bool> clear() async {
+  
+  }
+
   Future<bool> update({ ActivityType activityType, Activity activity }) async {
     Map success = {  };
+
     if (activityType != null) {
       success = await typeCollection.update(where.eq('id', activityType.id), activityType);
     } else if (activity != null) {
@@ -58,11 +65,28 @@ class WatoplanDb {
     return success.isNotEmpty;
   }
 
-  // uneeded
-  // Future<bool> clear() {}
+  Future<bool> add(List<dynamic> items) async {
+    Map success = {  };
 
-  Future<bool> add() {}
+    if (items is List<Activity>)
+      success = await activityCollection.insertAll(
+        items.map((activity) => activity.toJson()).toList()
+      );
+    else if (items is List<ActivityType>)
+      success = await typeCollection.insertAll(
+        items.map((type) => type.toJson()).toList()
+      );
 
-  Future<bool> remove() {}
+    return success.isNotEmpty;
+  }
+
+  Future<bool> remove(List<dynamic> items) async {
+    Map success = {  };
+
+    if (items is List<Activity>)
+    else if (items is List<ActivityType>)
+
+    return success.isNotEmpty;
+  }
 
 }
