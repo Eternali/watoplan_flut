@@ -8,12 +8,14 @@ class DateTimePicker extends StatefulWidget {
   DateTime when;
   final setDate;
   final setTime;
+  final Color color;
 
   DateTimePicker({
     Key key,
     this.when,
     this.setDate,
     this.setTime,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -57,17 +59,29 @@ class DateTimePickerState extends State<DateTimePicker> {
       children: <Widget>[
         new MaterialButton(
           padding: new EdgeInsets.all(12.0),
-          child: new Text(
-            TimeOfDay.fromDateTime(widget.when).format(context),
-            style: valueStyle,
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Text(
+                TimeOfDay.fromDateTime(widget.when).format(context),
+                style: valueStyle,
+              ),
+              new Icon(Icons.arrow_drop_down, color: widget.color),
+            ],
           ),
           onPressed: () { _selectTime(context); },
         ),
         new MaterialButton(
           padding: new EdgeInsets.all(12.0),
-          child: new Text(
-            DateTimeUtils.formatDMY(widget.when),
-            style: valueStyle,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              new Text(
+                DateTimeUtils.formatDMY(widget.when),
+                style: valueStyle,
+              ),
+              new Icon(Icons.arrow_drop_down, color: widget.color),
+            ],
           ),
           onPressed: () { _selectDate(context); },
         ),

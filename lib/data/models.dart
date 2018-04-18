@@ -52,7 +52,7 @@ class MenuChoice {
 final Map<String, dynamic> VALID_PARAMS = {
   'name': '',
   'desc': '',
-  'tags': [],
+  'tags': <String>[],
   'datetime': new DateTime.now(),
   'location': '',
 };

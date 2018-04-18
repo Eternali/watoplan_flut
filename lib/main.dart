@@ -45,7 +45,7 @@ final List<ActivityType> ACTIVITY_TYPES = [
     params: {
       'name': '',
       'desc': '',
-      'tags': [],
+      'tags': <String>[],
     }
   ),
   new ActivityType(
@@ -55,7 +55,7 @@ final List<ActivityType> ACTIVITY_TYPES = [
     params: {
       'name': '',
       'desc': '',
-      'tags': [],
+      'tags': <String>[],
     }
   ),
   new ActivityType(
@@ -65,12 +65,20 @@ final List<ActivityType> ACTIVITY_TYPES = [
     params: {
       'name': '',
       'desc': '',
-      'tags': [],
+      'tags': <String>[],
     }
   ),
 ];
 
 final List<Activity> activities = [
+  new Activity(
+    type: ACTIVITY_TYPES[4],
+    data: {
+      'name': 'new name',
+      'desc': 'new description more',
+      'tags': ['important', 'new', 'yay'],
+    }
+  ),
   new Activity(
     type: ACTIVITY_TYPES[0],
     data: {

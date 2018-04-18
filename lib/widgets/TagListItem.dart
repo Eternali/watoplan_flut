@@ -19,7 +19,7 @@ class TagListItem extends StatelessWidget {
         children: <Widget>[
           new Padding(
             padding: new EdgeInsets.only(right: 4.0),
-            child: new Text('')
+            child: new Text(activity.data['tags'][tagIndice])
           ),
           new Padding(
             padding: new EdgeInsets.only(left: 4.0),
