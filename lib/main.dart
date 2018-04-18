@@ -142,7 +142,7 @@ class WatoplanState extends State<Watoplan> {
 
   @override
   Widget build(BuildContext context) {
-    final db = new WatoplanDb('where the fuck should this point to?');
+    final db = new WatoplanDb('mongodb://127.0.0.1/watoplan');
     // db.load(activityTypes, activities);
     return new Provider(
       state: widget.watoplanState,

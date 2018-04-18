@@ -13,6 +13,8 @@ import 'package:watoplan/utils/DataUtils.dart';
 
 class AddEditScreen extends StatefulWidget {
 
+  DateTime test = new DateTime.now();
+
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
 
@@ -25,7 +27,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     AppState stateVal = Provider.of(context).value;
 
     Activity tmpActivity = stateVal.focused >= 0
-      ? Activity.from(stateVal.activities[stateVal.focused])
+      ? new Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
     Color activityColor = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId).color;
     
@@ -70,21 +72,14 @@ class AddEditScreenState extends State<AddEditScreen> {
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 16.0),
                 child: new DateTimePicker(
-                  selectedDate: tmpActivity.data['datetime'],
-                  selectedTime: new TimeOfDay.fromDateTime(tmpActivity.data['datetime']),
-                  selectDate: (DateTime date) {
-                    setState(() {
-                      print('date set');
-                      tmpActivity.data['datetime'] = date;
-                    });
+                  when: tmpActivity.data['datetime'],
+                  setDate: (date) {
+                    tmpActivity.data['datetime'] = date;
+                    return tmpActivity.data['datetime'];                    
                   },
-                  selectTime: (TimeOfDay time) {
-                    setState(() {
-                      tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(
-                        tmpActivity.data['datetime'],
-                        time
-                      );
-                    });
+                  setTime: (time) {
+                     tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['datetime'], time);
+                    return tmpActivity.data['datetime'];
                   },
                 ),
                 // child: new Row(

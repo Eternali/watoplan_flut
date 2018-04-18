@@ -129,23 +129,24 @@ class Activity {
     dynamic type,
     Map<String, dynamic> data
   }) {
+    Map<String, dynamic> tmpData;
+
     if (type is int) {
-      this.data = data;
-      return;
-    }
-
-    typeId = type.id;
-    Map<String, dynamic> tmpData = new Map.from(type.params);
-
-    data.forEach((String name, dynamic value) {
-      int idx = tmpData.keys.toList().indexOf(name);
-      if (idx < 0)
-        throw new Exception('$name is not a parameter of ${type.name}');
-      else if (value.runtimeType != tmpData[name].runtimeType)
-        throw new Exception('$name is not a valid parameter for ${type.name}');
-      else
-        tmpData[name] = value;
-    });
+      typeId = type;
+      tmpData = data;
+    } else if (type is ActivityType) {
+      typeId = type.id;
+      tmpData = new Map.from(type.params);
+      data.forEach((String name, dynamic value) {
+        int idx = tmpData.keys.toList().indexOf(name);
+        if (idx < 0)
+          throw new Exception('$name is not a parameter of ${type.name}');
+        else if (value.runtimeType != tmpData[name].runtimeType)
+          throw new Exception('$name is not a valid parameter for ${type.name}');
+        else
+          tmpData[name] = value;
+      });
+    } else throw new Exception('dynamic type parameter must be an int or an ActivityType');
 
     this.data = tmpData;
     _id = id ?? int.parse(
