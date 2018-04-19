@@ -16,19 +16,18 @@ class WatoplanDb {
   DbCollection activityCollection;
 
   factory WatoplanDb(String loc) =>
-    _watoplandb ?? new WatoplanDb._internal(loc);
+    _watoplandb ?? new WatoplanDb._init(loc);
 
-  WatoplanDb._internal(this.loc) {
+  WatoplanDb._init(this.loc) {
     _db = new Db(loc);
+    _db.open();
   }
 
   void destroy() {
+    _db.close();
+    _db = null;
     _watoplandb = null;
   }
-
-  Future<bool> open() => _db.open();
-
-  Future<bool> close() => _db.close();
 
   Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) async {
     Map success = {  };

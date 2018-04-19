@@ -1,106 +1,99 @@
 import 'dart:async';
+import 'dart:convert' show json;
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-
-import 'package:watoplan/data/Converters.dart';
 import 'package:watoplan/data/models.dart';
 
 class LocalDb {
   
-  static WatoplanDb _watoplandb;
+  static LocalDb _self;
 
-  final String loc;
-  Db _db;
+  File _db;
 
-  DbCollection typeCollection;
-  DbCollection activityCollection;
+  factory LocalDb(String loc) {
+    if (_self == null) {
+      _self = new LocalDb._init(loc);
+    }
 
-  factory LocalDb(String loc) =>
-    _watoplandb ?? new WatoplanDb._internal(loc);
+    return _self;
+  }
 
-  LocalDb._internal(this.loc) {
-    _db = new Db(loc);
+  LocalDb._init(loc) {
+    _db = new File(loc);
   }
 
   void destroy() {
-    _watoplandb = null;
+    _db = null;
+    _self = null;
   }
 
-  Future<bool> open() => _db.open();
+  Future<List<List<dynamic>>> load() async {
 
-  Future<bool> close() => _db.close();
+    List<ActivityType> activityTypes;
+    List<Activity> activities;
 
-  Future<bool> load(List<ActivityType> activityTypes, List<Activity> activities) async {
-    Map success = {  };
+    _db.readAsString()
+      .then((contents) => json.decode(contents))
+      .then((parsed) {
+        List<Map<String, dynamic>> encodedTypes = parsed['activityTypes'];
+        List<Map<String, dynamic>> encodedActivities = parsed['activities'];
+        
+        activityTypes = encodedTypes.map(
+          (type) => new ActivityType.fromJson(type)
+        ).toList();
+        activities = encodedActivities.map(
+          (activity) => new Activity.fromJson(activity, activityTypes)
+        ).toList();
+      });
 
-    typeCollection = _db.collection('activityTypes');
-    activityCollection = _db.collection('activities');
-    
-    success = await typeCollection.find().forEach((type) {
-      activityTypes.add(new ActivityType.fromJson(type));
-    });
-    success = await activityCollection.find().forEach((activity) {
-      activities.add(new Activity.fromJson(activity, activityTypes));
-    });
+    return [activityTypes, activities];
+  }
 
-    return success.isNotEmpty;
+  Future<List<dynamic>> loadOnly(String only) async {
+
   }
 
   Future<bool> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {
-    bool successDrop = false;
-    Map successSave = {  };
+    await _db.writeAsString(
+      json.encode({
+        'activityTypes': activityTypes.map((type) => type.toJson()).toList(),
+        'activities': activities.map((activity) => activity.toJson()).toList(),
+      })
+    );
+  }
 
-    successDrop = await typeCollection.drop();
-    successDrop = await activityCollection.drop();
-    if (successDrop) {
-      successSave = await typeCollection.insertAll(
-        activityTypes.map((type) => type.toJson()).toList()
-      );
-      successSave = await activityCollection.insertAll(
-        activities.map((activity) => activity.toJson()).toList()
-      );
+  Future<void> clear() async {
+    await _db.writeAsString(
+      json.encode({
+        'activityTypes': [  ],
+        'activities': [  ],
+      })
+    );
+  }
+
+  Future<void> update(dynamic item) async {
+    if (item is Activity) {
+
+    } else if (item is ActivityType) {
+
     }
-
-    return successDrop && successSave.isNotEmpty;
   }
 
-  void clear() async {
-    await _db.dropCollection('activityTypes');
-    await _db.dropCollection('activities');
+  Future<void> add(dynamic item) async {
+    if (item is Activity) {
+      var data = load();
+      
+    } else if (item is ActivityType) {
+
+    }
   }
 
-  Future<bool> update(dynamic item) async {
-    Map success = {  };
+  Future<void> remove(dynamic item) async {
+    if (item is Activity) {
 
-    if (item is Activity)
-      success = await activityCollection.update(where.eq('_id', item.id), item);
-    else if (item is ActivityType)
-      success = await typeCollection.update(where.eq('_id', item.id), item);
+    } else if (item is ActivityType) {
 
-    return success.isNotEmpty;
-  }
-
-  Future<bool> add(dynamic item) async {
-    Map success = {  };
-
-    if (item is Activity)
-      success = await activityCollection.insert(item.toJson());
-    else if (item is ActivityType)
-      success = await typeCollection.insert(item.toJson());
-
-    return success.isNotEmpty;
-  }
-
-  Future<bool> remove(dynamic item) async {
-    Map success = {  };
-
-    if (item is Activity)
-      success = await activityCollection.remove(where.eq('_id', item.id));
-    else if (item is ActivityType)
-      success = await typeCollection.remove(where.eq('_id', item.id));    
-
-    return success.isNotEmpty;
+    }
   }
 
 }

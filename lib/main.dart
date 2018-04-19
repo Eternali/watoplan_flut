@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/data/WatoplanDb.dart';
+import 'package:watoplan/data/LocalDb.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/Provider.dart';
 import 'package:watoplan/routes.dart';
@@ -150,7 +150,13 @@ class WatoplanState extends State<Watoplan> {
 
   @override
   Widget build(BuildContext context) {
-    final db = new WatoplanDb('mongodb://127.0.0.1/watoplan');
+    // getApplicationDocumentsDirectory()
+    //   .then((dir) => LevelDB.openUtf8('${dir.path}/testdb'))
+    //   .then((db) {
+    //     db.put('testkey', 'testval');
+    //     print('testing: testkey = ${db.get('testkey')}');
+    //   });
+    // final db = new WatoplanDb('mongodb://127.0.0.1/watoplan');
     // db.load(activityTypes, activities);
     return new Provider(
       state: widget.watoplanState,
