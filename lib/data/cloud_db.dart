@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:mongo_dart/mongo_dart.dart';
 
-import 'package:watoplan/data/Converters.dart';
+import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/models.dart';
 
 class WatoplanDb {

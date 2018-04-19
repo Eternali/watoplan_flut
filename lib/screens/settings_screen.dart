@@ -5,8 +5,8 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/Provider.dart';
-import 'package:watoplan/widgets/ActivityTypeCard.dart';
+import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/activity_type_card.dart';
 
 class SettingsScreen extends StatefulWidget {
 

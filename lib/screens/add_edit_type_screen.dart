@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/Provider.dart';
-import 'package:watoplan/widgets/ColorPickButton.dart';
+import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/color_pick_button.dart';
 
 class AddEditTypeScreen extends StatefulWidget {
 

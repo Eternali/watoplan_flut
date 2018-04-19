@@ -5,9 +5,9 @@ import 'package:watoplan/themes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/intents.dart';
-import 'package:watoplan/data/Provider.dart';
-import 'package:watoplan/widgets/ActivityCard.dart';
-import 'package:watoplan/widgets/FAM.dart';
+import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/activity_card.dart';
+import 'package:watoplan/widgets/fam.dart';
 
 class HomeScreen extends StatelessWidget {
 

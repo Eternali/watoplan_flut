@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/Provider.dart';
+import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/routes.dart';
 

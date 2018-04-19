@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/data/LocalDb.dart';
+import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/Provider.dart';
+import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/themes.dart';
-import 'package:watoplan/screens/HomeScreen.dart';
-import 'package:watoplan/screens/AddEditScreen.dart';
-import 'package:watoplan/screens/AddEditTypeScreen.dart';
-import 'package:watoplan/screens/SettingsScreen.dart';
-import 'package:watoplan/screens/AboutScreen.dart';
+import 'package:watoplan/screens/home_screen.dart';
+import 'package:watoplan/screens/add_edit_screen.dart';
+import 'package:watoplan/screens/add_edit_type_screen.dart';
+import 'package:watoplan/screens/settings_screen.dart';
+import 'package:watoplan/screens/about_screen.dart';
 
 void main() {
   return runApp(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/widgets/ColorPicker.dart';
+import 'package:watoplan/widgets/color_picker.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/themes.dart';
 

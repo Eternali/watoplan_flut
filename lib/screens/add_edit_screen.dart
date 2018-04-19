@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/Provider.dart';
-import 'package:watoplan/widgets/ActivityDataInput.dart';
-import 'package:watoplan/widgets/ColorPicker.dart';
-import 'package:watoplan/widgets/DateTimePicker.dart';
-import 'package:watoplan/widgets/TagListItem.dart';
-import 'package:watoplan/utils/DataUtils.dart';
+import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/activity_data_input.dart';
+import 'package:watoplan/widgets/color_picker.dart';
+import 'package:watoplan/widgets/date_time_picker.dart';
+import 'package:watoplan/widgets/tag_list_item.dart';
+import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
 

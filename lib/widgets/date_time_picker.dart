@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:watoplan/utils/DataUtils.dart';
+import 'package:watoplan/utils/data_utils.dart';
 
 class DateTimePicker extends StatefulWidget {
 
