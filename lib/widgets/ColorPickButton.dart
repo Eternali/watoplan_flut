@@ -8,7 +8,7 @@ import 'package:watoplan/themes.dart';
 class ColorPickButton extends StatefulWidget {
 
   ActivityType activityType;
-  ColorPickButton({this.activityType});
+  ColorPickButton({ this.activityType });
 
   @override
   State<ColorPickButton> createState() => new ColorPickButtonState(activityType: activityType);
@@ -18,7 +18,7 @@ class ColorPickButton extends StatefulWidget {
 class ColorPickButtonState extends State<ColorPickButton> {
 
   ActivityType activityType;
-  ColorPickButtonState({this.activityType});
+  ColorPickButtonState({ this.activityType });
 
   @override
   Widget build(BuildContext context) {

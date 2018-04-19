@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   final String title;
 
-  HomeScreen({Key key, this.title}) : super(key: key);
+  HomeScreen({ Key key, this.title }) : super(key: key);
 
   List<MenuChoice> overflow = const <MenuChoice>[
     const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),

@@ -13,7 +13,7 @@ class ActivityDataInput extends StatefulWidget {
   final Activity activity;
   final String field;
 
-  ActivityDataInput({this.activity, this.field});
+  ActivityDataInput({ this.activity, this.field });
 
   @override
   State<ActivityDataInput> createState() => new ActivityDataInputState();

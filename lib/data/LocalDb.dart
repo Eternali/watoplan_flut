@@ -4,11 +4,21 @@ import 'dart:io';
 
 import 'package:watoplan/data/models.dart';
 
+class DbCollection {
+  int start;
+  int end;
+
+  DbCollection({ this.start, this.end });
+
+}
+
 class LocalDb {
   
   static LocalDb _self;
 
   File _db;
+  DbCollection typeCollection;
+  DbCollection activityCollection;
 
   factory LocalDb(String loc) {
     if (_self == null) {
@@ -49,8 +59,19 @@ class LocalDb {
     return [activityTypes, activities];
   }
 
-  Future<List<dynamic>> loadOnly(String only) async {
+  Future<dynamic> loadContaining(MapEntry toFind, { dynamic type }) async {
+    int start = 0;
+    int end = null;
 
+    if (type is Activity) {
+      start = activityCollection.start;
+      end = activityCollection.end;
+    } else if (type is ActivityType) {
+      start = typeCollection.start;
+      end = typeCollection.end;
+    }
+
+    _db.openRead(start, end);
   }
 
   Future<bool> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {

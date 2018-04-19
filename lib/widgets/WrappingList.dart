@@ -7,7 +7,7 @@ class WrappingList extends StatefulWidget {
   final WrappingListDirection direction;
   final List<Widget> items;
 
-  WrappingList({this.direction, this.items});
+  WrappingList({ this.direction, this.items });
 
   @override
   State<WrappingList> createState() => new WrappingListState();

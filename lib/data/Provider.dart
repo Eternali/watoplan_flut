@@ -52,7 +52,7 @@ class _InheritedProvider extends InheritedWidget {
   final _stateVal;
   final child;
 
-  _InheritedProvider({this.state, this.child})
+  _InheritedProvider({ this.state, this.child })
     : _stateVal = state.value, super(child: child);
 
   @override
