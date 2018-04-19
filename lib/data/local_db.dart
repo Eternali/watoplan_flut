@@ -74,7 +74,7 @@ class LocalDb {
     _db.openRead(start, end);
   }
 
-  Future<bool> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {
+  Future<void> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {
     await _db.writeAsString(
       json.encode({
         'activityTypes': activityTypes.map((type) => type.toJson()).toList(),

@@ -132,6 +132,9 @@ final List<Activity> activities = [
 
 class Watoplan extends StatefulWidget {
 
+  getApplicationDocumentsDirectory()
+    .then((dir) => new LocalDb('$dir/watoplan.json');
+
   final watoplanState = new AppStateObservable(
     new AppState(
       activities: activities,
