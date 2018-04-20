@@ -4,6 +4,15 @@ import 'package:watoplan/data/models.dart';
 
 class Reducers {
 
+  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme }) {
+    return new AppState(
+      activityTypes: activityTypes,
+      activities: activities,
+      focused: focused,
+      theme: theme,
+    );
+  }
+
   static AppState addActivityTypes(AppState oldState, List<ActivityType> toadd) {
     AppState newState = new AppState.from(oldState);
     newState.activityTypes.addAll(toadd);

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:convert' show json;
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:watoplan/data/models.dart';
@@ -20,7 +20,7 @@ class LocalDb {
   DbCollection typeCollection;
   DbCollection activityCollection;
 
-  factory LocalDb(String loc) {
+  factory LocalDb([ String loc = '' ]) {
     if (_self == null) {
       _self = new LocalDb._init(loc);
     }
@@ -39,21 +39,19 @@ class LocalDb {
 
   Future<List<List<dynamic>>> load() async {
 
-    List<ActivityType> activityTypes;
-    List<Activity> activities;
+    List<ActivityType> activityTypes = [];
+    List<Activity> activities = [];
 
     _db.readAsString()
       .then((contents) => json.decode(contents))
+      .then((decoded) { JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(decoded)); return decoded; })
       .then((parsed) {
-        List<Map<String, dynamic>> encodedTypes = parsed['activityTypes'];
-        List<Map<String, dynamic>> encodedActivities = parsed['activities'];
-        
-        activityTypes = encodedTypes.map(
-          (type) => new ActivityType.fromJson(type)
-        ).toList();
-        activities = encodedActivities.map(
-          (activity) => new Activity.fromJson(activity, activityTypes)
-        ).toList();
+        parsed['activityTypes'].forEach(
+          (type) { activityTypes.add(new ActivityType.fromJson(type)); }
+        );
+        parsed['activities'].forEach(
+          (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
+        );
       });
 
     return [activityTypes, activities];
@@ -93,28 +91,37 @@ class LocalDb {
   }
 
   Future<void> update(dynamic item) async {
+    var data = await load();
     if (item is Activity) {
-
+      data[0][data[0].map((activity) => activity.id).toList().indexOf(item.id)] = item.toJson();
     } else if (item is ActivityType) {
-
+      data[1][data[1].map((type) => type.id).toList().indexOf(item.id)] = item.toJson();
     }
+    await saveOver(data[0], data[1]);
   }
 
   Future<void> add(dynamic item) async {
+    var data = await load();
     if (item is Activity) {
-      var data = load();
-      
+      data[0].add(item.toJson());
     } else if (item is ActivityType) {
-
+      data[1].add(item.toJson());
     }
+    await saveOver(data[0], data[1]);
   }
 
   Future<void> remove(dynamic item) async {
+    var data = await load();   
     if (item is Activity) {
-
+      data[0].removeAt(
+        data[0].map((activity) => activity.id).toList().indexOf(item.id)
+      );
     } else if (item is ActivityType) {
-
+      data[1].removeAt(
+        data[1].map((type) => type.id).toList().indexOf(item.id)
+      );
     }
+    await saveOver(data[0], data[1]);   
   }
 
 }

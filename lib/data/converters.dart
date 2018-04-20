@@ -56,8 +56,8 @@ class Converters {
     });
   }
 
-  static String paramsToJson(Map<String, dynamic> params) {
-    return json.encode(params.map((k, v) {
+  static Map<String, dynamic> paramsToJson(Map<String, dynamic> params) {
+    return params.map((k, v) {
       switch (k) {
         case 'datetime':
           return new MapEntry(k, dateTimeToString(v));
@@ -72,7 +72,7 @@ class Converters {
             throw new Exception('$k is not a valid parameter');
           break;
       }
-    }));
+    });
   }
 
 }

@@ -107,7 +107,7 @@ class ActivityType {
     '_id': _id,
     'name': name,
     'icon': Converters.iconToString(icon),
-    'colors': Converters.colorToString(color),
+    'color': Converters.colorToString(color),
     'params': Converters.paramsToJson(params),
   };
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/local_db.dart';
@@ -132,18 +133,18 @@ final List<Activity> activities = [
 
 class Watoplan extends StatefulWidget {
 
-  getApplicationDocumentsDirectory()
-    .then((dir) => new LocalDb('$dir/watoplan.json');
-
-  final watoplanState = new AppStateObservable(
+  // NOTE: we must initialize the state with empty data because
+  // Flutter will not wait for the constructor to finish its asyncronous
+  // operations before building the widget tree.
+  AppStateObservable watoplanState = new AppStateObservable(
     new AppState(
-      activities: activities,
-      activityTypes: ACTIVITY_TYPES,
+      activityTypes: [],
+      activities: [],
       focused: 0,
       theme: DarkTheme,
     )
   );
-  
+
   @override
   State<Watoplan> createState() => new WatoplanState();
 
@@ -153,14 +154,24 @@ class WatoplanState extends State<Watoplan> {
 
   @override
   Widget build(BuildContext context) {
+    getApplicationDocumentsDirectory()
+      .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
+      .then((db) { db.saveOver(ACTIVITY_TYPES, activities); return db; })
+      .then((db) => db.load())
+      .then((data) {
+        widget.watoplanState.value = new AppState(
+          activityTypes: data[0],
+          activities: data[1],
+          focused: widget.watoplanState.value.focused,
+          theme: widget.watoplanState.value.theme,
+        );
+      });
     // getApplicationDocumentsDirectory()
     //   .then((dir) => LevelDB.openUtf8('${dir.path}/testdb'))
     //   .then((db) {
     //     db.put('testkey', 'testval');
     //     print('testing: testkey = ${db.get('testkey')}');
     //   });
-    // final db = new WatoplanDb('mongodb://127.0.0.1/watoplan');
-    // db.load(activityTypes, activities);
     return new Provider(
       state: widget.watoplanState,
       child: new MaterialApp(
