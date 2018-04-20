@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 
 class Provider extends StatefulWidget {
@@ -28,6 +29,7 @@ class _ProviderState extends State<Provider> {
   initState() {
     super.initState();
     widget.state.addListener(didStateChange);
+    Intents.loadAll(widget.state);
   }
 
   @override
