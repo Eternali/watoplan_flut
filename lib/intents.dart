@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/reducers.dart';
@@ -12,20 +13,12 @@ class Intents {
   static Future<void> loadAll(AppStateObservable appState) {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      .then((db) { db.saveOver(ACTIVITY_TYPES, activities); return db; })
+      .then((db) { db.saveOver(activityTypes, activities); return db; })
       .then((db) => db.load())
-      .then((data) => {
+      .then((data) {
         appState.value = Reducers.set(
           activityTypes: data[0],
           activities: data[1],
-        );
-      });
-
-        watoplanState.value = new AppState(
-          activityTypes: data[0],
-          activities: data[1],
-          focused: watoplanState.value.focused,
-          theme: watoplanState.value.theme,
         );
       });
   }

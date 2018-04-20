@@ -17,7 +17,9 @@ class HomeScreen extends StatelessWidget {
     const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
   ];
 
-  HomeScreen({ Key key, this.title }) : super(key: key);
+  HomeScreen({ Key key, this.title }) : super(key: key) {
+    Intents.loadAll(Provider.of(context));
+  }
 
   @override
   Widget build(BuildContext context) {
