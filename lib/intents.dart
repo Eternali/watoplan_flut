@@ -13,7 +13,7 @@ class Intents {
   static Future<void> loadAll(AppStateObservable appState) {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      .then((db) { db.saveOver(activityTypes, activities); return db; })
+      .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })
       .then((db) => db.load())
       .then((data) {
         appState.value = Reducers.set(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/models.dart';
 
-final List<ActivityType> activityTypes = [
+final List<ActivityType> defaultActivityTypes = [
   new ActivityType(
     name: 'activity',
     icon: Icons.time_to_leave,
@@ -54,9 +54,9 @@ final List<ActivityType> activityTypes = [
   ),
 ];
 
-final List<Activity> activities = [
+final List<Activity> defaultActivities = [
   new Activity(
-    type: activityTypes[4],
+    type: defaultActivityTypes[4],
     data: {
       'name': 'new name',
       'desc': 'new description more',
@@ -64,49 +64,49 @@ final List<Activity> activities = [
     }
   ),
   new Activity(
-    type: activityTypes[0],
+    type: defaultActivityTypes[0],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[1],
+    type: defaultActivityTypes[1],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[0],
+    type: defaultActivityTypes[0],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[2],
+    type: defaultActivityTypes[2],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[0],
+    type: defaultActivityTypes[0],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[1],
+    type: defaultActivityTypes[1],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
     }
   ),
   new Activity(
-    type: activityTypes[0],
+    type: defaultActivityTypes[0],
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',

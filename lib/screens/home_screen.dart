@@ -25,10 +25,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  
+  // @override
+  // void initState() {
+  //     Intents.loadAll(Provider.of(context))
+  //       .then((data) => setState(() {  }));
+  //       // .then((_) => super.initState());
+  //   }
 
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
+
+    // if (stateVal.activities.length < 1) {
+    //   Intents.loadAll(Provider.of(context))
+    //     .then((data) => setState(() {  }));
+    // }
 
     List<SubFAB> typesToSubFABS(List<ActivityType> types) {
       return types.map(

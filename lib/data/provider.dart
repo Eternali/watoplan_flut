@@ -31,24 +31,10 @@ class _ProviderState extends State<Provider> {
 
   @override
   initState() {
-    // super.initState();
+    super.initState();
     widget.state.addListener(didStateChange);
-    getApplicationDocumentsDirectory()
-      .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      .then((db) { db.saveOver(activityTypes, activities); return db; })
-      .then((db) => db.load())
-      .then((data) {
-        setState(() {
-          widget.state.value = new AppState(
-          activityTypes: data[0],
-          activities: data[1],
-          focused: 0,
-          theme: DarkTheme,
-          );
-        });
-      });
-    // Intents.loadAll(widget.state)
-    //   .then((data) { setState(() {}); });
+    Intents.loadAll(widget.state)
+      .then((data) { setState(() {  }); });
   }
 
   @override

@@ -42,9 +42,9 @@ class LocalDb {
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
 
-    _db.readAsString()
+    await _db.readAsString()
       .then((contents) => json.decode(contents))
-      .then((decoded) { JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(decoded)); return decoded; })
+      // .then((decoded) { JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(decoded)); return decoded; })
       .then((parsed) {
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
