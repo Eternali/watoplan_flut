@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
@@ -40,6 +41,25 @@ class Watoplan extends StatefulWidget {
 }
 
 class WatoplanState extends State<Watoplan> {
+
+  @override
+  void initState() {
+    super.initState();
+    // getApplicationDocumentsDirectory()
+    //   .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
+    //   .then((db) { db.saveOver(activityTypes, activities); return db; })
+    //   .then((db) => db.load())
+    //   .then((data) {
+    //     setState(() {
+    //       widget.watoplanState.value = new AppState(
+    //       activityTypes: data[0],
+    //       activities: data[1],
+    //       focused: 0,
+    //       theme: DarkTheme,
+    //       );
+    //     });
+    //   });
+  }
 
   @override
   Widget build(BuildContext context) {

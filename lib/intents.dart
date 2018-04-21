@@ -19,6 +19,8 @@ class Intents {
         appState.value = Reducers.set(
           activityTypes: data[0],
           activities: data[1],
+          focused: appState.value.focused,
+          theme: appState.value.theme,
         );
       });
   }
@@ -52,7 +54,7 @@ class Intents {
   }
 
   static void changeActivity(AppStateObservable appState, int indice, Activity newActivity) async {
-    await LocalDb().update(newActivity);
+    // await LocalDb().update(newActivity);
     appState.value = Reducers.changeActivity(appState.value, indice, newActivity);
   }
 

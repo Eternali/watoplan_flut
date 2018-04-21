@@ -9,7 +9,7 @@ import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/fam.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
 
   final String title;
   List<MenuChoice> overflow = const <MenuChoice>[
@@ -18,6 +18,13 @@ class HomeScreen extends StatelessWidget {
   ];
 
   HomeScreen({ Key key, this.title }) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => new HomeScreenState();
+
+}
+
+class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +46,14 @@ class HomeScreen extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
-        title: new Text(title ?? WatoplanLocalizations.of(context).appTitle),
+        title: new Text(widget.title ?? WatoplanLocalizations.of(context).appTitle),
         actions: <Widget>[
           new PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
               Navigator.of(context).pushNamed(choice.route);
             },
             itemBuilder: (BuildContext context) =>
-              overflow.map((MenuChoice choice) =>
+              widget.overflow.map((MenuChoice choice) =>
                 new PopupMenuItem<MenuChoice>(
                 value: choice,
                 child: new Row(
