@@ -24,7 +24,7 @@ class ActivityDataInputState extends State<ActivityDataInput> {
   TextEditingController _controller;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     _controller = new TextEditingController(text: widget.activity.data[widget.field])
     ..addListener(
@@ -35,7 +35,7 @@ class ActivityDataInputState extends State<ActivityDataInput> {
   }
 
   @override
-  void dispose() {
+  dispose() {
     _controller.dispose();
     super.dispose();
   }

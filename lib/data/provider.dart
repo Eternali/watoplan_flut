@@ -38,17 +38,17 @@ class _ProviderState extends State<Provider> {
   }
 
   @override
+  dispose() {
+    widget.state.removeListener(didStateChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new _InheritedProvider(
       state: widget.state,
       child: widget.child,
     );
-  }
-
-  @override
-  dispose() {
-    widget.state.removeListener(didStateChange);
-    super.dispose();
   }
 
 }

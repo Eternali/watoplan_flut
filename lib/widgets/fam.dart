@@ -14,11 +14,13 @@ class SubFAB {
 class FloatingActionMenu extends StatefulWidget {
 
   final Color color;
-  final List<SubFAB> entries;
+  final entries;
   final double width;
   final double height;
 
-  FloatingActionMenu({ this.color, this.width, this.height, this.entries });
+  FloatingActionMenu({ this.color, this.width, this.height, this.entries }) {
+    
+  }
 
   @override
   State<FloatingActionMenu> createState() => new FloatingActionMenuState();
@@ -30,26 +32,38 @@ class FloatingActionMenuState
     with TickerProviderStateMixin {
 
   AnimationController _controller;
+  List<SubFAB> values;
 
-  @override
-  void initState() {
+  void init() {
+    print('\n\nchanging duration:\n${widget.entries.value}\n\n');
     _controller = new AnimationController(
       vsync: this,
-      duration: new Duration(milliseconds: widget.entries.length * 70),
+      duration: new Duration(milliseconds: widget.entries.value.length * 70),
     );
   }
 
   @override
-  void dispose() {
+  initState() {
+    super.initState();
+    init();
+    if (widget.entries is ValueNotifier) widget.entries.addListener(init);
+  }
+
+  @override
+  dispose() {
+    if (widget.entries is ValueNotifier) widget.entries.removeListener(init);
     _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
+    values = widget.entries is ValueNotifier ? widget.entries.value : widget.entries;
+
     return new Column(
       mainAxisSize: MainAxisSize.min,
-      children: new List.generate(widget.entries.length, (int indice) {
+      children: new List.generate(values.length, (int indice) {
         Widget child = new Container(
           width: widget.width,
           height: widget.height,
@@ -59,18 +73,18 @@ class FloatingActionMenuState
               parent: _controller,
               curve: new Interval(
                 0.0,
-                1.0 - indice / widget.entries.length / 2.0,
+                1.0 - indice / values.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
             child: new FloatingActionButton(
               heroTag: null,
-              backgroundColor: widget.entries[indice].color,
+              backgroundColor: values[indice].color,
               mini: true,
-              child: new Icon(widget.entries[indice].icon),
+              child: new Icon(values[indice].icon),
               onPressed: () {
                 _controller.reverse();
-                widget.entries[indice].onPressed();
+                values[indice].onPressed();
                 },
             )
           ),
@@ -85,7 +99,7 @@ class FloatingActionMenuState
             animation: _controller,
             builder: (BuildContext context, Widget child) {
               return new Transform(
-                transform: new Matrix4.rotationZ(_controller.value * 0.75 * math.PI),
+                transform: new Matrix4.rotationZ(_controller.value * 0.75 * math.pi),
                 alignment: FractionalOffset.center,
                 child: new Icon(Icons.add),
               );

@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
     const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
     const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
   ];
+  ValueNotifier<List<SubFAB>> subFabs = ValueNotifier([]);
 
   HomeScreen({ Key key, this.title }) : super(key: key);
 
@@ -25,24 +26,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  
-  // @override
-  // void initState() {
-  //     Intents.loadAll(Provider.of(context))
-  //       .then((data) => setState(() {  }));
-  //       // .then((_) => super.initState());
-  //   }
 
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
 
-    // if (stateVal.activities.length < 1) {
-    //   Intents.loadAll(Provider.of(context))
-    //     .then((data) => setState(() {  }));
-    // }
-
-    List<SubFAB> typesToSubFABS(List<ActivityType> types) {
+    List<SubFAB> typesToSubFabs(List<ActivityType> types) {
       return types.map(
         (it) => new SubFAB(
           icon: it.icon,
@@ -54,6 +43,8 @@ class HomeScreenState extends State<HomeScreen> {
         )
       ).toList();
     }
+
+    widget.subFabs.value = typesToSubFabs(stateVal.activityTypes);
 
     return new Scaffold(
       appBar: new AppBar(
@@ -96,7 +87,7 @@ class HomeScreenState extends State<HomeScreen> {
         color: Theme.of(context).accentColor,
         width: 56.0,
         height: 70.0,
-        entries: typesToSubFABS(stateVal.activityTypes),
+        entries: widget.subFabs,  // (() { widget.subFabs.value = typesToSubFABS(stateVal.activityTypes); return widget.subFabs; })(),
       ),
     );
   }
