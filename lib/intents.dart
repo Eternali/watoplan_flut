@@ -32,15 +32,12 @@ class Intents {
     appState.value = Reducers.addActivityTypes(appState.value, activityTypes);
   }
 
-  static void removeActivityTypes(AppStateObservable appState,
-      {List<int> indices = const [], List<ActivityType> activityTypes = const []}) {
-    if (indices.length > 0)
-      appState.value = Reducers.removeActivityTypes(appState.value, indices: indices);    
-    else if (activityTypes.length > 0)
-      appState.value = Reducers.removeActivityTypes(appState.value, activityTypes: activityTypes);
+  static Future removeActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
+    for (ActivityType type in activityTypes) await LocalDb().remove(type);
+    appState.value = Reducers.removeActivityTypes(appState.value, activityTypes);
   }
 
-  static void changeActivityType(AppStateObservable appState, ActivityType newType) async {
+  static Future changeActivityType(AppStateObservable appState, ActivityType newType) async {
     await LocalDb().update(newType);
     appState.value = Reducers.changeActivityType(appState.value, newType);
   }
@@ -52,15 +49,12 @@ class Intents {
     appState.value = Reducers.addActivities(appState.value, activities);
   }
 
-  static void removeActivities(AppStateObservable appState,
-      {List<int> indices = const [], List<Activity> activities = const []}) {
-    if (indices.length > 0)
-      appState.value = Reducers.removeActivities(appState.value, indices: indices);    
-    else if (activities.length > 0)
-      appState.value = Reducers.removeActivities(appState.value, activities: activities);
+  static Future removeActivities(AppStateObservable appState, List<Activity> activities) async {
+    for (Activity activity in activities) await LocalDb().remove(activity);
+    appState.value = Reducers.removeActivities(appState.value, activities);
   }
 
-  static void changeActivity(AppStateObservable appState, Activity newActivity) async {
+  static Future changeActivity(AppStateObservable appState, Activity newActivity) async {
     await LocalDb().update(newActivity);
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }

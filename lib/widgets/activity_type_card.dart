@@ -40,7 +40,7 @@ class ActivityTypeCard extends StatelessWidget {
             alignment: Alignment.centerRight,
             icon: new Icon(Icons.clear),
             onPressed: () {
-              Intents.removeActivityTypes(Provider.of(context), activityTypes: [data]);
+              Intents.removeActivityTypes(Provider.of(context), [data]);
             },
           ),
         )

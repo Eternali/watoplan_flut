@@ -71,7 +71,7 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      // body: new ListView(
+      // body: new AnimatedList(
       //   padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),        
       //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),
       // ),

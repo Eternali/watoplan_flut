@@ -20,15 +20,9 @@ class Reducers {
     return newState;
   }
 
-  static AppState removeActivityTypes(AppState oldState, {List<int> indices = const [], List<ActivityType> activityTypes = const []}) {
+  static AppState removeActivityTypes(AppState oldState, List<ActivityType> activityTypes) {
     AppState newState = new AppState.from(oldState);
-    if (indices.length > 0) {
-      for (int indice in indices)
-        newState.activityTypes.removeAt(indice);
-    } else if (activityTypes.length > 0) {
-      for (ActivityType activityType in activityTypes)
-        newState.activityTypes.remove(activityType);
-    }
+    for (ActivityType activityType in activityTypes) newState.activityTypes.remove(activityType);
 
     return newState;    
   }
@@ -51,16 +45,9 @@ class Reducers {
     return newState;    
   }
 
-  static AppState removeActivities(AppState oldState,
-      {List<int> indices = const [], List<Activity> activities = const []}) {
+  static AppState removeActivities(AppState oldState, List<Activity> activities) {
     AppState newState = new AppState.from(oldState);
-    if (indices.length > 0) {
-      for (int indice in indices)
-        newState.activities.removeAt(indice);
-    } else if (activities.length > 0) {
-      for (Activity activity in activities)
-        newState.activities.remove(activity);
-    }
+    for (Activity activity in activities) newState.activities.remove(activity);
 
     return newState;    
   }

@@ -46,7 +46,7 @@ class LocalDb {
       .then((contents) => json.decode(contents))
       .then((parsed) {
         int last = parsed['activities'].length - 1;
-        JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(parsed['activities'].sublist(last - 4)));
+        // JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(parsed['activities'].sublist(last - 4)));
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
         );

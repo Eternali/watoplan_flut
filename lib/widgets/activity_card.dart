@@ -15,19 +15,25 @@ class ActivityCard extends StatelessWidget {
     AppState stateVal = Provider.of(context).value;
     ActivityType tmpType = stateVal.activityTypes.firstWhere((type) => type.id == activity.typeId);
 
-    return new Card(
-      color: tmpType.color,
-      elevation: 6.0,
-      child: new ListTile(
-        leading: new Icon(tmpType.icon),
-        isThreeLine: true,
-        title: new Text(activity.data['name']),
-        subtitle: new Text(activity.data['desc']),
-        // trailing: new Icon(Icons.check),
-        onTap: () {
-          Intents.setFocused(Provider.of(context), activity: activity);
-          Navigator.of(context).pushNamed(Routes.addEditActivity);
-        },
+    return new Dismissible(
+      key: new Key(activity.id.toString()),
+      onDismissed: (direction) {
+        Intents.removeActivities(Provider.of(context), [activity]);
+      },
+      child: new Card(
+        color: tmpType.color,
+        elevation: 6.0,
+        child: new ListTile(
+          leading: new Icon(tmpType.icon),
+          isThreeLine: true,
+          title: new Text(activity.data['name']),
+          subtitle: new Text(activity.data['desc']),
+          // trailing: new Icon(Icons.check),
+          onTap: () {
+            Intents.setFocused(Provider.of(context), activity: activity);
+            Navigator.of(context).pushNamed(Routes.addEditActivity);
+          },
+        ),
       ),
     );
   }
