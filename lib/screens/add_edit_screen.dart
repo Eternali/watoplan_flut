@@ -101,7 +101,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             Intents.addActivities(Provider.of(context), [tmpActivity])
               .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
           } else {
-            Intents.changeActivity(Provider.of(context), stateVal.focused, tmpActivity);
+            Intents.changeActivity(Provider.of(context), tmpActivity);
           }
           Navigator.pop(context);
         },

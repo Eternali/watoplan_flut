@@ -33,9 +33,13 @@ class Reducers {
     return newState;    
   }
 
-  static AppState changeActivityType(AppState oldState, int indice, ActivityType newType) {
+  static AppState changeActivityType(AppState oldState, ActivityType newType) {
     AppState newState = new AppState.from(oldState);
-    newState.activityTypes[indice] = ActivityType.from(newType);  // newType;
+    newState.activityTypes[
+      newState.activityTypes.map(
+        (type) => type.id
+      ).toList().indexOf(newType.id)
+    ] = ActivityType.from(newType);  // newType;
 
     return newState;
   }
@@ -61,9 +65,13 @@ class Reducers {
     return newState;    
   }
 
-  static AppState changeActivity(AppState oldState, int indice, Activity newActivity) {
+  static AppState changeActivity(AppState oldState, Activity newActivity) {
     AppState newState = new AppState.from(oldState);
-    newState.activities[indice] = Activity.from(newActivity);
+    newState.activities[
+      newState.activities.map(
+        (activity) => activity.id
+      ).toList().indexOf(newActivity.id)
+    ] = Activity.from(newActivity);
 
     return newState;
   }

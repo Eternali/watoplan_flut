@@ -54,7 +54,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
         backgroundColor: tmpType.color ?? theme.accentColor,
         onPressed: () {
           if (stateVal.focused >= 0)
-            Intents.changeActivityType(Provider.of(context), stateVal.focused, tmpType);
+            Intents.changeActivityType(Provider.of(context), tmpType);
           else
             Intents.addActivityTypes(Provider.of(context), [tmpType]);
           Navigator.pop(context);

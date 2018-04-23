@@ -13,7 +13,7 @@ class Intents {
   static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      // .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })
+      // .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })  // for initial dataset population / reset
       .then((db) => db.load())
       .then((data) {
         appState.value = Reducers.set(
@@ -40,8 +40,9 @@ class Intents {
       appState.value = Reducers.removeActivityTypes(appState.value, activityTypes: activityTypes);
   }
 
-  static void changeActivityType(AppStateObservable appState, int indice, ActivityType newType) {
-    appState.value = Reducers.changeActivityType(appState.value, indice, newType);
+  static void changeActivityType(AppStateObservable appState, ActivityType newType) async {
+    await LocalDb().update(newType);
+    appState.value = Reducers.changeActivityType(appState.value, newType);
   }
 
   static Future addActivities(AppStateObservable appState, List<Activity> activities) async {
@@ -59,9 +60,9 @@ class Intents {
       appState.value = Reducers.removeActivities(appState.value, activities: activities);
   }
 
-  static void changeActivity(AppStateObservable appState, int indice, Activity newActivity) async {
-    // await LocalDb().update(newActivity);
-    appState.value = Reducers.changeActivity(appState.value, indice, newActivity);
+  static void changeActivity(AppStateObservable appState, Activity newActivity) async {
+    await LocalDb().update(newActivity);
+    appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
 
   static void setFocused(AppStateObservable appState, {int indice, Activity activity, ActivityType activityType}) {
