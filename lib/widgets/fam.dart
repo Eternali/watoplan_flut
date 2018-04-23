@@ -35,7 +35,6 @@ class FloatingActionMenuState
   List<SubFAB> values;
 
   void init() {
-    print('\n\nchanging duration:\n${widget.entries.value}\n\n');
     _controller = new AnimationController(
       vsync: this,
       duration: new Duration(milliseconds: widget.entries.value.length * 70),

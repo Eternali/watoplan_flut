@@ -98,8 +98,8 @@ class AddEditScreenState extends State<AddEditScreen> {
         backgroundColor: activityColor,
         onPressed: () {
           if (stateVal.focused < 0) {
-            Intents.setFocused(Provider.of(context), indice: stateVal.activities.length);
-            Intents.addActivities(Provider.of(context), [tmpActivity]);
+            Intents.addActivities(Provider.of(context), [tmpActivity])
+              .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
           } else {
             Intents.changeActivity(Provider.of(context), stateVal.focused, tmpActivity);
           }

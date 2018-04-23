@@ -16,7 +16,7 @@ class AppState {
 
   AppState({ this.activities, this.activityTypes, this.focused, this.theme });
   factory AppState.from(AppState prev) {
-    // watch out for reference copies of parameters
+    // NOTE: watch out for reference copies of parameters
     return new AppState(
       activities: prev.activities,
       activityTypes: prev.activityTypes,

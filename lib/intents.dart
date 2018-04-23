@@ -10,10 +10,10 @@ import 'package:watoplan/data/reducers.dart';
 
 class Intents {
 
-  static Future<void> loadAll(AppStateObservable appState) {
+  static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })
+      // .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })
       .then((db) => db.load())
       .then((data) {
         appState.value = Reducers.set(
@@ -25,7 +25,10 @@ class Intents {
       });
   }
 
-  static void addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) {
+  static Future addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
+    for (ActivityType type in activityTypes) {
+      await LocalDb().add(type);
+    }
     appState.value = Reducers.addActivityTypes(appState.value, activityTypes);
   }
 
@@ -41,7 +44,10 @@ class Intents {
     appState.value = Reducers.changeActivityType(appState.value, indice, newType);
   }
 
-  static void addActivities(AppStateObservable appState, List<Activity> activities) {
+  static Future addActivities(AppStateObservable appState, List<Activity> activities) async {
+    for (Activity activity in activities) {
+      await LocalDb().add(activity);
+    }
     appState.value = Reducers.addActivities(appState.value, activities);
   }
 

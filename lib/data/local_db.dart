@@ -44,8 +44,9 @@ class LocalDb {
 
     await _db.readAsString()
       .then((contents) => json.decode(contents))
-      // .then((decoded) { JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(decoded)); return decoded; })
       .then((parsed) {
+        int last = parsed['activities'].length - 1;
+        JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(parsed['activities'].sublist(last - 4)));
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
         );
@@ -92,33 +93,34 @@ class LocalDb {
 
   Future<void> update(dynamic item) async {
     var data = await load();
-    if (item is Activity) {
-      data[0][data[0].map((activity) => activity.id).toList().indexOf(item.id)] = item.toJson();
-    } else if (item is ActivityType) {
-      data[1][data[1].map((type) => type.id).toList().indexOf(item.id)] = item.toJson();
+    if (item is ActivityType) {
+      data[0][data[0].map((type) => type.id).toList().indexOf(item.id)] = item.toJson();
+    } else if (item is Activity) {
+      data[1][data[1].map((activity) => activity.id).toList().indexOf(item.id)] = item.toJson();
     }
     await saveOver(data[0], data[1]);
   }
 
   Future<void> add(dynamic item) async {
+    print('\n\nBEING CALLED\n\n');
     var data = await load();
-    if (item is Activity) {
-      data[0].add(item.toJson());
-    } else if (item is ActivityType) {
-      data[1].add(item.toJson());
+    if (item is ActivityType) {
+      data[0].add(item);
+    } else if (item is Activity) {
+      data[1].add(item);
     }
     await saveOver(data[0], data[1]);
   }
 
   Future<void> remove(dynamic item) async {
     var data = await load();   
-    if (item is Activity) {
+    if (item is ActivityType) {
       data[0].removeAt(
-        data[0].map((activity) => activity.id).toList().indexOf(item.id)
+        data[0].map((type) => type.id).toList().indexOf(item.id)
       );
-    } else if (item is ActivityType) {
+    } else if (item is Activity) {
       data[1].removeAt(
-        data[1].map((type) => type.id).toList().indexOf(item.id)
+        data[1].map((activity) => activity.id).toList().indexOf(item.id)
       );
     }
     await saveOver(data[0], data[1]);   
