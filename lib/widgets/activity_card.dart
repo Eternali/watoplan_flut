@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
@@ -17,6 +18,9 @@ class ActivityCard extends StatelessWidget {
 
     return new Dismissible(
       key: new Key(activity.id.toString()),
+      background: new Card(
+        child: new Container(color: Colors.red),
+      ),
       onDismissed: (direction) {
         Intents.removeActivities(Provider.of(context), [activity]);
       },

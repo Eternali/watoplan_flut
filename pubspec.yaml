@@ -7,6 +7,9 @@ dependencies:
   location: ^1.1.7
   shared_preferences: ^0.4.0
   path_provider: ^0.4.0
+  crypto: ^2.0.2
+  local_notifications: any
+  android_alarm_manager: ^0.1.0
   # leveldb: ^5.0.1
   mongo_dart: ^0.3.1
 

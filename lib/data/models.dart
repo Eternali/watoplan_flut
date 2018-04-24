@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/converters.dart';
+import 'package:watoplan/data/noti.dart';
+import 'package:watoplan/data/person.dart';
+import 'package:watoplan/utils/data_utils.dart';
 
 
 class AppState {
@@ -49,12 +52,17 @@ class MenuChoice {
 
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
-final Map<String, dynamic> VALID_PARAMS = {
+final Map<String, dynamic> validParams = {
   'name': '',
   'desc': '',
-  'tags': <String>[],
-  'datetime': new DateTime.now(),
+  'progress': 0.0,
+  'priority': 0,
+  'start': new DateTime.now(),
+  'end': new DateTime.now(),
+  'notis': <Noti>[],
   'location': '',
+  // 'entities': <Person>[],
+  // 'tags': <String>[],
 };
 
 class ActivityType {
@@ -74,15 +82,12 @@ class ActivityType {
     this.params = const {  },
   }) {
     params.forEach((name, type) {
-      if (!VALID_PARAMS.keys.contains(name))
+      if (!validParams.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
-      else if (type.runtimeType != VALID_PARAMS[name].runtimeType)
+      else if (type.runtimeType != validParams[name].runtimeType)
         throw new Exception('$name is not a supported type of parameter');
     });
-    _id = id ?? int.parse(
-      DateTime.now().millisecondsSinceEpoch.toString() +
-      Random().nextInt(10000).toString().padLeft(5, '0')
-    );
+    _id = id ?? generateId();
   }
 
   factory ActivityType.from(ActivityType prev) {
@@ -149,10 +154,7 @@ class Activity {
     } else throw new Exception('dynamic type parameter must be an int or an ActivityType');
 
     this.data = tmpData;
-    _id = id ?? int.parse(
-      DateTime.now().millisecondsSinceEpoch.toString() +
-      Random().nextInt(10000).toString().padLeft(5, '0')
-    );
+    _id = id ?? generateId();
   }
 
   factory Activity.from(Activity prev) {

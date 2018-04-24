@@ -47,7 +47,7 @@ class Converters {
           return new MapEntry(k, v.toString());
           break;
         default:
-          if (VALID_PARAMS.containsKey(k))
+          if (validParams.containsKey(k))
             return new MapEntry(k, v);
           else
             throw new Exception('$k is not a valid parameter');
@@ -66,7 +66,7 @@ class Converters {
           return new MapEntry(k, v.toString());
           break;
         default:
-          if (VALID_PARAMS.containsKey(k))
+          if (validParams.containsKey(k))
             return new MapEntry(k, v);
           else
             throw new Exception('$k is not a valid parameter');

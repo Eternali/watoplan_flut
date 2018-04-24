@@ -36,4 +36,9 @@
             </intent-filter>
         </activity>
     </application>
+
+    <service
+        android:name="io.flutter.androidalarmmanager.AlarmService"
+        android.exported="false" />
+
 </manifest>

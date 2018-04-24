@@ -9,6 +9,6 @@ X get activity type modifications to be reflected in their activities immediatel
 - finish activity type editing screen
 - implement about/help screen(s)
 - make home activity display more customizable (different sorting and layout rendering)
-- add swiping to delete on activities
+X add swiping to delete on activities
 - add extra valid params and their views
 
