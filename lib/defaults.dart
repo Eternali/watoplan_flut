@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/models.dart';
 
 final List<ActivityType> defaultActivityTypes = [
@@ -10,7 +11,11 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'datetime': new DateTime.now(),
+      'progress': 0.0,
+      'priority': 0,
+      'start': new DateTime.now(),
+      'end': new DateTime.now(),
+      'notis': <Noti>[],
     }
   ),
   new ActivityType(
@@ -20,6 +25,10 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
+      'priority': 0,
+      'start': new DateTime.now(),
+      'end': new DateTime.now(),
+      'notis': <Noti>[],
     }
   ),
   new ActivityType(
@@ -29,7 +38,10 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'tags': <String>[],
+      'priority': 0,
+      'start': new DateTime.now(),
+      'end': new DateTime.now(),
+      'notis': <Noti>[],
     }
   ),
   new ActivityType(
@@ -39,7 +51,10 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'tags': <String>[],
+      'progress': 0.0,
+      'priority': 0,
+      'start': new DateTime.now(),
+      'notis': <Noti>[],
     }
   ),
   new ActivityType(
@@ -49,7 +64,9 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'tags': <String>[],
+      'progress': 0.0,
+      'priority': 0,
+      'start': new DateTime.now(),
     }
   ),
 ];
@@ -60,7 +77,6 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'new name',
       'desc': 'new description more',
-      'tags': ['important', 'new', 'yay'],
     }
   ),
   new Activity(

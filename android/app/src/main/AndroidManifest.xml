@@ -37,8 +37,8 @@
         </activity>
     </application>
 
-    <service
+    <!-- <service
         android:name="io.flutter.androidalarmmanager.AlarmService"
-        android.exported="false" />
+        android.exported="false" /> -->
 
 </manifest>

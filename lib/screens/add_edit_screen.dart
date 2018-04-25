@@ -64,19 +64,19 @@ class AddEditScreenState extends State<AddEditScreen> {
                   field: 'desc',
                 )
               ) : null,
-            tmpActivity.data.containsKey('datetime')
+            tmpActivity.data.containsKey('start')
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 16.0),
                 child: new DateTimePicker(
                   color: Theme.of(context).disabledColor,
-                  when: tmpActivity.data['datetime'],
+                  when: tmpActivity.data['start'],
                   setDate: (date) {
-                    tmpActivity.data['datetime'] = date;
-                    return tmpActivity.data['datetime'];                    
+                    tmpActivity.data['start'] = date;
+                    return tmpActivity.data['start'];                    
                   },
                   setTime: (time) {
-                     tmpActivity.data['datetime'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['datetime'], time);
-                    return tmpActivity.data['datetime'];
+                     tmpActivity.data['start'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['start'], time);
+                    return tmpActivity.data['start'];
                   },
                 )
               ) : null,

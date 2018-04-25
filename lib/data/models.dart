@@ -67,7 +67,7 @@ final Map<String, dynamic> validParams = {
 
 class ActivityType {
 
-  int _id;
+  final int _id;
   int get id => _id;
   String name;
   IconData icon;
@@ -80,14 +80,13 @@ class ActivityType {
     this.icon,
     this.color,
     this.params = const {  },
-  }) {
+  }) : _id = id ?? generateId() {
     params.forEach((name, type) {
       if (!validParams.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
       else if (type.runtimeType != validParams[name].runtimeType)
-        throw new Exception('$name is not a supported type of parameter');
+        throw new Exception('${type.runtimeType}\n${validParams[name].runtimeType}\n$name is not a supported type of parameter');
     });
-    _id = id ?? generateId();
   }
 
   factory ActivityType.from(ActivityType prev) {
@@ -100,12 +99,14 @@ class ActivityType {
     );
   }
 
-  ActivityType.fromJson(Map<String, dynamic> jsonMap) {
-    _id = jsonMap['_id'];
-    name = jsonMap['name'];
-    icon = Converters.iconFromString(jsonMap['icon']);
-    color = Converters.colorFromString(jsonMap['color']);
-    params = Converters.paramsFromJson(jsonMap['params']);
+  factory ActivityType.fromJson(Map<String, dynamic> jsonMap) {
+    return new ActivityType(
+      id: jsonMap['_id'],
+      name: jsonMap['name'],
+      icon: Converters.iconFromString(jsonMap['icon']),
+      color: Converters.colorFromString(jsonMap['color']),
+      params: Converters.paramsFromJson(jsonMap['params']),
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -124,7 +125,7 @@ class ActivityType {
 // since a activityType's id never changes, an activity can always have an unbroken reference to its type).
 class Activity {
 
-  int _id;
+  final int _id;
   int get id => _id;
   int typeId;
   Map<String, dynamic> data;
@@ -133,7 +134,7 @@ class Activity {
     int id,
     dynamic type,
     Map<String, dynamic> data
-  }) {
+  }) : _id = id ?? generateId() {
     Map<String, dynamic> tmpData;
 
     if (type is int) {
@@ -154,7 +155,6 @@ class Activity {
     } else throw new Exception('dynamic type parameter must be an int or an ActivityType');
 
     this.data = tmpData;
-    _id = id ?? generateId();
   }
 
   factory Activity.from(Activity prev) {
@@ -165,10 +165,12 @@ class Activity {
     );
   }
 
-  Activity.fromJson(Map<String, dynamic> jsonMap, List<ActivityType> activityTypes) {
-    _id = jsonMap['_id'];
-    typeId = jsonMap['typeId'];
-    data = Converters.paramsFromJson(jsonMap['data']);
+  factory Activity.fromJson(Map<String, dynamic> jsonMap, List<ActivityType> activityTypes) {
+    return new Activity(
+      id: jsonMap['_id'],
+      type: jsonMap['typeId'],
+      data: Converters.paramsFromJson(jsonMap['data']),
+    );
   }
 
   Map<String, dynamic> toJson() => {

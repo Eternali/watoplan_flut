@@ -2,6 +2,8 @@ import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/data/noti.dart';
+import 'package:watoplan/data/person.dart';
 import 'package:watoplan/data/models.dart';
 
 class Converters {
@@ -40,8 +42,15 @@ class Converters {
     // we're just decoding complex objects that have been encoded in strings.
     return params.map((k, v) {
       switch (k) {
-        case 'datetime':
+        case 'start':
+        case 'end':
           return new MapEntry(k, dateTimeFromString(v));
+          break;
+        case 'notis':
+          return new MapEntry(k, v.map((noti) => Noti.fromJson(noti)).toList());
+          break;
+        case 'entities':
+          return new MapEntry(k, v.map((entity) => Person.fromJson(entity)).toList());
           break;
         case 'location':
           return new MapEntry(k, v.toString());
@@ -59,8 +68,15 @@ class Converters {
   static Map<String, dynamic> paramsToJson(Map<String, dynamic> params) {
     return params.map((k, v) {
       switch (k) {
-        case 'datetime':
+        case 'start':
+        case 'end':
           return new MapEntry(k, dateTimeToString(v));
+          break;
+        case 'notis':
+          return new MapEntry(k, v.map((noti) => new Noti.fromJson(noti)).toList() as List<Noti>);
+          break;
+        case 'entities':
+          return new MapEntry(k, v.map((entity) => new Person.fromJson(entity)).toList() as List<Person>);
           break;
         case 'location':
           return new MapEntry(k, v.toString());
