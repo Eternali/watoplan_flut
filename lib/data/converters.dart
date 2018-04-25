@@ -47,10 +47,16 @@ class Converters {
           return new MapEntry(k, dateTimeFromString(v));
           break;
         case 'notis':
-          return new MapEntry(k, v.map((noti) => Noti.fromJson(noti)).toList());
+          // this is a dumb workaround for type checking
+          // List<Noti> x = []; List<Noti> y = <Noti>[]; assert x.runtimeType != y.runtimeType
+          List<Noti> value = <Noti>[];
+          for (Noti noti in v.map((noti) => new Noti.fromJson(noti)).toList()) value.add(noti);
+          return new MapEntry(k, value);
           break;
         case 'entities':
-          return new MapEntry(k, v.map((entity) => Person.fromJson(entity)).toList());
+          List<Person> value = <Person>[];
+          for (Person person in v.map((entity) => new Person.fromJson(entity)).toList()) value.add(person);
+          return new MapEntry(k, value);
           break;
         case 'location':
           return new MapEntry(k, v.toString());
@@ -73,10 +79,10 @@ class Converters {
           return new MapEntry(k, dateTimeToString(v));
           break;
         case 'notis':
-          return new MapEntry(k, v.map((noti) => new Noti.fromJson(noti)).toList() as List<Noti>);
+          return new MapEntry(k, v.map((noti) => noti.toJson()).toList());
           break;
         case 'entities':
-          return new MapEntry(k, v.map((entity) => new Person.fromJson(entity)).toList() as List<Person>);
+          return new MapEntry(k, v.map((entity) => entity.toJson()).toList() as List<Person>);
           break;
         case 'location':
           return new MapEntry(k, v.toString());

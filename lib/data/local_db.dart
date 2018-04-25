@@ -94,9 +94,9 @@ class LocalDb {
   Future<void> update(dynamic item) async {
     var data = await load();
     if (item is ActivityType) {
-      data[0][data[0].map((type) => type.id).toList().indexOf(item.id)] = item.toJson();
+      data[0][data[0].map((type) => type.id).toList().indexOf(item.id)] = item;
     } else if (item is Activity) {
-      data[1][data[1].map((activity) => activity.id).toList().indexOf(item.id)] = item.toJson();
+      data[1][data[1].map((activity) => activity.id).toList().indexOf(item.id)] = item;
     }
     await saveOver(data[0], data[1]);
   }

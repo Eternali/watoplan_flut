@@ -71,7 +71,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                   color: Theme.of(context).disabledColor,
                   when: tmpActivity.data['start'],
                   setDate: (date) {
-                    tmpActivity.data['start'] = date;
+                    tmpActivity.data['start'] = DateTimeUtils.fromDate(tmpActivity.data['start'], date);
                     return tmpActivity.data['start'];                    
                   },
                   setTime: (time) {

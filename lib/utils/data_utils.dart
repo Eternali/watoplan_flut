@@ -33,6 +33,18 @@ String generateUniqueId(String value) {
  */
 class DateTimeUtils {
 
+  static DateTime fromDate(DateTime source, DateTime date) {
+    return new DateTime(
+      date.year,
+      date.month,
+      date.day,
+      source.hour,
+      source.minute,
+      source.second,
+      source.millisecond,
+    );
+  }
+
   static DateTime fromTimeOfDay(DateTime source, TimeOfDay time) {
     return new DateTime(
       source.year,
