@@ -14,10 +14,14 @@ class WatoplanLocalizations {
   String get newActivityType => 'New Type';
   String get settingsTitle => 'Settings';
   String get aboutTitle => 'About';
+  String get save => 'Save';
 
   String get chooseColor => 'Choose Color';
 
   String get remove => 'Remove';
+
+  String get priority => 'Priority';
+  String get progress => 'Progress';
 
 }
 

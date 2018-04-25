@@ -14,7 +14,8 @@ import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
 
-  DateTime test = new DateTime.now();
+  double prioritySlide = 0.0;
+  double progressSlide = 0.0;
 
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
@@ -26,7 +27,6 @@ class AddEditScreenState extends State<AddEditScreen> {
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
-
     Activity tmpActivity = stateVal.focused >= 0
       ? new Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
@@ -41,6 +41,14 @@ class AddEditScreenState extends State<AddEditScreen> {
           ? stateVal.activities[stateVal.focused].data['name']
           : WatoplanLocalizations.of(context).newActivity
         ),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text(
+              WatoplanLocalizations.of(context).save.toUpperCase()
+            ),
+            onPressed: () {  },
+          )
+        ],
       ),
       body: new Padding(
         padding: new EdgeInsets.all(8.0),
@@ -64,9 +72,43 @@ class AddEditScreenState extends State<AddEditScreen> {
                   field: 'desc',
                 )
               ) : null,
+            tmpActivity.data.containsKey('priority')
+              ? new Padding(
+                padding: new EdgeInsets.only(left: 16.0, right: 16.0, top: 14.0),
+                child: new Slider(
+                  value: widget.prioritySlide,
+                  min: 0.0,
+                  max: 10.0,
+                  divisions: 10,
+                  label: '${WatoplanLocalizations.of(context).priority}: ${widget.prioritySlide}',
+                  activeColor: activityColor,
+                  onChanged: (value) {
+                    tmpActivity.data['priority'] = value.toInt();
+                    setState(() { widget.prioritySlide = value; });
+                  },
+                ),
+              )
+              : null,
+            tmpActivity.data.containsKey('progress')
+              ? new Padding(
+                padding: new EdgeInsets.only(left: 16.0, right: 16.0, top: 14.0),
+                child: new Slider(
+                  value: widget.progressSlide,
+                  min: 0.0,
+                  max: 100.0,
+                  divisions: 100,
+                  label: '${WatoplanLocalizations.of(context).progress}: ${widget.progressSlide.round()}',
+                  activeColor: activityColor,
+                  onChanged: (value) {
+                    tmpActivity.data['progress'] = value;
+                    setState(() { widget.progressSlide = value; });
+                  },
+                ),
+              )
+              : null,
             tmpActivity.data.containsKey('start')
               ? new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 16.0),
+                padding: new EdgeInsets.symmetric(vertical: 8.0),
                 child: new DateTimePicker(
                   color: Theme.of(context).disabledColor,
                   when: tmpActivity.data['start'],
@@ -85,11 +127,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                 padding: new EdgeInsets.symmetric(vertical: 8.0),
                 child: new Container(),                
               ) : null,
-            tmpActivity.data.containsKey('tags')
-              ? new Padding(
-                padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-                child: new TagListItem(0, tmpActivity),
-              ) : null,
+            // tmpActivity.data.containsKey('tags')
+            //   ? new Padding(
+            //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+            //     child: new TagListItem(0, tmpActivity),
+            //   ) : null,
           ].where((it) => it != null).toList(),
         ),
       ),

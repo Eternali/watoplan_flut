@@ -11,7 +11,7 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'progress': 0.0,
+      'progress': 0,
       'priority': 0,
       'start': new DateTime.now(),
       'end': new DateTime.now(),
@@ -51,7 +51,7 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'progress': 0.0,
+      'progress': 0,
       'priority': 0,
       'start': new DateTime.now(),
       'notis': <Noti>[],
@@ -64,7 +64,7 @@ final List<ActivityType> defaultActivityTypes = [
     params: {
       'name': '',
       'desc': '',
-      'progress': 0.0,
+      'progress': 0,
       'priority': 0,
       'start': new DateTime.now(),
     }
