@@ -15,7 +15,7 @@ final List<ActivityType> defaultActivityTypes = [
       'priority': 0,
       'start': new DateTime.now(),
       'end': new DateTime.now(),
-      'notis': <Noti>[],
+      'notis': <Noti>[ new Noti(title: '', msg: '', when: new DateTime(2018), type: NotiType.EMAIL) ],
     }
   ),
   new ActivityType(

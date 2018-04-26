@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_data_input.dart';
 import 'package:watoplan/widgets/color_picker.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
+import 'package:watoplan/widgets/edit_notification.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
@@ -126,6 +128,41 @@ class AddEditScreenState extends State<AddEditScreen> {
               ? new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 8.0),
                 child: new Container(),                
+              ) : null,
+            tmpActivity.data.containsKey('notis')
+              ? new Padding(
+                padding: new EdgeInsets.symmetric(vertical: 8.0),
+                child: new Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget> [
+                      new ListView(
+                        shrinkWrap: true,
+                        children: (tmpActivity.data['notis'] as List<Noti>).map(
+                            (noti) => new EditNotification(noti)
+                          ).toList(),
+                      ),
+                      new Row(
+                        children: <Widget>[
+                          new Expanded(
+                            child: new Text(
+                              WatoplanLocalizations.of(context).addNotification,
+                              style: new TextStyle(
+                                fontSize: 16.0,
+                                color: Theme.of(context).hintColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ].fold(
+                      [new Divider()],
+                      (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])
+                      ),
+                  ),
+                ),
               ) : null,
             // tmpActivity.data.containsKey('tags')
             //   ? new Padding(

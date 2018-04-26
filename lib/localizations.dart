@@ -23,6 +23,8 @@ class WatoplanLocalizations {
   String get priority => 'Priority';
   String get progress => 'Progress';
 
+  String get addNotification => 'Add another notification';
+
 }
 
 class WatoplanLocalizationsDelegate
