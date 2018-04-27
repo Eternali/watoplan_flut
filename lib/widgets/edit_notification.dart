@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 
 class EditNotification extends StatefulWidget {
 
   final Noti noti;
+  final Activity activity;
+  int timeBefore;
 
-  EditNotification(this.noti);
+  EditNotification({ this.noti, this.activity }) {
+    if (activity.data.containsKey('start')) {
+      timeBefore = (activity.data['start'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000;  // minutes
+    } else if (activity.data.containsKey('end')) {
+      timeBefore = (activity.data['end'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000;  // minutes
+    }
+  }
 
   @override
   State<EditNotification> createState() => new EditNotificationState();
@@ -21,7 +30,7 @@ class EditNotificationState extends State<EditNotification> {
       children: <Widget>[
         new Expanded(
           child: new Text(
-            widget.noti.when.toString(),
+            '${widget.timeBefore.toString()} minutes before as ${widget.noti.type}',
             style: new TextStyle(
               fontSize: 16.0,
             ),
