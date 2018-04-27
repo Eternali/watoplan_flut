@@ -28,8 +28,8 @@ class EditNotificationState extends State<EditNotification> {
           ),
         ),
         new IconButton(
-          padding: new EdgeInsets.all(0.0),
           icon: new Icon(Icons.clear),
+          onPressed: () {  },
         ),
       ],
     );

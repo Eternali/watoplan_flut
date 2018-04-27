@@ -55,6 +55,7 @@ class Intents {
   }
 
   static Future changeActivity(AppStateObservable appState, Activity newActivity) async {
+    print(newActivity.toJson());
     await LocalDb().update(newActivity);
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }

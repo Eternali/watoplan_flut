@@ -10,10 +10,11 @@ import 'package:watoplan/data/provider.dart';
  *   not part of the app state that holds data entry (this may not be the best solution though).
  */
 class ActivityDataInput extends StatefulWidget {
+  final int maxLines;
   final Activity activity;
   final String field;
 
-  ActivityDataInput({ this.activity, this.field });
+  ActivityDataInput({ this.maxLines, this.activity, this.field });
 
   @override
   State<ActivityDataInput> createState() => new ActivityDataInputState();
@@ -45,6 +46,8 @@ class ActivityDataInputState extends State<ActivityDataInput> {
     return new Padding(
       padding: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
       child: new TextField(
+        keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
+        maxLines: widget.maxLines,
         textAlign: TextAlign.center,
         style: new TextStyle(
           fontSize: 20.0,

@@ -6,12 +6,14 @@ import 'package:watoplan/utils/data_utils.dart';
 class DateTimePicker extends StatefulWidget {
 
   DateTime when;
+  final String label;
   final setDate;
   final setTime;
   final Color color;
 
   DateTimePicker({
     Key key,
+    this.label,
     this.when,
     this.setDate,
     this.setTime,
@@ -57,6 +59,13 @@ class DateTimePickerState extends State<DateTimePicker> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        new Text(
+          widget.label,
+          style: new TextStyle(
+            fontSize: 16.0,
+            color: Theme.of(context).hintColor,
+          ),
+        ),
         new MaterialButton(
           padding: new EdgeInsets.all(12.0),
           child: new Row(
