@@ -85,7 +85,7 @@ class ActivityType {
       if (!validParams.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
       else if (type.runtimeType != validParams[name].runtimeType)
-        throw new Exception('${type.runtimeType}\n${validParams[name].runtimeType}\n$name is not a supported type of parameter');
+        throw new Exception('${type.runtimeType} is! ${validParams[name].runtimeType}: $name is not a supported type of parameter');
     });
   }
 

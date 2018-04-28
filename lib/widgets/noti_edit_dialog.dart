@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
+import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 
 class NotiEditDialog extends StatefulWidget {
 
-  int before = 30;
+  final Noti noti;
+  final Activity activity;
+
+  NotiEditDialog({ noti, this.activity, int when })
+     : noti = noti ?? new Noti(
+       title: activity.data['name'],
+       msg: activity.data['desc'] ?? 'Your time\'s up!',
+       when: DateTime.fromMillisecondsSinceEpoch(when),
+     );
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -31,7 +40,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
               onChanged: (value) {
-                setState(() { widget.before = int.parse(value); });
+                setState(() { widget.activity = int.parse(value); });
               },
             ),
             new ListView(
@@ -44,6 +53,16 @@ class NotiEditDialogState extends State<NotiEditDialog> {
           ],
         ),
       ),
+      actions: <Widget>[
+        new FlatButton(
+          child: new Text(WatoplanLocalizations.of(context).cancel),
+          onPressed: () { Navigator.pop(context, null); },
+        ),
+        new FlatButton(
+          child: new Text(WatoplanLocalizations.of(context).save),
+          onPressed: () { Navigator.pop(context); },
+        )
+      ],
     );
   }
 

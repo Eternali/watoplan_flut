@@ -183,7 +183,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                                 ),
                               ),
                               new IconButton(
-                                icon: Icon(Icons.add),
+                                icon: new Icon(Icons.add),
                               ),
                             ],
                           ),

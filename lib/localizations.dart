@@ -16,6 +16,7 @@ class WatoplanLocalizations {
   String get settingsTitle => 'Settings';
   String get aboutTitle => 'About';
   String get save => 'Save';
+  String get cancel => 'Cancel';
   String get start => 'Start';
   String get end => 'End';
 
