@@ -12,6 +12,7 @@ class WatoplanLocalizations {
   String get newActivity => 'New Activity';
   String get addActivityType => 'Add Type';
   String get newActivityType => 'New Type';
+  String get newNoti => 'New Notification';
   String get settingsTitle => 'Settings';
   String get aboutTitle => 'About';
   String get save => 'Save';

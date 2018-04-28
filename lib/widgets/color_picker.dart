@@ -18,7 +18,7 @@ class ColorPickerState extends State<ColorPicker> {
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
-      contentPadding: EdgeInsets.all(0.0),
+      contentPadding: new EdgeInsets.all(0.0),
       content: new IntrinsicWidth(
         child: new Column(
           mainAxisSize: MainAxisSize.min,

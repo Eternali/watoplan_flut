@@ -8,10 +8,10 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_data_input.dart';
-import 'package:watoplan/widgets/color_picker.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
 import 'package:watoplan/widgets/edit_notification.dart';
+import 'package:watoplan/widgets/noti_edit_dialog.dart';
 import 'package:watoplan/widgets/wato_slider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
@@ -96,7 +96,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 : null,
               tmpActivity.data.containsKey('progress')
                 ? new WatoSlider(
-                  value: tmpActivity.data['progress'],
+                  value: tmpActivity.data['progress'].toDouble(),
                   max: 100.0,
                   divisions: 100,
                   color: activityColor,
@@ -155,25 +155,39 @@ class AddEditScreenState extends State<AddEditScreen> {
                         new ListView(
                           shrinkWrap: true,
                           children: (tmpActivity.data['notis'] as List<Noti>).map(
-                              (noti) => new EditNotification(noti)
+                              (noti) => new EditNotification(
+                                noti: noti,
+                                activity: tmpActivity,
+                              )
                             ).toList(),
                         ),
-                        new Row(
-                          children: <Widget>[
-                            new Expanded(
-                              child: new Text(
-                                WatoplanLocalizations.of(context).addNotification,
-                                style: new TextStyle(
-                                  fontSize: 16.0,
-                                  color: Theme.of(context).hintColor,
+                        new InkWell(
+                          onTap: () {
+                            showDialog<Noti>(
+                              context: context,
+                              child: new NotiEditDialog(),
+                            ).then((Noti n) {
+                              if (n != null)
+                                setState(() {  });
+                            });
+                          },
+                          child: new Row(
+                            children: <Widget>[
+                              new Expanded(
+                                child: new Text(
+                                  WatoplanLocalizations.of(context).addNotification,
+                                  style: new TextStyle(
+                                    fontSize: 16.0,
+                                    color: Theme.of(context).hintColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                            new IconButton(
-                              icon: Icon(Icons.add),
-                            ),
-                          ],
-                        ),
+                              new IconButton(
+                                icon: Icon(Icons.add),
+                              ),
+                            ],
+                          ),
+                        )
                       ].fold(
                         [new Divider()],
                         (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])

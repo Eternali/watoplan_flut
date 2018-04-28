@@ -11,9 +11,9 @@ class EditNotification extends StatefulWidget {
 
   EditNotification({ this.noti, this.activity }) {
     if (activity.data.containsKey('start')) {
-      timeBefore = (activity.data['start'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000;  // minutes
+      timeBefore = ((activity.data['start'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000).round();  // minutes
     } else if (activity.data.containsKey('end')) {
-      timeBefore = (activity.data['end'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000;  // minutes
+      timeBefore = ((activity.data['end'].millisecondsSinceEpoch - noti.when.millisecondsSinceEpoch) / 60000).round();  // minutes
     }
   }
 
