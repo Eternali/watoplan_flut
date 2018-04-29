@@ -18,8 +18,15 @@ class ActivityCard extends StatelessWidget {
 
     return new Dismissible(
       key: new Key(activity.id.toString()),
-      background: new Card(
-        child: new Container(color: Colors.red),
+      background: new Container(
+        padding: new EdgeInsets.symmetric(horizontal: 14.0),
+        child: new Row(
+          children: <Widget>[
+            new Icon(Icons.delete),
+            new Expanded(child: new Container()),
+            new Icon(Icons.delete),
+          ],
+        ),
       ),
       onDismissed: (direction) {
         Intents.removeActivities(Provider.of(context), [activity]);

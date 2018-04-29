@@ -1,7 +1,16 @@
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
-enum NotiType { PUSH, EMAIL, TEXT }
+class NotiType {
+  final String name;
+  NotiType(this.name);
+}
+
+Map<String, NotiType> NotiTypes = {
+  'PUSH': new NotiType('PUSH'),
+  'EMAIL': new NotiType('EMAIL'),
+  'SMS': new NotiType('SMS'),
+};
 
 typedef DateTime NextTimeGenerator(DateTime last);
 
@@ -23,7 +32,7 @@ class Noti {
       title: jsonMap['title'],
       msg: jsonMap['msg'],
       when: Converters.dateTimeFromString(jsonMap['when']),
-      type: NotiType.values[jsonMap['type']],
+      type: NotiTypes[jsonMap['type']],
     );
   }
 
@@ -32,7 +41,7 @@ class Noti {
     'title': title,
     'msg': msg,
     'when': Converters.dateTimeToString(when),
-    'type': type.index,
+    'type': type.name,
   };
 
 }

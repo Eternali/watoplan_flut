@@ -165,7 +165,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                           onTap: () {
                             showDialog<Noti>(
                               context: context,
-                              child: new NotiEditDialog(),
+                              child: new NotiEditDialog(activity: tmpActivity, when: DateTime(2018, 5).millisecondsSinceEpoch),
                             ).then((Noti n) {
                               if (n != null)
                                 setState(() {  });
