@@ -38,7 +38,7 @@ class EditNotificationState extends State<EditNotification> {
         ),
         new IconButton(
           icon: new Icon(Icons.clear),
-          onPressed: () {  },
+          onPressed: () { widget.activity.data['notis'].remove(noti); },
         ),
       ],
     );
