@@ -28,16 +28,9 @@ Widget checkedItem({ String name, bool active, VoidCallback onTap, ThemeData the
 class NotiEditDialog extends StatefulWidget {
 
   NotiType type;
-  int timeBefore;
-  int _timeUnit;
-  int get timeUnit => _timeUnit;
-  set timeUnit(int setTo) {
-    if (TimeUnit.values.contains(setTo)) _timeUnit = setTo;
-    else throw Exception('$timeUnit is not a valid value of TimeUnit');
-  }
+  TimeBefore timeBefore;
 
-  NotiEditDialog({ this.type, this.timeBefore, timeUnit })
-     : _timeUnit = timeUnit;
+  NotiEditDialog({ this.type, this.timeBefore });
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -48,14 +41,14 @@ class NotiEditDialogState extends State<NotiEditDialog> {
 
   TextEditingController _controller;
 
-  bool timeActive(int desired) => widget.timeUnit == desired;
+  bool timeActive(int desired) => widget.timeBefore == desired;
   bool typeActive(NotiType desired) => widget.type == desired;
 
   @override
   initState() {
     super.initState();
     _controller = new TextEditingController(text: '10')
-      ..addListener(() => widget.timeBefore = int.parse(_controller.value.text));
+      ..addListener(() => widget.timeBefore.time = int.parse(_controller.value.text));
   }
 
   @override
@@ -82,8 +75,8 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               ),
               checkedItem(
                 name: 'Minutes',
-                active: timeActive(TimeUnit['minute']),
-                onTap: () { setState(() { widget.timeUnit = TimeUnit['minute']; }); },
+                active: timeActive(TimeUnits[widget.timeBefore.unit]),
+                onTap: () { setState(() { widget.timeBefore.unit = TimeUnit['minute']; }); },
                 theme: theme,
               ),
               checkedItem(

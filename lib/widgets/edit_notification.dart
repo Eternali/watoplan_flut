@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
+import 'package:watoplan/widgets/noti_edit_dialog.dart';
 
 class EditNotification extends StatefulWidget {
 
@@ -29,16 +30,33 @@ class EditNotificationState extends State<EditNotification> {
     return new Row(
       children: <Widget>[
         new Expanded(
-          child: new Text(
-            '${widget.timeBefore.toString()} minutes before as ${widget.noti.type.name.toLowerCase()}',
-            style: new TextStyle(
-              fontSize: 16.0,
+          child: new InkWell(
+            onTap: () {
+              showDialog<Map<String, dynamic>>(
+                context: context,
+                child: new NotiEditDialog(
+                  type: widget.noti.type,
+                  timeBefore: widget.timeBefore,
+                  timeUnit: TimeUnit['minute'],
+                ),
+              ).then((Map<String, dynamic> n) {
+                if (n != null)
+                  setState(() {
+                    tmpActivity.data['notis'].add(notiFromDialog(fromDialog: n, activity: tmpActivity));
+                  });
+              });
+            },
+            child: new Text(
+              '${widget.timeBefore.toString()} minutes before as ${widget.noti.type.name.toLowerCase()}',
+              style: new TextStyle(
+                fontSize: 16.0,
+              ),
             ),
           ),
         ),
         new IconButton(
           icon: new Icon(Icons.clear),
-          onPressed: () { widget.activity.data['notis'].remove(noti); },
+          onPressed: () { widget.activity.data['notis'].remove(); },
         ),
       ],
     );

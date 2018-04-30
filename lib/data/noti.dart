@@ -1,8 +1,23 @@
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
-const Map<String, int> TimeUnit = {
-  'minute': 1,
+class TimeUnit {
+  final String name;
+  final int value;
+  const TimeUnit(this.name, this.value);
+}
+
+class TimeBefore {
+  int time;
+  Map<String, int> unit;
+  TimeBefore({ this.time, unit }) {
+    if (TimeUnits.keys.contains(unit)) this.unit = unit;
+    else throw Exception('$unit is not a supported unit of time');
+  }
+}
+
+const Map<String, TimeUnit> TimeUnits = {
+  'minute': new TimeUnit('minute', 1),
   'hour': 60,
   'day': 24 * 60,
 };
