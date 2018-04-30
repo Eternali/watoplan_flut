@@ -1,15 +1,22 @@
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
+const Map<String, int> TimeUnit = {
+  'minute': 1,
+  'hour': 60,
+  'day': 24 * 60,
+};
+
 class NotiType {
   final String name;
-  NotiType(this.name);
+  final Function notify;
+  NotiType(this.name, this.notify);
 }
 
 Map<String, NotiType> NotiTypes = {
-  'PUSH': new NotiType('PUSH'),
-  'EMAIL': new NotiType('EMAIL'),
-  'SMS': new NotiType('SMS'),
+  'PUSH': new NotiType('PUSH', () {  }),
+  'EMAIL': new NotiType('EMAIL', () {  }),
+  'SMS': new NotiType('SMS', () {  }),
 };
 
 typedef DateTime NextTimeGenerator(DateTime last);

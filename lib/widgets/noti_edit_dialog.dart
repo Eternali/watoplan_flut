@@ -27,17 +27,17 @@ Widget checkedItem({ String name, bool active, VoidCallback onTap, ThemeData the
 
 class NotiEditDialog extends StatefulWidget {
 
-  final Noti noti;
-  final Activity activity;
-  int timeUnit = 0;
-  NotiType type = NotiTypes['PUSH'];
+  NotiType type;
+  int timeBefore;
+  int _timeUnit;
+  int get timeUnit => _timeUnit;
+  set timeUnit(int setTo) {
+    if (TimeUnit.values.contains(setTo)) _timeUnit = setTo;
+    else throw Exception('$timeUnit is not a valid value of TimeUnit');
+  }
 
-  NotiEditDialog({ noti, this.activity, int when })
-     : noti = noti ?? new Noti(
-         title: activity.data['name'],
-         msg: activity.data['desc'] ?? 'Your time\'s up!',
-         when: DateTime.fromMillisecondsSinceEpoch(when),
-       );
+  NotiEditDialog({ this.type, this.timeBefore, timeUnit })
+     : _timeUnit = timeUnit;
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -46,8 +46,17 @@ class NotiEditDialog extends StatefulWidget {
 
 class NotiEditDialogState extends State<NotiEditDialog> {
 
+  TextEditingController _controller;
+
   bool timeActive(int desired) => widget.timeUnit == desired;
   bool typeActive(NotiType desired) => widget.type == desired;
+
+  @override
+  initState() {
+    super.initState();
+    _controller = new TextEditingController(text: '10')
+      ..addListener(() => widget.timeBefore = int.parse(_controller.value.text));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,27 +77,25 @@ class NotiEditDialogState extends State<NotiEditDialog> {
                 child: new TextField(
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    setState(() { });  // widget.activity = int.parse(value); });
-                  },
+                  controller: _controller,
                 ),
               ),
               checkedItem(
                 name: 'Minutes',
-                active: timeActive(0),
-                onTap: () { setState(() { widget.timeUnit = 0; }); },
+                active: timeActive(TimeUnit['minute']),
+                onTap: () { setState(() { widget.timeUnit = TimeUnit['minute']; }); },
                 theme: theme,
               ),
               checkedItem(
                 name: 'Hours',
-                active: timeActive(1),
-                onTap: () { setState(() { widget.timeUnit = 1; }); },
+                active: timeActive(TimeUnit['hour']),
+                onTap: () { setState(() { widget.timeUnit = TimeUnit['hour']; }); },
                 theme: theme,
               ),
               checkedItem(
                 name: 'Days',
-                active: timeActive(2),
-                onTap: () { setState(() { widget.timeUnit = 2; }); },
+                active: timeActive(TimeUnit['day']),
+                onTap: () { setState(() { widget.timeUnit = TimeUnit['day']; }); },
                 theme: theme,
               ),
               new Divider(),
@@ -131,7 +138,12 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               color: theme.accentColor,
             ),
           ),
-          onPressed: () { Navigator.pop(context); },
+          onPressed: () {
+            Navigator.pop(
+              context,
+              {'type': widget.type, 'timeUnit': widget.timeUnit, 'timeBefore': widget.timeBefore }
+            );
+          },
         )
       ],
     );
