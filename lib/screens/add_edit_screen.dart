@@ -15,14 +15,6 @@ import 'package:watoplan/widgets/noti_edit_dialog.dart';
 import 'package:watoplan/widgets/wato_slider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
-Noti notiFromDialog({ Map<String, dynamic> fromDialog, Activity activity }) => new Noti(
-  title: activity.data['name'],
-  msg: activity.data['desc'],
-  when: new DateTime.fromMillisecondsSinceEpoch(((activity.data[activity.data.containsKey('start') ? 'start' : 'end']
-    .millisecondsSinceEpoch / 1000 / fromDialog['timeUnit']).round() - fromDialog['timeBefore']) * fromDialog['timeUnit'] * 1000),
-  type: fromDialog['type'],
-);
-
 class AddEditScreen extends StatefulWidget {
 
   double prioritySlide = 0.0;
@@ -70,7 +62,7 @@ class AddEditScreenState extends State<AddEditScreen> {
         ],
       ),
       body: new Padding(
-        padding: new EdgeInsets.all(8.0),
+        padding: new EdgeInsets.symmetric(horizontal: 8.0),
         child: new Center(
           child: new ListView(
             children: [
@@ -81,6 +73,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                     maxLines: 1,
                     activity: tmpActivity,
                     field: 'name',
+                    label: 'name',
                   )
                 ) : null,
               tmpActivity.data.containsKey('desc')
@@ -89,7 +82,8 @@ class AddEditScreenState extends State<AddEditScreen> {
                   child: new ActivityDataInput(
                     maxLines: 3,
                     activity: tmpActivity,
-                    field: 'description',
+                    field: 'desc',
+                    label: 'description',
                   )
                 ) : null,
               tmpActivity.data.containsKey('priority')
@@ -160,43 +154,44 @@ class AddEditScreenState extends State<AddEditScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget> [
-                        new ListView(
-                          shrinkWrap: true,
-                          children: (tmpActivity.data['notis'] as List<Noti>).map(
-                              (noti) => new InkWell(
-                                onTap: () {
-                                  showDialog<Map<String, dynamic>>(
-                                    context: context,
-                                    child: new NotiEditDialog(
-                                      type: noti.type,
-                                      timeBefore: 10,
-                                      timeUnit: TimeUnit['minute'],
-                                    ),
-                                  ).then((Map<String, dynamic> n) {
-                                    if (n != null)
-                                      setState(() {  });
-                                  });
-                                },
-                                child: new EditNotification(
+                        tmpActivity.data['notis'].length > 0
+                          ? new Column(
+                              children: (tmpActivity.data['notis'] as List<Noti>).map(
+                                (noti) => new EditNotification(
                                   noti: noti,
                                   activity: tmpActivity,
-                                ),
-                              )
-                            ).toList(),
-                        ),
+                                  remove: () {
+                                    setState(() {
+                                      tmpActivity.data['notis'].remove(noti);
+                                    });
+                                  },
+                                )
+                              ).fold(
+                                [new Divider()],
+                                (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])
+                              ),
+                            )
+                          : null,
                         new InkWell(
                           onTap: () {
-                            showDialog<Map<String, dynamic>>(
+                            showDialog<Noti>(
                               context: context,
                               child: new NotiEditDialog(
-                                type: NotiTypes['PUSH'],
-                                timeBefore: 10,
-                                timeUnit: TimeUnit['minute'],
+                                noti: new Noti(
+                                  title: tmpActivity.data['name'],
+                                  msg: tmpActivity.data['desc'],
+                                  when: new DateTime(2018),
+                                  type: NotiTypes['PUSH'],
+                                ),
+                                timeBefore: new TimeBefore(
+                                  time: 10,
+                                  unit: TimeUnits[0],
+                                ),
                               ),
-                            ).then((Map<String, dynamic> n) {
+                            ).then((Noti n) {
                               if (n != null)
                                 setState(() {
-                                  tmpActivity.data['notis'].add(notiFromDialog(fromDialog: n, activity: tmpActivity));
+                                  tmpActivity.data['notis'].add(n);
                                 });
                             });
                           },
@@ -217,10 +212,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                             ],
                           ),
                         )
-                      ].fold(
-                        [new Divider()],
-                        (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])
-                        ),
+                      ].where((it) => it != null).toList(),
                     ),
                   ),
                 ) : null,

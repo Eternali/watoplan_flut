@@ -1,26 +1,26 @@
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
-class TimeUnit {
-  final String name;
-  final int value;
-  const TimeUnit(this.name, this.value);
-}
-
 class TimeBefore {
   int time;
-  Map<String, int> unit;
-  TimeBefore({ this.time, unit }) {
-    if (TimeUnits.keys.contains(unit)) this.unit = unit;
-    else throw Exception('$unit is not a supported unit of time');
+  MapEntry<String, int> unit;
+  int get realTime => time * unit.value;
+  TimeBefore({ this.time, this.unit }) {
+    if (!TimeUnits.contains(unit))
+      throw Exception('${unit.key} is not a supported unit of time');
+  }
+
+  factory TimeBefore.getProper(int before, int after) {
+    return new TimeBefore(time: 10, unit: TimeUnits[0]);
   }
 }
 
-const Map<String, TimeUnit> TimeUnits = {
-  'minute': new TimeUnit('minute', 1),
-  'hour': 60,
-  'day': 24 * 60,
-};
+const List<MapEntry<String, int>> TimeUnits = [
+  const MapEntry('minute', 1),
+  const MapEntry('hour', 60),
+  const MapEntry('day', 24 * 60),
+];
+
 
 class NotiType {
   final String name;

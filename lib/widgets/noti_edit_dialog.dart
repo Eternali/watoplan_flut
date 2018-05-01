@@ -27,10 +27,13 @@ Widget checkedItem({ String name, bool active, VoidCallback onTap, ThemeData the
 
 class NotiEditDialog extends StatefulWidget {
 
-  NotiType type;
+  Noti noti;
   TimeBefore timeBefore;
+  NotiType type;
 
-  NotiEditDialog({ this.type, this.timeBefore });
+  NotiEditDialog({ this.noti, this.timeBefore }) {
+    type = noti.type;
+  }
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -41,7 +44,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
 
   TextEditingController _controller;
 
-  bool timeActive(int desired) => widget.timeBefore == desired;
+  bool timeActive(MapEntry<String, int> desired) => widget.timeBefore.unit == desired;
   bool typeActive(NotiType desired) => widget.type == desired;
 
   @override
@@ -75,20 +78,20 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               ),
               checkedItem(
                 name: 'Minutes',
-                active: timeActive(TimeUnits[widget.timeBefore.unit]),
-                onTap: () { setState(() { widget.timeBefore.unit = TimeUnit['minute']; }); },
+                active: timeActive(TimeUnits[0]),
+                onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[0]; }); },
                 theme: theme,
               ),
               checkedItem(
                 name: 'Hours',
-                active: timeActive(TimeUnit['hour']),
-                onTap: () { setState(() { widget.timeUnit = TimeUnit['hour']; }); },
+                active: timeActive(TimeUnits[1]),
+                onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[1]; }); },
                 theme: theme,
               ),
               checkedItem(
                 name: 'Days',
-                active: timeActive(TimeUnit['day']),
-                onTap: () { setState(() { widget.timeUnit = TimeUnit['day']; }); },
+                active: timeActive(TimeUnits[2]),
+                onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[2]; }); },
                 theme: theme,
               ),
               new Divider(),
@@ -134,7 +137,14 @@ class NotiEditDialogState extends State<NotiEditDialog> {
           onPressed: () {
             Navigator.pop(
               context,
-              {'type': widget.type, 'timeUnit': widget.timeUnit, 'timeBefore': widget.timeBefore }
+              new Noti(
+                id: widget.noti.id,
+                title: widget.noti.title,
+                msg: widget.noti.title,
+                when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.realTime),
+                type: widget.type,
+                generateNext: widget.noti.generateNext,
+              ),
             );
           },
         )

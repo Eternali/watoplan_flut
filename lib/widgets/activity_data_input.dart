@@ -13,8 +13,9 @@ class ActivityDataInput extends StatefulWidget {
   final int maxLines;
   final Activity activity;
   final String field;
+  final String label;
 
-  ActivityDataInput({ this.maxLines, this.activity, this.field });
+  ActivityDataInput({ this.maxLines, this.activity, this.field, this.label });
 
   @override
   State<ActivityDataInput> createState() => new ActivityDataInputState();
@@ -53,7 +54,7 @@ class ActivityDataInputState extends State<ActivityDataInput> {
           fontSize: 20.0,
         ),
         decoration: new InputDecoration(
-          labelText: widget.field,
+          labelText: widget.label,
         ),
         controller: _controller,
       ),
