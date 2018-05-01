@@ -41,17 +41,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                 value: isDark,
                 activeColor: Theme.of(context).accentColor,
                 onChanged: (newVal) {
-                  newVal
-                    ? Scaffold.of(context).showSnackBar(
-                      new SnackBar(
-                        content: new Text('Dark Theme'),
-                      )
-                    )
-                    : Scaffold.of(context).showSnackBar(
-                      new SnackBar(
-                        content: new Text('Light Theme'),
-                      )
-                    );
+                  if (newVal) {
+                    if (Theme.of(context) != DarkTheme) Intents.setTheme(Provider.of(context).value, DarkTheme)
+                  } else {
+                    if (Theme.of(context) != LightTheme) Intents.setTheme(Provider.of(context).value, LightTheme);
+                  }
                   setState(() { isDark = newVal; });
                 },
               );
