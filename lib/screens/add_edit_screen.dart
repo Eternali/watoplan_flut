@@ -10,8 +10,7 @@ import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_data_input.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
-import 'package:watoplan/widgets/edit_notification.dart';
-import 'package:watoplan/widgets/noti_edit_dialog.dart';
+import 'package:watoplan/widgets/noti_list.dart';
 import 'package:watoplan/widgets/wato_slider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
@@ -32,7 +31,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     AppState stateVal = Provider.of(context).value;
     Activity tmpActivity = stateVal.focused >= 0
       ? new Activity.from(stateVal.activities[stateVal.focused])
-      : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {});
+      : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
     Color activityColor = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId).color;
     
     return new Scaffold(
@@ -150,70 +149,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                   padding: new EdgeInsets.symmetric(vertical: 8.0),
                   child: new Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: new Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget> [
-                        tmpActivity.data['notis'].length > 0
-                          ? new Column(
-                              children: (tmpActivity.data['notis'] as List<Noti>).map(
-                                (noti) => new EditNotification(
-                                  noti: noti,
-                                  activity: tmpActivity,
-                                  remove: () {
-                                    setState(() {
-                                      tmpActivity.data['notis'].remove(noti);
-                                    });
-                                  },
-                                )
-                              ).fold(
-                                [new Divider()],
-                                (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])
-                              ),
-                            )
-                          : null,
-                        new InkWell(
-                          onTap: () {
-                            showDialog<Noti>(
-                              context: context,
-                              child: new NotiEditDialog(
-                                noti: new Noti(
-                                  title: tmpActivity.data['name'],
-                                  msg: tmpActivity.data['desc'],
-                                  when: new DateTime(2018),
-                                  type: NotiTypes['PUSH'],
-                                ),
-                                timeBefore: new TimeBefore(
-                                  time: 10,
-                                  unit: TimeUnits[0],
-                                ),
-                              ),
-                            ).then((Noti n) {
-                              if (n != null)
-                                setState(() {
-                                  tmpActivity.data['notis'].add(n);
-                                });
-                            });
-                          },
-                          child: new Row(
-                            children: <Widget>[
-                              new Expanded(
-                                child: new Text(
-                                  WatoplanLocalizations.of(context).addNotification,
-                                  style: new TextStyle(
-                                    fontSize: 16.0,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                ),
-                              ),
-                              new IconButton(
-                                icon: new Icon(Icons.add),
-                              ),
-                            ],
-                          ),
-                        )
-                      ].where((it) => it != null).toList(),
-                    ),
+                    child: new NotiList(tmpActivity),
                   ),
                 ) : null,
               // tmpActivity.data.containsKey('tags')
