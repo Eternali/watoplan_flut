@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:async';
 
-import 'package:watoplan/intents.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/defaults.dart';
-import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/routes.dart';
@@ -26,12 +25,15 @@ class Watoplan extends StatefulWidget {
   // NOTE: we must initialize the state with empty data because
   // Flutter will not wait for the constructor to finish its asyncronous
   // operations before building the widget tree.
-  AppStateObservable watoplanState = new AppStateObservable(
-    new AppState(
-      activityTypes: [],
-      activities: [],
-      focused: 0,
-      theme: DarkTheme,
+
+  AppStateObservable watoplanState = SharedPreferences.getInstance().then(
+    (prefs) => new AppStateObservable(
+      new AppState(
+        activityTypes: [],
+        activities: [],
+        focused: 0,
+        theme: prefs.getString('theme'),
+      )
     )
   );
 

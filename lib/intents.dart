@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
@@ -64,7 +65,8 @@ class Intents {
     appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
   }
 
-  static void setTheme(AppStateObservable appState, ThemeData theme) {
+  static void setTheme(AppStateObservable appState, ThemeData theme) async {
+    
     appState.value = Reducers.setTheme(appState.value, theme);
   }
 

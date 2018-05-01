@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/person.dart';
@@ -17,7 +18,7 @@ class AppState {
 
   final ThemeData theme;
 
-  AppState({ this.activities, this.activityTypes, this.focused, this.theme });
+  AppState({ this.activities, this.activityTypes, this.focused, theme }) : theme = (theme is ThemeData) ? theme : themes[theme];
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
     return new AppState(

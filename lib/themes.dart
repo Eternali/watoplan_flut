@@ -30,6 +30,10 @@ class AppThemeState extends State<AppTheme> {
 
 }
 
+final Map<String, ThemeData> themes = {
+  'dark': DarkTheme,
+  'light': LightTheme,
+};
 
 final ThemeData DarkTheme = new ThemeData(
   brightness: Brightness.dark,
