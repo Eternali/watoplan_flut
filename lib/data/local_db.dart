@@ -37,7 +37,15 @@ class LocalDb {
     _self = null;
   }
 
-  Future<List<List<dynamic>>> load() async {
+  Stream<ActivityType> loadTypes() async* {
+    _db.openRead().
+  }
+
+  Stream<Activity> loadActivities(List<ActivityType> types) async* {
+
+  }
+
+  Future<List<List<dynamic>>> loadAtOnce() async {
 
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
@@ -92,7 +100,7 @@ class LocalDb {
   }
 
   Future<void> update(dynamic item) async {
-    var data = await load();
+    var data = await loadAtOnce();
     if (item is ActivityType) {
       data[0][data[0].map((type) => type.id).toList().indexOf(item.id)] = item;
     } else if (item is Activity) {
@@ -102,8 +110,7 @@ class LocalDb {
   }
 
   Future<void> add(dynamic item) async {
-    print('\n\nBEING CALLED\n\n');
-    var data = await load();
+    var data = await loadAtOnce();
     if (item is ActivityType) {
       data[0].add(item);
     } else if (item is Activity) {
@@ -113,7 +120,7 @@ class LocalDb {
   }
 
   Future<void> remove(dynamic item) async {
-    var data = await load();   
+    var data = await loadAtOnce();   
     if (item is ActivityType) {
       data[0].removeAt(
         data[0].map((type) => type.id).toList().indexOf(item.id)
