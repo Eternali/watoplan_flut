@@ -38,7 +38,7 @@ class LocalDb {
   }
 
   Stream<ActivityType> loadTypes() async* {
-    _db.openRead().
+    // _db.openRead();
   }
 
   Stream<Activity> loadActivities(List<ActivityType> types) async* {
