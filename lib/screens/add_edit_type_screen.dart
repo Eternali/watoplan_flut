@@ -40,11 +40,9 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            new Center(
-              child: new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 20.0),
-                child: new ColorPickButton(activityType: tmpType),
-              ),
+            new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 20.0),
+              child: new ColorPickButton(activityType: tmpType),
             ),
           ],
         )

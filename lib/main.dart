@@ -54,7 +54,6 @@ class WatoplanState extends State<Watoplan> {
       state: widget.watoplanState,
       child: new MaterialApp(
         title: 'watoplan',
-        // theme: widget.watoplanState.value.theme,
         localizationsDelegates: [
           new WatoplanLocalizationsDelegate()
         ],
@@ -66,7 +65,7 @@ class WatoplanState extends State<Watoplan> {
           Routes.about: (context) => new AboutScreen(),
         },
         builder: (BuildContext context, Widget child) => new Theme(
-          data: Provider.of(context).value.theme,
+          data: Provider.of(context).value.theme ?? themes['light'],
           child: child,
         ),
       ),
