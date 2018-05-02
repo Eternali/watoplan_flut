@@ -27,7 +27,7 @@ class ActivityTypeCard extends StatelessWidget {
             ),
           ),
           subtitle: new Text(
-            data.params.toString(),
+            data.params.keys.join(', '),
             style: new TextStyle(
               fontSize: 12.0
             ),

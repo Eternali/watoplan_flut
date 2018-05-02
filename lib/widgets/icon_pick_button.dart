@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/defaults.dart';
 import 'package:watoplan/widgets/icon_picker.dart';
 
 class IconPickButton extends StatefulWidget {
 
   final String label;
-  IconData curIcon;
+  final IconData curIcon;
   final Function changeIcon;
 
   IconPickButton({ this.label, this.curIcon, this.changeIcon });
 
   @override
-  State<IconPickButton> createState() => new IconPickButtonState();
+  State<IconPickButton> createState() => new IconPickButtonState(curIcon: curIcon);
 
 }
 
 class IconPickButtonState extends State<IconPickButton> {
+
+  IconData curIcon;
+
+  IconPickButtonState({ this.curIcon });
 
   @override
   Widget build(BuildContext context) {
@@ -26,19 +31,18 @@ class IconPickButtonState extends State<IconPickButton> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          new Icon(widget.curIcon),
+          new Icon(curIcon),
           new Icon(Icons.arrow_drop_down),
         ],
       ),
       onPressed: () {
-        IconPicker picker = new IconPicker();
+        IconPicker picker = new IconPicker(icons: PreloadedIcons,);
         showDialog<IconData>(context: context, child: picker)
           .then((IconData i) {
-            if (i != null)
-              setState(() {
-                widget.curIcon = i;
-                widget.changeIcon(i);
-              });
+            if (i != null) {
+              widget.changeIcon(i);
+              setState(() { curIcon = i; });
+            }
           });
       },
     );

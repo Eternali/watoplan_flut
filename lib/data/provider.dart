@@ -34,6 +34,7 @@ class _ProviderState extends State<Provider> {
     SharedPreferences.getInstance()
       .then((SharedPreferences prefs) => Intents.setTheme(widget.state, prefs.getString('theme')),
             onError: (Exception e) => Intents.setTheme(widget.state, 'light'))
+      // .then((_) => sleep(new Duration(milliseconds: 1000)))  // needs dart:io
       .then((_) => Intents.loadAll(widget.state))
       .then((data) { setState(() {  }); });
   }

@@ -49,7 +49,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
         ],
       ),
       body: new Padding(
-        padding: new EdgeInsets.symmetric(horizontal: 8.0),
+        padding: new EdgeInsets.symmetric(horizontal: 8.0)  ,
         child: new Center(
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -68,25 +68,17 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
                 child: new IconPickButton(
                   label: 'Choose Icon',
                   curIcon: tmpType.icon,
-                  changeIcon: (IconData changed) { setState(() { tmpType.icon = changed; }); },
+                  changeIcon: (IconData changed) { tmpType.icon = changed; },
                 ),
               ),
               new Padding(
                 padding: new EdgeInsets.symmetric(vertical: 8.0),
                 child: new ColorPickButton(activityType: tmpType),
               ),
+              new 
             ],
           ),
         ),
-          // child: new Column(
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   children: <Widget>[
-          //     new Padding(
-          //       padding: new EdgeInsets.symmetric(vertical: 20.0),
-          //       child: new ColorPickButton(activityType: tmpType),
-          //     ),
-          //   ],
-          // ),
       ),
     );
   }
