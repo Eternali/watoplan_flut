@@ -59,106 +59,103 @@ class AddEditScreenState extends State<AddEditScreen> {
           )
         ],
       ),
-      body: new Padding(
-        padding: new EdgeInsets.symmetric(horizontal: 8.0),
-        child: new Center(
-          child: new ListView(
-            children: [
-              tmpActivity.data.containsKey('name')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new EditText(
-                    maxLines: 1,
-                    label: 'Name',
-                    initVal: tmpActivity.data['name'],
-                    editField: (String changed) { tmpActivity.data['name'] = changed; },
-                  )
-                ) : null,
-              tmpActivity.data.containsKey('desc')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new EditText(
-                    maxLines: 3,
-                    label: 'Description',
-                    initVal: tmpActivity.data['desc'],
-                    editField: (String changed) { tmpActivity.data['desc'] = changed; },
-                  )
-                ) : null,
-              tmpActivity.data.containsKey('priority')
-                ? new WatoSlider(
-                  value: tmpActivity.data['priority'].toDouble(),
-                  max: 10.0,
-                  divisions: 10,
-                  color: activityColor,
-                  labelPrefix: WatoplanLocalizations.of(context).priority,
-                  onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
-                )
-                : null,
-              tmpActivity.data.containsKey('progress')
-                ? new WatoSlider(
-                  value: tmpActivity.data['progress'].toDouble(),
-                  max: 100.0,
-                  divisions: 100,
-                  color: activityColor,
-                  labelPrefix: WatoplanLocalizations.of(context).progress,
-                  onChanged: (value) { tmpActivity.data['progress'] = value; },
-                )
-                : null,
-              tmpActivity.data.containsKey('start')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new DateTimePicker(
-                    label: WatoplanLocalizations.of(context).start,
-                    color: Theme.of(context).disabledColor,
-                    when: tmpActivity.data['start'],
-                    setDate: (date) {
-                      tmpActivity.data['start'] = DateTimeUtils.fromDate(tmpActivity.data['start'], date);
-                      return tmpActivity.data['start'];                    
-                    },
-                    setTime: (time) {
-                      tmpActivity.data['start'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['start'], time);
-                      return tmpActivity.data['start'];
-                    },
-                  )
-                ) : null,
-              tmpActivity.data.containsKey('end')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new DateTimePicker(
-                    label: WatoplanLocalizations.of(context).end,
-                    color: Theme.of(context).disabledColor,
-                    when: tmpActivity.data['end'],
-                    setDate: (date) {
-                      tmpActivity.data['end'] = DateTimeUtils.fromDate(tmpActivity.data['end'], date);
-                      return tmpActivity.data['end'];                    
-                    },
-                    setTime: (time) {
-                        tmpActivity.data['end'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['end'], time);
-                      return tmpActivity.data['end'];
-                    },
-                  )
-                ) : null,
-              tmpActivity.data.containsKey('location')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new Container(),                
-                ) : null,
-              tmpActivity.data.containsKey('notis')
-                ? new Padding(
-                  padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: new NotiList(tmpActivity),
-                  ),
-                ) : null,
-              // tmpActivity.data.containsKey('tags')
-              //   ? new Padding(
-              //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-              //     child: new TagListItem(0, tmpActivity),
-              //   ) : null,
-            ].where((it) => it != null).toList(),
-          ),
-        ),
+      body: new ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        shrinkWrap: true,
+        children: [
+          tmpActivity.data.containsKey('name')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new EditText(
+                maxLines: 1,
+                label: 'Name',
+                initVal: tmpActivity.data['name'],
+                editField: (String changed) { tmpActivity.data['name'] = changed; },
+              )
+            ) : null,
+          tmpActivity.data.containsKey('desc')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new EditText(
+                maxLines: 3,
+                label: 'Description',
+                initVal: tmpActivity.data['desc'],
+                editField: (String changed) { tmpActivity.data['desc'] = changed; },
+              )
+            ) : null,
+          tmpActivity.data.containsKey('priority')
+            ? new WatoSlider(
+              value: tmpActivity.data['priority'].toDouble(),
+              max: 10.0,
+              divisions: 10,
+              color: activityColor,
+              labelPrefix: WatoplanLocalizations.of(context).priority,
+              onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
+            )
+            : null,
+          tmpActivity.data.containsKey('progress')
+            ? new WatoSlider(
+              value: tmpActivity.data['progress'].toDouble(),
+              max: 100.0,
+              divisions: 100,
+              color: activityColor,
+              labelPrefix: WatoplanLocalizations.of(context).progress,
+              onChanged: (value) { tmpActivity.data['progress'] = value; },
+            )
+            : null,
+          tmpActivity.data.containsKey('start')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new DateTimePicker(
+                label: WatoplanLocalizations.of(context).start,
+                color: Theme.of(context).disabledColor,
+                when: tmpActivity.data['start'],
+                setDate: (date) {
+                  tmpActivity.data['start'] = DateTimeUtils.fromDate(tmpActivity.data['start'], date);
+                  return tmpActivity.data['start'];                    
+                },
+                setTime: (time) {
+                  tmpActivity.data['start'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['start'], time);
+                  return tmpActivity.data['start'];
+                },
+              )
+            ) : null,
+          tmpActivity.data.containsKey('end')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new DateTimePicker(
+                label: WatoplanLocalizations.of(context).end,
+                color: Theme.of(context).disabledColor,
+                when: tmpActivity.data['end'],
+                setDate: (date) {
+                  tmpActivity.data['end'] = DateTimeUtils.fromDate(tmpActivity.data['end'], date);
+                  return tmpActivity.data['end'];                    
+                },
+                setTime: (time) {
+                    tmpActivity.data['end'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['end'], time);
+                  return tmpActivity.data['end'];
+                },
+              )
+            ) : null,
+          tmpActivity.data.containsKey('location')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new Container(),                
+            ) : null,
+          tmpActivity.data.containsKey('notis')
+            ? new Padding(
+              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              child: new Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: new NotiList(tmpActivity),
+              ),
+            ) : null,
+          // tmpActivity.data.containsKey('tags')
+          //   ? new Padding(
+          //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+          //     child: new TagListItem(0, tmpActivity),
+          //   ) : null,
+        ].where((it) => it != null).toList(),
       ),
     );
   }

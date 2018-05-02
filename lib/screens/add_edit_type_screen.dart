@@ -4,6 +4,7 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/checkbox_list.dart';
 import 'package:watoplan/widgets/color_pick_button.dart';
 import 'package:watoplan/widgets/edit_text.dart';
 import 'package:watoplan/widgets/icon_pick_button.dart';
@@ -48,37 +49,73 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           )
         ],
       ),
-      body: new Padding(
-        padding: new EdgeInsets.symmetric(horizontal: 8.0)  ,
-        child: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: new EditText(
-                  maxLines: 1,
-                  label: 'Name',
-                  initVal: tmpType.name,
-                  editField: (String changed) { tmpType.name = changed; },
-                ),
-              ),
-              new Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: new IconPickButton(
-                  label: 'Choose Icon',
-                  curIcon: tmpType.icon,
-                  changeIcon: (IconData changed) { tmpType.icon = changed; },
-                ),
-              ),
-              new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 8.0),
-                child: new ColorPickButton(activityType: tmpType),
-              ),
-              new 
-            ],
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        shrinkWrap: true,
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: new EditText(
+              maxLines: 1,
+              label: 'Name',
+              initVal: tmpType.name,
+              editField: (String changed) { tmpType.name = changed; },
+            ),
           ),
-        ),
+          new Container(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            alignment: Alignment.center,
+            child: new IconPickButton(
+              label: 'Choose Icon',
+              curIcon: tmpType.icon,
+              changeIcon: (IconData changed) { tmpType.icon = changed; },
+            ),
+          ),
+          new Container(
+            padding: new EdgeInsets.symmetric(vertical: 10.0),
+            alignment: Alignment.center,
+            child: new ColorPickButton(activityType: tmpType),
+          ),
+          new Container(
+            padding: const EdgeInsets.only(top: 16.0),
+            alignment: Alignment.center,
+            child: new Text(
+              '${tmpType.name.toUpperCase()} PARAMETERS',
+              style: new TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+          ),
+          new Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: new CheckboxList(
+              entries: validParams.keys.toList(),
+              color: tmpType.color,
+              isActive: (String match) => tmpType.params.keys.contains(match),
+              onChange: (bool selected, String param) {
+                if (selected) tmpType.params[param] = validParams[param];
+                else tmpType.params.remove(param);
+                print(tmpType.params.keys.toList());
+              },
+            ),
+            // child: new Column(
+            //   children: validParams.keys.map(
+            //     (param) => new CheckboxListTile(
+            //       value: tmpType.params.keys.contains(param),
+            //       title: new Text(param),
+            //       activeColor: tmpType.color,
+            //       onChanged: (bool selected) {
+            //         setState(() {
+            //           if (selected) tmpType.params[param] = validParams[param];
+            //           else tmpType.params.remove(param);
+            //         });
+            //       },
+            //     )
+            //   ).toList(),
+            // ),
+          )
+        ],
       ),
     );
   }
