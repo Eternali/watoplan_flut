@@ -3,6 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/models.dart';
 
+const PreloadedIcons = <IconData>[
+  Icons.album,
+  Icons.time_to_leave,
+  Icons.settings_ethernet,
+  Icons.settings,
+  Icons.people_outline,
+  Icons.note,
+  Icons.present_to_all,
+];
+
 final List<ActivityType> defaultActivityTypes = [
   new ActivityType(
     name: 'activity',
