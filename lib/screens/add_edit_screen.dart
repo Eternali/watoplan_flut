@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/widgets/activity_data_input.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
+import 'package:watoplan/widgets/edit_text.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
 import 'package:watoplan/widgets/noti_list.dart';
 import 'package:watoplan/widgets/wato_slider.dart';
@@ -68,21 +67,21 @@ class AddEditScreenState extends State<AddEditScreen> {
               tmpActivity.data.containsKey('name')
                 ? new Padding(
                   padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new ActivityDataInput(
+                  child: new EditText(
                     maxLines: 1,
-                    activity: tmpActivity,
-                    field: 'name',
-                    label: 'name',
+                    label: 'Name',
+                    initVal: tmpActivity.data['name'],
+                    editField: (String changed) { tmpActivity.data['name'] = changed; },
                   )
                 ) : null,
               tmpActivity.data.containsKey('desc')
                 ? new Padding(
                   padding: new EdgeInsets.symmetric(vertical: 8.0),
-                  child: new ActivityDataInput(
+                  child: new EditText(
                     maxLines: 3,
-                    activity: tmpActivity,
-                    field: 'desc',
-                    label: 'description',
+                    label: 'Description',
+                    initVal: tmpActivity.data['desc'],
+                    editField: (String changed) { tmpActivity.data['desc'] = changed; },
                   )
                 ) : null,
               tmpActivity.data.containsKey('priority')

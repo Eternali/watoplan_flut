@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/localizations.dart';
+
 class ColorPicker extends StatefulWidget {
 
   double r, g, b;
@@ -75,7 +77,15 @@ class ColorPickerState extends State<ColorPicker> {
       actions: <Widget>[
         new FlatButton(
           child: new Text(
-            'Select'
+            WatoplanLocalizations.of(context).cancel,
+          ),
+          onPressed: () {
+            Navigator.pop(context, null);
+          },
+        ),
+        new FlatButton(
+          child: new Text(
+            WatoplanLocalizations.of(context).select,
           ),
           onPressed: () {
             Color c = new Color.fromARGB(255, r.round(), g.round(), b.round());
