@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/defaults.dart';
+import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/reducers.dart';
@@ -65,9 +66,10 @@ class Intents {
     appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
   }
 
-  static void setTheme(AppStateObservable appState, ThemeData theme) async {
-    
-    appState.value = Reducers.setTheme(appState.value, theme);
+  static void setTheme(AppStateObservable appState, String themeName) async {
+    await SharedPreferences.getInstance()
+      .then((SharedPreferences prefs) => prefs.setString('theme', themeName));
+    appState.value = Reducers.setTheme(appState.value, themes[themeName]);
   }
 
 }

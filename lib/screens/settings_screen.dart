@@ -10,17 +10,23 @@ import 'package:watoplan/widgets/activity_type_card.dart';
 
 class SettingsScreen extends StatefulWidget {
 
+  bool isDark = false;
+
   @override
   State<SettingsScreen> createState() => new SettingsScreenState();
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
 
-  bool isDark = true;
-
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
+    themes.forEach((name, theme) {
+      if (stateVal.theme == theme) {
+        widget.isDark = name == 'dark';
+        return;
+      }
+    });
 
     return new Scaffold(
       appBar: new AppBar(
@@ -38,15 +44,15 @@ class SettingsScreenState extends State<SettingsScreen> {
               return new SwitchListTile(
                 title: new Text('Join the dark side?'),
                 selected: true,
-                value: isDark,
+                value: widget.isDark,
                 activeColor: Theme.of(context).accentColor,
                 onChanged: (newVal) {
                   if (newVal) {
-                    if (Theme.of(context) != DarkTheme) Intents.setTheme(Provider.of(context).value, DarkTheme)
+                    if (Theme.of(context) != themes['dark']) Intents.setTheme(Provider.of(context), 'dark');
                   } else {
-                    if (Theme.of(context) != LightTheme) Intents.setTheme(Provider.of(context).value, LightTheme);
+                    if (Theme.of(context) != themes['light']) Intents.setTheme(Provider.of(context), 'light');
                   }
-                  setState(() { isDark = newVal; });
+                  setState(() { widget.isDark = newVal; });
                 },
               );
             }

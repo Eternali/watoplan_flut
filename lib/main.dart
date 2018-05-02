@@ -26,14 +26,12 @@ class Watoplan extends StatefulWidget {
   // Flutter will not wait for the constructor to finish its asyncronous
   // operations before building the widget tree.
 
-  AppStateObservable watoplanState = SharedPreferences.getInstance().then(
-    (prefs) => new AppStateObservable(
-      new AppState(
-        activityTypes: [],
-        activities: [],
-        focused: 0,
-        theme: prefs.getString('theme'),
-      )
+  AppStateObservable watoplanState = new AppStateObservable(
+    new AppState(
+      activityTypes: [],
+      activities: [],
+      focused: 0,
+      theme: themes['light'],
     )
   );
 
@@ -56,7 +54,7 @@ class WatoplanState extends State<Watoplan> {
       state: widget.watoplanState,
       child: new MaterialApp(
         title: 'watoplan',
-        theme: widget.watoplanState.value.theme,
+        // theme: widget.watoplanState.value.theme,
         localizationsDelegates: [
           new WatoplanLocalizationsDelegate()
         ],
@@ -66,7 +64,11 @@ class WatoplanState extends State<Watoplan> {
           Routes.addEditActivityType: (context) => new AddEditTypeScreen(),
           Routes.settings: (context) => new SettingsScreen(),
           Routes.about: (context) => new AboutScreen(),
-        }
+        },
+        builder: (BuildContext context, Widget child) => new Theme(
+          data: Provider.of(context).value.theme,
+          child: child,
+        ),
       ),
     );
   }

@@ -4,7 +4,7 @@ ___MUST HAVES___ __FOR BETA LAUNCH__
 | implement data permanence (nosql database)
 X get activity type modifications to be reflected in their activities immediately
 - implement notifications and other alerts (NotiType has name and method for trigger notification)
-- get theming to work (and shared preferences)
+X get theming to work (and shared preferences)
 - finish activity editing screen
 - finish activity type editing screen
 - implement about/help screen(s)
