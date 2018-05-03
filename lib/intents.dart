@@ -4,16 +4,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
+import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/reducers.dart';
+import 'package:watoplan/utils/activity_sorters.dart';
 
 class Intents {
 
   static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      // .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })  // for initial dataset population / reset
+      .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })  // for initial dataset population / reset
       .then((db) => db.loadAtOnce())
       // .then((dataStream) async {
       //   await for (var item in dataStream) {
@@ -75,8 +77,14 @@ class Intents {
 
   static void setTheme(AppStateObservable appState, String themeName) async {
     await SharedPreferences.getInstance()
-      .then((SharedPreferences prefs) => prefs.setString('theme', themeName));
+      .then((prefs) => prefs.setString('theme', themeName));
     appState.value = Reducers.setTheme(appState.value, themes[themeName]);
+  }
+
+  static void sortActivities(AppStateObservable appState, String sorterName) async {
+    await SharedPreferences.getInstance()
+      .then((prefs) => prefs.setString('sorter', sorterName));
+    appState.value = Reducers.replaceActivities(appState.value, validSorts[sorterName](appState.value.activities));
   }
 
 }

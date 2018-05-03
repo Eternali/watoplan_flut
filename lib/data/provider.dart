@@ -31,12 +31,21 @@ class _ProviderState extends State<Provider> {
   initState() {
     super.initState();
     widget.state.addListener(didStateChange);
+
     SharedPreferences.getInstance()
-      .then((SharedPreferences prefs) => Intents.setTheme(widget.state, prefs.getString('theme')),
-            onError: (Exception e) => Intents.setTheme(widget.state, 'light'))
-      // .then((_) => sleep(new Duration(milliseconds: 1000)))  // needs dart:io
-      .then((_) => Intents.loadAll(widget.state))
-      .then((data) { setState(() {  }); });
+      .then(
+        (prefs) { Intents.setTheme(widget.state, prefs.getString('theme')); },
+        onError: (Exception e) { Intents.setTheme(widget.state, 'light'); }
+      ).then(
+        (_) => SharedPreferences.getInstance()  // re-retrieve because if the previous errors, we won't get prefs
+      ).then(
+        (prefs) { Intents.sortActivities(widget.state, prefs.getString('sorter')); },
+        onError: (Exception e) { Intents.sortActivities(widget.state, 'start'); }
+      ).then(
+        (_) => Intents.loadAll(widget.state)
+      ).then(
+        (data) { setState(() {  }); }
+      );
   }
 
   @override

@@ -63,6 +63,14 @@ class Reducers {
     return newState;
   }
 
+  static AppState replaceActivities(AppState oldState, List<Activity> activities) {
+    AppState newState = new AppState.from(oldState)
+      ..activities.removeRange(0, oldState.activities.length)
+      ..activities.addAll(activities);
+
+    return newState;
+  }
+
   static AppState setFocused(AppState oldState, int indice, Activity activity, ActivityType activityType) {
     // we can't use AppState.from since focused is a single layer final field.
     return new AppState(

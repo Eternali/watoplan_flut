@@ -5,8 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/person.dart';
+import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
+final Map<String, ActivitySort> validSorts = {
+  'start': ActivitySorters.byStartTime,
+  'end': ActivitySorters.byEndTime,
+  'priority': ActivitySorters.byPriority,
+  'progress': ActivitySorters.byProgress,
+  'type': ActivitySorters.byType,
+};
 
 class AppState {
   final List<Activity> activities;
@@ -16,8 +24,9 @@ class AppState {
   final int focused;
 
   final ThemeData theme;
+  final String sorter;
 
-  AppState({ this.activities, this.activityTypes, this.focused, this.theme });
+  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
     return new AppState(
@@ -25,11 +34,12 @@ class AppState {
       activityTypes: prev.activityTypes,
       focused: prev.focused,
       theme: prev.theme,
+      sorter: prev.sorter,
     );
   }
 
   @override
-  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode;
+  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode + sorter.hashCode;
 
 }
 
