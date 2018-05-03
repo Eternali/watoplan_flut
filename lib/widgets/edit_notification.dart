@@ -45,7 +45,6 @@ class EditNotificationState extends State<EditNotification> {
         ).then((Noti n) {
           if (n != null)
             setState(() {
-              print(n.toJson());
               widget.noti = n;
             });
         });

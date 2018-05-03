@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
@@ -14,7 +13,7 @@ import 'package:watoplan/screens/add_edit_type_screen.dart';
 import 'package:watoplan/screens/settings_screen.dart';
 import 'package:watoplan/screens/about_screen.dart';
 
-void main() async {
+void main() {
   runApp(
     new Watoplan()
   );
