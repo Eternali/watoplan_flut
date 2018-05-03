@@ -1,7 +1,7 @@
 import 'package:watoplan/data/models.dart';
 
 List<T> quicksort<T>(List<T> arr, int left, int right, SortCmp<T> cmp) {
-  int idx = partition(arr, left, right, cmp);
+  int idx = partition<T>(arr, left, right, cmp);
   if (left < idx - 1) quicksort(arr, left, idx-1, cmp);
   if (right > idx) quicksort(arr, idx, right, cmp);
   // return arr;
