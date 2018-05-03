@@ -14,8 +14,8 @@ import 'package:watoplan/screens/add_edit_type_screen.dart';
 import 'package:watoplan/screens/settings_screen.dart';
 import 'package:watoplan/screens/about_screen.dart';
 
-void main() {
-  return runApp(
+void main() async {
+  runApp(
     new Watoplan()
   );
 }
