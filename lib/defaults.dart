@@ -87,6 +87,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'new name',
       'desc': 'new description more',
+      'start': new DateTime(2018),
     }
   ),
   new Activity(
@@ -94,6 +95,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2017),
       'notis': <Noti>[new Noti(title: '', msg: '', when: new DateTime(2018), type: NotiTypes['EMAIL'])],
     }
   ),
@@ -102,6 +104,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2010),
     }
   ),
   new Activity(
@@ -109,6 +112,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2015),
     }
   ),
   new Activity(
@@ -116,6 +120,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2009),
     }
   ),
   new Activity(
@@ -123,6 +128,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2011),
     }
   ),
   new Activity(
@@ -130,6 +136,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2008),
     }
   ),
   new Activity(
@@ -137,6 +144,7 @@ final List<Activity> defaultActivities = [
     data: {
       'name': 'TEST NAME',
       'desc': 'TEST DESCRIPTION',
+      'start': new DateTime(2007),
     }
   ),
 ];

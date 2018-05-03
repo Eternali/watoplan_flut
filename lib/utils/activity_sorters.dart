@@ -1,61 +1,40 @@
 import 'package:watoplan/data/models.dart';
 
-/* Simple, generic implementation of the QuickSort algorithm */
-
-int partition(List array, int begin, int end) {
-  int tmp;
-  int pivot = begin;
-  for (int i in List<int>.generate((end-begin).abs(), (i) => i + begin + 1)) {
-    if (array[i] <= array[begin]) {
-      pivot += 1;
-      tmp = array[i];
-      array[i] = array[pivot];
-      array[pivot] = tmp;
-    }
-  }
-  tmp = array[pivot];
-  array[pivot] = array[begin];
-  array[begin] = tmp;
-  return pivot;
-}
-
-List quicksort(List arr) {
+List<T> quicksort<T>(List<T> arr, SortCmp<T> cmp) {
   if (arr.length <= 1) return arr;
   
-  int pivot = arr[0];
-  List left = [];
-  List right = [];
+  T pivot = arr[0];
+  List<T> left = <T>[];
+  List<T> right = <T>[];
   
   for (int i = 0; i < arr.length; i++) {
-    arr[i] < pivot ? left.add(arr[i]) : right.add(arr[i]);
+    cmp(arr[i], pivot) ? left.add(arr[i]) : right.add(arr[i]);
   }
 
-  return quicksort(left) + [pivot] + quicksort(right);
-}
-
-List slowsexysort(List arr) {
-  if (arr.length <= 1) return arr;
-  return slowsexysort(
-    arr.where((a) => a < arr[0]).toList() +
-    arr.where((a) => a == arr[0]).toList() +
-    arr.where((a) => a > arr[0]).toList()
-  );
+  return new List<T>.from(quicksort(left, cmp))..add(pivot)..addAll(quicksort(right, cmp));
 }
 
 typedef List<Activity> ActivitySort(List<Activity> activities);
+typedef bool SortCmp<T>(T a, T b);
 
 class ActivitySorters {
 
   static List<Activity> byStartTime(List<Activity> activities) {
     List<Activity> newActivities = new List.from(activities);
 
-    return newActivities;
+    return quicksort(
+      newActivities,
+      (Activity a, Activity b) => a.data['start'].millisecondsSinceEpoch < b.data['start'].millisecondsSinceEpoch
+    );
   }
 
   static List<Activity> byEndTime(List<Activity> activities) {
     List<Activity> newActivities = new List.from(activities);
 
-    return newActivities;
+    return quicksort(
+      newActivities,
+      (Activity a, Activity b) => a.data['end'].millisecondsSinceEpoch < b.data['end'].millisecondsSinceEpoch
+    );
   }
 
   static List<Activity> byPriority(List<Activity> activities) {

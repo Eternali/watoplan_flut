@@ -34,17 +34,19 @@ class _ProviderState extends State<Provider> {
 
     SharedPreferences.getInstance()
       .then(
-        (prefs) { Intents.setTheme(widget.state, prefs.getString('theme')); },
+        (prefs) { Intents.setTheme(widget.state, prefs.getString('theme') ?? 'light'); },
         onError: (Exception e) { Intents.setTheme(widget.state, 'light'); }
-      ).then(
-        (_) => SharedPreferences.getInstance()  // re-retrieve because if the previous errors, we won't get prefs
-      ).then(
-        (prefs) { Intents.sortActivities(widget.state, prefs.getString('sorter')); },
-        onError: (Exception e) { Intents.sortActivities(widget.state, 'start'); }
       ).then(
         (_) => Intents.loadAll(widget.state)
       ).then(
         (data) { setState(() {  }); }
+      ).then(
+        (_) => SharedPreferences.getInstance()  // re-retrieve because if the previous errors, we won't get prefs
+      ).then(
+        (prefs) { Intents.sortActivities(widget.state, prefs.getString('sorter') ?? 'start'); },
+        onError: (Exception e) { Intents.sortActivities(widget.state, 'start'); }
+      ).then(
+        (_) { setState(() {  }); }
       );
   }
 
