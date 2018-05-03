@@ -31,9 +31,17 @@
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
-            <service
-        android:name="io.flutter.androidalarmmanager.AlarmService"
-        android.exported="false" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+            <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
+                <intent-filter>
+                    <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                </intent-filter>
+            </receiver>
+            <!-- <service
+                android:name="io.flutter.androidalarmmanager.AlarmService"
+                android:exported="false" /> -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
