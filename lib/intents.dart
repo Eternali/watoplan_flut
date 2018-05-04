@@ -61,8 +61,13 @@ class Intents {
   ) async {
     for (Activity activity in activities) {
       await LocalDb().add(activity);
+<<<<<<< HEAD
       print(notiPlug.toString());
       if (activity.data.keys.contains('notis') && notiPlug != null) {
+=======
+      print(appState.value.notiPlug.toString());
+      if (activity.data.keys.contains('notis') && appState.value.notiPlug != null) {
+>>>>>>> 231277caf31c0a977e12af3f01cd3268c0b5c012
         print('\nScheduling notification\n\n');
         for (Noti noti in activity.data['notis']) {
           noti.schedule(notiPlug, activity, typeName);
