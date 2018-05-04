@@ -57,26 +57,31 @@ class Intents {
 
   static Future addActivities(
     AppStateObservable appState, List<Activity> activities,
-    [ String typeName ]
+    [ FlutterLocalNotificationsPlugin notiPlug, String typeName ]
   ) async {
     for (Activity activity in activities) {
       await LocalDb().add(activity);
-      if (activity.data.keys.contains('notis') && appState.value.notiPlug != null) {
+      print(notiPlug.toString());
+      if (activity.data.keys.contains('notis') && notiPlug != null) {
         print('\nScheduling notification\n\n');
         for (Noti noti in activity.data['notis']) {
-          noti.schedule(appState.value.notiPlug, activity, typeName);
+          noti.schedule(notiPlug, activity, typeName);
         }
       }
     }
     appState.value = Reducers.addActivities(appState.value, activities);
   }
 
-  static Future removeActivities(AppStateObservable appState, List<Activity> activities) async {
+  static Future removeActivities(
+    AppStateObservable appState, List<Activity> activities,
+    [ FlutterLocalNotificationsPlugin notiPlug ]
+  ) async {
     for (Activity activity in activities) {
       await LocalDb().remove(activity);
-      if (activity.data.keys.contains('notis') && appState.value.notiPlug != null) {
+      print(appState.value.notiPlug.toString());      
+      if (activity.data.keys.contains('notis') && notiPlug != null) {
         for (Noti noti in activity.data['notis']) {
-          noti.cancel(appState.value.notiPlug);
+          noti.cancel(notiPlug);
         }
       }
     }
@@ -85,20 +90,21 @@ class Intents {
 
   static Future changeActivity(
     AppStateObservable appState, Activity newActivity,
-    [ String typeName ]
+    [ FlutterLocalNotificationsPlugin notiPlug, String typeName ]
   ) async {
     await LocalDb().update(newActivity);
-    if (newActivity.data.keys.contains('notis') && appState.value.notiPlug != null) {
+    print(appState.value.toString());    
+    if (newActivity.data.keys.contains('notis') && notiPlug != null) {
       Activity old = appState.value.activities.map(
         (activity) => activity.id
       ).toList().indexOf(newActivity.id);
       old.data['notis']
         .forEach((noti) {
-          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) noti.cancel(appState.value.notiPlug);
+          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) noti.cancel(notiPlug);
         });
       newActivity.data['notis']
         .forEach((noti) {
-          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) noti.schedule(appState.value.notiPlug, newActivity, typeName);
+          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) noti.schedule(notiPlug, newActivity, typeName);
         });
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);

@@ -6,8 +6,8 @@ import 'package:watoplan/data/models.dart';
 
 class Provider extends StatefulWidget {
 
-  final state;
-  final child;
+  final AppStateObservable state;
+  final Widget child;
 
   const Provider({ this.state, this.child, });
 
@@ -67,8 +67,8 @@ class _ProviderState extends State<Provider> {
 class _InheritedProvider extends InheritedWidget {
 
   final AppStateObservable state;
-  final _stateVal;
-  final child;
+  final AppState _stateVal;
+  final Widget child;
 
   _InheritedProvider({ this.state, this.child, })
     : _stateVal = state.value, super(child: child);
