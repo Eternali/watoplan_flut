@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:watoplan/main.dart';
+import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
@@ -50,11 +50,9 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               if (stateVal.focused < 0) {
-                print('\n\n\n' + notiPlug.toString());
                 Intents.addActivities(Provider.of(context), [tmpActivity], notiPlug, type.name)
                   .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
               } else {
-                print('\n\n\n' + notiPlug.toString());                
                 Intents.changeActivity(Provider.of(context), tmpActivity, notiPlug, type.name);
               }
               Navigator.pop(context);

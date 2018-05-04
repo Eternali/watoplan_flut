@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
+import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/routes.dart';
