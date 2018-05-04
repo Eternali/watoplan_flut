@@ -1,4 +1,12 @@
+import 'dart:async';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/notification_details.dart';
+import 'package:flutter_local_notifications/platform_specifics/android/notification_details_android.dart';
+import 'package:flutter_local_notifications/platform_specifics/ios/notification_details_ios.dart';
+
 import 'package:watoplan/data/converters.dart';
+import 'package:watoplan/data/models.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class TimeBefore {
@@ -47,6 +55,22 @@ class Noti {
   final NextTimeGenerator generateNext;
 
   Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
+
+  void schedule(FlutterLocalNotificationsPlugin notiPlug, [ Activity owner, String typeName ]) {
+    NotificationDetails platformSpecifics = new NotificationDetails(
+      new NotificationDetailsAndroid(
+        owner.typeId.toString() ?? id,
+        typeName ?? 'WAToPlan',
+        'Notifications regarding activities of type $typeName',
+      ),
+      new NotificationDetailsIOS(),
+    );
+    notiPlug.schedule(id, title, msg, when, platformSpecifics);
+  }
+
+  Future<void> cancel(FlutterLocalNotificationsPlugin notiPlug) async {
+    await notiPlug.cancel(id);
+  }
 
   factory Noti.fromJson(Map<String, dynamic> jsonMap) {
     return new Noti(

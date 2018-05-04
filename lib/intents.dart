@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +8,7 @@ import 'package:watoplan/themes.dart';
 import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/reducers.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 
@@ -53,25 +55,59 @@ class Intents {
     appState.value = Reducers.changeActivityType(appState.value, newType);
   }
 
-  static Future addActivities(AppStateObservable appState, List<Activity> activities) async {
+  static Future addActivities(
+    AppStateObservable appState, List<Activity> activities,
+    [ FlutterLocalNotificationsPlugin notiPlug, String typeName ]
+  ) async {
     for (Activity activity in activities) {
       await LocalDb().add(activity);
+      if (activity.data.keys.contains('notis') && notiPlug != null) {
+        for (Noti noti in activity.data['notis']) {
+          print('\nScheduling notification\n\n');
+          noti.schedule(notiPlug, activity, typeName);
+        }
+      }
     }
     appState.value = Reducers.addActivities(appState.value, activities);
   }
 
-  static Future removeActivities(AppStateObservable appState, List<Activity> activities) async {
-    for (Activity activity in activities) await LocalDb().remove(activity);
+  static Future removeActivities(
+    AppStateObservable appState, List<Activity> activities,
+    [ FlutterLocalNotificationsPlugin notiPlug ]
+  ) async {
+    for (Activity activity in activities) {
+      await LocalDb().remove(activity);
+      if (activity.data.keys.contains('notis') && notiPlug != null) {
+        for (Noti noti in activity.data['notis']) {
+          noti.cancel(notiPlug);
+        }
+      }
+    }
     appState.value = Reducers.removeActivities(appState.value, activities);
   }
 
-  static Future changeActivity(AppStateObservable appState, Activity newActivity) async {
-    print(newActivity.toJson());
+  static Future changeActivity(
+    AppStateObservable appState, Activity newActivity,
+    [ FlutterLocalNotificationsPlugin notiPlug, String typeName ]
+  ) async {
     await LocalDb().update(newActivity);
+    if (newActivity.data.keys.contains('notis') && notiPlug != null) {
+      Activity old = appState.value.activities.map(
+        (activity) => activity.id
+      ).toList().indexOf(newActivity.id);
+      old.data['notis']
+        .forEach((noti) {
+          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) noti.cancel(notiPlug);
+        });
+      newActivity.data['notis']
+        .forEach((noti) {
+          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) noti.schedule(notiPlug, newActivity, typeName);
+        });
+    }
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
 
-  static void setFocused(AppStateObservable appState, {int indice, Activity activity, ActivityType activityType}) {
+  static void setFocused(AppStateObservable appState, { int indice, Activity activity, ActivityType activityType }) {
     appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
   }
 
