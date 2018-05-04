@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/initialization_settings.dart';
+import 'package:flutter_local_notifications/platform_specifics/android/initialization_settings_android.dart';
+import 'package:flutter_local_notifications/platform_specifics/ios/initialization_settings_ios.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
@@ -25,14 +29,29 @@ class Watoplan extends StatefulWidget {
   // Flutter will not wait for the constructor to finish its asyncronous
   // operations before building the widget tree.
 
-  AppStateObservable watoplanState = new AppStateObservable(
-    new AppState(
-      activityTypes: [],
-      activities: [],
-      focused: 0,
-      theme: themes['light'],
-    )
-  );
+  FlutterLocalNotificationsPlugin notiPlug;
+  AppStateObservable watoplanState;
+
+  Watoplan() {
+    notiPlug = new FlutterLocalNotificationsPlugin()
+      ..initialize(
+        new InitializationSettings(
+          new InitializationSettingsAndroid('app_icon'),
+          new InitializationSettingsIOS(),
+        ),
+      );
+
+    watoplanState = new AppStateObservable(
+      new AppState(
+        activityTypes: [],
+        activities: [],
+        focused: 0,
+        theme: themes['light'],
+        notiPlug: notiPlug,
+        sorter: 'start',
+      )
+    );
+  }
 
   @override
   State<Watoplan> createState() => new WatoplanState();
@@ -43,6 +62,11 @@ class WatoplanState extends State<Watoplan> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.watoplanState.value.notiPlug != null) {
+      widget.watoplanState.value.notiPlug.onSelectNotification = (String payload) async {
+
+      };
+    }
     // getApplicationDocumentsDirectory()
     //   .then((dir) => LevelDB.openUtf8('${dir.path}/testdb'))
     //   .then((db) {

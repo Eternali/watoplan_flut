@@ -31,11 +31,11 @@ class AddEditScreenState extends State<AddEditScreen> {
     Activity tmpActivity = stateVal.focused >= 0
       ? new Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
-    Color activityColor = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId).color;
+    ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId);
     
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: activityColor,
+        backgroundColor: type.color,
         leading: new BackButton(),
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
@@ -49,7 +49,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               if (stateVal.focused < 0) {
-                Intents.addActivities(Provider.of(context), [tmpActivity])
+                Intents.addActivities(Provider.of(context), [tmpActivity], type.name)
                   .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
               } else {
                 Intents.changeActivity(Provider.of(context), tmpActivity);
@@ -88,7 +88,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               value: tmpActivity.data['priority'].toDouble(),
               max: 10.0,
               divisions: 10,
-              color: activityColor,
+              color: type.color,
               labelPrefix: WatoplanLocalizations.of(context).priority,
               onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
             )
@@ -98,7 +98,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               value: tmpActivity.data['progress'].toDouble(),
               max: 100.0,
               divisions: 100,
-              color: activityColor,
+              color: type.color,
               labelPrefix: WatoplanLocalizations.of(context).progress,
               onChanged: (value) { tmpActivity.data['progress'] = value; },
             )

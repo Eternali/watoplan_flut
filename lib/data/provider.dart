@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:watoplan/themes.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 
@@ -10,11 +9,10 @@ class Provider extends StatefulWidget {
   final state;
   final child;
 
-  const Provider({ this.state, this.child });
+  const Provider({ this.state, this.child, });
 
   static of(BuildContext context) {
-    _InheritedProvider ip = 
-        context.inheritFromWidgetOfExactType(_InheritedProvider);
+    _InheritedProvider ip = context.inheritFromWidgetOfExactType(_InheritedProvider);
     return ip.state;
   }
 
@@ -72,7 +70,7 @@ class _InheritedProvider extends InheritedWidget {
   final _stateVal;
   final child;
 
-  _InheritedProvider({ this.state, this.child })
+  _InheritedProvider({ this.state, this.child, })
     : _stateVal = state.value, super(child: child);
 
   @override

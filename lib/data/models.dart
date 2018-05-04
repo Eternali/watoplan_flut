@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/noti.dart';
@@ -24,9 +25,10 @@ class AppState {
   final int focused;
 
   final ThemeData theme;
+  final FlutterLocalNotificationsPlugin notiPlug;
   final String sorter;
 
-  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter });
+  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.notiPlug, this.sorter });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
     return new AppState(
@@ -34,6 +36,7 @@ class AppState {
       activityTypes: prev.activityTypes,
       focused: prev.focused,
       theme: prev.theme,
+      notiPlug: prev.notiPlug,
       sorter: prev.sorter,
     );
   }

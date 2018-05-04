@@ -10,6 +10,7 @@ dependencies:
   crypto: ^2.0.2
   local_notifications: any
   flutter_local_notifications: ^0.2.2
+  sms: ^0.1.0
   # android_alarm_manager: ^0.1.0
   # leveldb: ^5.0.1
   mongo_dart: ^0.3.1
