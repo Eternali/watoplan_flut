@@ -31,20 +31,31 @@ class ActivityCard extends StatelessWidget {
       onDismissed: (direction) {
         Intents.removeActivities(Provider.of(context), [activity]);
       },
-      child: new Card(
-        color: tmpType.color,
-        elevation: 6.0,
-        child: new ListTile(
-          leading: new Icon(tmpType.icon),
-          isThreeLine: true,
-          title: new Text(activity.data['name']),
-          subtitle: new Text(activity.data['desc']),
-          // trailing: new Icon(Icons.check),
-          onTap: () {
-            Intents.setFocused(Provider.of(context), activity: activity);
-            Navigator.of(context).pushNamed(Routes.addEditActivity);
-          },
-        ),
+      child: new Stack(
+        children: <Widget>[
+          // new Row(
+          //   crossAxisAlignment: CrossAxisAlignment.stretch,
+          //   children: <Widget>[
+          //     new Expanded(
+          //       child: new Container(
+          //         // width: 100.0,
+          //         color: tmpType.color,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          new ListTile(
+            leading: new Icon(tmpType.icon),
+            isThreeLine: true,
+            title: new Text(activity.data['name']),
+            subtitle: new Text(activity.data['desc']),
+            // trailing: new Icon(Icons.check),
+            onTap: () {
+              Intents.setFocused(Provider.of(context), activity: activity);
+              Navigator.of(context).pushNamed(Routes.addEditActivity);
+            },
+          ),
+        ],
       ),
     );
   }

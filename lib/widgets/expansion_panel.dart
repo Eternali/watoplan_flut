@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
 
+class DualHeaderWithHint extends StatelessWidget {
+
+ExpansionPanel
+
+}
+
 class CollapsibleBody extends StatelessWidget {
 
   final EdgeInsets margin;

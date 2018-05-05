@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:watoplan/defaults.dart';
+import 'package:watoplan/utils/load_defaults.dart';
 import 'package:watoplan/widgets/icon_picker.dart';
 
 class IconPickButton extends StatefulWidget {
@@ -36,7 +36,7 @@ class IconPickButtonState extends State<IconPickButton> {
         ],
       ),
       onPressed: () {
-        IconPicker picker = new IconPicker(icons: PreloadedIcons,);
+        IconPicker picker = new IconPicker(icons: LoadDefaults.icons);
         showDialog<IconData>(context: context, child: picker)
           .then((IconData i) {
             if (i != null) {

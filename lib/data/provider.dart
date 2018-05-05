@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/utils/load_defaults.dart';
 
 class Provider extends StatefulWidget {
 
@@ -34,6 +35,8 @@ class _ProviderState extends State<Provider> {
       .then(
         (prefs) { Intents.setTheme(widget.state, prefs.getString('theme') ?? 'light'); },
         onError: (Exception e) { Intents.setTheme(widget.state, 'light'); }
+      ).then(
+        (_) => LoadDefaults.loadIcons()
       ).then(
         (_) => Intents.loadAll(widget.state)
       ).then(

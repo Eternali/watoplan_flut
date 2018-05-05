@@ -71,6 +71,22 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[
+            new Row(
+              children: <Widget>[
+                // new
+                // new AssetImage('assets/icons/logo.png'),
+
+              ],
+            ),
+            new ListTile(
+              title: new Text('test'),
+            )
+          ],
+        ),
+      ),
       // body: new AnimatedList(
       //   padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),        
       //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),

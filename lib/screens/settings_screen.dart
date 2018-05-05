@@ -60,11 +60,11 @@ class SettingsScreenState extends State<SettingsScreen> {
           new Container(
             padding: EdgeInsets.only(bottom: 12.0),
             child: new Text(
-              'Activity Types',
+              'Activity Types'.toUpperCase(),
               textAlign: TextAlign.center,
               style: new TextStyle(
                 fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w100,
               ),
             ),
           ),
@@ -73,7 +73,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               children: <Widget>[
                 new ListView(
                   shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   children: stateVal.activityTypes.map(
                     (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
                   ).toList(),
