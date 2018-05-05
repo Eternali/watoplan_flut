@@ -19,6 +19,7 @@ class AddEditScreen extends StatefulWidget {
   double prioritySlide = 0.0;
   double progressSlide = 0.0;
 
+
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
 
@@ -33,6 +34,7 @@ class AddEditScreenState extends State<AddEditScreen> {
       ? new Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
     ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId);
+    print(tmpActivity.toJson());
     
     return new Scaffold(
       appBar: new AppBar(
@@ -50,6 +52,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               if (stateVal.focused < 0) {
+                print('\n\n${tmpActivity.toJson()}\n\n');
                 Intents.addActivities(Provider.of(context), [tmpActivity], notiPlug, type.name)
                   .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
               } else {
@@ -71,7 +74,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 maxLines: 1,
                 label: 'Name',
                 initVal: tmpActivity.data['name'],
-                editField: (String changed) { tmpActivity.data['name'] = changed; },
+                editField: (String changed) { print(changed); tmpActivity.data['name'] = changed; },
               )
             ) : null,
           tmpActivity.data.containsKey('desc')

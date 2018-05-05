@@ -24,6 +24,7 @@ class AppState {
   final int focused;
 
   final ThemeData theme;
+  final String email;
   final String sorter;
 
   AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter });

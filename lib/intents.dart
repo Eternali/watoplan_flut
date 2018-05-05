@@ -63,7 +63,7 @@ class Intents {
       await LocalDb().add(activity);
       if (activity.data.keys.contains('notis') && notiPlug != null) {
         for (Noti noti in activity.data['notis']) {
-          noti.schedule(notiPlug, activity, typeName);
+          noti.schedule(notiPlug: notiPlug, owner: activity, typeName: typeName);
         }
       }
     }
@@ -97,11 +97,13 @@ class Intents {
       ];
       old.data['notis']
         .forEach((noti) {
-          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) noti.cancel(notiPlug);
+          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id))
+            noti.cancel(notiPlug);
         });
       newActivity.data['notis']
         .forEach((noti) {
-          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) noti.schedule(notiPlug, newActivity, typeName);
+          if (!old.data['notis'].map((n) => n.id).contains(noti.id))
+            noti.schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
         });
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);

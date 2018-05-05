@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_local_notifications/notification_details.dart';
 import 'package:flutter_local_notifications/platform_specifics/android/notification_details_android.dart';
 import 'package:flutter_local_notifications/platform_specifics/ios/notification_details_ios.dart';
+import 'package:sms/sms.dart';
 
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/models.dart';
@@ -56,16 +57,33 @@ class Noti {
 
   Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
 
-  void schedule(FlutterLocalNotificationsPlugin notiPlug, [ Activity owner, String typeName ]) {
-    NotificationDetails platformSpecifics = new NotificationDetails(
-      new NotificationDetailsAndroid(
-        owner.typeId.toString() ?? id,
-        typeName ?? 'WAToPlan',
-        'Notifications regarding activities of type $typeName',
-      ),
-      new NotificationDetailsIOS(),
-    );
-    notiPlug.schedule(id, title, msg, when, platformSpecifics);
+  void schedule({
+    FlutterLocalNotificationsPlugin notiPlug, 
+    Activity owner,
+    String typeName,
+    String smsAddr,
+  }) {
+    switch (type.name) {
+      case 'PUSH':
+        NotificationDetails platformSpecifics = new NotificationDetails(
+          new NotificationDetailsAndroid(
+            owner.typeId.toString() ?? id,
+            typeName ?? 'WAToPlan',
+            'Notifications regarding activities of type $typeName',
+          ),
+          new NotificationDetailsIOS(),
+        );
+        notiPlug.schedule(id, title, msg, when, platformSpecifics);
+        break;
+      case 'EMAIL':
+
+        break;
+      case 'SMS':
+        SmsSender sender = new SmsSender();
+
+        sender.sendSms(new SmsMessage(smsAddr, 'Just a friendly reminder $title: $msg'));
+        break;
+    }
   }
 
   Future<void> cancel(FlutterLocalNotificationsPlugin notiPlug) async {
