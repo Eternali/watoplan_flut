@@ -8,17 +8,16 @@ import 'package:flutter/services.dart';
 class LoadDefaults {
 
   static const String codepointsFile = 'assets/defaults/codepoints';
-  static List<int> codepoints;
-  static List<IconData> icons;
+  static List<int> codepoints = [];
+  static List<IconData> icons = [];
 
-  static Future<void> loadIcons() async {
+  static Future loadIcons() async {
     return rootBundle.loadString(codepointsFile)
       .then((points) {
-        for (String point in points.split('\n')) {
-          int cp = int.parse(point);
-          print('cp: $cp');
+        for (String point in points.trim().split('\n')) {
+          int cp = int.parse(point.trim(), radix: 16);
           codepoints.add(cp);
-          icons.add(new IconData(cp));          
+          icons.add(new IconData(cp, fontFamily: 'MaterialIcons'));
         }
       });
   }

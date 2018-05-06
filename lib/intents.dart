@@ -10,7 +10,6 @@ import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/reducers.dart';
-import 'package:watoplan/utils/activity_sorters.dart';
 
 class Intents {
 
@@ -122,7 +121,7 @@ class Intents {
   static void sortActivities(AppStateObservable appState, String sorterName) async {
     await SharedPreferences.getInstance()
       .then((prefs) => prefs.setString('sorter', sorterName));
-    appState.value = Reducers.replaceActivities(appState.value, validSorts[sorterName](appState.value.activities));
+    appState.value = Reducers.sortActivities(appState.value, sorterName);
   }
 
 }

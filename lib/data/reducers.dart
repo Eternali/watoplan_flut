@@ -63,10 +63,10 @@ class Reducers {
     return newState;
   }
 
-  static AppState replaceActivities(AppState oldState, List<Activity> activities) {
+  static AppState sortActivities(AppState oldState, String sorterName) {
     AppState newState = new AppState.from(oldState)
       ..activities.removeRange(0, oldState.activities.length)
-      ..activities.addAll(activities);
+      ..activities.addAll(validSorts[sorterName](oldState.activities));
 
     return newState;
   }

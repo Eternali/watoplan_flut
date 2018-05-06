@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
-import 'package:watoplan/themes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/intents.dart';
@@ -74,16 +73,53 @@ class HomeScreenState extends State<HomeScreen> {
       drawer: new Drawer(
         child: new ListView(
           children: <Widget>[
-            new Row(
-              children: <Widget>[
-                // new
-                // new AssetImage('assets/icons/logo.png'),
-
-              ],
+            new Padding(
+              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 18.0, bottom: 8.0),
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Image.asset('assets/icons/logo.png', width: 36.0, height: 36.0,),
+                  new Padding(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: new Text(
+                      WatoplanLocalizations.of(context).appTitle,
+                      style: new TextStyle(
+                        letterSpacing: 2.6,
+                        fontSize: 24.0,
+                        fontFamily: 'Timeburner',
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-            new ListTile(
-              title: new Text('test'),
-            )
+            new Divider(),
+            new Padding(
+              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 14.0),
+              child: new ExpansionTile(
+                title: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    new Text(
+                      WatoplanLocalizations.of(context).schedule.toUpperCase(),
+                      style: new TextStyle(
+                        letterSpacing: 1.4,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Timeburner',
+                      )
+                    ),
+                    new Expanded(child: new Container()),
+                    new Text(
+                      stateVal.sorter.toString().toUpperCase(),
+                      style: new TextStyle(
+                        letterSpacing: 1.4,
+                        fontFamily: 'Timeburner',
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ),
           ],
         ),
       ),

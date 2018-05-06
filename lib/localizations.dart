@@ -30,6 +30,8 @@ class WatoplanLocalizations {
 
   String get addNotification => 'Add another notification';
 
+  String get schedule => 'Schedule';
+
 }
 
 class WatoplanLocalizationsDelegate
