@@ -62,7 +62,7 @@ class HomeScreenState extends State<HomeScreen> {
                 child: new Row(
                   children: <Widget>[
                     new Icon(choice.icon),
-                    new Padding(padding: new EdgeInsets.symmetric(horizontal: 8.0),),
+                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0),),
                     new Text(choice.title)
                   ],
                 ),
@@ -111,7 +111,7 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                     new Expanded(child: new Container()),
                     new Text(
-                      stateVal.sorter.toString().toUpperCase(),
+                      stateVal.sortRev ? stateVal.sorter.split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase(),
                       style: new TextStyle(
                         letterSpacing: 1.4,
                         fontFamily: 'Timeburner',
@@ -119,18 +119,40 @@ class HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
-                children: locales.validSorts.keys.map(
-                  (name) => new RadioListTile(
-                    title: new Text(
-                      locales.validSorts[name](),
+                children: <Widget>[
+                  new Column(
+                    children: locales.validSorts.keys.map(
+                      (name) => new RadioListTile(
+                        title: new Text(
+                          locales.validSorts[name](),
+                        ),
+                        groupValue: stateVal.sorter,
+                        value: name,
+                        onChanged: (name) {
+                          setState(() { Intents.sortActivities(Provider.of(context), name); });
+                        },
+                      )
+                    ).toList(),
+                  ),
+                  new Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
+                    child: new OutlineButton(
+                      padding: const EdgeInsets.all(0.0),
+                      textColor: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).primaryTextTheme.button.color,
+                      child: new Text(
+                        stateVal.sortRev ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
+                        style: new TextStyle(
+                          fontFamily: 'Timeburner',
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.4,
+                        ),
+                      ),
+                      onPressed: () { Intents.sortActivities(Provider.of(context), stateVal.sorter, !stateVal.sortRev); },
                     ),
-                    groupValue: stateVal.sorter,
-                    value: name,
-                    onChanged: (name) {
-                      setState(() { Intents.sortActivities(Provider.of(context), name); });
-                    },
                   )
-                ).toList(),
+                ],
               )
             ),
           ],
@@ -141,7 +163,7 @@ class HomeScreenState extends State<HomeScreen> {
       //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),
       // ),
       body: new ListView.builder(
-        padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
         shrinkWrap: true,
         itemCount: stateVal.activities.length,
         itemBuilder: (BuildContext context, int indice) {

@@ -22,6 +22,8 @@ class WatoplanLocalizations {
   String get cancel => 'Cancel';
   String get start => 'Start';
   String get end => 'End';
+  String get reverse => 'Reverse';
+  String get reversed => 'Reversed';
 
   String get chooseColor => 'Choose Color';
 

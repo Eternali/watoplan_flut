@@ -4,13 +4,14 @@ import 'package:watoplan/data/models.dart';
 
 class Reducers {
 
-  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme, String sorter }) {
+  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme, String sorter, bool sortRev }) {
     return new AppState(
       activityTypes: activityTypes,
       activities: activities,
       focused: focused,
       theme: theme,
       sorter: sorter,
+      sortRev: sortRev,
     );
   }
 
@@ -64,10 +65,11 @@ class Reducers {
     return newState;
   }
 
-  static AppState sortActivities(AppState oldState, String sorterName) {
+  static AppState sortActivities(AppState oldState, String sorterName, [ bool reversed = false ]) {
     return oldState.copyWith(
-      activities: validSorts[sorterName](oldState.activities),
+      activities: validSorts[sorterName](oldState.activities, reversed),
       sorter: sorterName,
+      sortRev: reversed,
     );
   }
 

@@ -34,6 +34,7 @@ class Intents {
           focused: appState.value.focused,
           theme: appState.value.theme,
           sorter: appState.value.sorter,
+          sortRev: appState.value.sortRev,
         );
       });
   }
@@ -119,10 +120,11 @@ class Intents {
     appState.value = Reducers.setTheme(appState.value, themes[themeName]);
   }
 
-  static void sortActivities(AppStateObservable appState, String sorterName) async {
+  static void sortActivities(AppStateObservable appState, String sorterName, [ bool reversed = false ]) async {
     await SharedPreferences.getInstance()
-      .then((prefs) => prefs.setString('sorter', sorterName));
-    appState.value = Reducers.sortActivities(appState.value, sorterName);
+      .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
+      .then((prefs) => prefs.setBool('sortRev', reversed));
+    appState.value = Reducers.sortActivities(appState.value, sorterName, reversed);
   }
 
 }

@@ -26,8 +26,9 @@ class AppState {
   final ThemeData theme;
   final String email;
   final String sorter;
+  final bool sortRev;
 
-  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter });
+  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter, this.sortRev = false });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
     return new AppState(
@@ -36,6 +37,7 @@ class AppState {
       focused: prev.focused,
       theme: prev.theme,
       sorter: prev.sorter,
+      sortRev: prev.sortRev,
     );
   }
 
@@ -45,6 +47,7 @@ class AppState {
     int focused,
     ThemeData theme,
     String sorter,
+    bool sortRev,
   }) {
     return new AppState(
       activities: activities ?? this.activities,
@@ -52,11 +55,12 @@ class AppState {
       focused: focused ?? this.focused,
       theme: theme ?? this.theme,
       sorter: sorter ?? this.sorter,
+      sortRev: sortRev ?? this.sortRev,
     );
   }
 
   @override
-  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode + sorter.hashCode;
+  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode + sorter.hashCode + sortRev.hashCode;
 
 }
 
