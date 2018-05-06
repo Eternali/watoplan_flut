@@ -43,10 +43,10 @@ class _ProviderState extends State<Provider> {
       ).then(
         (prefs) { Intents.sortActivities(widget.state, prefs.getString('sorter') ?? 'start', prefs.getBool('sortRev') ?? false); },
         onError: (Exception e) { Intents.sortActivities(widget.state, 'start', false); }
-      // ).then(
-      //   (_) => SharedPreferences.getInstance()
-      // ).then(
-      //   (prefs) {  } // for email
+      ).then(
+        (_) => SharedPreferences.getInstance()
+      ).then(
+        (prefs) {  } // for email
       ).then(
         (_) { setState(() {  }); }
       );
