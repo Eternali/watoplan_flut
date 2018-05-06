@@ -57,7 +57,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: new EditText(
               maxLines: 1,
-              label: 'Name',
+              label: WatoplanLocalizations.of(context).validParams['name'](),
               initVal: tmpType.name,
               editField: (String changed) { tmpType.name = changed; },
             ),
@@ -90,7 +90,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           new Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: new CheckboxList(
-              entries: validParams.keys.toList(),
+              entries: WatoplanLocalizations.of(context).validParams.values.map((getStr) => getStr()).toList(),
               color: tmpType.color,
               isActive: (String match) => tmpType.params.keys.contains(match),
               onChange: (bool selected, String param) {

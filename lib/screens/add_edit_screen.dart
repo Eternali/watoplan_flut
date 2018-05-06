@@ -72,7 +72,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 1,
-                label: 'Name',
+                label: WatoplanLocalizations.of(context).validParams['name'](),
                 initVal: tmpActivity.data['name'],
                 editField: (String changed) { print(changed); tmpActivity.data['name'] = changed; },
               )
@@ -82,7 +82,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 3,
-                label: 'Description',
+                label: WatoplanLocalizations.of(context).validParams['desc'](),
                 initVal: tmpActivity.data['desc'],
                 editField: (String changed) { tmpActivity.data['desc'] = changed; },
               )
@@ -111,7 +111,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
-                label: WatoplanLocalizations.of(context).start,
+                label: WatoplanLocalizations.of(context).validParams['start'](),
                 color: Theme.of(context).disabledColor,
                 when: tmpActivity.data['start'],
                 setDate: (date) {
@@ -128,7 +128,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
-                label: WatoplanLocalizations.of(context).end,
+                label: WatoplanLocalizations.of(context).validParams['end'](),
                 color: Theme.of(context).disabledColor,
                 when: tmpActivity.data['end'],
                 setDate: (date) {

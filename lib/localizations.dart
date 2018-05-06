@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+typedef String StrGet();
+
 class WatoplanLocalizations {
   static WatoplanLocalizations of(BuildContext context) {
     return Localizations.of<WatoplanLocalizations>(context, WatoplanLocalizations);
@@ -31,6 +33,29 @@ class WatoplanLocalizations {
   String get addNotification => 'Add another notification';
 
   String get schedule => 'Schedule';
+
+  // Sort locales
+  Map<String, StrGet> validSorts = {
+    'start': () => 'start time',
+    'end': () => 'end time',
+    'priority': () => 'priority',
+    'progress': () => 'progress',
+    'type': () => 'type',
+  };
+
+  // Param locales
+  Map<String, StrGet> validParams = {
+    'name': () => 'name',
+    'desc': () => 'description',
+    'priority': () => 'priority',
+    'progress': () => 'progress',
+    'start': () => 'start',
+    'end': () => 'end',
+    'notis': () => 'notifications',
+    'location': () => 'location',
+    // 'entities': () => 'entities',
+    // 'tags': () => 'tags',
+  };
 
 }
 

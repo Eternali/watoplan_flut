@@ -35,9 +35,12 @@ class ActivitySorters {
     quicksort(
       newActivities,
       0, newActivities.length - 1,
-      (a, b, dir) => dir
-        ? a.data['start'].millisecondsSinceEpoch > b.data['start'].millisecondsSinceEpoch
-        : a.data['start'].millisecondsSinceEpoch < b.data['start'].millisecondsSinceEpoch
+      (a, b, dir) {
+        if (a.data.containsKey('start') && b.data.containsKey('start')) return dir
+          ? a.data['start'].millisecondsSinceEpoch > b.data['start'].millisecondsSinceEpoch
+          : a.data['start'].millisecondsSinceEpoch < b.data['start'].millisecondsSinceEpoch;
+        else return !dir;
+      }
     );
 
     return newActivities;
@@ -49,9 +52,12 @@ class ActivitySorters {
     quicksort(
       newActivities,
       0, newActivities.length - 1,
-      (a, b, dir) => dir
-        ? a.data['end'].millisecondsSinceEpoch > b.data['end'].millisecondsSinceEpoch
-        : a.data['end'].millisecondsSinceEpoch < b.data['end'].millisecondsSinceEpoch
+      (a, b, dir) {
+        if (a.data.containsKey('end') && b.data.containsKey('end')) return dir
+          ? a.data['end'].millisecondsSinceEpoch > b.data['end'].millisecondsSinceEpoch
+          : a.data['end'].millisecondsSinceEpoch < b.data['end'].millisecondsSinceEpoch;
+        else return !dir;
+      }
     );
 
     return newActivities;
@@ -59,6 +65,17 @@ class ActivitySorters {
 
   static List<Activity> byPriority(List<Activity> activities) {
     List<Activity> newActivities = new List.from(activities);
+
+    quicksort(
+      newActivities,
+      0, newActivities.length - 1,
+      (a, b, dir) {
+        if (a.data.containsKey('priority') && b.data.containsKey('priority')) return dir
+          ? a.data['priority'] > b.data['priority']
+          : a.data['priority'] < b.data['priority'];
+        else return !dir;
+      }
+    );
 
     return newActivities;
   }

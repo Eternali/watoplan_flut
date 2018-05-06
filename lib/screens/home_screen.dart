@@ -29,6 +29,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
+    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
 
     List<SubFAB> typesToSubFabs(List<ActivityType> types) {
       return types.map(
@@ -48,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
     return new Scaffold(
       appBar: new AppBar(
         centerTitle: true,
-        title: new Text(widget.title ?? WatoplanLocalizations.of(context).appTitle),
+        title: new Text(widget.title ?? locales.appTitle),
         actions: <Widget>[
           new PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
@@ -82,7 +83,7 @@ class HomeScreenState extends State<HomeScreen> {
                   new Padding(
                     padding: const EdgeInsets.only(left: 14.0),
                     child: new Text(
-                      WatoplanLocalizations.of(context).appTitle,
+                      locales.appTitle,
                       style: new TextStyle(
                         letterSpacing: 2.6,
                         fontSize: 24.0,
@@ -101,7 +102,7 @@ class HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     new Text(
-                      WatoplanLocalizations.of(context).schedule.toUpperCase(),
+                      locales.schedule.toUpperCase(),
                       style: new TextStyle(
                         letterSpacing: 1.4,
                         fontWeight: FontWeight.w700,
@@ -118,10 +119,10 @@ class HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
-                children: validSorts.keys.map(
+                children: locales.validSorts.keys.map(
                   (name) => new RadioListTile(
                     title: new Text(
-                      name
+                      locales.validSorts[name](),
                     ),
                     groupValue: stateVal.sorter,
                     value: name,
