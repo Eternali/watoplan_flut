@@ -4,12 +4,13 @@ import 'package:watoplan/data/models.dart';
 
 class Reducers {
 
-  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme }) {
+  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme, String sorter }) {
     return new AppState(
       activityTypes: activityTypes,
       activities: activities,
       focused: focused,
       theme: theme,
+      sorter: sorter,
     );
   }
 
@@ -64,38 +65,20 @@ class Reducers {
   }
 
   static AppState sortActivities(AppState oldState, String sorterName) {
-    // List<Activity> newActivities = validSorts[sorterName](oldState.activities);
-    // AppState newState = new AppState(
-    //   activities: oldState.activities,
-    //   activityTypes: oldState.activityTypes,
-    //   focused: oldState.focused,
-    //   theme: oldState.theme,
-    //   sorter: sorterName
-    // );
-    AppState newState = oldState.copyWith(
+    return oldState.copyWith(
       activities: validSorts[sorterName](oldState.activities),
       sorter: sorterName,
     );
-
-    return newState;
   }
 
   static AppState setFocused(AppState oldState, int indice, Activity activity, ActivityType activityType) {
-    // we can't use AppState.from since focused is a single layer final field.
-    return new AppState(
-      activities: oldState.activities,
-      activityTypes: oldState.activityTypes,
+    return oldState.copyWith(
       focused: indice ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
-      theme: oldState.theme,
     );
   }
 
   static AppState setTheme(AppState oldState, ThemeData theme) {
-    // we can't use AppState.from since theme is final.
-    return new AppState(
-      activities: oldState.activities,
-      activityTypes: oldState.activityTypes,
-      focused: oldState.focused,
+    return oldState.copyWith(
       theme: theme,
     );
   }

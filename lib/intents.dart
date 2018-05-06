@@ -33,6 +33,7 @@ class Intents {
           activities: data[1],
           focused: appState.value.focused,
           theme: appState.value.theme,
+          sorter: appState.value.sorter,
         );
       });
   }

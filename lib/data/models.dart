@@ -50,6 +50,7 @@ class AppState {
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,
       focused: focused ?? this.focused,
+      theme: theme ?? this.theme,
       sorter: sorter ?? this.sorter,
     );
   }
