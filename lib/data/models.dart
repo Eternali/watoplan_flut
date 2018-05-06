@@ -39,6 +39,21 @@ class AppState {
     );
   }
 
+  AppState copyWith({
+    List<Activity> activities,
+    List<ActivityType> activityTypes,
+    int focused,
+    ThemeData theme,
+    String sorter,
+  }) {
+    return new AppState(
+      activities: activities ?? this.activities,
+      activityTypes: activityTypes ?? this.activityTypes,
+      focused: focused ?? this.focused,
+      sorter: sorter ?? this.sorter,
+    );
+  }
+
   @override
   int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode + sorter.hashCode;
 

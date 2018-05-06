@@ -64,9 +64,18 @@ class Reducers {
   }
 
   static AppState sortActivities(AppState oldState, String sorterName) {
-    AppState newState = new AppState.from(oldState)
-      ..activities.removeRange(0, oldState.activities.length)
-      ..activities.addAll(validSorts[sorterName](oldState.activities));
+    // List<Activity> newActivities = validSorts[sorterName](oldState.activities);
+    // AppState newState = new AppState(
+    //   activities: oldState.activities,
+    //   activityTypes: oldState.activityTypes,
+    //   focused: oldState.focused,
+    //   theme: oldState.theme,
+    //   sorter: sorterName
+    // );
+    AppState newState = oldState.copyWith(
+      activities: validSorts[sorterName](oldState.activities),
+      sorter: sorterName,
+    );
 
     return newState;
   }

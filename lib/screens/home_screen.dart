@@ -118,6 +118,18 @@ class HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
+                children: validSorts.keys.map(
+                  (name) => new RadioListTile(
+                    title: new Text(
+                      name
+                    ),
+                    groupValue: stateVal.sorter,
+                    value: name,
+                    onChanged: (name) {
+                      setState(() { Intents.sortActivities(Provider.of(context), name); });
+                    },
+                  )
+                ).toList(),
               )
             ),
           ],
