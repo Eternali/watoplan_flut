@@ -7,8 +7,10 @@ import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/custom_expansion.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/edit_text.dart';
+import 'package:watoplan/widgets/expansion_input.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
 import 'package:watoplan/widgets/noti_list.dart';
 import 'package:watoplan/widgets/wato_slider.dart';
@@ -30,6 +32,7 @@ class AddEditScreenState extends State<AddEditScreen> {
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
+    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
     Activity tmpActivity = stateVal.focused >= 0
       ? new Activity.from(stateVal.activities[stateVal.focused])
       : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
@@ -43,12 +46,12 @@ class AddEditScreenState extends State<AddEditScreen> {
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
           ? stateVal.activities[stateVal.focused].data['name']
-          : WatoplanLocalizations.of(context).newActivity
+          : locales.newActivity
         ),
         actions: <Widget>[
           new FlatButton(
             child: new Text(
-              WatoplanLocalizations.of(context).save.toUpperCase()
+              locales.save.toUpperCase()
             ),
             onPressed: () {
               if (stateVal.focused < 0) {
@@ -72,7 +75,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 1,
-                label: WatoplanLocalizations.of(context).validParams['name'](),
+                label: locales.validParams['name'](),
                 initVal: tmpActivity.data['name'],
                 editField: (String changed) { print(changed); tmpActivity.data['name'] = changed; },
               )
@@ -82,36 +85,89 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 3,
-                label: WatoplanLocalizations.of(context).validParams['desc'](),
+                label: locales.validParams['desc'](),
                 initVal: tmpActivity.data['desc'],
                 editField: (String changed) { tmpActivity.data['desc'] = changed; },
               )
             ) : null,
           tmpActivity.data.containsKey('priority')
-            ? new WatoSlider(
-              value: tmpActivity.data['priority'].toDouble(),
-              max: 10.0,
-              divisions: 10,
-              color: type.color,
-              labelPrefix: WatoplanLocalizations.of(context).priority,
-              onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
-            )
-            : null,
+            ? new CustomExpansion(
+              items: [
+                new ExpansionItem<int>(
+                  name: locales.validParams['priority'](),
+                  value: tmpActivity.data['priority'],
+                  hint: '${locales.select} ${locales.validParams['priority']()}',
+                  valToString: (int priority) => priority.toString(),
+                  builder: (ExpansionItem<int> item) {
+                    void close() {
+                      setState(() {
+                        item.isExpanded = false;
+                      });
+                    }
+
+                    return new Form(
+                      child: new Builder(
+                        builder: (BuildContext context) =>
+                          new CollapsibleBody(
+                            onSave: () { Form.of(context).save(); close(); },
+                            onCancel: () { Form.of(context).reset(); close(); },
+                            child: new FormField<int>(
+                              initialValue: item.value,
+                              onSaved: (int value) { item.value = value; },
+                              builder: (FormFieldState<int> field) => new WatoSlider(
+                                value: field.value.toDouble(),
+                                max: 10.0,
+                                divisions: 10,
+                                color: type.color,
+                                labelPrefix: locales.priority,
+                                onChanged: field.didChange,
+                              ),
+                            ),
+                          ),
+                      ),
+                    );
+                  }
+                ),
+              ],
+            // )
+            // ? new ExpansionTile(
+            //   title: new DualHeaderWithHint(
+            //     locales.validParams['priority'](),
+            //     '${locales.select} ${locales.validParams['priority']()}',
+            //     tmpActivity.data['priority'].toString(),
+            //     false,
+            //   ),
+            //   children: <Widget>[
+            //     new WatoSlider(
+            //       value: tmpActivity.data['priority'].toDouble(),
+            //       max: 10.0,
+            //       divisions: 10,
+            //       color: type.color,
+            //       labelPrefix: locales.priority,
+            //       onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
+            //     ),
+            //   ]
+            ) : null,
           tmpActivity.data.containsKey('progress')
-            ? new WatoSlider(
-              value: tmpActivity.data['progress'].toDouble(),
-              max: 100.0,
-              divisions: 100,
-              color: type.color,
-              labelPrefix: WatoplanLocalizations.of(context).progress,
-              onChanged: (value) { tmpActivity.data['progress'] = value; },
-            )
-            : null,
+            ? new ExpansionInput(
+              title: locales.progress,
+              hint: '${locales.select} ${locales.validParams['progress']()}',
+              value: tmpActivity.data['progress'],
+              child: new WatoSlider(
+                value: tmpActivity.data['progress'].toDouble(),
+                max: 100.0,
+                divisions: 100,
+                color: type.color,
+                labelPrefix: locales.progress,
+                onChanged: (value) { tmpActivity.data['progress'] = value; },
+              ),
+              onSave: (progress) { tmpActivity.data['progress'] = progress; },
+            ) : null,
           tmpActivity.data.containsKey('start')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
-                label: WatoplanLocalizations.of(context).validParams['start'](),
+                label: locales.validParams['start'](),
                 color: Theme.of(context).disabledColor,
                 when: tmpActivity.data['start'],
                 setDate: (date) {
@@ -128,7 +184,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
-                label: WatoplanLocalizations.of(context).validParams['end'](),
+                label: locales.validParams['end'](),
                 color: Theme.of(context).disabledColor,
                 when: tmpActivity.data['end'],
                 setDate: (date) {
