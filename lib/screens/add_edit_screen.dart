@@ -149,19 +149,28 @@ class AddEditScreenState extends State<AddEditScreen> {
             //   ]
             ) : null,
           tmpActivity.data.containsKey('progress')
-            ? new ExpansionInput(
+            ? new ExpansionInput<int>(
               title: locales.progress,
               hint: '${locales.select} ${locales.validParams['progress']()}',
-              value: tmpActivity.data['progress'],
-              child: new WatoSlider(
-                value: tmpActivity.data['progress'].toDouble(),
+              value: int.parse(tmpActivity.data['progress']),
+              onSave: (progress) { tmpActivity.data['progress'] = progress; },
+              builder: (context, field) => new Slider(
+                value: field.toDouble(),
+                min: 0.0,
                 max: 100.0,
                 divisions: 100,
-                color: type.color,
-                labelPrefix: locales.progress,
-                onChanged: (value) { tmpActivity.data['progress'] = value; },
+                activeColor: type.color,
+                onChanged: (value) { setState(() { field = value; }); },
               ),
-              onSave: (progress) { tmpActivity.data['progress'] = progress; },
+              
+              // new WatoSlider(
+              //   value: tmpActivity.data['progress'].toDouble(),
+              //   max: 100.0,
+              //   divisions: 100,
+              //   color: type.color,
+              //   labelPrefix: locales.progress,
+              //   onChanged: (value) { tmpActivity.data['progress'] = value; },
+              // ),
             ) : null,
           tmpActivity.data.containsKey('start')
             ? new Padding(

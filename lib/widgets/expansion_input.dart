@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
 
-typedef void SaveFunc(dynamic toSave);
+typedef Widget ExpansionTileBodyBuilder<T>(BuildContext context, T field);
+typedef void SaveFunc<T>(T toSave);
 
-class ExpansionInput extends StatefulWidget {
+class ExpansionInput<T> extends StatefulWidget {
 
   final String title;
   final String hint;
-  dynamic value;
-  final Widget child;
-  final SaveFunc onSave;
+  T value;
+  final SaveFunc<T> onSave;
+  final ExpansionTileBodyBuilder<T> builder;
 
   ExpansionInput({
     this.title,
     this.hint,
     this.value,
-    this.child,
+    this.builder,
     this.onSave,
   });
 
@@ -30,6 +31,12 @@ class ExpansionInputState extends State<ExpansionInput> {
   String hint;
 
   @override
+  void initState() {
+      super.initState();
+      hint = widget.value.toString();
+    }
+
+  @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
@@ -37,14 +44,14 @@ class ExpansionInputState extends State<ExpansionInput> {
     return new ExpansionTile(
       initiallyExpanded: false,
       onExpansionChanged: (expanded) {
-        setState(() { hint = expanded ? widget.value.toString() : widget.hint; });
+        setState(() { hint = !expanded ? widget.value.toString() : widget.hint; });
       },
       title: new Row(
         children: <Widget>[
           new Expanded(
             flex: 2,
             child: new Container(
-              margin: const EdgeInsets.only(left: 24.0),
+              margin: const EdgeInsets.only(left: 0.0),
               child: new FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
@@ -58,7 +65,7 @@ class ExpansionInputState extends State<ExpansionInput> {
           new Expanded(
             flex: 3,
             child: new Container(
-              margin: const EdgeInsets.only(left: 24.0),
+              margin: const EdgeInsets.only(left: 0.0),
               child: new Text(
                 hint,
                 style: theme.textTheme.caption.copyWith(fontSize: 15.0),
@@ -77,7 +84,7 @@ class ExpansionInputState extends State<ExpansionInput> {
           child: new Center(
             child: new DefaultTextStyle(
               style: theme.textTheme.caption.copyWith(fontSize: 15.0),
-              child: widget.child
+              child: widget.builder(context, widget.value),
             )
           )
         ),
