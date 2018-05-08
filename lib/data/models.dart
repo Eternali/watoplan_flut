@@ -20,6 +20,11 @@ class AppState {
   final List<Activity> activities;
   final List<ActivityType> activityTypes;
 
+  // these are only for the add/edit screens because state stored in the widgets is
+  // being corrupted (reset) too much (and unexpectedly).
+  final Activity editingActivity;
+  final ActivityType editingType;
+
   // negative values denote activityTypes (-1 = index 0) while zero and positives indicate activities
   final int focused;
 
@@ -28,12 +33,23 @@ class AppState {
   final String sorter;
   final bool sortRev;
 
-  AppState({ this.activities, this.activityTypes, this.focused, this.theme, this.sorter, this.sortRev = false });
+  AppState({
+    this.activities,
+    this.activityTypes,
+    this.editingActivity,
+    this.editingType,
+    this.focused,
+    this.theme,
+    this.sorter,
+    this.sortRev = false
+  });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
     return new AppState(
       activities: prev.activities,
       activityTypes: prev.activityTypes,
+      editingActivity: prev.editingActivity,
+      editingType: prev.editingType,
       focused: prev.focused,
       theme: prev.theme,
       sorter: prev.sorter,
@@ -44,6 +60,8 @@ class AppState {
   AppState copyWith({
     List<Activity> activities,
     List<ActivityType> activityTypes,
+    Activity editingActivity,
+    ActivityType editingType,
     int focused,
     ThemeData theme,
     String sorter,
@@ -52,6 +70,8 @@ class AppState {
     return new AppState(
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,
+      editingActivity: editingActivity ?? this.editingActivity,
+      editingType: editingType ?? this.editingType,
       focused: focused ?? this.focused,
       theme: theme ?? this.theme,
       sorter: sorter ?? this.sorter,
@@ -60,7 +80,14 @@ class AppState {
   }
 
   @override
-  int get hashCode => activities.hashCode + activityTypes.hashCode + focused.hashCode + theme.hashCode + sorter.hashCode + sortRev.hashCode;
+  int get hashCode => activities.hashCode
+                      + activityTypes.hashCode
+                      + editingActivity.hashCode
+                      + editingType.hashCode
+                      + focused.hashCode
+                      + theme.hashCode
+                      + sorter.hashCode
+                      + sortRev.hashCode;
 
 }
 
@@ -181,7 +208,6 @@ class Activity {
     Map<String, dynamic> data
   }) : _id = id ?? generateId() {
     Map<String, dynamic> tmpData;
-
     if (type is int) {
       typeId = type;
       tmpData = data;

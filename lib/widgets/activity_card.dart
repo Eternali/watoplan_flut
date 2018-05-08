@@ -55,6 +55,7 @@ class ActivityCard extends StatelessWidget {
               // trailing: new Icon(Icons.check),
               onTap: () {
                 Intents.setFocused(Provider.of(context), activity: activity);
+                Intents.editEditing(Provider.of(context), new Activity.from(activity));
                 Navigator.of(context).pushNamed(Routes.addEditActivity);
               },
             ),

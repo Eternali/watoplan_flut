@@ -4,10 +4,21 @@ import 'package:watoplan/data/models.dart';
 
 class Reducers {
 
-  static AppState set({ List<ActivityType> activityTypes, List<Activity> activities, int focused, ThemeData theme, String sorter, bool sortRev }) {
+  static AppState set({
+    List<ActivityType> activityTypes,
+    List<Activity> activities,
+    Activity editingActivity,
+    ActivityType editingType,
+    int focused,
+    ThemeData theme,
+    String sorter,
+    bool sortRev
+  }) {
     return new AppState(
       activityTypes: activityTypes,
       activities: activities,
+      editingActivity: editingActivity,
+      editingType: editingType,
       focused: focused,
       theme: theme,
       sorter: sorter,
@@ -77,6 +88,12 @@ class Reducers {
     return oldState.copyWith(
       focused: indice ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
     );
+  }
+
+  static AppState editEditing(AppState oldState, dynamic editing) {
+    return editing is Activity
+      ? oldState.copyWith(editingActivity: editing)
+      : oldState.copyWith(editingType: editing);
   }
 
   static AppState setTheme(AppState oldState, ThemeData theme) {

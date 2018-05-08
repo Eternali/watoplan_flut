@@ -110,21 +110,25 @@ class Intents {
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
 
+  static void sortActivities(AppStateObservable appState, String sorterName, [ bool reversed = false ]) async {
+    await SharedPreferences.getInstance()
+      .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
+      .then((prefs) => prefs.setBool('sortRev', reversed));
+    appState.value = Reducers.sortActivities(appState.value, sorterName, reversed);
+  }
+
   static void setFocused(AppStateObservable appState, { int indice, Activity activity, ActivityType activityType }) {
     appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
+  }
+
+  static void editEditing(AppStateObservable appState, dynamic editing) {
+    appState.value = Reducers.editEditing(appState.value, editing);
   }
 
   static void setTheme(AppStateObservable appState, String themeName) async {
     await SharedPreferences.getInstance()
       .then((prefs) => prefs.setString('theme', themeName));
     appState.value = Reducers.setTheme(appState.value, themes[themeName]);
-  }
-
-  static void sortActivities(AppStateObservable appState, String sorterName, [ bool reversed = false ]) async {
-    await SharedPreferences.getInstance()
-      .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
-      .then((prefs) => prefs.setBool('sortRev', reversed));
-    appState.value = Reducers.sortActivities(appState.value, sorterName, reversed);
   }
 
 }

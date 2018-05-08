@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:watoplan/data/models.dart';
-
 class EditText extends StatefulWidget {
   final int maxLines;
   final String label;
@@ -27,6 +25,7 @@ class EditTextState extends State<EditText> {
 
   @override
   dispose() {
+    _controller.removeListener(() => widget.editField(_controller.value.text));
     _controller.dispose();
     super.dispose();
   }

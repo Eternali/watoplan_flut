@@ -38,6 +38,7 @@ class HomeScreenState extends State<HomeScreen> {
           color: it.color,
           onPressed: () {
             Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
+            Intents.editEditing(Provider.of(context), new Activity(type: it, data: {  }));
             Navigator.of(context).pushNamed(Routes.addEditActivity);
           },
         )
