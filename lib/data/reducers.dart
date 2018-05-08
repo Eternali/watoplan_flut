@@ -96,6 +96,13 @@ class Reducers {
       : oldState.copyWith(editingType: editing);
   }
 
+  // should make more general to support clearing of any state field
+  static AppState clearEditing(AppState oldState, dynamic clearing) {
+    return clearing is Activity
+      ? oldState.copyWith(editingActivity: null)
+      : oldState.copyWith(editingType: null);
+  }
+
   static AppState setTheme(AppState oldState, ThemeData theme) {
     return oldState.copyWith(
       theme: theme,

@@ -132,7 +132,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                         child: new Builder(
                           builder: (BuildContext context) =>
                             new CollapsibleBody(
-                              onSave: () { Form.of(context).save(); close(); },
+                              onSave: () { Form.of(context).save(); close(); },  // should probably reset the editing field now
                               onCancel: () { Form.of(context).reset(); close(); },
                               child: new FormField<int>(
                                 initialValue: item.value,

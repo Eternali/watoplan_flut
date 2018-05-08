@@ -34,6 +34,7 @@ class ActivityTypeCard extends StatelessWidget {
           ),
           onTap: () {
             Intents.setFocused(Provider.of(context), indice: indice);
+            Intents.editEditing(Provider.of(context), new ActivityType.from(data));
             Navigator.of(context).pushNamed(Routes.addEditActivityType);
           },
           trailing: new IconButton(

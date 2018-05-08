@@ -125,6 +125,10 @@ class Intents {
     appState.value = Reducers.editEditing(appState.value, editing);
   }
 
+  static void clearEditing(AppStateObservable appState, dynamic clearing) {
+    appState.value = Reducers.clearEditing(appState.value, clearing);
+  }
+
   static void setTheme(AppStateObservable appState, String themeName) async {
     await SharedPreferences.getInstance()
       .then((prefs) => prefs.setString('theme', themeName));
