@@ -98,6 +98,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 maxLines: 1,
                 label: locales.validParams['name'](),
                 initVal: stateVal.editingActivity.data['name'],
+                // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
                 editField: (String changed) { stateVal.editingActivity.data['name'] = changed; print(stateVal.editingActivity.data['name']); },
               )
             ) : null,

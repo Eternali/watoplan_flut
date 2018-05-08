@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -123,6 +124,32 @@ class Intents {
 
   static void editEditing(AppStateObservable appState, dynamic editing) {
     appState.value = Reducers.editEditing(appState.value, editing);
+  }
+
+  static void inlineChange(
+    AppStateObservable appState,
+    dynamic editor,
+    { String param, dynamic value, String name, IconData icon, Color color, Map<String, dynamic> params }
+  ) {
+    if (editor is Activity && param != null) {
+      appState.value = Reducers.inlineEditChange(
+        appState.value,
+        Activity,
+        () => editor.copyWith(entries: [ new MapEntry(param, value ?? validParams[param]) ]));
+    } else if (editor is ActivityType) {
+      appState.value = Reducers.inlineEditChange(
+        appState.value,
+        ActivityType,
+        () => new ActivityType(
+          name: name ?? editor.name,
+          icon: icon ?? editor.icon,
+          color: color ?? editor.color,
+          params: params ?? editor.params,
+        )
+      );
+
+    }
+
   }
 
   static void clearEditing(AppStateObservable appState, dynamic clearing) {

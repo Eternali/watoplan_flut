@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/models.dart';
 
+typedef T EditingModifier<T>();
+
 class Reducers {
 
   static AppState set({
@@ -94,6 +96,17 @@ class Reducers {
     return editing is Activity
       ? oldState.copyWith(editingActivity: editing)
       : oldState.copyWith(editingType: editing);
+  }
+
+  // This is a very loose state modifier, it is only okay because we don't
+  // really care how the editing values (editingActivity and editingType) are being
+  // modified since they are really only temporary value containers.
+  static AppState inlineEditChange(AppState oldState, dynamic editing, EditingModifier modifier) {
+    if (editing is! Activity && editing is! ActivityType)
+      throw new Exception('Inline editing value must be an Activity or ActivityType');
+    return editing is Activity
+      ? oldState.copyWith(editingActivity: modifier())
+      : oldState.copyWith(editingType: modifier());
   }
 
   // should make more general to support clearing of any state field

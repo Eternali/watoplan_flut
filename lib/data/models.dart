@@ -8,6 +8,23 @@ import 'package:watoplan/data/person.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
+
+typedef dynamic OnCall(List);
+
+class VarargsFunction extends Function {
+  OnCall _onCall;
+
+  VarargsFunction(this._onCall);
+
+  call() => _onCall([]);
+
+  noSuchMethod(Invocation invocation) {
+    final arguments = invocation.positionalArguments;
+    return _onCall(arguments);
+  }
+}
+
+
 final Map<String, ActivitySort> validSorts = {
   'start': ActivitySorters.byStartTime,
   'end': ActivitySorters.byEndTime,
@@ -248,11 +265,17 @@ class Activity {
     int id,
     dynamic type,
     Map<String, dynamic> data,
-  }) => new Activity(
-    id: id ?? this._id,
-    type: type ?? this.typeId,
-    data: data ?? this.data,
-  );
+    List<MapEntry<String, dynamic>> entries,
+  }) {
+    Activity newActivity = new Activity(
+      id: id ?? this._id,
+      type: type ?? this.typeId,
+      data: data ?? this.data,
+    );
+    entries.forEach((entry) { newActivity.data[entry.key] = entry.value; });
+
+    return newActivity;
+  }
 
   Map<String, dynamic> toJson() => {
     '_id': _id,
