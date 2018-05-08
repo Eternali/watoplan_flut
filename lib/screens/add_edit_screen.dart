@@ -10,10 +10,8 @@ import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/custom_expansion.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/edit_text.dart';
-import 'package:watoplan/widgets/expansion_input.dart';
 import 'package:watoplan/widgets/tag_list_item.dart';
 import 'package:watoplan/widgets/noti_list.dart';
-import 'package:watoplan/widgets/wato_slider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
@@ -44,9 +42,12 @@ class AddEditScreenState extends State<AddEditScreen> {
         }
       });
     } else if (widget.tmpActivity.typeId == 0) {
-      widget.tmpActivity = widget.tmpActivity.copyWith(
-        type: stateVal.activities[stateVal.focused].typeId
-      );
+      print(stateVal.focused);
+      setState(() {
+        widget.tmpActivity = widget.tmpActivity.copyWith(
+          type: stateVal.activityTypes[-stateVal.focused - 1],
+        );
+      });
     }
     // final Activity tmpActivity = stateVal.focused >= 0
     //   ? new Activity.from(stateVal.activities[stateVal.focused])
@@ -106,90 +107,94 @@ class AddEditScreenState extends State<AddEditScreen> {
               )
             ) : null,
           widget.tmpActivity.data.containsKey('priority')
-            ? new CustomExpansion(
-              items: [
-                new ExpansionItem<int>(
-                  name: locales.validParams['priority'](),
-                  value: widget.tmpActivity.data['priority'],
-                  hint: '${locales.select} ${locales.validParams['priority']()}',
-                  valToString: (int priority) => priority.toString(),
-                  builder: (ExpansionItem<int> item) {
-                    void close() {
-                      setState(() {
-                        item.isExpanded = false;
-                      });
-                    }
+            ? new Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: new CustomExpansion(
+                items: [
+                  new ExpansionItem<int>(
+                    name: locales.validParams['priority'](),
+                    value: widget.tmpActivity.data['priority'],
+                    hint: '${locales.select} ${locales.validParams['priority']()}',
+                    valToString: (int priority) => priority.toString(),
+                    builder: (ExpansionItem<int> item) {
+                      void close() {
+                        setState(() {
+                          item.isExpanded = false;
+                        });
+                      }
 
-                    return new Form(
-                      child: new Builder(
-                        builder: (BuildContext context) =>
-                          new CollapsibleBody(
-                            onSave: () { Form.of(context).save(); close(); },
-                            onCancel: () { Form.of(context).reset(); close(); },
-                            child: new FormField<int>(
-                              initialValue: item.value,
-                              onSaved: (int value) { item.value = value; widget.tmpActivity.data['priority'] = value; },
-                              builder: (FormFieldState<int> field) => new Slider(
-                                value: field.value.toDouble(),
-                                min: 0.0,
-                                max: 10.0,
-                                divisions: 10,
-                                activeColor: type.color,
-                                onChanged: (double value) => field.didChange(value.round()),
+                      return new Form(
+                        child: new Builder(
+                          builder: (BuildContext context) =>
+                            new CollapsibleBody(
+                              onSave: () { Form.of(context).save(); close(); },
+                              onCancel: () { Form.of(context).reset(); close(); },
+                              child: new FormField<int>(
+                                initialValue: item.value,
+                                onSaved: (int value) { item.value = value; widget.tmpActivity.data['priority'] = value; },
+                                builder: (FormFieldState<int> field) => new Slider(
+                                  value: field.value.toDouble(),
+                                  min: 0.0,
+                                  max: 10.0,
+                                  divisions: 10,
+                                  activeColor: type.color,
+                                  onChanged: (double value) => field.didChange(value.round()),
+                                ),
                               ),
                             ),
-                          ),
-                      ),
-                    );
-                  }
-                ),
-              ],
-            // )
-            // ? new ExpansionTile(
-            //   title: new DualHeaderWithHint(
-            //     locales.validParams['priority'](),
-            //     '${locales.select} ${locales.validParams['priority']()}',
-            //     tmpActivity.data['priority'].toString(),
-            //     false,
-            //   ),
-            //   children: <Widget>[
-            //     new WatoSlider(
-            //       value: tmpActivity.data['priority'].toDouble(),
-            //       max: 10.0,
-            //       divisions: 10,
-            //       color: type.color,
-            //       labelPrefix: locales.priority,
-            //       onChanged: (value) { tmpActivity.data['priority'] = value.toInt(); },
-            //     ),
-            //   ]
+                        ),
+                      );
+                    }
+                  ),
+                ],
+              ),
             ) : null,
           widget.tmpActivity.data.containsKey('progress')
-            ? new ExpansionInput<int>(
-              title: locales.progress,
-              hint: '${locales.select} ${locales.validParams['progress']()}',
-              value: widget.tmpActivity.data['progress'] as int,
-              onSave: (progress) { widget.tmpActivity.data['progress'] = progress; },
-              builder: (context, dynamic field) => new Slider(
-                value: field.toDouble(),
-                min: 0.0,
-                max: 100.0,
-                divisions: 100,
-                activeColor: type.color,
-                onChanged: (value) { field = value.toInt(); },
+            ? new Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: new CustomExpansion(
+                items: [
+                  new ExpansionItem<int>(
+                    name: locales.validParams['progress'](),
+                    value: widget.tmpActivity.data['progress'],
+                    hint: '${locales.select} ${locales.validParams['progress']()}',
+                    valToString: (int progress) => progress.toString(),
+                    builder: (ExpansionItem<int> item) {
+                      void close() {
+                        setState(() {
+                          item.isExpanded = false;
+                        });
+                      }
+
+                      return new Form(
+                        child: new Builder(
+                          builder: (BuildContext context) =>
+                            new CollapsibleBody(
+                              onSave: () { Form.of(context).save(); close(); },
+                              onCancel: () { Form.of(context).reset(); close(); },
+                              child: new FormField<int>(
+                                initialValue: item.value,
+                                onSaved: (int value) { item.value = value; widget.tmpActivity.data['progress'] = value; },
+                                builder: (FormFieldState<int> field) => new Slider(
+                                  value: field.value.toDouble(),
+                                  min: 0.0,
+                                  max: 100.0,
+                                  divisions: 100,
+                                  activeColor: type.color,
+                                  onChanged: (double value) => field.didChange(value.round()),
+                                ),
+                              ),
+                            ),
+                        ),
+                      );
+                    }
+                  ),
+                ],
               ),
-              
-              // new WatoSlider(
-              //   value: tmpActivity.data['progress'].toDouble(),
-              //   max: 100.0,
-              //   divisions: 100,
-              //   color: type.color,
-              //   labelPrefix: locales.progress,
-              //   onChanged: (value) { tmpActivity.data['progress'] = value; },
-              // ),
             ) : null,
           widget.tmpActivity.data.containsKey('start')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: new EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['start'](),
                 color: Theme.of(context).disabledColor,
@@ -206,7 +211,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ) : null,
           widget.tmpActivity.data.containsKey('end')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: new EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['end'](),
                 color: Theme.of(context).disabledColor,
