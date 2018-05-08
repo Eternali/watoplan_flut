@@ -79,7 +79,6 @@ class ExpansionInputState extends State<ExpansionInput> {
           margin: const EdgeInsets.only(
             left: 24.0,
             right: 24.0,
-            bottom: 24.0
           ),
           child: new Center(
             child: new DefaultTextStyle(
@@ -88,7 +87,6 @@ class ExpansionInputState extends State<ExpansionInput> {
             )
           )
         ),
-        const Divider(height: 1.0),
         new Container(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           child: new Row(

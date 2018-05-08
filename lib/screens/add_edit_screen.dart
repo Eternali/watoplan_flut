@@ -18,9 +18,7 @@ import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
 
-  double prioritySlide = 0.0;
-  double progressSlide = 0.0;
-
+  Activity tmpActivity = new Activity(type: 0, data: {  });
 
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
@@ -31,13 +29,30 @@ class AddEditScreenState extends State<AddEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppState stateVal = Provider.of(context).value;
-    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
-    Activity tmpActivity = stateVal.focused >= 0
-      ? new Activity.from(stateVal.activities[stateVal.focused])
-      : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
-    ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == tmpActivity.typeId);
-    print(tmpActivity.toJson());
+    final AppState stateVal = Provider.of(context).value;
+    final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
+    if (stateVal.focused >= 0) {
+      if (widget.tmpActivity.typeId == 0) {
+        widget.tmpActivity = widget.tmpActivity.copyWith(
+          id: stateVal.activities[stateVal.focused].id,
+          type: stateVal.activities[stateVal.focused].typeId
+        );
+      }
+      stateVal.activities[stateVal.focused].data.forEach((name, value) {
+        if (!widget.tmpActivity.data.containsKey(name)) {
+          widget.tmpActivity.data[name] = value;
+        }
+      });
+    } else if (widget.tmpActivity.typeId == 0) {
+      widget.tmpActivity = widget.tmpActivity.copyWith(
+        type: stateVal.activities[stateVal.focused].typeId
+      );
+    }
+    // final Activity tmpActivity = stateVal.focused >= 0
+    //   ? new Activity.from(stateVal.activities[stateVal.focused])
+    //   : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
+    ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == widget.tmpActivity.typeId);
+    print(widget.tmpActivity.toJson());
     
     return new Scaffold(
       appBar: new AppBar(
@@ -55,11 +70,11 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               if (stateVal.focused < 0) {
-                print('\n\n${tmpActivity.toJson()}\n\n');
-                Intents.addActivities(Provider.of(context), [tmpActivity], notiPlug, type.name)
+                print('\n\n${widget.tmpActivity.toJson()}\n\n');
+                Intents.addActivities(Provider.of(context), [widget.tmpActivity], notiPlug, type.name)
                   .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
               } else {
-                Intents.changeActivity(Provider.of(context), tmpActivity, notiPlug, type.name);
+                Intents.changeActivity(Provider.of(context), widget.tmpActivity, notiPlug, type.name);
               }
               Navigator.pop(context);
             },
@@ -70,32 +85,32 @@ class AddEditScreenState extends State<AddEditScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         shrinkWrap: true,
         children: [
-          tmpActivity.data.containsKey('name')
+          widget.tmpActivity.data.containsKey('name')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 1,
                 label: locales.validParams['name'](),
-                initVal: tmpActivity.data['name'],
-                editField: (String changed) { print(changed); tmpActivity.data['name'] = changed; },
+                initVal: widget.tmpActivity.data['name'],
+                editField: (String changed) { print(changed); widget.tmpActivity.data['name'] = changed; },
               )
             ) : null,
-          tmpActivity.data.containsKey('desc')
+          widget.tmpActivity.data.containsKey('desc')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 3,
                 label: locales.validParams['desc'](),
-                initVal: tmpActivity.data['desc'],
-                editField: (String changed) { tmpActivity.data['desc'] = changed; },
+                initVal: widget.tmpActivity.data['desc'],
+                editField: (String changed) { widget.tmpActivity.data['desc'] = changed; },
               )
             ) : null,
-          tmpActivity.data.containsKey('priority')
+          widget.tmpActivity.data.containsKey('priority')
             ? new CustomExpansion(
               items: [
                 new ExpansionItem<int>(
                   name: locales.validParams['priority'](),
-                  value: tmpActivity.data['priority'],
+                  value: widget.tmpActivity.data['priority'],
                   hint: '${locales.select} ${locales.validParams['priority']()}',
                   valToString: (int priority) => priority.toString(),
                   builder: (ExpansionItem<int> item) {
@@ -113,14 +128,14 @@ class AddEditScreenState extends State<AddEditScreen> {
                             onCancel: () { Form.of(context).reset(); close(); },
                             child: new FormField<int>(
                               initialValue: item.value,
-                              onSaved: (int value) { item.value = value; },
-                              builder: (FormFieldState<int> field) => new WatoSlider(
+                              onSaved: (int value) { item.value = value; widget.tmpActivity.data['priority'] = value; },
+                              builder: (FormFieldState<int> field) => new Slider(
                                 value: field.value.toDouble(),
+                                min: 0.0,
                                 max: 10.0,
                                 divisions: 10,
-                                color: type.color,
-                                labelPrefix: locales.priority,
-                                onChanged: field.didChange,
+                                activeColor: type.color,
+                                onChanged: (double value) => field.didChange(value.round()),
                               ),
                             ),
                           ),
@@ -148,19 +163,19 @@ class AddEditScreenState extends State<AddEditScreen> {
             //     ),
             //   ]
             ) : null,
-          tmpActivity.data.containsKey('progress')
+          widget.tmpActivity.data.containsKey('progress')
             ? new ExpansionInput<int>(
               title: locales.progress,
               hint: '${locales.select} ${locales.validParams['progress']()}',
-              value: int.parse(tmpActivity.data['progress']),
-              onSave: (progress) { tmpActivity.data['progress'] = progress; },
-              builder: (context, field) => new Slider(
+              value: widget.tmpActivity.data['progress'] as int,
+              onSave: (progress) { widget.tmpActivity.data['progress'] = progress; },
+              builder: (context, dynamic field) => new Slider(
                 value: field.toDouble(),
                 min: 0.0,
                 max: 100.0,
                 divisions: 100,
                 activeColor: type.color,
-                onChanged: (value) { setState(() { field = value; }); },
+                onChanged: (value) { field = value.toInt(); },
               ),
               
               // new WatoSlider(
@@ -172,51 +187,51 @@ class AddEditScreenState extends State<AddEditScreen> {
               //   onChanged: (value) { tmpActivity.data['progress'] = value; },
               // ),
             ) : null,
-          tmpActivity.data.containsKey('start')
+          widget.tmpActivity.data.containsKey('start')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
                 label: locales.validParams['start'](),
                 color: Theme.of(context).disabledColor,
-                when: tmpActivity.data['start'],
+                when: widget.tmpActivity.data['start'],
                 setDate: (date) {
-                  tmpActivity.data['start'] = DateTimeUtils.fromDate(tmpActivity.data['start'], date);
-                  return tmpActivity.data['start'];                    
+                  widget.tmpActivity.data['start'] = DateTimeUtils.fromDate(widget.tmpActivity.data['start'], date);
+                  return widget.tmpActivity.data['start'];
                 },
                 setTime: (time) {
-                  tmpActivity.data['start'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['start'], time);
-                  return tmpActivity.data['start'];
+                  widget.tmpActivity.data['start'] = DateTimeUtils.fromTimeOfDay(widget.tmpActivity.data['start'], time);
+                  return widget.tmpActivity.data['start'];
                 },
               )
             ) : null,
-          tmpActivity.data.containsKey('end')
+          widget.tmpActivity.data.containsKey('end')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new DateTimePicker(
                 label: locales.validParams['end'](),
                 color: Theme.of(context).disabledColor,
-                when: tmpActivity.data['end'],
+                when: widget.tmpActivity.data['end'],
                 setDate: (date) {
-                  tmpActivity.data['end'] = DateTimeUtils.fromDate(tmpActivity.data['end'], date);
-                  return tmpActivity.data['end'];                    
+                  widget.tmpActivity.data['end'] = DateTimeUtils.fromDate(widget.tmpActivity.data['end'], date);
+                  return widget.tmpActivity.data['end'];
                 },
                 setTime: (time) {
-                    tmpActivity.data['end'] = DateTimeUtils.fromTimeOfDay(tmpActivity.data['end'], time);
-                  return tmpActivity.data['end'];
+                    widget.tmpActivity.data['end'] = DateTimeUtils.fromTimeOfDay(widget.tmpActivity.data['end'], time);
+                  return widget.tmpActivity.data['end'];
                 },
               )
             ) : null,
-          tmpActivity.data.containsKey('location')
+          widget.tmpActivity.data.containsKey('location')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Container(),                
             ) : null,
-          tmpActivity.data.containsKey('notis')
+          widget.tmpActivity.data.containsKey('notis')
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: new NotiList(tmpActivity),
+                child: new NotiList(widget.tmpActivity),
               ),
             ) : null,
           // tmpActivity.data.containsKey('tags')

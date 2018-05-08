@@ -82,7 +82,7 @@ class CollapsibleBody extends StatelessWidget {
   final VoidCallback onCancel;
 
   const CollapsibleBody({
-    this.margin: EdgeInsets.zero,
+    this.margin = EdgeInsets.zero,
     this.child,
     this.onSave,
     this.onCancel
@@ -97,8 +97,8 @@ class CollapsibleBody extends StatelessWidget {
       children: <Widget>[
         new Container(
           margin: const EdgeInsets.only(
-            left: 24.0,
-            right: 24.0,
+            left: 12.0,
+            right: 12.0,
             bottom: 24.0
           ) - margin,
           child: new Center(
@@ -110,7 +110,7 @@ class CollapsibleBody extends StatelessWidget {
         ),
         const Divider(height: 1.0),
         new Container(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -150,8 +150,8 @@ class CollapsibleBody extends StatelessWidget {
 class ExpansionItem<T> {
 
   final String name;
-  T value;
   final String hint;
+  T value;
   final TextEditingController textController;
   final ExpansionHeaderBuilder<T> builder;
   final ToString<T> valToString;
@@ -159,8 +159,8 @@ class ExpansionItem<T> {
 
   ExpansionItem({
     this.name,
-    this.value,
     this.hint,
+    this.value,
     this.builder,
     this.valToString,
   }) : textController = new TextEditingController(text: valToString(value));

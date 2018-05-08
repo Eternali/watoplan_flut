@@ -140,6 +140,20 @@ class ActivityType {
     );
   }
 
+  ActivityType copyWith({
+    int id,
+    String name,
+    IconData icon,
+    Color color,
+    Map<String, dynamic> params,
+  }) => new ActivityType(
+    id: id ?? this._id,
+    name: name ?? this.name,
+    icon: icon ?? this.icon,
+    color: color ?? this.color,
+    params: params ?? this.params,
+  );
+
   Map<String, dynamic> toJson() => {
     '_id': _id,
     'name': name,
@@ -203,6 +217,16 @@ class Activity {
       data: Converters.paramsFromJson(jsonMap['data']),
     );
   }
+
+  Activity copyWith({
+    int id,
+    dynamic type,
+    Map<String, dynamic> data,
+  }) => new Activity(
+    id: id ?? this._id,
+    type: type ?? this.typeId,
+    data: data ?? this.data,
+  );
 
   Map<String, dynamic> toJson() => {
     '_id': _id,
