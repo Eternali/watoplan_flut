@@ -29,35 +29,8 @@ class AddEditScreenState extends State<AddEditScreen> {
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
-    // if (stateVal.focused >= 0) {
-    //   if (stateVal.editingActivity.typeId == -1) {
-    //     print('\nCHANGING ACTIVITY (TYPE)\n\n');
-    //     stateVal.editingActivity = stateVal.editingActivity.copyWith(
-    //       id: stateVal.activities[stateVal.focused].id,
-    //       type: stateVal.activities[stateVal.focused].typeId
-    //     );
-    //   }
-    //   stateVal.activities[stateVal.focused].data.forEach((name, value) {
-    //     if (!stateVal.editingActivity.data.containsKey(name)) {
-    //     print('\nCHANGING ACTIVITY (DATA)\n\n');          
-    //       stateVal.editingActivity.data[name] = value;
-    //     }
-    //   });
-    // } else if (stateVal.editingActivity.typeId == -1) {
-    //   print('\nCHANGING ACTIVITY (ADDING)\n\n');
-    //   setState(() {
-    //     stateVal.editingActivity = stateVal.editingActivity.copyWith(
-    //       type: stateVal.activityTypes[-stateVal.focused - 1],
-    //     );
-    //     print(stateVal.editingActivity.typeId);
-    //   });
-    // }
-    // final Activity tmpActivity = stateVal.focused >= 0
-    //   ? new Activity.from(stateVal.activities[stateVal.focused])
-    //   : new Activity(type: stateVal.activityTypes[-(stateVal.focused + 1)], data: {  });
     ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
-    print(stateVal.editingActivity.toJson());
-    
+
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: type.color,
@@ -96,7 +69,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 label: locales.validParams['name'](),
                 initVal: stateVal.editingActivity.data['name'],
                 // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
-                editField: (String changed) { stateVal.editingActivity.data['name'] = changed; print(stateVal.editingActivity.data['name']); },
+                editField: (String changed) { stateVal.editingActivity.data['name'] = changed; },
               )
             ) : null,
           stateVal.editingActivity.data.containsKey('desc')
@@ -106,7 +79,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 maxLines: 3,
                 label: locales.validParams['desc'](),
                 initVal: stateVal.editingActivity.data['desc'],
-                editField: (String changed) { stateVal.editingActivity.data['desc'] = changed; print(stateVal.editingActivity.data['name']); },
+                editField: (String changed) { stateVal.editingActivity.data['desc'] = changed; },
               )
             ) : null,
           stateVal.editingActivity.data.containsKey('priority')

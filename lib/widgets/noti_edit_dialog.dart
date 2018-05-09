@@ -4,7 +4,9 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 
-Widget checkedItem({ String name, bool active, VoidCallback onTap, ThemeData theme }) {
+typedef String ActivatableString(bool active);
+
+Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, ThemeData theme }) {
   return new InkWell(
     onTap: onTap,
     child: new Padding(
@@ -12,7 +14,7 @@ Widget checkedItem({ String name, bool active, VoidCallback onTap, ThemeData the
       child: new Row(
         children: <Widget>[
           new Text(
-            name,
+            name(active),
             style: new TextStyle(
               color: active ? theme.accentColor : theme.textTheme.subhead.color
             ),
@@ -51,7 +53,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   initState() {
     super.initState();
     _controller = new TextEditingController(text: '10')
-      ..addListener(() => widget.timeBefore.time = int.parse(_controller.value.text));
+      ..addListener(() => widget.timeBefore.reduced = int.parse(_controller.value.text));
   }
 
   @override
@@ -77,38 +79,38 @@ class NotiEditDialogState extends State<NotiEditDialog> {
                 ),
               ),
               checkedItem(
-                name: 'Minutes',
+                name: (active) => 'Minutes ${active ? 'before' : ''}',
                 active: timeActive(TimeUnits[0]),
                 onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[0]; }); },
                 theme: theme,
               ),
               checkedItem(
-                name: 'Hours',
+                name: (active) => 'Hours ${active ? 'before' : ''}',
                 active: timeActive(TimeUnits[1]),
                 onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[1]; }); },
                 theme: theme,
               ),
               checkedItem(
-                name: 'Days',
+                name: (active) => 'Days ${active ? 'before' : ''}',
                 active: timeActive(TimeUnits[2]),
                 onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[2]; }); },
                 theme: theme,
               ),
               new Divider(),
               checkedItem(
-                name: 'as Notification',
+                name: (_) => 'as Notification',
                 active: typeActive(NotiTypes['PUSH']),
                 onTap: () { setState(() { widget.type = NotiTypes['PUSH']; }); },
                 theme: theme,
               ),
               checkedItem(
-                name: 'as Email',
+                name: (_) => 'as Email',
                 active: typeActive(NotiTypes['EMAIL']),
                 onTap: () { setState(() { widget.type = NotiTypes['EMAIL']; }); },
                 theme: theme,
               ),
               checkedItem(
-                name: 'as SMS',
+                name: (_) => 'as SMS',
                 active: typeActive(NotiTypes['SMS']),
                 onTap: () { setState(() { widget.type = NotiTypes['SMS']; }); },
                 theme: theme,
@@ -141,7 +143,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
                 id: widget.noti.id,
                 title: widget.noti.title,
                 msg: widget.noti.title,
-                when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.realTime),
+                when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.millis),
                 type: widget.type,
                 generateNext: widget.noti.generateNext,
               ),

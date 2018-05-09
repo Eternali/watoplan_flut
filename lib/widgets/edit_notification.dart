@@ -53,7 +53,8 @@ class EditNotificationState extends State<EditNotification> {
         children: <Widget>[
           new Expanded(
             child: new Text(
-              '${widget.timeBefore.time.toString()} minutes before as ${widget.noti.type.name.toLowerCase()}',
+              '${widget.timeBefore.reduced} ${widget.timeBefore.unit.key}${widget.timeBefore.reduced > 1 ? 's' : ''} '
+              'before as ${widget.noti.type.name.toLowerCase()}',
               style: new TextStyle(
                 fontSize: 16.0,
               ),

@@ -11,16 +11,27 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class TimeBefore {
-  int time;
+  int millis;
   MapEntry<String, int> unit;
-  int get realTime => time * unit.value;
-  TimeBefore({ this.time, this.unit }) {
+  int get reduced => (millis / unit.value).round();
+  set reduced(int relativeVal) { millis = relativeVal * unit.value; }
+  TimeBefore({ this.millis, this.unit }) {
     if (!TimeUnits.contains(unit))
       throw Exception('${unit.key} is not a supported unit of time');
   }
 
   factory TimeBefore.getProper(int before, int after) {
-    return new TimeBefore(time: 10, unit: TimeUnits[0]);
+    int diff = before - after;
+    print(DateTime.fromMillisecondsSinceEpoch(before).toString());
+    print(DateTime.fromMillisecondsSinceEpoch(after).toString());
+    print('\n$diff\n\n');
+    MapEntry<String, int> unit = new MapEntry('minute', 1);
+
+    TimeUnits.forEach((tunit) {
+      if (diff / tunit.value >= unit.value) unit = tunit;
+    });
+
+    return new TimeBefore(millis: diff, unit: unit);
   }
 }
 
@@ -65,6 +76,7 @@ class Noti {
   }) {
     switch (type.name) {
       case 'PUSH':
+      print('\n\n$when\n\n');
         NotificationDetails platformSpecifics = new NotificationDetails(
           new NotificationDetailsAndroid(
             owner.typeId.toString() ?? id,
