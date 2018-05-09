@@ -44,6 +44,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
             onPressed: () {
               if (stateVal.focused >= 0) Intents.changeActivityType(Provider.of(context), stateVal.editingType);
               else Intents.addActivityTypes(Provider.of(context), [stateVal.editingType]);
+              // Inten
               Navigator.pop(context);
             },
           )

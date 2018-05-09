@@ -26,26 +26,33 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
+  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types) {
+    return types.map(
+      (it) => new SubFAB(
+        icon: it.icon,
+        color: it.color,
+        onPressed: () {
+          Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
+          Intents.editEditing(
+            Provider.of(context),
+            new Activity(
+              type: it,
+              data: it.params
+                ..map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+            )
+          );
+          Navigator.of(context).pushNamed(Routes.addEditActivity);
+        },
+      )
+    ).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
     WatoplanLocalizations locales = WatoplanLocalizations.of(context);
 
-    List<SubFAB> typesToSubFabs(List<ActivityType> types) {
-      return types.map(
-        (it) => new SubFAB(
-          icon: it.icon,
-          color: it.color,
-          onPressed: () {
-            Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
-            Intents.editEditing(Provider.of(context), new Activity(type: it, data: {  }));
-            Navigator.of(context).pushNamed(Routes.addEditActivity);
-          },
-        )
-      ).toList();
-    }
-
-    widget.subFabs.value = typesToSubFabs(stateVal.activityTypes);
+    widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes);
 
     return new Scaffold(
       appBar: new AppBar(

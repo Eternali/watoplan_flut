@@ -18,9 +18,6 @@ import 'package:watoplan/defaults.dart';
 
 class AddEditScreen extends StatefulWidget {
 
-  // the bug with data being deleted is because this is bein run more than I would have thought.
-  // Activity tmpActivity = new Activity(type: defaultActivityTypes[0], data: {  });
-
   @override
   State<AddEditScreen> createState() => new AddEditScreenState();
 
