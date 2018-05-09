@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/widgets/edit_notification.dart';
+import 'package:watoplan/widgets/noti_list_item.dart';
 import 'package:watoplan/widgets/noti_edit_dialog.dart';
 
 class NotiList extends StatefulWidget {
@@ -28,7 +28,7 @@ class NotiListState extends State<NotiList> {
         widget.activity.data['notis'].length > 0
           ? new Column(
               children: (widget.activity.data['notis'] as List<Noti>).map(
-                (noti) => new EditNotification(
+                (noti) => new NotiListItem(
                   noti: noti,
                   activity: widget.activity,
                   remove: () {
@@ -51,7 +51,11 @@ class NotiListState extends State<NotiList> {
                 noti: new Noti(
                   title: widget.activity.data['name'],
                   msg: widget.activity.data['desc'],
-                  when: new DateTime(2018),
+                  when: new DateTime.fromMillisecondsSinceEpoch(
+                    widget.activity.data.containsKey('start')
+                      ? widget.activity.data['start'].millisecondsSinceEpoch - TimeUnits[0].value * 10
+                      : widget.activity.data['end'].millisecondsSinceEpoch - TimeUnits[0].value * 10
+                  ),
                   type: NotiTypes['PUSH'],
                 ),
                 timeBefore: new TimeBefore(

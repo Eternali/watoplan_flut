@@ -11,11 +11,10 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class TimeBefore {
-  int millis;
+  int time;
   MapEntry<String, int> unit;
-  int get reduced => (millis / unit.value).round();
-  set reduced(int relativeVal) { millis = relativeVal * unit.value; }
-  TimeBefore({ this.millis, this.unit }) {
+  int get millis => (millis / unit.value).round();
+  TimeBefore({ this.time, this.unit }) {
     if (!TimeUnits.contains(unit))
       throw Exception('${unit.key} is not a supported unit of time');
   }
@@ -31,14 +30,14 @@ class TimeBefore {
       if (diff / tunit.value >= unit.value) unit = tunit;
     });
 
-    return new TimeBefore(millis: diff, unit: unit);
+    return new TimeBefore(time: diff, unit: unit);
   }
 }
 
 const List<MapEntry<String, int>> TimeUnits = [
-  const MapEntry('minute', 1),
-  const MapEntry('hour', 60),
-  const MapEntry('day', 24 * 60),
+  const MapEntry('minute', 60000),
+  const MapEntry('hour', 60 * 60000),
+  const MapEntry('day', 24 * 60 * 60000),
 ];
 
 

@@ -53,7 +53,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   initState() {
     super.initState();
     _controller = new TextEditingController(text: '10')
-      ..addListener(() => widget.timeBefore.reduced = int.parse(_controller.value.text));
+      ..addListener(() => widget.timeBefore.time = int.parse(_controller.value.text));
   }
 
   @override
