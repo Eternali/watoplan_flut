@@ -8,22 +8,15 @@ class NotiListItem extends StatefulWidget {
 
   Noti noti;
   final Activity activity;
-  TimeBefore timeBefore;
   final VoidCallback remove;
 
-  NotiListItem({ this.noti, this.activity, this.remove }) {
-    if (activity.data.containsKey('start')) {
-      timeBefore = TimeBefore.getProper(
-        activity.data['start'].millisecondsSinceEpoch,
-        noti.when.millisecondsSinceEpoch
-      );
-    } else if (activity.data.containsKey('end')) {
-      timeBefore = TimeBefore.getProper(
-        activity.data['end'].millisecondsSinceEpoch,
-        noti.when.millisecondsSinceEpoch
-      );
-    }
-  }
+  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
+  TimeBefore get timeBefore => TimeBefore.getProper(
+    noti.when.millisecondsSinceEpoch,
+    activity.data[toi].millisecondsSinceEpoch,
+  );
+
+  NotiListItem({ this.noti, this.activity, this.remove });
 
   @override
   State<NotiListItem> createState() => new NotiListItemState();
@@ -36,16 +29,17 @@ class NotiListItemState extends State<NotiListItem> {
   Widget build(BuildContext context) {
     return new InkWell(
       onTap: () {
-        showDialog<Noti>(
+        showDialog<List>(
           context: context,
           child: new NotiEditDialog(
-            noti: widget.noti,
+            type: widget.noti.type,
             timeBefore: widget.timeBefore,
           ),
-        ).then((Noti n) {
-          if (n != null)
+        ).then((List tmb) {  // time and milliseconds before
+          if (tmb != null)
             setState(() {
-              widget.noti = n;
+              widget.noti.type = tmb[0];
+              widget.noti.when = new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]);
             });
         });
       },
@@ -53,7 +47,7 @@ class NotiListItemState extends State<NotiListItem> {
         children: <Widget>[
           new Expanded(
             child: new Text(
-              '${widget.timeBefore.time} ${widget.timeBefore.unit.key}${widget.timeBefore.time > 1 ? 's' : ''} '
+              '${widget.timeBefore.time} ${widget.timeBefore.unit.key}${widget.timeBefore.time.abs() != 1 ? 's' : ''} '
               'before as ${widget.noti.type.name.toLowerCase()}',
               style: new TextStyle(
                 fontSize: 16.0,

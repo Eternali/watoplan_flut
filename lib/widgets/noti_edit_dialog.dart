@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 
 typedef String ActivatableString(bool active);
@@ -29,13 +28,10 @@ Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, Th
 
 class NotiEditDialog extends StatefulWidget {
 
-  Noti noti;
-  TimeBefore timeBefore;
   NotiType type;
+  TimeBefore timeBefore;
 
-  NotiEditDialog({ this.noti, this.timeBefore }) {
-    type = noti.type;
-  }
+  NotiEditDialog({ this.type, this.timeBefore });
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -139,14 +135,15 @@ class NotiEditDialogState extends State<NotiEditDialog> {
           onPressed: () {
             Navigator.pop(
               context,
-              new Noti(
-                id: widget.noti.id,
-                title: widget.noti.title,
-                msg: widget.noti.title,
-                when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.millis),
-                type: widget.type,
-                generateNext: widget.noti.generateNext,
-              ),
+              [widget.type, widget.timeBefore.millis],
+              // new Noti(
+              //   id: widget.noti.id,
+              //   title: widget.noti.title,
+              //   msg: widget.noti.title,
+              //   when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.millis),
+              //   type: widget.type,
+              //   generateNext: widget.noti.generateNext,
+              // ),
             );
           },
         )

@@ -13,24 +13,21 @@ import 'package:watoplan/utils/data_utils.dart';
 class TimeBefore {
   int time;
   MapEntry<String, int> unit;
-  int get millis => (millis / unit.value).round();
+  int get millis => time * unit.value;
   TimeBefore({ this.time, this.unit }) {
     if (!TimeUnits.contains(unit))
       throw Exception('${unit.key} is not a supported unit of time');
   }
 
   factory TimeBefore.getProper(int before, int after) {
-    int diff = before - after;
-    print(DateTime.fromMillisecondsSinceEpoch(before).toString());
-    print(DateTime.fromMillisecondsSinceEpoch(after).toString());
-    print('\n$diff\n\n');
-    MapEntry<String, int> unit = new MapEntry('minute', 1);
+    int diff = after - before;
+    MapEntry<String, int> unit = TimeUnits[0];
 
     TimeUnits.forEach((tunit) {
       if (diff / tunit.value >= unit.value) unit = tunit;
     });
 
-    return new TimeBefore(time: diff, unit: unit);
+    return new TimeBefore(time: (diff / unit.value).round(), unit: unit);
   }
 }
 

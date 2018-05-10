@@ -207,8 +207,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Container(),                
             ) : null,
-          stateVal.editingActivity.data.
-          stateVal.editingActivity.data.containsKey('notis') && stateVal.editingActivity.data.containsKey(key)
+          stateVal.editingActivity.data.keys.where((key) => ['start', 'end', 'notis'].contains(key)).length > 1
             ? new Padding(
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Padding(

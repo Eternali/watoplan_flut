@@ -10,6 +10,8 @@ class NotiList extends StatefulWidget {
 
   final Activity activity;
 
+  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
+
   NotiList(this.activity);
 
   @override
@@ -45,28 +47,35 @@ class NotiListState extends State<NotiList> {
           : null,
         new InkWell(
           onTap: () {
-            showDialog<Noti>(
+            showDialog<List>(
               context: context,
               child: new NotiEditDialog(
-                noti: new Noti(
-                  title: widget.activity.data['name'],
-                  msg: widget.activity.data['desc'],
-                  when: new DateTime.fromMillisecondsSinceEpoch(
-                    widget.activity.data.containsKey('start')
-                      ? widget.activity.data['start'].millisecondsSinceEpoch - TimeUnits[0].value * 10
-                      : widget.activity.data['end'].millisecondsSinceEpoch - TimeUnits[0].value * 10
-                  ),
-                  type: NotiTypes['PUSH'],
-                ),
+                // noti: new Noti(
+                //   title: widget.activity.data['name'],
+                //   msg: widget.activity.data['desc'],
+                //   when: new DateTime.fromMillisecondsSinceEpoch(
+                //     widget.activity.data.containsKey('start')
+                //       ? widget.activity.data['start'].millisecondsSinceEpoch - TimeUnits[0].value * 10
+                //       : widget.activity.data['end'].millisecondsSinceEpoch - TimeUnits[0].value * 10
+                //   ),
+                //   type: NotiTypes['PUSH'],
+                // ),
+                type: NotiTypes['PUSH'],
                 timeBefore: new TimeBefore(
                   time: 10,
                   unit: TimeUnits[0],
                 ),
               ),
-            ).then((Noti n) {
-              if (n != null)
+            ).then((List tmb) {  // time and milliseconds before
+              print(tmb.toString());
+              if (tmb != null)
                 setState(() {
-                  widget.activity.data['notis'].add(n);
+                  widget.activity.data['notis'].add(new Noti(
+                    title: widget.activity.data['name'],
+                    msg: widget.activity.data['desc'],
+                    when: new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]),
+                    type: tmb[0],
+                  ));
                 });
             });
           },
