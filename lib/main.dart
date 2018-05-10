@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/init_plugs.dart';
+import 'package:watoplan/run_after.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/routes.dart';
@@ -14,10 +15,11 @@ import 'package:watoplan/screens/add_edit_type_screen.dart';
 import 'package:watoplan/screens/settings_screen.dart';
 import 'package:watoplan/screens/about_screen.dart';
 
-void main() {
+void main() async {
   runApp(
     new Watoplan()
   );
+  await runDelayed();
 }
 
 class Watoplan extends StatefulWidget {
