@@ -30,8 +30,9 @@ class NotiEditDialog extends StatefulWidget {
 
   NotiType type;
   TimeBefore timeBefore;
+  bool isNew;
 
-  NotiEditDialog({ this.type, this.timeBefore });
+  NotiEditDialog({ this.type, this.timeBefore, this.isNew = true });
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -59,7 +60,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
     return new AlertDialog(
       contentPadding: new EdgeInsets.all(0.0),
       title: new Center(
-        child: new Text(WatoplanLocalizations.of(context).newNoti),
+        child: new Text(widget.isNew ? WatoplanLocalizations.of(context).newNoti : WatoplanLocalizations.of(context).editNoti),
       ),
       content: new SingleChildScrollView(
         child: new Padding(
@@ -136,14 +137,6 @@ class NotiEditDialogState extends State<NotiEditDialog> {
             Navigator.pop(
               context,
               [widget.type, widget.timeBefore.millis],
-              // new Noti(
-              //   id: widget.noti.id,
-              //   title: widget.noti.title,
-              //   msg: widget.noti.title,
-              //   when: new DateTime.fromMillisecondsSinceEpoch(widget.noti.when.millisecondsSinceEpoch - widget.timeBefore.millis),
-              //   type: widget.type,
-              //   generateNext: widget.noti.generateNext,
-              // ),
             );
           },
         )

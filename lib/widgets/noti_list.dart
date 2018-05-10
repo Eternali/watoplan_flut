@@ -50,21 +50,12 @@ class NotiListState extends State<NotiList> {
             showDialog<List>(
               context: context,
               child: new NotiEditDialog(
-                // noti: new Noti(
-                //   title: widget.activity.data['name'],
-                //   msg: widget.activity.data['desc'],
-                //   when: new DateTime.fromMillisecondsSinceEpoch(
-                //     widget.activity.data.containsKey('start')
-                //       ? widget.activity.data['start'].millisecondsSinceEpoch - TimeUnits[0].value * 10
-                //       : widget.activity.data['end'].millisecondsSinceEpoch - TimeUnits[0].value * 10
-                //   ),
-                //   type: NotiTypes['PUSH'],
-                // ),
                 type: NotiTypes['PUSH'],
                 timeBefore: new TimeBefore(
                   time: 10,
                   unit: TimeUnits[0],
                 ),
+                isNew: true,
               ),
             ).then((List tmb) {  // time and milliseconds before
               print(tmb.toString());

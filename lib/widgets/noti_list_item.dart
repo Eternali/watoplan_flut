@@ -34,6 +34,7 @@ class NotiListItemState extends State<NotiListItem> {
           child: new NotiEditDialog(
             type: widget.noti.type,
             timeBefore: widget.timeBefore,
+            isNew: false,
           ),
         ).then((List tmb) {  // time and milliseconds before
           if (tmb != null)
