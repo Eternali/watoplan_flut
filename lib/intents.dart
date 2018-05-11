@@ -27,13 +27,13 @@ class Intents {
       //     }
       //   }
       // });
-      // .then((data) async {
-      //   if (data[0].length < 1) {
-      //     List defaults = await LoadDefaults.loadDefaultData(() {});
-      //     LocalDb().saveOver(defaults[0], defaults[1]);
-      //     return defaults;
-      //   } else return data;
-      .then((data) {
+      .then((data) async {
+        if (data[0].length < 1) {
+          List defaults = await LoadDefaults.loadDefaultData();
+          // LocalDb().saveOver(defaults[0], defaults[1]);
+          return defaults;
+        } else return data;
+      }).then((data) {
         appState.value = Reducers.set(
           activityTypes: data[0],
           activities: data[1],

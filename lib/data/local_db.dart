@@ -52,11 +52,11 @@ class LocalDb {
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
 
-    await _db.readAsString()
-      .then(
-        (contents) { print('here'); return json.decode(contents);},
-        onError: (err) => { 'activityTypes': [], 'activities': [] }
-      ); //.then((parsed) {
+    await _db.readAsString();
+      // .then(
+      //   (contents) { print('here'); return json.decode(contents);},
+      //   onError: (err) => { 'activityTypes': [], 'activities': [] }
+      // ); //.then((parsed) {
       //   print('in parsed');
       //   parsed['activityTypes'].forEach(
       //     (type) { activityTypes.add(new ActivityType.fromJson(type)); }

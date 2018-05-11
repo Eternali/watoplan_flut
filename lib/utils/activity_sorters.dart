@@ -30,6 +30,7 @@ typedef bool SortCmp<T>(T a, T b, bool dir);
 class ActivitySorters {
 
   static List<Activity> byStartTime(List<Activity> activities, [ bool rev = false ]) {
+    if (activities.length < 1) return activities;
     List<Activity> newActivities = new List.from(activities);
 
     quicksort(
@@ -48,6 +49,7 @@ class ActivitySorters {
   }
 
   static List<Activity> byEndTime(List<Activity> activities, [ bool rev = false ]) {
+    if (activities.length < 1) return activities;    
     List<Activity> newActivities = new List.from(activities);
 
     quicksort(
@@ -66,6 +68,7 @@ class ActivitySorters {
   }
 
   static List<Activity> byPriority(List<Activity> activities, [ bool rev = false ]) {
+    if (activities.length < 1) return activities;
     List<Activity> newActivities = new List.from(activities);
 
     quicksort(
@@ -84,6 +87,7 @@ class ActivitySorters {
   }
 
   static List<Activity> byProgress(List<Activity> activities, [ bool rev = false ]) {
+    if (activities.length < 1) return activities;
     List<Activity> newActivities = new List.from(activities);
 
     quicksort(
@@ -104,6 +108,7 @@ class ActivitySorters {
   // order activities by type where type order is determined by
   // the number of activities associated with each type.
   static List<Activity> byType(List<Activity> activities, [ bool rev = false ]) {
+    if (activities.length < 1) return activities;
     List<Activity> newActivities = new List.from(activities);
 
     List<int> typeIds = newActivities.map((activity) => activity.typeId).toList();

@@ -26,19 +26,19 @@ class LoadDefaults {
       });
   }
 
-  static Future<List> loadDefaultData(Function onError) async {
+  static Future loadDefaultData() async {
+    print('ehy');
     return rootBundle.loadString(dataFile)
-      .then((contents) => json.decode(contents))
-      .then((parsed) {
-        if (parsed is! Map || !parsed.containsKey('activityTypes') || parsed['activityTypes'] is! List) return onError();
+      .then((contents) => [[], []]);
+    //   .then((parsed) {
+    //     // if (parsed is! Map || !parsed.containsKey('activityTypes') || parsed['activityTypes'] is! List) return onError();
 
-        List activityTypes = parsed['activityTypes'].map((type) => new ActivityType.fromJson(type)).toList();
-        List<Activity> activities = parsed.containsKey('activities') && parsed['activities'] is List
-          ? parsed['activities'].map((activity) => new Activity.fromJson(activity, activityTypes)).toList()
-          : [];
+    //     List activityTypes = []; //parsed['activityTypes'].map((type) => new ActivityType.fromJson(type)).toList();
+    //     List<Activity> activities = []; //parsed.containsKey('activities') && parsed['activities'] is List
+          // ? parsed['activities'].map((activity) => new Activity.fromJson(activity, activityTypes)).toList()
+          // : [];
 
-        return [activityTypes, activities];
-      });
+      // });
   }
 
 
