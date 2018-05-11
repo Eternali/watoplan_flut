@@ -31,7 +31,7 @@ class LocalDb {
 
   LocalDb._init(loc) {
     _db = new File(loc);
-    _db.createSync();
+    // _db.createSync();
   }
 
   void destroy() {
@@ -54,17 +54,17 @@ class LocalDb {
 
     await _db.readAsString()
       .then(
-        (contents) => json.decode(contents),
+        (contents) { print('here'); return json.decode(contents);},
         onError: (err) => { 'activityTypes': [], 'activities': [] }
-      ).then((parsed) {
-        print('in parsed');
-        parsed['activityTypes'].forEach(
-          (type) { activityTypes.add(new ActivityType.fromJson(type)); }
-        );
-        parsed['activities'].forEach(
-          (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
-        );
-      }).catchError((err) { print('\n\n\n$err');});
+      ); //.then((parsed) {
+      //   print('in parsed');
+      //   parsed['activityTypes'].forEach(
+      //     (type) { activityTypes.add(new ActivityType.fromJson(type)); }
+      //   );
+      //   parsed['activities'].forEach(
+      //     (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
+      //   );
+      // }).catchError((err) { print('\n\n\n$err');});
 
     return [activityTypes, activities];
   }
