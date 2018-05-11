@@ -1,0 +1,187 @@
+{
+  "activityTypes": [
+    {
+      "_id": 15776,
+      "name": "activity",
+      "icon": "0x0E84E",
+      "color": "0xff607d8b",
+      "params": {
+        "name": "",
+        "desc": "",
+        "progress": 0,
+        "priority": 0,
+        "start": "1525976515775",
+        "end": "1525976515775",
+        "notis": []
+      }
+    },
+    {
+      "_id": 1415779,
+      "name": "event",
+      "icon": "0x0E878",
+      "color": "0xffff5722",
+      "params": {
+        "name": "",
+        "desc": "",
+        "priority": 0,
+        "start": "1525976515779",
+        "end": "1525976515779",
+        "notis": []
+      }
+    },
+    {
+      "_id": 1115779,
+      "name": "meeting",
+      "icon": "0x0E7FC",
+      "color": "0xff4caf50",
+      "params": {
+        "name": "",
+        "desc": "",
+        "priority": 0,
+        "start": "1525976515779",
+        "end": "1525976515779",
+        "notis": []
+      }
+    },
+    {
+      "_id": 4015779,
+      "name": "assessment",
+      "icon": "0x0E88B",
+      "color": "0xff9c27b0",
+      "params": {
+        "name": "",
+        "desc": "",
+        "progress": 0,
+        "priority": 0,
+        "start": "1525976515779",
+        "notis": []
+      }
+    },
+    {
+      "_id": 4354356,
+      "name": "project",
+      "icon": "0x0E0DF",
+      "color": "0xffe91e63",
+      "params": {
+        "name": "",
+        "desc": "",
+        "progress": 0,
+        "priority": 0,
+        "start": "1525989354356",
+        "end": "1525976515779",
+        "notis": []
+      }
+    }
+  ],
+  "activities": [
+    {
+      "_id": 104453,
+      "typeId": 2204449,
+      "data": {
+        "name": "new name",
+        "desc": "new description more",
+        "progress": 0,
+        "priority": 0,
+        "start": "1514782800000",
+        "end": "1525998604449",
+        "notis": []
+      }
+    },
+    {
+      "_id": 3904456,
+      "typeId": 3004445,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "progress": 0,
+        "priority": 0,
+        "start": "1483246800000",
+        "end": "1525998604445",
+        "notis": [
+          {
+            "_id": 304456,
+            "title": "",
+            "msg": "",
+            "when": "1514782800000",
+            "type": "EMAIL"
+          }
+        ]
+      }
+    },
+    {
+      "_id": 1204456,
+      "typeId": 3704448,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "priority": 0,
+        "start": "1262322000000",
+        "end": "1525998604448",
+        "notis": []
+      }
+    },
+    {
+      "_id": 3004456,
+      "typeId": 3004445,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "progress": 0,
+        "priority": 0,
+        "start": "1420088400000",
+        "end": "1525998604445",
+        "notis": []
+      }
+    },
+    {
+      "_id": 1304456,
+      "typeId": 2604448,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "priority": 0,
+        "start": "1230786000000",
+        "end": "1525998604448",
+        "notis": []
+      }
+    },
+    {
+      "_id": 1304456,
+      "typeId": 3004445,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "progress": 0,
+        "priority": 0,
+        "start": "1293858000000",
+        "end": "1525998604445",
+        "notis": []
+      }
+    },
+    {
+      "_id": 3404456,
+      "typeId": 3704448,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "priority": 0,
+        "start": "1199163600000",
+        "end": "1525998604448",
+        "notis": []
+      }
+    },
+    {
+      "_id": 2504457,
+      "typeId": 3004445,
+      "data": {
+        "name": "TEST NAME",
+        "desc": "TEST DESCRIPTION",
+        "progress": 0,
+        "priority": 0,
+        "start": "1167627600000",
+        "end": "1525998604445",
+        "notis": []
+      }
+    }
+  ]
+}

@@ -14,8 +14,6 @@ import 'package:watoplan/widgets/tag_list_item.dart';
 import 'package:watoplan/widgets/noti_list.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
-import 'package:watoplan/defaults.dart';
-
 class AddEditScreen extends StatefulWidget {
 
   @override

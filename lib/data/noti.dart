@@ -72,7 +72,6 @@ class Noti {
   }) {
     switch (type.name) {
       case 'PUSH':
-      print('\n\n$when\n\n');
         NotificationDetails platformSpecifics = new NotificationDetails(
           new NotificationDetailsAndroid(
             owner.typeId.toString() ?? id,

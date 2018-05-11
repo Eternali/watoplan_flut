@@ -6,18 +6,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
-import 'package:watoplan/defaults.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/reducers.dart';
+import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
   static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
-      .then((db) { db.saveOver(defaultActivityTypes, defaultActivities); return db; })  // for initial dataset population / reset
       .then((db) => db.loadAtOnce())
       // .then((dataStream) async {
       //   await for (var item in dataStream) {
@@ -28,7 +27,13 @@ class Intents {
       //     }
       //   }
       // });
-      .then((data) {
+      .then((data) async {
+        if (data[0].length < 1) {
+          List defaults = await LoadDefaults.loadDefaultData(() {});
+          LocalDb().saveOver(defaults[0], defaults[1]);
+          return defaults;
+        } else return data;
+      }).then((data) {
         appState.value = Reducers.set(
           activityTypes: data[0],
           activities: data[1],

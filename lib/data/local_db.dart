@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:watoplan/data/models.dart';
 
 class DbCollection {
@@ -30,6 +31,7 @@ class LocalDb {
 
   LocalDb._init(loc) {
     _db = new File(loc);
+    _db.createSync();
   }
 
   void destroy() {
@@ -51,24 +53,25 @@ class LocalDb {
     List<Activity> activities = [];
 
     await _db.readAsString()
-      .then((contents) => json.decode(contents))
-      .then((parsed) {
-        int last = parsed['activities'].length - 1;
-        // JsonEncoder encoder = new JsonEncoder.withIndent('  '); print(encoder.convert(parsed['activities'].sublist(last - 4)));
+      .then(
+        (contents) => json.decode(contents),
+        onError: (err) => { 'activityTypes': [], 'activities': [] }
+      ).then((parsed) {
+        print('in parsed');
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
         );
         parsed['activities'].forEach(
           (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
         );
-      });
+      }).catchError((err) { print('\n\n\n$err');});
 
     return [activityTypes, activities];
   }
 
   Future<dynamic> loadContaining(MapEntry toFind, { dynamic type }) async {
     int start = 0;
-    int end = null;
+    int end;
 
     if (type is Activity) {
       start = activityCollection.start;
@@ -81,11 +84,11 @@ class LocalDb {
     _db.openRead(start, end);
   }
 
-  Future<void> saveOver(List<ActivityType> activityTypes, List<Activity> activities) async {
+  Future<void> saveOver(List activityTypes, List activities) async {
     await _db.writeAsString(
       json.encode({
-        'activityTypes': activityTypes.map((type) => type.toJson()).toList(),
-        'activities': activities.map((activity) => activity.toJson()).toList(),
+        'activityTypes': activityTypes.map((type) => type is ActivityType ? type.toJson() : type).toList(),
+        'activities': activities.map((activity) => activity is Activity ? activity.toJson() : activity).toList(),
       })
     );
   }
