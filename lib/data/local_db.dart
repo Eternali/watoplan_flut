@@ -53,9 +53,8 @@ class LocalDb {
     List<Activity> activities = [];
 
     await _db.readAsString()
-      .then(
-        (contents) => json.decode(contents),
-      ).then((parsed) {
+      .then((contents) => json.decode(contents))
+      .then((parsed) {
         print('in parsed');
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
