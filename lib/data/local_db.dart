@@ -52,17 +52,21 @@ class LocalDb {
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
 
+    try {
     await _db.readAsString()
       .then((contents) => json.decode(contents))
       .then((parsed) {
-        print('in parsed');
         parsed['activityTypes'].forEach(
           (type) { activityTypes.add(new ActivityType.fromJson(type)); }
         );
         parsed['activities'].forEach(
           (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
         );
-      });
+      })
+      .catchError((e) { print('The database at ${_db.path} is empty: ${e.error}'); });
+    } catch (e) {
+      print('The database at ${_db.path} is empty: ${e.error}');
+    }
 
     return [activityTypes, activities];
   }
