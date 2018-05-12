@@ -28,10 +28,7 @@ class Intents {
       //   }
       // });
       .then((data) {
-        if (data[0].length < 1) {
-          return LoadDefaults.loadDefaultData(() { debugPrint('an error occured\n'); })
-            .then((defaults) { LocalDb().saveOver(defaults[0], defaults[1]); return defaults; });
-        } else return data;
+        return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
         if (data is! List) return;

@@ -47,7 +47,7 @@ class LocalDb {
 
   }
 
-  Future<List<List<dynamic>>> loadAtOnce() async {
+  Future<List<List>> loadAtOnce() async {
 
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
