@@ -175,7 +175,6 @@ class ActivityType {
   }
 
   factory ActivityType.fromJson(Map<String, dynamic> jsonMap) {
-    print(jsonMap);
     return new ActivityType(
       id: jsonMap['_id'],
       name: jsonMap['name'],
