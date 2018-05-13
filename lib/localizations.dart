@@ -37,6 +37,9 @@ class WatoplanLocalizations {
 
   String get schedule => 'Schedule';
 
+  String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
+  String get featureComingSoon => 'This feature is coming soon!';
+
   // Sort locales
   Map<String, StrGet> validSorts = {
     'start': () => 'start time',

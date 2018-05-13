@@ -36,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  bson:
-    dependency: transitive
-    description:
-      name: bson
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   charcode:
     dependency: transitive
     description:
@@ -92,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1"
-  fixnum:
-    dependency: transitive
-    description:
-      name: fixnum
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.7"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -228,27 +214,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.6"
-  mongo_dart:
-    dependency: "direct main"
-    description:
-      name: mongo_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1"
-  mongo_dart_query:
-    dependency: transitive
-    description:
-      name: mongo_dart_query
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
-  more:
-    dependency: transitive
-    description:
-      name: more
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.0"
   multi_server_socket:
     dependency: transitive
     description:
@@ -443,13 +408,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.0+4"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.3"
   vector_math:
     dependency: transitive
     description:

@@ -15,11 +15,11 @@ Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, Th
           new Text(
             name(active),
             style: new TextStyle(
-              color: active ? theme.accentColor : theme.textTheme.subhead.color
+              color: enabled ? active ? theme.accentColor : theme.textTheme.subhead.color : theme.disabledColor,
             ),
           ),
           new Expanded(child: new Container()),
-          active ? new Icon(Icons.check, color: theme.accentColor) : new Icon(new IconData(0)),
+          active && enabled ? new Icon(Icons.check, color: theme.accentColor) : new Icon(new IconData(0)),
         ],
       ),
     ),
@@ -102,15 +102,35 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               ),
               checkedItem(
                 name: (_) => 'as Email',
-                active: typeActive(NotiTypes['EMAIL']),
-                onTap: () { setState(() { widget.type = NotiTypes['EMAIL']; }); },
+                active: false,  // typeActive(NotiTypes['EMAIL']),
+                onTap: () {
+                  scaffoldKey.currentState.showSnackBar(
+                    new SnackBar(
+                      content: new Text(
+                        WatoplanLocalizations.of(context).featureUnavailable
+                      ),
+                      duration: new Duration(seconds: 3),
+                    )
+                  );
+                },
                 theme: theme,
+                enabled: false,
               ),
               checkedItem(
                 name: (_) => 'as SMS',
-                active: typeActive(NotiTypes['SMS']),
-                onTap: () { setState(() { widget.type = NotiTypes['SMS']; }); },
+                active: false,  // typeActive(NotiTypes['SMS']),
+                onTap: () {
+                  scaffoldKey.currentState.showSnackBar(
+                    new SnackBar(
+                      content: new Text(
+                        WatoplanLocalizations.of(context).featureComingSoon
+                      ),
+                      duration: new Duration(seconds: 3),
+                    )
+                  );
+                },
                 theme: theme,
+                enabled: false,
               ),
             ],
           ),
