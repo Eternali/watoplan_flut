@@ -26,25 +26,36 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
-  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types) {
-    return types.map(
-      (it) => new SubFAB(
-        icon: it.icon,
-        color: it.color,
-        onPressed: () {
-          Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
-          Intents.editEditing(
-            Provider.of(context),
-            new Activity(
-              type: it,
-              data: it.params
-                ..map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
-            )
-          );
-          Navigator.of(context).pushNamed(Routes.addEditActivity);
-        },
-      )
-    ).toList();
+  // Generate a list of 4 FABs to display the most used activityTypes for easy access
+  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
+    List toShow = types
+      .map((it) =>
+        [it, activities.where((act) => act.typeId == it.id).length]
+      ).toList()
+      ..sort((a, b) => (b[1] as int).compareTo(a[1] as int));
+
+    return toShow
+      .sublist(0, toShow.length >= 4 ? 4 : toShow.length)
+      .reversed.toList()
+      .map((it) => it[0] as ActivityType).toList()
+      .map((it) =>
+        new SubFAB(
+          icon: it.icon,
+          color: it.color,
+          onPressed: () {
+            Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
+            Intents.editEditing(
+              Provider.of(context),
+              new Activity(
+                type: it,
+                data: it.params
+                  ..map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+              )
+            );
+            Navigator.of(context).pushNamed(Routes.addEditActivity);
+          },
+        )
+      ).toList();
   }
 
   @override
@@ -52,7 +63,7 @@ class HomeScreenState extends State<HomeScreen> {
     AppState stateVal = Provider.of(context).value;
     WatoplanLocalizations locales = WatoplanLocalizations.of(context);
 
-    widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes);
+    widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
     return new Scaffold(
       appBar: new AppBar(
@@ -62,7 +73,16 @@ class HomeScreenState extends State<HomeScreen> {
           new PopupMenuButton<ActivityType>(
             icon: new Icon(Icons.add),
             onSelected: (ActivityType type) {
-
+              Intents.setFocused(Provider.of(context), indice: -(stateVal.activityTypes.indexOf(type) + 1));
+              Intents.editEditing(
+                Provider.of(context),
+                new Activity(
+                  type: type,
+                  data: type.params
+                    ..map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+                )
+              );
+              Navigator.of(context).pushNamed(Routes.addEditActivity);
             },
             itemBuilder: (BuildContext context) => 
               stateVal.activityTypes.map((type) =>
