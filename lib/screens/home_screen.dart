@@ -59,6 +59,25 @@ class HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: new Text(widget.title ?? locales.appTitle),
         actions: <Widget>[
+          new PopupMenuButton<ActivityType>(
+            icon: new Icon(Icons.add),
+            onSelected: (ActivityType type) {
+
+            },
+            itemBuilder: (BuildContext context) => 
+              stateVal.activityTypes.map((type) =>
+                new PopupMenuItem<ActivityType>(
+                  value: type,
+                  child: new Container(
+                    color: type.color,
+                    child: new ListTile(
+                      leading: new Icon(type.icon),
+                      title: new Text(type.name),
+                    ),
+                  ),
+                )
+              ).toList(),
+          ),
           new PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
               Navigator.of(context).pushNamed(choice.route);
@@ -70,7 +89,7 @@ class HomeScreenState extends State<HomeScreen> {
                 child: new Row(
                   children: <Widget>[
                     new Icon(choice.icon),
-                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0),),
+                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
                     new Text(choice.title)
                   ],
                 ),
