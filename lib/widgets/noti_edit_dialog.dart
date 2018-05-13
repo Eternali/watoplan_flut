@@ -5,7 +5,7 @@ import 'package:watoplan/data/noti.dart';
 
 typedef String ActivatableString(bool active);
 
-Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, ThemeData theme }) {
+Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, ThemeData theme, bool enabled = true }) {
   return new InkWell(
     onTap: onTap,
     child: new Padding(
