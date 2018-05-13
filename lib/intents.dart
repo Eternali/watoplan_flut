@@ -45,7 +45,6 @@ class Intents {
           sorter: appState.value.sorter,
           sortRev: appState.value.sortRev,
         );
-        print((data as List)[0][0].toJson());
       });
   }
 

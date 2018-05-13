@@ -1,7 +1,7 @@
 {
   "activityTypes": [
     {
-      "_id": 15776,
+      "_id": 3004445,
       "name": "activity",
       "icon": "0x0E84E",
       "color": "0xff607d8b",
@@ -16,7 +16,7 @@
       }
     },
     {
-      "_id": 1415779,
+      "_id": 2204449,
       "name": "event",
       "icon": "0x0E878",
       "color": "0xffff5722",
@@ -30,7 +30,7 @@
       }
     },
     {
-      "_id": 1115779,
+      "_id": 3704448,
       "name": "meeting",
       "icon": "0x0E7FC",
       "color": "0xff4caf50",
@@ -44,7 +44,7 @@
       }
     },
     {
-      "_id": 4015779,
+      "_id": 2604448,
       "name": "assessment",
       "icon": "0x0E88B",
       "color": "0xff9c27b0",
@@ -80,7 +80,6 @@
       "data": {
         "name": "new name",
         "desc": "new description more",
-        "progress": 0,
         "priority": 0,
         "start": "1514782800000",
         "end": "1525998604449",
@@ -97,15 +96,7 @@
         "priority": 0,
         "start": "1483246800000",
         "end": "1525998604445",
-        "notis": [
-          {
-            "_id": 304456,
-            "title": "",
-            "msg": "",
-            "when": "1514782800000",
-            "type": "EMAIL"
-          }
-        ]
+        "notis": []
       }
     },
     {
@@ -121,19 +112,6 @@
       }
     },
     {
-      "_id": 3004456,
-      "typeId": 3004445,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "progress": 0,
-        "priority": 0,
-        "start": "1420088400000",
-        "end": "1525998604445",
-        "notis": []
-      }
-    },
-    {
       "_id": 1304456,
       "typeId": 2604448,
       "data": {
@@ -142,44 +120,6 @@
         "priority": 0,
         "start": "1230786000000",
         "end": "1525998604448",
-        "notis": []
-      }
-    },
-    {
-      "_id": 1304456,
-      "typeId": 3004445,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "progress": 0,
-        "priority": 0,
-        "start": "1293858000000",
-        "end": "1525998604445",
-        "notis": []
-      }
-    },
-    {
-      "_id": 3404456,
-      "typeId": 3704448,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "priority": 0,
-        "start": "1199163600000",
-        "end": "1525998604448",
-        "notis": []
-      }
-    },
-    {
-      "_id": 2504457,
-      "typeId": 3004445,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "progress": 0,
-        "priority": 0,
-        "start": "1167627600000",
-        "end": "1525998604445",
         "notis": []
       }
     }
