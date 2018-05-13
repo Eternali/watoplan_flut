@@ -68,8 +68,9 @@ class HomeScreenState extends State<HomeScreen> {
               stateVal.activityTypes.map((type) =>
                 new PopupMenuItem<ActivityType>(
                   value: type,
-                  child: new Container(
-                    color: type.color,
+                  child: new ListTileTheme(
+                    iconColor: type.color,
+                    textColor: type.color,
                     child: new ListTile(
                       leading: new Icon(type.icon),
                       title: new Text(type.name),
