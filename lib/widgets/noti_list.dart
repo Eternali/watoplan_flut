@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/keys.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
@@ -56,6 +57,14 @@ class NotiListState extends State<NotiList> {
                   unit: TimeUnits[0],
                 ),
                 isNew: true,
+                snacker: (String text) {
+                  AppKeys.AddEditScreenKey.currentState.showSnackBar(
+                    new SnackBar(
+                      content: new Text(text),
+                      duration: new Duration(seconds: 3),
+                    )
+                  );
+                },
               ),
             ).then((List tmb) {  // time and milliseconds before
               print(tmb.toString());

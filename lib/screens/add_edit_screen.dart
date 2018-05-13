@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/keys.dart';
 import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -23,8 +24,6 @@ class AddEditScreen extends StatefulWidget {
 
 class AddEditScreenState extends State<AddEditScreen> {
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
@@ -32,7 +31,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
 
     return new Scaffold(
-      key: _scaffoldKey,
+      key: AppKeys.AddEditScreenKey,
       appBar: new AppBar(
         backgroundColor: type.color,
         leading: new BackButton(),

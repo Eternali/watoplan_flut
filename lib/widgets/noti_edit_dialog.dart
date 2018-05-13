@@ -31,8 +31,9 @@ class NotiEditDialog extends StatefulWidget {
   NotiType type;
   TimeBefore timeBefore;
   bool isNew;
+  Function snacker;
 
-  NotiEditDialog({ this.type, this.timeBefore, this.isNew = true });
+  NotiEditDialog({ this.type, this.timeBefore, this.snacker, this.isNew = true });
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -103,35 +104,20 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               checkedItem(
                 name: (_) => 'as Email',
                 active: false,  // typeActive(NotiTypes['EMAIL']),
-                onTap: () {
-                  scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(
-                      content: new Text(
-                        WatoplanLocalizations.of(context).featureUnavailable
-                      ),
-                      duration: new Duration(seconds: 3),
-                    )
-                  );
-                },
+                onTap: () { if (widget.snacker != null) widget.snacker(WatoplanLocalizations.of(context).featureUnavailable); },
                 theme: theme,
                 enabled: false,
               ),
               checkedItem(
                 name: (_) => 'as SMS',
                 active: false,  // typeActive(NotiTypes['SMS']),
-                onTap: () {
-                  scaffoldKey.currentState.showSnackBar(
-                    new SnackBar(
-                      content: new Text(
-                        WatoplanLocalizations.of(context).featureComingSoon
-                      ),
-                      duration: new Duration(seconds: 3),
-                    )
-                  );
-                },
+                onTap: () { if (widget.snacker != null) widget.snacker(WatoplanLocalizations.of(context).featureComingSoon); },
                 theme: theme,
                 enabled: false,
               ),
+              new Padding(
+                padding: new EdgeInsets.symmetric(vertical: 12.0),
+              )
             ],
           ),
         ),
