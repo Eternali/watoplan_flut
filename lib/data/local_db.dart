@@ -47,13 +47,12 @@ class LocalDb {
 
   }
 
-  Future<List<List>> loadAtOnce() async {
+  Future<List> loadAtOnce() async {
 
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
 
-    try {
-    await _db.readAsString()
+    return _db.readAsString()
       .then((contents) => json.decode(contents))
       .then((parsed) {
         parsed['activityTypes'].forEach(
@@ -62,13 +61,13 @@ class LocalDb {
         parsed['activities'].forEach(
           (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
         );
+        return [activityTypes, activities];
       })
-      .catchError((e) { print('The database at ${_db.path} is empty: ${e.error}'); });
-    } catch (e) {
-      print('The database at ${_db.path} is empty: ${e.error}');
-    }
+      .catchError((e) {
+        print('The database at ${_db.path} is empty');
+        return [activityTypes, activities];
+      });
 
-    return [activityTypes, activities];
   }
 
   Future<dynamic> loadContaining(MapEntry toFind, { dynamic type }) async {

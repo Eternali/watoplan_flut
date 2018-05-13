@@ -28,10 +28,15 @@ class Intents {
       //   }
       // });
       .then((data) {
-        return data;
+        if (data[0].length < 1) {
+          return LoadDefaults.loadDefaultData()
+            .then((_) {
+              LocalDb().saveOver(LoadDefaults.defaultData[0], LoadDefaults.defaultData[1]);
+              return LoadDefaults.defaultData;
+            });
+        } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
-        if (data is! List) return;
         appState.value = Reducers.set(
           activityTypes: (data as List)[0],
           activities: (data as List)[1],
@@ -40,6 +45,7 @@ class Intents {
           sorter: appState.value.sorter,
           sortRev: appState.value.sortRev,
         );
+        print((data as List)[0][0].toJson());
       });
   }
 
