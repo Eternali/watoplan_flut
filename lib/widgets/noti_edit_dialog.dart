@@ -31,9 +31,9 @@ class NotiEditDialog extends StatefulWidget {
   NotiType type;
   TimeBefore timeBefore;
   bool isNew;
-  Function snacker;
+  bool displayCorrection = false;
 
-  NotiEditDialog({ this.type, this.timeBefore, this.snacker, this.isNew = true });
+  NotiEditDialog({ this.type, this.timeBefore, this.isNew = true });
 
   @override
   State<NotiEditDialog> createState() => new NotiEditDialogState();
@@ -98,26 +98,43 @@ class NotiEditDialogState extends State<NotiEditDialog> {
               checkedItem(
                 name: (_) => 'as Notification',
                 active: typeActive(NotiTypes['PUSH']),
-                onTap: () { setState(() { widget.type = NotiTypes['PUSH']; }); },
+                onTap: () {
+                  setState(() {
+                    widget.type = NotiTypes['PUSH'];
+                    widget.displayCorrection = false;
+                  });
+                },
                 theme: theme,
               ),
               checkedItem(
                 name: (_) => 'as Email',
                 active: false,  // typeActive(NotiTypes['EMAIL']),
-                onTap: () { if (widget.snacker != null) widget.snacker(WatoplanLocalizations.of(context).featureUnavailable); },
+                onTap: () { setState(() { widget.displayCorrection = true; }); },
                 theme: theme,
                 enabled: false,
               ),
               checkedItem(
                 name: (_) => 'as SMS',
                 active: false,  // typeActive(NotiTypes['SMS']),
-                onTap: () { if (widget.snacker != null) widget.snacker(WatoplanLocalizations.of(context).featureComingSoon); },
+                onTap: () { setState(() { widget.displayCorrection = true; }); },
                 theme: theme,
                 enabled: false,
               ),
               new Padding(
-                padding: new EdgeInsets.symmetric(vertical: 12.0),
-              )
+                padding: const EdgeInsets.only(top: 8.0),
+                child: new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      widget.displayCorrection ? WatoplanLocalizations.of(context).featureUnavailable : '',
+                      style: new TextStyle(
+                        color: theme.hintColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
