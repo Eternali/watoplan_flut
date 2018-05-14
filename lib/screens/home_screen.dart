@@ -188,6 +188,9 @@ class HomeScreenState extends State<HomeScreen> {
                     child: new OutlineButton(
                       padding: const EdgeInsets.all(0.0),
                       textColor: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
+                      borderSide: new BorderSide(
+                        color: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).hintColor,
+                      ),
                       child: new Text(
                         stateVal.sortRev ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
                         style: new TextStyle(

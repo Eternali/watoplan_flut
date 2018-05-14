@@ -4,9 +4,9 @@ ___MUST HAVES___ __FOR BETA LAUNCH__
 - implement about/help screens
 X limit FABs to 4 (most recently used) and add a action to overflow to choose any one
 X grey out SMS and EMAIL for now
-- finalize defaults
+X finalize defaults
 - update home screen list items
-- make sorting and param specific UI items safe if item doesn't have it
+X make sorting and param specific UI items safe if item doesn't have it
 
 
 | implement data permanence (nosql database)
