@@ -63,6 +63,8 @@ class WatoplanLocalizations {
     // 'tags': () => 'tags',
   };
 
+  String get aboutFeedback => 'For feedback, feature requests, or bug reports, please email about@chipthink.com';
+
 }
 
 class WatoplanLocalizationsDelegate

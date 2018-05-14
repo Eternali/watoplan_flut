@@ -32,49 +32,56 @@ class ActivityCard extends StatelessWidget {
       onDismissed: (direction) {
         Intents.removeActivities(Provider.of(context), [activity]);
       },
-      child: new Stack(
-        children: <Widget>[
-          new Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
-            child: new Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Container(
-                  padding: const EdgeInsets.only(left: 8.0, right: 16.0, top: 8.0, bottom: 8.0),
-                  child: new Icon(
-                    tmpType.icon,
-                    size: 30.0,
-                  ),
-                ),
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: new Text(
-                        activity.data.containsKey('name') ? activity.data['name'] : '',
-                        style: theme.textTheme.subhead,
-                      ),
+      child: new InkWell(
+        child: new Stack(
+          children: <Widget>[
+            new Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: new Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  new Container(
+                    padding: const EdgeInsets.only(left: 8.0, right: 16.0, top: 8.0, bottom: 8.0),
+                    child: new Icon(
+                      tmpType.icon,
+                      size: 30.0,
                     ),
-                    new Text(
-                      activity.data.containsKey('desc') ? activity.data['desc'] : '',
-                      style: theme.textTheme.body1,
-                    )
-                  ],
-                )
-              ],
+                  ),
+                  new Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: new Text(
+                          activity.data.containsKey('name') ? activity.data['name'] : '',
+                          style: theme.textTheme.subhead,
+                        ),
+                      ),
+                      new Text(
+                        activity.data.containsKey('desc') ? activity.data['desc'] : '',
+                        style: theme.textTheme.body1,
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          new Positioned.fill(
-            child: new Container(
-              // width: 100.0,
-              // height: .0,
-              color: tmpType.color,
-            ),
-          )
-        ],
+            new Positioned.fill(
+              child: new Container(
+                // width: 100.0,
+                // height: .0,
+                color: tmpType.color,
+              ),
+            )
+          ],
+        ),
+        onTap: () {
+          Intents.setFocused(Provider.of(context), activity: activity);
+          Intents.editEditing(Provider.of(context), new Activity.from(activity));
+          Navigator.of(context).pushNamed(Routes.addEditActivity);
+        },
       ),
       // child: new Card(
       //   elevation: 8.0,
