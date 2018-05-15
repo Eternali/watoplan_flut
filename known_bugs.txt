@@ -1,2 +1,0 @@
-- when you delete a notification from an activity but don't save it, when you navigate back to that activity, the notification will still be gone, but when the app is restarted, the notification will still be there
-- add ability to have empty icon for activity types

@@ -119,11 +119,12 @@ class Intents {
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
 
-  static void sortActivities(AppStateObservable appState, String sorterName, [ bool reversed = false ]) async {
-    await SharedPreferences.getInstance()
-      .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
-      .then((prefs) => prefs.setBool('sortRev', reversed));
-    appState.value = Reducers.sortActivities(appState.value, sorterName, reversed);
+  static void sortActivities(AppStateObservable appState, [ String sorterName, bool reversed = false ]) async {
+    if (sorterName != null)
+      await SharedPreferences.getInstance()
+        .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
+        .then((prefs) => prefs.setBool('sortRev', reversed));
+    appState.value = Reducers.sortActivities(appState.value, sorterName ?? appState.value.sorter, reversed);
   }
 
   static void setFocused(AppStateObservable appState, { int indice, Activity activity, ActivityType activityType }) {

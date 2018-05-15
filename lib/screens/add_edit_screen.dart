@@ -52,6 +52,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               } else {
                 Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
               }
+              // setState(() { Intents.sortActivities(Provider.of(context)); });
               Navigator.pop(context);
             },
           )

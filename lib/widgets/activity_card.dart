@@ -66,7 +66,7 @@ class ActivityCard extends StatelessWidget {
               ),
             ),
             new Container(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
               color: tmpType.color.withAlpha(
                 activity.data.containsKey('priority')
                   ? (activity.data['priority'] * 7) + 30

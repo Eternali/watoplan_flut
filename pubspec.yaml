@@ -4,6 +4,7 @@ description: A new Flutter project.
 dependencies:
   flutter:
     sdk: flutter
+  url_launcher: ^3.0.0
   intl: ^0.15.6
   location: ^1.1.7
   shared_preferences: ^0.4.0

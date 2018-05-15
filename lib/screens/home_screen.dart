@@ -49,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
               new Activity(
                 type: it,
                 data: it.params
-                  ..map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+                  .map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
               )
             );
             Navigator.of(context).pushNamed(Routes.addEditActivity);

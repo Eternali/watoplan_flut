@@ -63,7 +63,9 @@ class WatoplanLocalizations {
     // 'tags': () => 'tags',
   };
 
-  String get aboutFeedback => 'For feedback, feature requests, or bug reports, please email about@chipthink.com';
+  String get aboutFeedback => 'For feedback, feature requests, or bug reports, please first check';
+  String get developFeedback => 'If you\'re a developer with ideas, issues, or just interested in checking out the app source, '
+    'you can find us at';
 
 }
 
