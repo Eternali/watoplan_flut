@@ -210,8 +210,12 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       // body: new AnimatedList(
-      //   padding: new EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),        
-      //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),
+      //   padding: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),        
+      //   shrinkWrap: true,
+      //   initialItemCount: stateVal.activities.length,
+      //   itemBuilder: (BuildContext context, int indice, Animation<double> anim) {
+      //     return new ActivityCard(stateVal.activities[indice]);
+      //   },
       // ),
       body: new ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
