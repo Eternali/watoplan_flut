@@ -49,7 +49,10 @@ class HomeScreenState extends State<HomeScreen> {
               new Activity(
                 type: it,
                 data: it.params
-                  .map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+                  .map((key, value) => new MapEntry(key, value is DateTime
+                    ? new DateTime.now().add(const Duration(hours: 2))
+                    : value
+                  )),
               )
             );
             Navigator.of(context).pushNamed(Routes.addEditActivity);
@@ -79,7 +82,10 @@ class HomeScreenState extends State<HomeScreen> {
                 new Activity(
                   type: type,
                   data: type.params
-                    .map((key, value) => new MapEntry(key, value is DateTime ? new DateTime.now() : value)),
+                    .map((key, value) => new MapEntry(key, value is DateTime
+                      ? new DateTime.now().add(const Duration(hours: 2))
+                      : value
+                    )),
                 )
               );
               Navigator.of(context).pushNamed(Routes.addEditActivity);

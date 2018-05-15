@@ -39,6 +39,7 @@ class WatoplanLocalizations {
 
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
+  String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
 
   // Sort locales
   Map<String, StrGet> validSorts = {

@@ -7,6 +7,7 @@ import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/custom_expansion.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
@@ -35,6 +36,13 @@ class AddEditScreenState extends State<AddEditScreen> {
       appBar: new AppBar(
         backgroundColor: type.color,
         leading: new BackButton(),
+        // leading: new IconButton(
+        //   icon: new BackButtonIcon(),
+        //   onPressed: () {
+        //     debugPrint(stateVal.activities[stateVal.focused].toJson().toString());
+        //     Navigator.of(context).pop();
+        //   },
+        // ),
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
           ? stateVal.activities[stateVal.focused].data['name']
@@ -46,6 +54,23 @@ class AddEditScreenState extends State<AddEditScreen> {
               locales.save.toUpperCase()
             ),
             onPressed: () {
+              // validate activity times
+              if (stateVal.editingActivity.data.containsKey('notis')) {
+                for (Noti noti in stateVal.editingActivity.data['notis']) {
+                  if (noti.when.compareTo(DateTime.now()) <= 0) {
+                    AppKeys.AddEditScreenKey.currentState.showSnackBar(
+                      new SnackBar(
+                        content: new Text(
+                          locales.timeToEarly(what: 'Notifications'),
+                        ),
+                        backgroundColor: type.color,
+                        duration: const Duration(seconds: 3),
+                      )
+                    );
+                    return;
+                  }
+                }
+              }
               if (stateVal.focused < 0) {
                 Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
                   .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });

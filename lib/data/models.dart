@@ -249,7 +249,12 @@ class Activity {
     return new Activity(
       id: prev.id,
       type: prev.typeId,
-      data: new Map.from(prev.data),
+      data: prev.data.map((name, value) =>
+        // Thanks to dart, I can't do any sort of dynamic typing from variables (which I only have to because of its bad type inferencing)
+        new MapEntry(name, value is List<Noti>
+          ? new List<Noti>.from(value) : value is Map
+            ? new Map.from(value) : value)
+      ),
     );
   }
 
