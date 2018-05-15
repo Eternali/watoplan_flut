@@ -35,14 +35,12 @@ final Map<String, ThemeData> themes = {
   'light': LightTheme,
 };
 
-final ThemeData DarkTheme = new ThemeData(
-  brightness: Brightness.dark,
+final ThemeData DarkTheme = new ThemeData.dark().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
 );
 
-final ThemeData LightTheme = new ThemeData(
-  brightness: Brightness.light,
+final ThemeData LightTheme = new ThemeData.light().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
 );
