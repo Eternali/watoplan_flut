@@ -214,7 +214,7 @@ class HomeScreenState extends State<HomeScreen> {
       //   children: stateVal.activities.map((activity) => new ActivityCard(activity)).toList(),
       // ),
       body: new ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
+        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         shrinkWrap: true,
         itemCount: stateVal.activities.length,
         itemBuilder: (BuildContext context, int indice) {

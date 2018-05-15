@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 int generateId([int length = 10]) {
   if (length < 4 || length > 18) throw new Exception('Invalid length');
@@ -58,9 +59,18 @@ class DateTimeUtils {
   }
 
   static String formatDMY(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}/'
-           '${date.month.toString().padLeft(2, '0')}/'
-           '${date.year.toString().padLeft(2, '0')}';
+    // return '${date.day.toString().padLeft(2, '0')}/'
+    //        '${date.month.toString().padLeft(2, '0')}/'
+    //        '${date.year.toString().padLeft(2, '0')}';
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  static String formatDMYT(DateTime date) {
+    return '${formatDMY(date)} at ${DateFormat('HH:mm').format(date)}';
+  }
+
+  static String formatEM(DateTime date) {
+    return '${DateFormat('MMM d').format(date)} at ${DateFormat('HH:mm').format(date)}';
   }
 
 }
