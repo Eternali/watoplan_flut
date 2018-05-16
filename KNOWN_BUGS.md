@@ -1,4 +1,4 @@
 - when changing or adding an activity, the home page sorting won't be updated until it is visited for a second time.
 - notifications do not alert at the exact minute (could be a simple dumb DateTime.now() sort of fix).
 - notifications sometimes are not cancelled or updated when either or the activity is updated.
-- REMINDER PARAMETERS are really screwed up
+- notifications will not be set for anything other than 10 of a unit of time.

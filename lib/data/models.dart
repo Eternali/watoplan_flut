@@ -154,8 +154,9 @@ class ActivityType {
     this.name,
     this.icon,
     this.color,
-    this.params = const {  },
+    this.params,
   }) : _id = id ?? generateId() {
+    params ??= {  };
     params.forEach((name, type) {
       if (!validParams.keys.contains(name))
         throw new Exception('$name is not a valid parameter');

@@ -32,7 +32,7 @@ class NotiListItemState extends State<NotiListItem> {
       onTap: () {
         showDialog<List>(
           context: context,
-          child: new NotiEditDialog(
+          builder: (BuildContext context) => new NotiEditDialog(
             type: widget.noti.type,
             timeBefore: widget.timeBefore,
             isNew: false,
@@ -46,11 +46,10 @@ class NotiListItemState extends State<NotiListItem> {
             // },
           ),
         ).then((List tmb) {  // time and milliseconds before
-          if (tmb != null)
-            setState(() {
-              widget.noti.type = tmb[0];
-              widget.noti.when = new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]);
-            });
+          if (tmb != null) {
+            widget.noti.type = tmb[0];
+            widget.noti.when = new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]);
+          }
         });
       },
       child: new Row(

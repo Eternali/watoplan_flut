@@ -50,7 +50,7 @@ class NotiListState extends State<NotiList> {
           onTap: () {
             showDialog<List>(
               context: context,
-              child: new NotiEditDialog(
+              builder: (BuildContext context) => new NotiEditDialog(
                 type: NotiTypes['PUSH'],
                 timeBefore: new TimeBefore(
                   time: 10,
@@ -59,16 +59,17 @@ class NotiListState extends State<NotiList> {
                 isNew: true,
               ),
             ).then((List tmb) {  // time and milliseconds before
-              print(tmb.toString());
-              if (tmb != null)
-                setState(() {
+              if (tmb != null) {
+                print(tmb.toString());
+                // setState(() {
                   widget.activity.data['notis'].add(new Noti(
                     title: widget.activity.data['name'],
                     msg: widget.activity.data['desc'],
                     when: new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]),
                     type: tmb[0],
                   ));
-                });
+                // });
+              }
             });
           },
           child: new Row(
@@ -84,6 +85,7 @@ class NotiListState extends State<NotiList> {
               ),
               new IconButton(
                 icon: new Icon(Icons.add),
+                onPressed: null,
               ),
             ],
           ),
