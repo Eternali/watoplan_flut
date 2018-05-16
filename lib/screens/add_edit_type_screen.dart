@@ -21,12 +21,8 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
   @override
   Widget build(BuildContext context) {
     // watch out since every time setState is called on this screen, this will be regenerated    
-    AppState stateVal = Provider.of(context).value;
-    ThemeData theme = Theme.of(context);
-
-    // ActivityType stateVal.editingType = stateVal.focused >= 0
-    //   ? ActivityType.from(stateVal.activityTypes[stateVal.focused])
-    //   : new ActivityType();
+    final AppState stateVal = Provider.of(context).value;
+    final ThemeData theme = Theme.of(context);
 
     return new Scaffold(
       appBar: new AppBar(
@@ -39,7 +35,8 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
         actions: <Widget>[
           new FlatButton(
             child: new Text(
-              WatoplanLocalizations.of(context).save.toUpperCase()
+              WatoplanLocalizations.of(context).save.toUpperCase(),
+              style: theme.textTheme.button.copyWith(color: Colors.white),
             ),
             onPressed: () {
               if (stateVal.focused >= 0) Intents.changeActivityType(Provider.of(context), stateVal.editingType);

@@ -1,4 +1,4 @@
-package com.example.watoplan
+package com.chipthinkstudios.watoplan
 
 import android.os.Bundle
 
