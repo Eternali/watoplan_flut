@@ -43,6 +43,7 @@ class EditTextState extends State<EditText> {
         ),
         decoration: new InputDecoration(
           labelText: widget.label,
+          border: OutlineInputBorder(),
         ),
         controller: _controller,
       ),

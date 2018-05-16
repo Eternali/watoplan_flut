@@ -22,6 +22,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
   Widget build(BuildContext context) {
     // watch out since every time setState is called on this screen, this will be regenerated    
     final AppState stateVal = Provider.of(context).value;
+    final locales = WatoplanLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
 
     return new Scaffold(
@@ -30,12 +31,12 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
         leading: new BackButton(),
         centerTitle: true,
         title: new Text(
-          stateVal.editingType.name ?? WatoplanLocalizations.of(context).newActivityType
+          stateVal.editingType.name ?? locales.newActivityType
         ),
         actions: <Widget>[
           new FlatButton(
             child: new Text(
-              WatoplanLocalizations.of(context).save.toUpperCase(),
+              locales.save.toUpperCase(),
               style: theme.textTheme.button.copyWith(color: Colors.white),
             ),
             onPressed: () {
@@ -55,7 +56,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: new EditText(
               maxLines: 1,
-              label: WatoplanLocalizations.of(context).validParams['name'](),
+              label: locales.validParams['name'](),
               initVal: stateVal.editingType.name,
               editField: (String changed) { stateVal.editingType.name = changed; },
             ),
@@ -88,30 +89,14 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           new Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
             child: new CheckboxList(
-              entries: WatoplanLocalizations.of(context).validParams.values.map((getStr) => getStr()).toList(),
+              entries: locales.validParams.values.map((getStr) => getStr()).toList(),
               color: stateVal.editingType.color,
               isActive: (String match) => stateVal.editingType.params.keys.contains(match),
               onChange: (bool selected, String param) {
                 if (selected) stateVal.editingType.params[param] = validParams[param];
                 else stateVal.editingType.params.remove(param);
-                print(stateVal.editingType.params.keys.toList());
               },
             ),
-            // child: new Column(
-            //   children: validParams.keys.map(
-            //     (param) => new CheckboxListTile(
-            //       value: stateVal.editingType.params.keys.contains(param),
-            //       title: new Text(param),
-            //       activeColor: stateVal.editingType.color,
-            //       onChanged: (bool selected) {
-            //         setState(() {
-            //           if (selected) stateVal.editingType.params[param] = validParams[param];
-            //           else stateVal.editingType.params.remove(param);
-            //         });
-            //       },
-            //     )
-            //   ).toList(),
-            // ),
           )
         ],
       ),
