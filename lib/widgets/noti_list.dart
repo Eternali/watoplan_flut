@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/keys.dart';
+import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
+import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/noti_list_item.dart';
 import 'package:watoplan/widgets/noti_edit_dialog.dart';
 
@@ -11,16 +13,31 @@ class NotiList extends StatefulWidget {
 
   final Activity activity;
 
-  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
-
   NotiList(this.activity);
 
   @override
-  State<NotiList> createState() => new NotiListState();
+  State<NotiList> createState() => new NotiListState(activity: activity);
 
 }
 
 class NotiListState extends State<NotiList> {
+
+  final Activity activity;
+  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
+  
+  NotiListState({ this.activity });
+
+  @override
+  initState() {
+    super.initState();
+    debugPrint('\ninitState\n');
+  }
+
+  @override
+  dispose() {
+    debugPrint('\ndispose\n');
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +45,15 @@ class NotiListState extends State<NotiList> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget> [
-        widget.activity.data['notis'].length > 0
+        activity.data['notis'].length > 0
           ? new Column(
-              children: (widget.activity.data['notis'] as List<Noti>).map(
+              children: (activity.data['notis'] as List<Noti>).map(
                 (noti) => new NotiListItem(
                   noti: noti,
-                  activity: widget.activity,
+                  activity: activity,
                   remove: () {
                     setState(() {
-                      widget.activity.data['notis'].remove(noti);
+                      activity.data['notis'].remove(noti);
                     });
                   },
                 )
@@ -53,22 +70,19 @@ class NotiListState extends State<NotiList> {
               builder: (BuildContext context) => new NotiEditDialog(
                 type: NotiTypes['PUSH'],
                 timeBefore: new TimeBefore(
-                  time: 10,
+                  time: 15,
                   unit: TimeUnits[0],
                 ),
                 isNew: true,
               ),
             ).then((List tmb) {  // time and milliseconds before
               if (tmb != null) {
-                print(tmb.toString());
-                // setState(() {
-                  widget.activity.data['notis'].add(new Noti(
-                    title: widget.activity.data['name'],
-                    msg: widget.activity.data['desc'],
-                    when: new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]),
-                    type: tmb[0],
-                  ));
-                // });
+                activity.data['notis'].add(new Noti(
+                  title: activity.data['name'],
+                  msg: activity.data['desc'],
+                  when: new DateTime.fromMillisecondsSinceEpoch(activity.data[toi].millisecondsSinceEpoch - tmb[1]),
+                  type: tmb[0],
+                ));
               }
             });
           },
@@ -89,7 +103,7 @@ class NotiListState extends State<NotiList> {
               ),
             ],
           ),
-        )
+        ),
       ].where((it) => it != null).toList(),
     );
   }

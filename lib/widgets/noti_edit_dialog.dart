@@ -52,7 +52,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   initState() {
     super.initState();
     inputListener = () => widget.timeBefore.time = int.tryParse(_controller.value.text, radix: 10) ?? 0;
-    _controller = new TextEditingController(text: '10')
+    _controller = new TextEditingController(text: widget.timeBefore.time.toString())
       // force base 10 so if user prefixes 0x it won't be hex
       ..addListener(inputListener);
   }

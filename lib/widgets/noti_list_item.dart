@@ -36,19 +36,12 @@ class NotiListItemState extends State<NotiListItem> {
             type: widget.noti.type,
             timeBefore: widget.timeBefore,
             isNew: false,
-            // snacker: (String text) {
-            //   AppKeys.AddEditScreenKey.currentState.showSnackBar(
-            //     new SnackBar(
-            //       content: new Text(text),
-            //       duration: new Duration(seconds: 3),
-            //     )
-            //   );
-            // },
           ),
         ).then((List tmb) {  // time and milliseconds before
           if (tmb != null) {
             widget.noti.type = tmb[0];
             widget.noti.when = new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]);
+            setState(() {  });
           }
         });
       },

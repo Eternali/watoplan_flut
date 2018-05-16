@@ -207,6 +207,9 @@ class ActivityType {
     'params': Converters.paramsToJson(params),
   };
 
+  @override
+  int get hashCode => id.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
+
 }
 
 // NOTE: I am only storing the ActivityType id because this way I don't need a
@@ -288,6 +291,9 @@ class Activity {
     'typeId': typeId,
     'data': Converters.paramsToJson(data),
   };
+
+  @override
+  int get hashCode => id.hashCode + typeId.hashCode + data.hashCode;
 
 }
 
