@@ -36,7 +36,6 @@ class ActivitySorters {
   }
 
   static List<Activity> byStartTime(List<Activity> activities, [ bool rev = false ]) {
-    if (activities.length < 1) return activities;
     List sorted = <Activity>[], unsorted = <Activity>[];
     // I hate how Dart does not promote type safety or functional programming with functors
     // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
@@ -45,6 +44,7 @@ class ActivitySorters {
       else unsorted.add(act);
     });
     if (unsorted.length > 0) printUnsorted('start', unsorted);
+    if (sorted.length < 1) return activities;
 
     quicksort(
       sorted,
@@ -60,7 +60,6 @@ class ActivitySorters {
   }
 
   static List<Activity> byEndTime(List<Activity> activities, [ bool rev = false ]) {
-    if (activities.length < 1) return activities;    
     List sorted = <Activity>[], unsorted = <Activity>[];
     // I hate how Dart does not promote type safety or functional programming with functors
     // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
@@ -69,6 +68,7 @@ class ActivitySorters {
       else unsorted.add(act);
     });
     if (unsorted.length > 0) printUnsorted('end', unsorted);    
+    if (sorted.length < 1) return activities;    
 
     quicksort(
       sorted,
@@ -84,7 +84,6 @@ class ActivitySorters {
   }
 
   static List<Activity> byPriority(List<Activity> activities, [ bool rev = false ]) {
-    if (activities.length < 1) return activities;
     List sorted = <Activity>[], unsorted = <Activity>[];
     // I hate how Dart does not promote type safety or functional programming with functors
     // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
@@ -93,6 +92,7 @@ class ActivitySorters {
       else unsorted.add(act);
     });
     if (unsorted.length > 0) printUnsorted('priority', unsorted);
+    if (sorted.length < 1) return activities;    
 
     quicksort(
       sorted,
@@ -108,7 +108,6 @@ class ActivitySorters {
   }
 
   static List<Activity> byProgress(List<Activity> activities, [ bool rev = false ]) {
-    if (activities.length < 1) return activities;
     List sorted = <Activity>[], unsorted = <Activity>[];
     // I hate how Dart does not promote type safety or functional programming with functors
     // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
@@ -117,6 +116,8 @@ class ActivitySorters {
       else unsorted.add(act);
     });
     if (unsorted.length > 0) printUnsorted('progress', unsorted);
+    if (sorted.length < 1) return activities;
+    
     quicksort(
       sorted,
       0, sorted.length - 1,

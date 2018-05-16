@@ -1,22 +1,8 @@
-___MUST HAVES___ __FOR BETA LAUNCH__
-
-
-X implement about/help screens
-X limit FABs to 4 (most recently used) and add a action to overflow to choose any one
-X grey out SMS and EMAIL for now
-X finalize defaults
-X update home screen list items
-X make sorting and param specific UI items safe if item doesn't have it
-
-
-| implement data permanence (nosql database)
-X get activity type modifications to be reflected in their activities immediately
-| implement notifications and other alerts (NotiType has name and method for trigger notification)
-X get theming to work (and shared preferences)
-X finish activity editing screen
-X finish activity type editing screen
-- implement about/help screen(s)
-| make home activity display more customizable (different sorting and layout rendering)
-X add swiping to delete on activities
-| add extra valid params and their views
+- improve local storage method (needs big efficiency improvement)
+- allow for remote data backup with firebase
+- add SMS and email reminders (will require an alarm manager of sorts (hopefully easier to integrate than the current solution)
+- add location and relevant people support
+- more intuitive navigation and data entry.
+- add more home layout views
+    - e.g. by week, day or month
 
