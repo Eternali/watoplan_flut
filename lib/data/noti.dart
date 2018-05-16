@@ -4,7 +4,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_local_notifications/notification_details.dart';
 import 'package:flutter_local_notifications/platform_specifics/android/notification_details_android.dart';
 import 'package:flutter_local_notifications/platform_specifics/ios/notification_details_ios.dart';
-import 'package:sms/sms.dart';
 
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/models.dart';
@@ -86,9 +85,7 @@ class Noti {
 
         break;
       case 'SMS':
-        SmsSender sender = new SmsSender();
 
-        sender.sendSms(new SmsMessage(smsAddr, 'Just a friendly reminder $title: $msg'));
         break;
     }
   }

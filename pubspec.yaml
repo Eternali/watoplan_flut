@@ -6,13 +6,12 @@ dependencies:
     sdk: flutter
   url_launcher: ^3.0.0
   intl: ^0.15.6
-  location: ^1.1.7
+  # location: ^1.1.7
   shared_preferences: ^0.4.0
   path_provider: ^0.4.0
   crypto: ^2.0.2
-  local_notifications: any
   flutter_local_notifications: ^0.2.2
-  sms: ^0.1.0
+  # sms: ^0.1.0
   # android_alarm_manager: ^0.1.0
   # leveldb: ^5.0.1
   # mongo_dart: ^0.3.1
