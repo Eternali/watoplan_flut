@@ -24,7 +24,7 @@ class IconPickButtonState extends State<IconPickButton> {
 
   @override
   Widget build(BuildContext context) {
-    return new RaisedButton(
+    return new FlatButton(
       padding: new EdgeInsets.all(0.0),
       color: Theme.of(context).highlightColor,
       child: new Row(
