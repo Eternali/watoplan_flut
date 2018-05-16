@@ -56,8 +56,8 @@ class AboutScreenState extends State<AboutScreen> {
                   ),
                   new LinkTextSpan(
                     style: linkTextStyle,
-                    url: 'mailto:about@abitsbrain.com',
-                    text: 'about@abitsbrain.com',
+                    url: 'mailto:chipthinkstudios@gmail.com',
+                    text: 'chipthinkstudios@gmail.com',
                     whenCant: () {  },
                   ),
                 ]

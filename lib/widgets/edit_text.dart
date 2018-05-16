@@ -38,11 +38,12 @@ class EditTextState extends State<EditText> {
         keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
         maxLines: widget.maxLines,
         textAlign: TextAlign.center,
-        style: new TextStyle(
+        style: Theme.of(context).textTheme.body1.copyWith(
           fontSize: 20.0,
         ),
         decoration: new InputDecoration(
           labelText: widget.label,
+          border: OutlineInputBorder(),
         ),
         controller: _controller,
       ),

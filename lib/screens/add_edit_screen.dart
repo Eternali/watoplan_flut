@@ -28,21 +28,15 @@ class AddEditScreenState extends State<AddEditScreen> {
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
+    final ThemeData theme = Theme.of(context);
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
-    ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
+    final ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
 
     return new Scaffold(
       key: AppKeys.AddEditScreenKey,
       appBar: new AppBar(
         backgroundColor: type.color,
         leading: new BackButton(),
-        // leading: new IconButton(
-        //   icon: new BackButtonIcon(),
-        //   onPressed: () {
-        //     debugPrint(stateVal.activities[stateVal.focused].toJson().toString());
-        //     Navigator.of(context).pop();
-        //   },
-        // ),
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
           ? stateVal.activities[stateVal.focused].data['name']
@@ -51,7 +45,8 @@ class AddEditScreenState extends State<AddEditScreen> {
         actions: <Widget>[
           new FlatButton(
             child: new Text(
-              locales.save.toUpperCase()
+              locales.save.toUpperCase(),
+              style: theme.textTheme.button.copyWith(color: Colors.white),
             ),
             onPressed: () {
               // validate activity times
@@ -77,7 +72,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               } else {
                 Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
               }
-              // setState(() { Intents.sortActivities(Provider.of(context)); });
+              Intents.sortActivities(Provider.of(context));
               Navigator.pop(context);
             },
           )
@@ -199,7 +194,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['start'](),
-                color: Theme.of(context).disabledColor,
+                color: theme.disabledColor,
                 when: stateVal.editingActivity.data['start'],
                 setDate: (date) {
                   stateVal.editingActivity.data['start'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['start'], date);
@@ -216,7 +211,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['end'](),
-                color: Theme.of(context).disabledColor,
+                color: theme.disabledColor,
                 when: stateVal.editingActivity.data['end'],
                 setDate: (date) {
                   stateVal.editingActivity.data['end'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['end'], date);

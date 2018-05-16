@@ -93,16 +93,17 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                         : 55
                     )
                   ),
+                  color: tmpType.color.withAlpha(
+                    widget.activity.data.containsKey('priority')
+                      ? (widget.activity.data['priority'] * 10) + 40
+                      : 40,
+                  )
                 ),
               ),
             ),
             new Container(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
-              color: tmpType.color.withAlpha(
-                widget.activity.data.containsKey('priority')
-                  ? (widget.activity.data['priority'] * 7) + 30
-                  : 30
-              ),
+              color: tmpType.color.withAlpha(40), // full item will always have this baseline
               child: new Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,

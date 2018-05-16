@@ -1,3 +1,4 @@
-X when you delete a notification from an activity but don't save it, when you navigate back to that activity, the notification will still be gone, but when the app is restarted, the notification will still be there
-X add ability to have empty icon for activity types
-- when changing or adding an activity, the home page sorting won't be updated until it is refreshed.
+- when changing or adding an activity, the home page sorting won't be updated until it is visited for a second time.
+- notifications do not alert at the exact minute (could be a simple dumb DateTime.now() sort of fix).
+- notifications sometimes are not cancelled or updated when either or the activity is updated.
+- REMINDER PARAMETERS are really screwed up

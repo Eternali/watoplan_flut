@@ -1,6 +1,17 @@
 {
   "activityTypes": [
     {
+      "_id": 1704445,
+      "name": "reminder",
+      "icon": "0xE39F",
+      "color": "0xfff9a800",
+      "params": {
+        "name": "",
+        "desc": "",
+        "priority": 0
+      }
+    },
+    {
       "_id": 3004445,
       "name": "activity",
       "icon": "0x0E84E",
@@ -76,51 +87,11 @@
   "activities": [
     {
       "_id": 104453,
-      "typeId": 2204449,
+      "typeId": 1704445,
       "data": {
-        "name": "new name",
-        "desc": "new description more",
-        "priority": 0,
-        "start": "1514782800000",
-        "end": "1525998604449",
-        "notis": []
-      }
-    },
-    {
-      "_id": 3904456,
-      "typeId": 3004445,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "progress": 0,
-        "priority": 0,
-        "start": "1483246800000",
-        "end": "1525998604445",
-        "notis": []
-      }
-    },
-    {
-      "_id": 1204456,
-      "typeId": 3704448,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "priority": 0,
-        "start": "1262322000000",
-        "end": "1525998604448",
-        "notis": []
-      }
-    },
-    {
-      "_id": 1304456,
-      "typeId": 2604448,
-      "data": {
-        "name": "TEST NAME",
-        "desc": "TEST DESCRIPTION",
-        "priority": 0,
-        "start": "1230786000000",
-        "end": "1525998604448",
-        "notis": []
+        "name": "Welcome to WAToPlan",
+        "desc": "Go ahead and press the little add button to get started! Need help? Just go to the about page to learn more!",
+        "priority": 7
       }
     }
   ]
