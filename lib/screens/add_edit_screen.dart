@@ -233,7 +233,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: new NotiList(stateVal.editingActivity),
+                child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
               ),
             ) : null,
           // tmpActivity.data.containsKey('tags')

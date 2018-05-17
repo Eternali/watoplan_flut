@@ -154,8 +154,9 @@ class ActivityType {
     this.name,
     this.icon,
     this.color,
-    this.params = const {  },
+    this.params,
   }) : _id = id ?? generateId() {
+    params ??= {  };
     params.forEach((name, type) {
       if (!validParams.keys.contains(name))
         throw new Exception('$name is not a valid parameter');
@@ -205,6 +206,9 @@ class ActivityType {
     'color': Converters.colorToString(color),
     'params': Converters.paramsToJson(params),
   };
+
+  @override
+  int get hashCode => id.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
 
 }
 
@@ -287,6 +291,9 @@ class Activity {
     'typeId': typeId,
     'data': Converters.paramsToJson(data),
   };
+
+  @override
+  int get hashCode => id.hashCode + typeId.hashCode + data.hashCode;
 
 }
 
