@@ -93,9 +93,11 @@ class Reducers {
   }
 
   static AppState editEditing(AppState oldState, dynamic editing) {
-    return editing is Activity
-      ? oldState.copyWith(editingActivity: editing)
-      : oldState.copyWith(editingType: editing);
+    return editing == null
+      ? oldState.copyWith(editingActivity: null, editingType: null)
+      : editing is Activity
+        ? oldState.copyWith(editingActivity: editing)
+        : oldState.copyWith(editingType: editing);
   }
 
   // This is a very loose state modifier, it is only okay because we don't

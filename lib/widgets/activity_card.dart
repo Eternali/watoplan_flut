@@ -125,18 +125,20 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: new Text(
-                            widget.activity.data.containsKey('name') ? widget.activity.data['name'] : '',
-                            style: theme.textTheme.subhead.copyWith(fontSize: 18.0),
-                          ),
-                        ),
-                        new Text(
-                          widget.activity.data.containsKey('desc') ? widget.activity.data['desc'] : '',
-                          style: theme.textTheme.body1.copyWith(fontSize: 14.0),
-                        )
-                      ],
+                        widget.activity.data.containsKey('name') && widget.activity.data['name'].length > 0
+                          ? new Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: new Text(
+                              widget.activity.data['name'],
+                              style: theme.textTheme.subhead.copyWith(fontSize: 18.0),
+                            ),
+                          ) : null,
+                        widget.activity.data.containsKey('desc') && widget.activity.data['desc'].length > 0
+                          ? new Text(
+                            widget.activity.data['desc'],
+                            style: theme.textTheme.body1.copyWith(fontSize: 14.0),
+                          ) : null,
+                      ].where((it) => it != null).toList(),
                     ),
                   ),
                   new Padding(
