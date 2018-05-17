@@ -38,7 +38,7 @@ class AboutScreenState extends State<AboutScreen> {
                   ),
                   new LinkTextSpan(
                     style: linkTextStyle,
-                    url: 'https://github.com/eternali/watoplan_flut/KNOWN_BUGS.md',
+                    url: 'https://github.com/Eternali/watoplan_flut/blob/release/KNOWN_BUGS.md',
                     text: 'known bugs'
                   ),
                   new TextSpan(
@@ -47,8 +47,8 @@ class AboutScreenState extends State<AboutScreen> {
                   ),
                   new LinkTextSpan(
                     style: linkTextStyle,
-                    url: 'https://github.com/eternali/watoplan_flut/TODO.md',
-                    text: ' the roadmap '
+                    url: 'https://github.com/Eternali/watoplan_flut/blob/release/TODO.md',
+                    text: 'the roadmap'
                   ),
                   new TextSpan(
                     style: aboutTextSyle,
