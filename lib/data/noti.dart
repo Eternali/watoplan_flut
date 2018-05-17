@@ -57,8 +57,8 @@ class Noti {
   int get id => _id;
   final String title;
   final String msg;
-  DateTime when;
-  NotiType type;
+  final DateTime when;
+  final NotiType type;
   final NextTimeGenerator generateNext;
 
   Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
@@ -111,5 +111,21 @@ class Noti {
     'when': Converters.dateTimeToString(when),
     'type': type.name,
   };
+
+  Noti copyWith({
+    int id,
+    String title,
+    String msg,
+    DateTime when,
+    NotiType type,
+    NextTimeGenerator generateNext,
+  }) => new Noti(
+    id: id ?? this._id,
+    title: title ?? this.title,
+    msg: msg ?? this.msg,
+    when: when ?? this.when,
+    type: type ?? this.type,
+    generateNext: generateNext ?? this.generateNext,
+  );
 
 }

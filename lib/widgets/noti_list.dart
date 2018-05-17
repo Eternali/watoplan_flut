@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/keys.dart';
-import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
@@ -12,50 +11,34 @@ import 'package:watoplan/widgets/noti_edit_dialog.dart';
 class NotiList extends StatefulWidget {
 
   final Activity activity;
+  final Function editor;
 
-  NotiList(this.activity);
+  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest  
+
+  NotiList({ this.activity, this.editor});
 
   @override
-  State<NotiList> createState() => new NotiListState(activity: activity);
+  State<NotiList> createState() => new NotiListState();
 
 }
 
 class NotiListState extends State<NotiList> {
 
-  final Activity activity;
-  String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
-  
-  NotiListState({ this.activity });
-
-  @override
-  initState() {
-    super.initState();
-    debugPrint('\ninitState\n');
-  }
-
-  @override
-  dispose() {
-    debugPrint('\ndispose\n');
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of(context);
+
     return new Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget> [
-        activity.data['notis'].length > 0
+        widget.activity.data['notis'].length > 0
           ? new Column(
-              children: (activity.data['notis'] as List<Noti>).map(
+              children: (widget.activity.data['notis'] as List<Noti>).map(
                 (noti) => new NotiListItem(
                   noti: noti,
-                  activity: activity,
-                  remove: () {
-                    setState(() {
-                      activity.data['notis'].remove(noti);
-                    });
-                  },
+                  activity: widget.activity,
+                  editor: widget.editor,
                 )
               ).fold(
                 [new Divider()],
@@ -70,19 +53,28 @@ class NotiListState extends State<NotiList> {
               builder: (BuildContext context) => new NotiEditDialog(
                 type: NotiTypes['PUSH'],
                 timeBefore: new TimeBefore(
-                  time: 15,
+                  time: 10,
                   unit: TimeUnits[0],
                 ),
                 isNew: true,
               ),
             ).then((List tmb) {  // time and milliseconds before
               if (tmb != null) {
-                activity.data['notis'].add(new Noti(
-                  title: activity.data['name'],
-                  msg: activity.data['desc'],
-                  when: new DateTime.fromMillisecondsSinceEpoch(activity.data[toi].millisecondsSinceEpoch - tmb[1]),
-                  type: tmb[0],
-                ));
+                widget.editor(
+                  state,
+                  widget.activity.copyWith(
+                    entries: [ MapEntry('notis', widget.activity.data['notis']..add(
+                      new Noti(
+                        title: widget.activity.data['name'],
+                        msg: widget.activity.data['desc'],
+                        when: new DateTime.fromMillisecondsSinceEpoch(
+                          widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]
+                        ),
+                        type: tmb[0],
+                      )
+                    )) ]
+                  )
+                );
               }
             });
           },
