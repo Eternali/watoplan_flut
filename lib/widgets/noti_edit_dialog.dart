@@ -43,6 +43,7 @@ class NotiEditDialog extends StatefulWidget {
 class NotiEditDialogState extends State<NotiEditDialog> {
 
   TextEditingController _controller;
+  Function inputListener;
 
   bool timeActive(MapEntry<String, int> desired) => widget.timeBefore.unit == desired;
   bool typeActive(NotiType desired) => widget.type == desired;
@@ -50,8 +51,17 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   @override
   initState() {
     super.initState();
-    _controller = new TextEditingController(text: '10')
-      ..addListener(() => widget.timeBefore.time = int.parse(_controller.value.text));
+    inputListener = () => widget.timeBefore.time = int.tryParse(_controller.value.text, radix: 10) ?? 0;
+    _controller = new TextEditingController(text: widget.timeBefore.time.toString())
+      // force base 10 so if user prefixes 0x it won't be hex
+      ..addListener(inputListener);
+  }
+
+  @override
+  dispose() {
+    _controller.removeListener(inputListener);
+    _controller.dispose();
+    super.dispose();
   }
 
   @override

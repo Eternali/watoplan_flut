@@ -4,7 +4,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_local_notifications/notification_details.dart';
 import 'package:flutter_local_notifications/platform_specifics/android/notification_details_android.dart';
 import 'package:flutter_local_notifications/platform_specifics/ios/notification_details_ios.dart';
-import 'package:sms/sms.dart';
 
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/models.dart';
@@ -58,8 +57,8 @@ class Noti {
   int get id => _id;
   final String title;
   final String msg;
-  DateTime when;
-  NotiType type;
+  final DateTime when;
+  final NotiType type;
   final NextTimeGenerator generateNext;
 
   Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
@@ -86,9 +85,7 @@ class Noti {
 
         break;
       case 'SMS':
-        SmsSender sender = new SmsSender();
 
-        sender.sendSms(new SmsMessage(smsAddr, 'Just a friendly reminder $title: $msg'));
         break;
     }
   }
@@ -114,5 +111,21 @@ class Noti {
     'when': Converters.dateTimeToString(when),
     'type': type.name,
   };
+
+  Noti copyWith({
+    int id,
+    String title,
+    String msg,
+    DateTime when,
+    NotiType type,
+    NextTimeGenerator generateNext,
+  }) => new Noti(
+    id: id ?? this._id,
+    title: title ?? this.title,
+    msg: msg ?? this.msg,
+    when: when ?? this.when,
+    type: type ?? this.type,
+    generateNext: generateNext ?? this.generateNext,
+  );
 
 }

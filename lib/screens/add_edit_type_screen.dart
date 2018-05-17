@@ -88,8 +88,9 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           ),
           new Padding(
             padding: const EdgeInsets.only(bottom: 10.0),
-            child: new CheckboxList(
+            child: new CheckboxList<String>(
               entries: locales.validParams.values.map((getStr) => getStr()).toList(),
+              values: locales.validParams.keys.toList(),
               color: stateVal.editingType.color,
               isActive: (String match) => stateVal.editingType.params.keys.contains(match),
               onChange: (bool selected, String param) {

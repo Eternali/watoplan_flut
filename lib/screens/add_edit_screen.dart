@@ -72,6 +72,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               } else {
                 Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
               }
+              // Intents.editEditing(Provider.of(context), null);  // clear editing
               Intents.sortActivities(Provider.of(context));
               Navigator.pop(context);
             },
@@ -233,7 +234,7 @@ class AddEditScreenState extends State<AddEditScreen> {
               padding: new EdgeInsets.symmetric(vertical: 8.0),
               child: new Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: new NotiList(stateVal.editingActivity),
+                child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
               ),
             ) : null,
           // tmpActivity.data.containsKey('tags')
