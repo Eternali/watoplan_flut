@@ -18,8 +18,8 @@ class TimeBefore {
       throw Exception('${unit.key} is not a supported unit of time');
   }
 
-  factory TimeBefore.getProper(int before, int after) {
-    int diff = after - before;
+  factory TimeBefore.getProper(int before, [ int after ]) {
+    int diff = after == null ? before : after - before;
     MapEntry<String, int> unit = TimeUnits[0];
 
     TimeUnits.forEach((tunit) {
@@ -74,13 +74,13 @@ class Noti {
    * Schedules the notification according to its type. If base is specified, the notification offset will be used,
    * otherwise, it is assumed that this has a 'when' property defined.
    */
-  void schedule({
+  Future<void> schedule({
     FlutterLocalNotificationsPlugin notiPlug, 
     String typeName,
     String smsAddr,
     String channel,
     DateTime base,
-  }) {
+  }) async {
     switch (type.name) {
       case 'PUSH':
         NotificationDetails platformSpecifics = new NotificationDetails(
@@ -91,7 +91,7 @@ class Noti {
           ),
           new NotificationDetailsIOS(),
         );
-        notiPlug.schedule(id, title, msg,
+        await notiPlug.schedule(id, title, msg,
           base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),
           platformSpecifics
         );
@@ -114,7 +114,8 @@ class Noti {
       id: jsonMap['_id'],
       title: jsonMap['title'],
       msg: jsonMap['msg'],
-      when: Converters.dateTimeFromString(jsonMap['when']),
+      when: jsonMap['when'].length < 1 ? null : Converters.dateTimeFromString(jsonMap['when']),
+      offset: int.tryParse(jsonMap['offset']),
       type: NotiTypes[jsonMap['type']],
     );
   }
@@ -123,8 +124,8 @@ class Noti {
     '_id': _id,
     'title': title,
     'msg': msg,
-    'when': when == null ? 0 : Converters.dateTimeToString(when),
-    'offset': offset ?? 0,
+    'when': when == null ? '' : Converters.dateTimeToString(when),
+    'offset': offset.toString() ?? '',
     'type': type.name,
   };
 
@@ -133,6 +134,7 @@ class Noti {
     String title,
     String msg,
     DateTime when,
+    int offset,
     NotiType type,
     NextTimeGenerator generateNext,
   }) => new Noti(
@@ -140,6 +142,7 @@ class Noti {
     title: title ?? this.title,
     msg: msg ?? this.msg,
     when: when ?? this.when,
+    offset: offset ?? this.offset,
     type: type ?? this.type,
     generateNext: generateNext ?? this.generateNext,
   );

@@ -67,9 +67,7 @@ class NotiListState extends State<NotiList> {
                       new Noti(
                         title: widget.activity.data['name'],
                         msg: widget.activity.data['desc'],
-                        when: new DateTime.fromMillisecondsSinceEpoch(
-                          widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]
-                        ),
+                        offset: tmb[1],
                         type: tmb[0],
                       )
                     )) ]

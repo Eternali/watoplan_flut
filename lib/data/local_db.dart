@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:watoplan/data/models.dart';
+
+/**
+ * I am very sorry you have to see this, it is an ugly stand in for a nosql database
+ * being used only because I haven't been able find a decent plugin for this.
+ * If you have plugin suggestions please email chipthinkstudios@gmail.com
+ */
 
 class DbCollection {
   int start;

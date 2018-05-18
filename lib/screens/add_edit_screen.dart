@@ -52,7 +52,10 @@ class AddEditScreenState extends State<AddEditScreen> {
               // validate activity times
               if (stateVal.editingActivity.data.containsKey('notis')) {
                 for (Noti noti in stateVal.editingActivity.data['notis']) {
-                  if (noti.when.compareTo(DateTime.now()) <= 0) {
+                  var now = new DateTime.now();
+                  if (noti.when?.compareTo(now) ?? stateVal.editingActivity.data[
+                      stateVal.editingActivity.data.containsKey('start') ? 'start': 'end'
+                    ].millisecondsSinceEpoch - noti.offset - now.millisecondsSinceEpoch <= 0) {
                     AppKeys.AddEditScreenKey.currentState.showSnackBar(
                       new SnackBar(
                         content: new Text(

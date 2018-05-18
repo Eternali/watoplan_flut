@@ -73,7 +73,12 @@ class Intents {
       await LocalDb().add(activity);
       if (activity.data.keys.contains('notis') && notiPlug != null) {
         for (Noti noti in activity.data['notis']) {
-          noti.schedule(notiPlug: notiPlug, owner: activity, typeName: typeName);
+          await noti.schedule(
+            notiPlug: notiPlug,
+            typeName: typeName,
+            channel: activity.typeId.toString(),
+            base: activity.data.containsKey('start') ? activity.data['start'] : activity.data['end'],
+          );
         }
       }
     }
@@ -88,7 +93,7 @@ class Intents {
       await LocalDb().remove(activity);
       if (activity.data.keys.contains('notis') && notiPlug != null) {
         for (Noti noti in activity.data['notis']) {
-          noti.cancel(notiPlug);
+          await noti.cancel(notiPlug);
         }
       }
     }
@@ -106,35 +111,36 @@ class Intents {
           .toList().indexOf(newActivity.id)
       ];
 
-      if (old.data.containsKey('start') || old.data.containsKey('end')) {
-        String poi = old.data.containsKey('start') ? 'start' : 'end';
-        if (old.data[poi].millisecondsSinceEpoch != newActivity.data[poi].millisecondsSinceEpoch) {
-          for (int i = 0; i < newActivity.data['notis'].length; i++) {
-            newActivity.data['notis'][i].cancel(notiPlug);
-            newActivity.data['notis'][i] = newActivity.data['notis'][i].copyWith(
-              when: new DateTime.fromMillisecondsSinceEpoch(
-                newActivity.data['notis'][i].when.millisecondsSinceEpoch
-                + (newActivity.data[poi].millisecondsSinceEpoch - old.data[poi].millisecondsSinceEpoch)
-              )
-            );
-            print('scheduling\n');
-            newActivity.data['notis'][i].schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
-          }
+      String poi = old.data.containsKey('start') ? 'start' : 'end';
+      if (old.data[poi].millisecondsSinceEpoch != newActivity.data[poi].millisecondsSinceEpoch) {
+        for (Noti noti in newActivity.data['notis']) {
+          await noti.cancel(notiPlug);
+          await noti.schedule(
+            notiPlug: notiPlug,
+            typeName: typeName,
+            channel: newActivity.typeId.toString(),
+            base: newActivity.data[poi],
+          );
         }
       }
 
-      old.data['notis']
-        .forEach((noti) {
-          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) {
-            noti.cancel(notiPlug);
-          }
-        });
-      newActivity.data['notis']
-        .forEach((noti) {
-          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) {
-            noti.schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
-          }
-        });
+      var newIds = newActivity.data['notis'].map((n) => n.id);
+      var oldIds = old.data['notis'].map((n) => n.id);
+      await Future.wait<dynamic>(old.data['notis']
+        .where((Noti noti) => !newIds.contains(noti.id))
+        .map((Noti noti) => noti.cancel(notiPlug)).retype<Future<void>>()
+      );
+      await Future.wait<dynamic>(newActivity.data['notis']
+        .where((Noti noti) => !oldIds.contains(noti.id))
+        .map((Noti noti) =>
+          noti.schedule(
+            notiPlug: notiPlug,
+            typeName: typeName,
+            channel: newActivity.typeId.toString(),
+            base: newActivity.data[poi],
+          )
+        ).retype<Future<void>>()
+      );
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
