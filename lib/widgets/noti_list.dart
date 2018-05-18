@@ -58,7 +58,7 @@ class NotiListState extends State<NotiList> {
                 ),
                 isNew: true,
               ),
-            ).then((List tmb) {  // time and milliseconds before
+            ).then((List tmb) {  // type and milliseconds before
               if (tmb != null) {
                 widget.editor(
                   state,

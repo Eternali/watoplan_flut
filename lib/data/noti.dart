@@ -23,7 +23,9 @@ class TimeBefore {
     MapEntry<String, int> unit = TimeUnits[0];
 
     TimeUnits.forEach((tunit) {
-      if (diff / tunit.value >= unit.value) unit = tunit;
+      if (diff / tunit.value >= 1) {
+        unit = tunit;
+      }
     });
 
     return new TimeBefore(time: (diff / unit.value).round(), unit: unit);
