@@ -56,7 +56,10 @@ class Intents {
   }
 
   static Future removeActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
-    for (ActivityType type in activityTypes) await LocalDb().remove(type);
+    for (ActivityType type in activityTypes) {
+      await Intents.removeActivities(appState, appState.value.activities.where((a) => a.typeId == type.id).toList().retype<Activity>());
+      await LocalDb().remove(type);
+    }
     appState.value = Reducers.removeActivityTypes(appState.value, activityTypes);
   }
 
