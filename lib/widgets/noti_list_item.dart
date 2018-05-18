@@ -43,9 +43,13 @@ class NotiListItemState extends State<NotiListItem> {
           ),
         ).then((List tmb) {  // time and milliseconds before
           if (tmb != null) {
-            widget.activity.data['notis'][widget.idx] = widget.noti.copyWith(
+            // needs to be new so a new ID is generated (otherwise we could just use noti.copyWith)
+            widget.activity.data['notis'][widget.idx] = new Noti(
+              title: widget.noti.title,
+              msg: widget.noti.title,
+              when: DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]),
               type: tmb[0],
-              when: DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1])
+              generateNext: widget.noti.generateNext,
             );
             widget.editor(
               state,

@@ -40,7 +40,7 @@ class AddEditScreenState extends State<AddEditScreen> {
         centerTitle: true,
         title: new Text(stateVal.focused >= 0
           ? stateVal.activities[stateVal.focused].data['name']
-          : locales.newActivity
+          : '${locales.newtxt} ${type.name}'
         ),
         actions: <Widget>[
           new FlatButton(

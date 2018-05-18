@@ -105,15 +105,33 @@ class Intents {
         appState.value.activities.map((activity) => activity.id)
           .toList().indexOf(newActivity.id)
       ];
+
+      if (old.data.containsKey('start') || old.data.containsKey('end')) {
+        String poi = old.data.containsKey('start') ? 'start' : 'end';
+        if (old.data[poi].millisecondsSinceEpoch != newActivity.data[poi].millisecondsSinceEpoch) {
+          for (Noti noti in newActivity.data['notis']) {
+            noti.cancel(notiPlug);
+            noti = noti.copyWith(
+              when: new DateTime.fromMillisecondsSinceEpoch(
+                noti.when.millisecondsSinceEpoch + (newActivity.data[poi].millisecondsSinceEpoch - old.data[poi].millisecondsSinceEpoch)
+              )
+            );
+            noti.schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
+          }
+        }
+      }
+
       old.data['notis']
         .forEach((noti) {
-          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id))
+          if (!newActivity.data['notis'].map((n) => n.id).contains(noti.id)) {
             noti.cancel(notiPlug);
+          }
         });
       newActivity.data['notis']
         .forEach((noti) {
-          if (!old.data['notis'].map((n) => n.id).contains(noti.id))
+          if (!old.data['notis'].map((n) => n.id).contains(noti.id)) {
             noti.schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
+          }
         });
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);
