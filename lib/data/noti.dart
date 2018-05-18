@@ -18,12 +18,14 @@ class TimeBefore {
       throw Exception('${unit.key} is not a supported unit of time');
   }
 
-  factory TimeBefore.getProper(int before, int after) {
-    int diff = after - before;
+  factory TimeBefore.getProper(int before, [ int after ]) {
+    int diff = after == null ? before : after - before;
     MapEntry<String, int> unit = TimeUnits[0];
 
     TimeUnits.forEach((tunit) {
-      if (diff / tunit.value >= unit.value) unit = tunit;
+      if (diff / tunit.value >= 1) {
+        unit = tunit;
+      }
     });
 
     return new TimeBefore(time: (diff / unit.value).round(), unit: unit);
@@ -58,28 +60,41 @@ class Noti {
   final String title;
   final String msg;
   final DateTime when;
+  final int offset;
   final NotiType type;
   final NextTimeGenerator generateNext;
 
-  Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
+  /**
+   * Notifications are scheduled according to either an absolute time (when) or an offset (millis).
+   * If using an offset, when the notification is scheduled, a base DateTime must be provided to offset from.
+   */
+  Noti({ int id, this.title, this.msg, this.when, this.offset, this.type, this.generateNext }) : _id = id ?? generateId();
 
-  void schedule({
+  /**
+   * Schedules the notification according to its type. If base is specified, the notification offset will be used,
+   * otherwise, it is assumed that this has a 'when' property defined.
+   */
+  Future<void> schedule({
     FlutterLocalNotificationsPlugin notiPlug, 
-    Activity owner,
     String typeName,
     String smsAddr,
-  }) {
+    String channel,
+    DateTime base,
+  }) async {
     switch (type.name) {
       case 'PUSH':
         NotificationDetails platformSpecifics = new NotificationDetails(
           new NotificationDetailsAndroid(
-            owner.typeId.toString() ?? id,
+            channel ?? id.toString(),
             typeName ?? 'WAToPlan',
             'Notifications regarding activities of type $typeName',
           ),
           new NotificationDetailsIOS(),
         );
-        notiPlug.schedule(id, title, msg, when, platformSpecifics);
+        await notiPlug.schedule(id, title, msg,
+          base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),
+          platformSpecifics
+        );
         break;
       case 'EMAIL':
 
@@ -99,7 +114,8 @@ class Noti {
       id: jsonMap['_id'],
       title: jsonMap['title'],
       msg: jsonMap['msg'],
-      when: Converters.dateTimeFromString(jsonMap['when']),
+      when: jsonMap['when'].length < 1 ? null : Converters.dateTimeFromString(jsonMap['when']),
+      offset: int.tryParse(jsonMap['offset']),
       type: NotiTypes[jsonMap['type']],
     );
   }
@@ -108,7 +124,8 @@ class Noti {
     '_id': _id,
     'title': title,
     'msg': msg,
-    'when': Converters.dateTimeToString(when),
+    'when': when == null ? '' : Converters.dateTimeToString(when),
+    'offset': offset.toString() ?? '',
     'type': type.name,
   };
 
@@ -117,6 +134,7 @@ class Noti {
     String title,
     String msg,
     DateTime when,
+    int offset,
     NotiType type,
     NextTimeGenerator generateNext,
   }) => new Noti(
@@ -124,6 +142,7 @@ class Noti {
     title: title ?? this.title,
     msg: msg ?? this.msg,
     when: when ?? this.when,
+    offset: offset ?? this.offset,
     type: type ?? this.type,
     generateNext: generateNext ?? this.generateNext,
   );

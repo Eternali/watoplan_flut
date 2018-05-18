@@ -11,6 +11,7 @@ class WatoplanLocalizations {
 
   String get appTitle => 'WAToPlan';
   String get addActivity => 'Add Activity';
+  String get newtxt => 'New';
   String get newActivity => 'New Activity';
   String get addActivityType => 'Add Type';
   String get newActivityType => 'New Type';

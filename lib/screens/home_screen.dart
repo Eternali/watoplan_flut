@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/localizations.dart';
-import 'package:watoplan/data/models.dart';
 import 'package:watoplan/intents.dart';
+import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/fam.dart';
 
@@ -50,7 +51,7 @@ class HomeScreenState extends State<HomeScreen> {
                 type: it,
                 data: it.params
                   .map((key, value) => new MapEntry(key, value is DateTime
-                    ? new DateTime.now().add(const Duration(hours: 2))
+                    ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                     : value
                   )),
               )
@@ -83,7 +84,7 @@ class HomeScreenState extends State<HomeScreen> {
                   type: type,
                   data: type.params
                     .map((key, value) => new MapEntry(key, value is DateTime
-                      ? new DateTime.now().add(const Duration(hours: 2))
+                      ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                       : value
                     )),
                 )
