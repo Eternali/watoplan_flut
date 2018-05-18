@@ -9,22 +9,22 @@ WAToPlan is a flexible and unique time management solution. It allows users to d
 
 ## App Usage Guide
 The main home screen displays the list of activities as such:
-    - Sorted according to the sorter specified by opening the app drawer and choosing an attribute to sort on.
-    - Each activity is displayed as such:
-        - leading: activity type icon
-        - title: activity name / description (if no name specified)
-        - subtitle: activity description
-        - trailing:
-            - top: start time
-            - mid: notification icon if notifications are set for the activity
-            - bottom: end time
-        - background:
-            - color: activity type color
-            - opacity: activity priority
-            - border width indicates progress
-    - swipe an activity to delete it
-    - The add button (at bottom right) allows you to add new activities
-        - only the 4 most used types are shown, for an entire list of the possible types, see the add button in the appbar
+- Sorted according to the sorter specified by opening the app drawer and choosing an attribute to sort on.
+- Each activity is displayed as such:
+    - leading: activity type icon
+    - title: activity name / description (if no name specified)
+    - subtitle: activity description
+    - trailing:
+        - top: start time
+        - mid: notification icon if notifications are set for the activity
+        - bottom: end time
+    - background:
+        - color: activity type color
+        - opacity: activity priority
+        - border width indicates progress
+- swipe an activity to delete it
+- The add button (at bottom right) allows you to add new activities
+    - only the 4 most used types are shown, for an entire list of the possible types, see the add button in the appbar
 The about page shows app information and important links for feedback and further information
 The settings page allows you to change the theme and add/change/remove activity types.
 
