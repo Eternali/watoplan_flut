@@ -109,14 +109,16 @@ class Intents {
       if (old.data.containsKey('start') || old.data.containsKey('end')) {
         String poi = old.data.containsKey('start') ? 'start' : 'end';
         if (old.data[poi].millisecondsSinceEpoch != newActivity.data[poi].millisecondsSinceEpoch) {
-          for (Noti noti in newActivity.data['notis']) {
-            noti.cancel(notiPlug);
-            noti = noti.copyWith(
+          for (int i = 0; i < newActivity.data['notis'].length; i++) {
+            newActivity.data['notis'][i].cancel(notiPlug);
+            newActivity.data['notis'][i] = newActivity.data['notis'][i].copyWith(
               when: new DateTime.fromMillisecondsSinceEpoch(
-                noti.when.millisecondsSinceEpoch + (newActivity.data[poi].millisecondsSinceEpoch - old.data[poi].millisecondsSinceEpoch)
+                newActivity.data['notis'][i].when.millisecondsSinceEpoch
+                + (newActivity.data[poi].millisecondsSinceEpoch - old.data[poi].millisecondsSinceEpoch)
               )
             );
-            noti.schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
+            print('scheduling\n');
+            newActivity.data['notis'][i].schedule(notiPlug: notiPlug, owner: newActivity, typeName: typeName);
           }
         }
       }

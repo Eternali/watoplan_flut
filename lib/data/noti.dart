@@ -60,28 +60,41 @@ class Noti {
   final String title;
   final String msg;
   final DateTime when;
+  final int offset;
   final NotiType type;
   final NextTimeGenerator generateNext;
 
-  Noti({ int id, this.title, this.msg, this.when, this.type, this.generateNext }) : _id = id ?? generateId();
+  /**
+   * Notifications are scheduled according to either an absolute time (when) or an offset (millis).
+   * If using an offset, when the notification is scheduled, a base DateTime must be provided to offset from.
+   */
+  Noti({ int id, this.title, this.msg, this.when, this.offset, this.type, this.generateNext }) : _id = id ?? generateId();
 
+  /**
+   * Schedules the notification according to its type. If base is specified, the notification offset will be used,
+   * otherwise, it is assumed that this has a 'when' property defined.
+   */
   void schedule({
     FlutterLocalNotificationsPlugin notiPlug, 
-    Activity owner,
     String typeName,
     String smsAddr,
+    String channel,
+    DateTime base,
   }) {
     switch (type.name) {
       case 'PUSH':
         NotificationDetails platformSpecifics = new NotificationDetails(
           new NotificationDetailsAndroid(
-            owner.typeId.toString() ?? id,
+            channel ?? id.toString(),
             typeName ?? 'WAToPlan',
             'Notifications regarding activities of type $typeName',
           ),
           new NotificationDetailsIOS(),
         );
-        notiPlug.schedule(id, title, msg, when, platformSpecifics);
+        notiPlug.schedule(id, title, msg,
+          base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),
+          platformSpecifics
+        );
         break;
       case 'EMAIL':
 
@@ -110,7 +123,8 @@ class Noti {
     '_id': _id,
     'title': title,
     'msg': msg,
-    'when': Converters.dateTimeToString(when),
+    'when': when == null ? 0 : Converters.dateTimeToString(when),
+    'offset': offset ?? 0,
     'type': type.name,
   };
 
