@@ -1,2 +1,1 @@
-- when changing or adding an activity, the home page sorting won't be updated until it is visited for a second time.
-- The floating action menu animation duration resets to 0 whenever an activity type is added or removed.
+- (__0011__) The floating action menu animation duration resets to 0 whenever an activity type is added or removed (possibly fixed).

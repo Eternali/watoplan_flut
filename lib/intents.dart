@@ -14,6 +14,10 @@ import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
+  static Future<void> refresh(AppStateObservable appState) async {
+    appState.value = Reducers.refresh(appState.value);
+  }
+
   static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
@@ -148,12 +152,19 @@ class Intents {
     appState.value = Reducers.changeActivity(appState.value, newActivity);
   }
 
-  static void sortActivities(AppStateObservable appState, [ String sorterName, bool reversed ]) async {
+  static Future<void> sortActivities(
+    AppStateObservable appState,
+    { String sorterName, bool reversed, bool needsRefresh = false }
+  ) async {
     if (sorterName != null)
       await SharedPreferences.getInstance()
         .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
         .then((prefs) => prefs.setBool('sortRev', reversed));
-    appState.value = Reducers.sortActivities(appState.value, sorterName ?? appState.value.sorter, reversed ?? appState.value.sortRev);
+    appState.value = Reducers.sortActivities(
+      appState.value,
+      sorterName: sorterName ?? appState.value.sorter,
+      reversed: reversed ?? appState.value.sortRev,
+    );
   }
 
   static void setFocused(AppStateObservable appState, { int indice, Activity activity, ActivityType activityType }) {

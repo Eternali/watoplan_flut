@@ -184,7 +184,7 @@ class HomeScreenState extends State<HomeScreen> {
                         groupValue: stateVal.sorter,
                         value: name,
                         onChanged: (name) {
-                          setState(() { Intents.sortActivities(Provider.of(context), name); });
+                          setState(() { Intents.sortActivities(Provider.of(context), sorterName: name); });
                         },
                       )
                     ).toList(),
@@ -207,7 +207,9 @@ class HomeScreenState extends State<HomeScreen> {
                           letterSpacing: 1.4,
                         ),
                       ),
-                      onPressed: () { Intents.sortActivities(Provider.of(context), stateVal.sorter, !stateVal.sortRev); },
+                      onPressed: () {
+                        Intents.sortActivities(Provider.of(context), sorterName: stateVal.sorter, reversed: !stateVal.sortRev);
+                      },
                     ),
                   )
                 ],
@@ -216,13 +218,9 @@ class HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      // body: new AnimatedList(
-      //   padding: new EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),        
+      // body: new ListView(
       //   shrinkWrap: true,
-      //   initialItemCount: stateVal.activities.length,
-      //   itemBuilder: (BuildContext context, int indice, Animation<double> anim) {
-      //     return new ActivityCard(stateVal.activities[indice]);
-      //   },
+      //   children: stateVal.activities.map((act) => new ActivityCard(act)).toList().retype<ActivityCard>(),
       // ),
       body: new ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -236,7 +234,7 @@ class HomeScreenState extends State<HomeScreen> {
         color: Theme.of(context).accentColor,
         width: 56.0,
         height: 70.0,
-        entries: widget.subFabs,  // (() { widget.subFabs.value = typesToSubFABS(stateVal.activityTypes); return widget.subFabs; })(),
+        entries: widget.subFabs,
       ),
     );
   }

@@ -69,15 +69,18 @@ class AddEditScreenState extends State<AddEditScreen> {
                   }
                 }
               }
-              if (stateVal.focused < 0) {
-                Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
-                  .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
-              } else {
-                Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
-              }
+              Future.value(stateVal.focused < 0)
+                .then((adding) {
+                  if (adding) return
+                    Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
+                      .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
+                  else return Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
+                }).then((_) {
+                  return Intents.sortActivities(Provider.of(context), needsRefresh: true);
+                }).whenComplete(() {
+                  Navigator.pop(context);
+                });
               // Intents.editEditing(Provider.of(context), null);  // clear editing
-              Intents.sortActivities(Provider.of(context));
-              Navigator.pop(context);
             },
           )
         ],
