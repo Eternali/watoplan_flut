@@ -5,4 +5,4 @@
 - more intuitive navigation and data entry.
 - add more home layout views
     - e.g. by week, day or month
-
+- allow ability to change the time parameter that notifications are based off

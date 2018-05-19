@@ -14,10 +14,12 @@ class NotiListItem extends StatefulWidget {
 
   String get toi => activity.data.containsKey('start') ? 'start' : 'end';  // time of interest
   int get idx => activity.data['notis'].indexOf(noti);
-  TimeBefore get timeBefore => TimeBefore.getProper(
-    noti.when.millisecondsSinceEpoch,
-    activity.data[toi].millisecondsSinceEpoch,
-  );
+  TimeBefore get timeBefore => noti.when == null
+    ? TimeBefore.getProper(noti.offset)
+    : TimeBefore.getProper(
+      noti.when.millisecondsSinceEpoch,
+      activity.data[toi].millisecondsSinceEpoch,
+    );
 
   NotiListItem({ this.noti, this.activity, this.editor });
 
@@ -41,11 +43,15 @@ class NotiListItemState extends State<NotiListItem> {
             timeBefore: widget.timeBefore,
             isNew: false,
           ),
-        ).then((List tmb) {  // time and milliseconds before
+        ).then((List tmb) {  // type and milliseconds before
           if (tmb != null) {
-            widget.activity.data['notis'][widget.idx] = widget.noti.copyWith(
+            // needs to be new so a new ID is generated (otherwise we could just use noti.copyWith)
+            widget.activity.data['notis'][widget.idx] = new Noti(
+              title: widget.noti.title,
+              msg: widget.noti.title,
+              offset: tmb[1],
               type: tmb[0],
-              when: DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1])
+              generateNext: widget.noti.generateNext,
             );
             widget.editor(
               state,
@@ -53,8 +59,6 @@ class NotiListItemState extends State<NotiListItem> {
                 entries: [ MapEntry('notis', widget.activity.data['notis']) ]
               )
             );
-            // widget.noti.type = tmb[0];
-            // widget.noti.when = new DateTime.fromMillisecondsSinceEpoch(widget.activity.data[widget.toi].millisecondsSinceEpoch - tmb[1]);
           }
         });
       },

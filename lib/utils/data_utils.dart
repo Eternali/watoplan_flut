@@ -46,6 +46,21 @@ class DateTimeUtils {
     );
   }
 
+  static DateTime copyWith(DateTime source,
+    { int year, int month, int day, int hour, int minute, int second, int millisecond, int microsecond }
+  ) {
+    return new DateTime(
+      year ?? source.year,
+      month ?? source.month,
+      day ?? source.day,
+      hour ?? source.hour,
+      minute ?? source.minute,
+      second ?? source.second,
+      millisecond ?? source.millisecond,
+      microsecond ?? source.microsecond,
+    );
+  }
+
   static DateTime fromTimeOfDay(DateTime source, TimeOfDay time) {
     return new DateTime(
       source.year,
