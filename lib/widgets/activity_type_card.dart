@@ -38,6 +38,7 @@ class ActivityTypeCard extends StatelessWidget {
             Navigator.of(context).pushNamed(Routes.addEditActivityType);
           },
           trailing: new IconButton(
+            padding: const EdgeInsets.all(0.0),
             alignment: Alignment.centerRight,
             icon: new Icon(Icons.clear),
             onPressed: () {

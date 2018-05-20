@@ -28,7 +28,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
   initState() {
     super.initState();
     controller = new AnimationController(duration: new Duration(milliseconds: 800), vsync: this);
-    animation = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    animation = new CurvedAnimation(parent: controller, curve: Curves.easeOut);
     animation.addListener(() {
       setState(() {  });
     });
