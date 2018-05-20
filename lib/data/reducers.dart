@@ -14,7 +14,8 @@ class Reducers {
     int focused,
     ThemeData theme,
     String sorter,
-    bool sortRev
+    bool sortRev,
+    bool needsRefresh,
   }) {
     return new AppState(
       activityTypes: activityTypes,
@@ -25,7 +26,12 @@ class Reducers {
       theme: theme,
       sorter: sorter,
       sortRev: sortRev,
+      needsRefresh: needsRefresh,
     );
+  }
+
+  static AppState refresh(AppState oldState) {
+    return oldState.copyWith(needsRefresh: false);
   }
 
   static AppState addActivityTypes(AppState oldState, List<ActivityType> toadd) {
@@ -78,7 +84,7 @@ class Reducers {
     return newState;
   }
 
-  static AppState sortActivities(AppState oldState, String sorterName, [ bool reversed = false ]) {
+  static AppState sortActivities(AppState oldState, { String sorterName, bool reversed = false }) {
     return oldState.copyWith(
       activities: validSorts[sorterName](oldState.activities, reversed),
       sorter: sorterName,

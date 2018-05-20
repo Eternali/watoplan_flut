@@ -49,6 +49,7 @@ class AppState {
   final String email;
   final String sorter;
   final bool sortRev;
+  final bool needsRefresh;
 
   AppState({
     this.activities,
@@ -58,7 +59,8 @@ class AppState {
     this.focused,
     this.theme,
     this.sorter,
-    this.sortRev = false
+    this.sortRev = false,
+    this.needsRefresh = false,
   });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
@@ -71,6 +73,7 @@ class AppState {
       theme: prev.theme,
       sorter: prev.sorter,
       sortRev: prev.sortRev,
+      needsRefresh: prev.needsRefresh,
     );
   }
 
@@ -83,6 +86,7 @@ class AppState {
     ThemeData theme,
     String sorter,
     bool sortRev,
+    bool needsRefresh,
   }) {
     return new AppState(
       activities: activities ?? this.activities,
@@ -93,18 +97,20 @@ class AppState {
       theme: theme ?? this.theme,
       sorter: sorter ?? this.sorter,
       sortRev: sortRev ?? this.sortRev,
+      needsRefresh: needsRefresh ?? this.needsRefresh,
     );
   }
 
   @override
   int get hashCode => activities.hashCode
-                      + activityTypes.hashCode
-                      + editingActivity.hashCode
-                      + editingType.hashCode
-                      + focused.hashCode
-                      + theme.hashCode
-                      + sorter.hashCode
-                      + sortRev.hashCode;
+                    + activityTypes.hashCode
+                    + editingActivity.hashCode
+                    + editingType.hashCode
+                    + focused.hashCode
+                    + theme.hashCode
+                    + sorter.hashCode
+                    + sortRev.hashCode
+                    + needsRefresh.hashCode;
 
 }
 

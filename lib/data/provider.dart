@@ -44,8 +44,14 @@ class _ProviderState extends State<Provider> {
       ).then(
         (_) => SharedPreferences.getInstance()  // re-retrieve because if the previous errors, we won't get prefs
       ).then(
-        (prefs) { Intents.sortActivities(widget.state, prefs.getString('sorter') ?? 'start', prefs.getBool('sortRev') ?? false); },
-        onError: (Exception e) { Intents.sortActivities(widget.state, 'start', false); }
+        (prefs) {
+          Intents.sortActivities(
+            widget.state,
+            sorterName: prefs.getString('sorter') ?? 'start',
+            reversed: prefs.getBool('sortRev') ?? false,
+          );
+        },
+        onError: (Exception e) { Intents.sortActivities(widget.state, sorterName: 'start', reversed: false); }
       ).then(
         (_) => SharedPreferences.getInstance()
       ).then(
