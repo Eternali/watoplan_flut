@@ -59,6 +59,13 @@ class Reducers {
     return newState;
   }
 
+  static AppState insertActivityType(AppState oldState, ActivityType type, int idx) {
+    AppState newState = new AppState.from(oldState);
+    newState.activityTypes.insert(idx, type);
+
+    return newState;
+  }
+
   static AppState addActivities(AppState oldState, List<Activity> toadd) {
     AppState newState = new AppState.from(oldState);
     newState.activities.addAll(toadd);
@@ -80,6 +87,13 @@ class Reducers {
         (activity) => activity.id
       ).toList().indexOf(newActivity.id)
     ] = Activity.from(newActivity);
+
+    return newState;
+  }
+
+  static AppState insertActivity(AppState oldState, Activity activity, int idx) {
+    AppState newState = new AppState.from(oldState);
+    newState.activities.insert(idx, activity);
 
     return newState;
   }
