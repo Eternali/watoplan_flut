@@ -24,3 +24,16 @@
 
 ### Dev Additions:
 - A refresh mechanism was added to the app state so if an untracked modification occurs, we can manually trigger an update to the widget tree.
+
+0.9.6
+-----
+
+### Bugs Fixed:
+- (__0012__) When adding a new type, the appbar title is empty.
+
+### New Features:
+- A snackbar has been added that will slide into view upon deletion of an activity or activity type, it displays a summary of the deletion and provides an "undo" action that allows you to restore any data that was deleted.
+
+### Minor Tweaks:
+- Small changes to the activity card animation.
+- The paddingon activity type cards is now matching.

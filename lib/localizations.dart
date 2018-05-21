@@ -30,6 +30,7 @@ class WatoplanLocalizations {
   String get chooseColor => 'Choose Color';
 
   String get remove => 'Remove';
+  String get undo => 'Undo';
 
   String get priority => 'Priority';
   String get progress => 'Progress';

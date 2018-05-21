@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
@@ -24,11 +25,13 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
   AnimationController controller;
   Animation<double> animation;
 
+  int getIdx(List<Activity> activities) => activities.indexOf(widget.activity);
+
   @override
   initState() {
     super.initState();
     controller = new AnimationController(duration: new Duration(milliseconds: 800), vsync: this);
-    animation = new CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    animation = new CurvedAnimation(parent: controller, curve: Curves.easeOut);
     animation.addListener(() {
       setState(() {  });
     });
@@ -44,9 +47,10 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    AppState stateVal = Provider.of(context).value;
-    ActivityType tmpType = stateVal.activityTypes.firstWhere((type) => type.id == widget.activity.typeId);
+    final locales = WatoplanLocalizations.of(context);
+    final ThemeData theme = Theme.of(context);
+    final AppStateObservable state = Provider.of(context);
+    final ActivityType tmpType = state.value.activityTypes.firstWhere((type) => type.id == widget.activity.typeId);
 
     return new Dismissible(
       key: new Key(widget.activity.id.toString()),
@@ -62,19 +66,24 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
         ),
       ),
       onDismissed: (direction) {
-        Intents.removeActivities(Provider.of(context), [widget.activity]);
+        int idx = getIdx(state.value.activities);
+        Intents.removeActivities(state, [widget.activity])
+          .then((activities) => Scaffold.of(context).showSnackBar(new SnackBar(
+            duration: const Duration(seconds: 3),
+            content: new Text(
+              'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',
+            ),
+            action: new SnackBarAction(
+              label: locales.undo.toUpperCase(),
+              onPressed: () {
+                Intents.insertActivity(state, activities[0], idx);
+              },
+            ),
+          )));
       },
       child: new InkWell(
         child: new Stack(
           children: <Widget>[
-            // new LayoutBuilder(
-            //   builder: (BuildContext context, BoxConstraints constraints) =>
-            //     new Container(
-            //       width: constraints.maxWidth,
-            //       height: constraints.maxWidth,
-            //       color: tmpType.color,
-            //     )
-            // ),
               new Positioned.fill(
               left: 0.0,
               right: widget.activity.data.containsKey('progress')
@@ -172,8 +181,8 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
           ],
         ),
         onTap: () {
-          Intents.setFocused(Provider.of(context), activity: widget.activity);
-          Intents.editEditing(Provider.of(context), new Activity.from(widget.activity));
+          Intents.setFocused(state, activity: widget.activity);
+          Intents.editEditing(state, new Activity.from(widget.activity));
           Navigator.of(context).pushNamed(Routes.addEditActivity);
         },
       ),

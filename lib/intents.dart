@@ -60,16 +60,25 @@ class Intents {
   }
 
   static Future removeActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
+    var activities = <Activity>[];
     for (ActivityType type in activityTypes) {
-      await Intents.removeActivities(appState, appState.value.activities.where((a) => a.typeId == type.id).toList().retype<Activity>());
+      activities.addAll(appState.value.activities.where((a) => a.typeId == type.id).toList().retype<Activity>());
       await LocalDb().remove(type);
     }
+    await Intents.removeActivities(appState, activities);    
     appState.value = Reducers.removeActivityTypes(appState.value, activityTypes);
+    return [activityTypes, activities];
   }
 
   static Future changeActivityType(AppStateObservable appState, ActivityType newType) async {
     await LocalDb().update(newType);
     appState.value = Reducers.changeActivityType(appState.value, newType);
+  }
+
+  // because this will mostly be used for restoring activity types
+  static Future insertActivityType(AppStateObservable appState, ActivityType type, int idx) async {
+    await LocalDb().add(type);  // should change to insert when we get a proper DB
+    appState.value = Reducers.insertActivityType(appState.value, type, idx);
   }
 
   static Future addActivities(
@@ -105,6 +114,7 @@ class Intents {
       }
     }
     appState.value = Reducers.removeActivities(appState.value, activities);
+    return activities;
   }
 
   static Future changeActivity(
@@ -150,6 +160,12 @@ class Intents {
       );
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);
+  }
+
+  // because this will mostly be used for restoring activities  
+  static Future insertActivity(AppStateObservable appState, Activity activity, int idx) async {
+    await LocalDb().add(activity);  // should change to insert when we get a proper DB
+    appState.value = Reducers.insertActivity(appState.value, activity, idx);
   }
 
   static Future<void> sortActivities(
