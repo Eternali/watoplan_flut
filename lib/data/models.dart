@@ -136,6 +136,7 @@ class MenuChoice {
 final Map<String, dynamic> validParams = {
   'name': '',
   'desc': '',
+  'long': '',
   'priority': 0,
   'progress': 0,
   'start': new DateTime.now(),

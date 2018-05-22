@@ -55,7 +55,8 @@ class WatoplanLocalizations {
   // Param locales
   Map<String, StrGet> validParams = {
     'name': () => 'name',
-    'desc': () => 'description',
+    'desc': () => 'short description',
+    'long': () => 'description (supports HTML)',
     'priority': () => 'priority',
     'progress': () => 'progress',
     'start': () => 'start',

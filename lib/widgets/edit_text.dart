@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
   final int maxLines;
+  final TextAlign alignment;
   final String label;
   final String initVal;
   final Function editField;
 
-  EditText({ this.maxLines, this.label, this.initVal, this.editField});
+  EditText({ this.maxLines = 1, this.alignment = TextAlign.center, this.label, this.initVal, this.editField});
 
   @override
   State<EditText> createState() => new EditTextState();

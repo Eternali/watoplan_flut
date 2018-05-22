@@ -93,7 +93,7 @@ class Intents {
             notiPlug: notiPlug,
             typeName: typeName,
             channel: activity.typeId.toString(),
-            base: activity.data.containsKey('start') ? activity.data['start'] : activity.data['end'],
+            base: activity.data['start'] ?? activity.data['end'],
           );
         }
       }

@@ -91,9 +91,8 @@ class AddEditScreenState extends State<AddEditScreen> {
         children: [
           stateVal.editingActivity.data.containsKey('name')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
-                maxLines: 1,
                 label: locales.validParams['name'](),
                 initVal: stateVal.editingActivity.data['name'],
                 // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
@@ -102,14 +101,26 @@ class AddEditScreenState extends State<AddEditScreen> {
             ) : null,
           stateVal.editingActivity.data.containsKey('desc')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: new EditText(
                 maxLines: 3,
+                alignment: TextAlign.start,
                 label: locales.validParams['desc'](),
                 initVal: stateVal.editingActivity.data['desc'],
                 editField: (String changed) { stateVal.editingActivity.data['desc'] = changed; },
               )
             ) : null,
+          stateVal.editingActivity.data.containsKey('long')
+            ? new Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: new EditText(
+                maxLines: 5,
+                alignment: TextAlign.start,
+                label: locales.validParams['long'](),
+                initVal: stateVal.editingActivity.data['long'],
+                editField: (String changed) { stateVal.editingActivity.data['long'] = changed; },
+              ),
+            ) : null,         
           stateVal.editingActivity.data.containsKey('priority')
             ? new Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -198,7 +209,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ) : null,
           stateVal.editingActivity.data.containsKey('start')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 6.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['start'](),
                 color: theme.disabledColor,
@@ -215,7 +226,7 @@ class AddEditScreenState extends State<AddEditScreen> {
             ) : null,
           stateVal.editingActivity.data.containsKey('end')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 6.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: new DateTimePicker(
                 label: locales.validParams['end'](),
                 color: theme.disabledColor,
@@ -232,12 +243,12 @@ class AddEditScreenState extends State<AddEditScreen> {
             ) : null,
           stateVal.editingActivity.data.containsKey('location')
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: new Container(),                
             ) : null,
           stateVal.editingActivity.data.keys.where((key) => ['start', 'end', 'notis'].contains(key)).length > 1
             ? new Padding(
-              padding: new EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: new Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
