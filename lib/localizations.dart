@@ -39,6 +39,7 @@ class WatoplanLocalizations {
 
   String get schedule => 'Schedule';
 
+  String get invalidType => 'Make sure your type is valid before saving.';
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
   String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
