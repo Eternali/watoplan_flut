@@ -136,6 +136,7 @@ class MenuChoice {
 final Map<String, dynamic> validParams = {
   'name': '',
   'desc': '',
+  'long': '',
   'priority': 0,
   'progress': 0,
   'start': new DateTime.now(),
@@ -157,9 +158,9 @@ class ActivityType {
 
   ActivityType({
     int id,
-    this.name,
-    this.icon,
-    this.color,
+    this.name = '',
+    this.icon = const IconData(0),
+    this.color = const Color(0xffaaaaaa),
     this.params,
   }) : _id = id ?? generateId() {
     params ??= {  };

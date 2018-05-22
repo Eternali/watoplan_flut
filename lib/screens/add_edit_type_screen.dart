@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/localizations.dart';
@@ -34,18 +36,29 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           stateVal.editingType.name ?? locales.newActivityType
         ),
         actions: <Widget>[
-          new FlatButton(
-            child: new Text(
-              locales.save.toUpperCase(),
-              style: theme.textTheme.button.copyWith(color: Colors.white),
+          new Builder(
+            builder: (BuildContext context) => new FlatButton(
+              child: new Text(
+                locales.save.toUpperCase(),
+                style: theme.textTheme.button.copyWith(color: Colors.white),
+              ),
+              onPressed: () {
+                Future.value(stateVal.focused >= 0)
+                  .then((editing) => editing
+                    ? Intents.changeActivityType(Provider.of(context), stateVal.editingType)
+                    : Intents.addActivityTypes(Provider.of(context), [stateVal.editingType])
+                  ).then((valid) {
+                    if (valid) Navigator.pop(context);
+                    else Scaffold.of(context).showSnackBar(new SnackBar(
+                      content: new Text(
+                        locales.invalidType,
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ));
+                  });
+              },
             ),
-            onPressed: () {
-              if (stateVal.focused >= 0) Intents.changeActivityType(Provider.of(context), stateVal.editingType);
-              else Intents.addActivityTypes(Provider.of(context), [stateVal.editingType]);
-              // Inten
-              Navigator.pop(context);
-            },
-          )
+          ),
         ],
       ),
       body: ListView(

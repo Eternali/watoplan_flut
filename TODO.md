@@ -1,6 +1,6 @@
 - improve local storage method (needs big efficiency improvement)
 - allow for remote data backup with firebase
-- add SMS and email reminders (will require an alarm manager of sorts (hopefully easier to integrate than the current solution)
+- add SMS and email reminders (will require an alarm manager of sorts (hopefully easier to integrate than current solutions)
 - add location and relevant people support
 - more intuitive navigation and data entry.
 - add more home layout views

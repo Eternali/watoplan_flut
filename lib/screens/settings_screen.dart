@@ -20,7 +20,8 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppState stateVal = Provider.of(context).value;
+    final AppState stateVal = Provider.of(context).value;
+    final ThemeData theme = Theme.of(context);
     themes.forEach((name, theme) {
       if (stateVal.theme == theme) {
         widget.isDark = name == 'dark';
@@ -36,8 +37,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           WatoplanLocalizations.of(context).settingsTitle
         ),
       ),
-      body: new Column(
-        mainAxisSize: MainAxisSize.min,
+      body: new ListView(
         children: <Widget>[
           new Builder(
             builder: (BuildContext context) {
@@ -69,56 +69,33 @@ class SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
           ),
-          new Expanded(
-            child: new Column(
-              children: <Widget>[
-                new ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  children: stateVal.activityTypes.map(
-                    (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
-                  ).toList(),
-                ),
-                new Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6.0),
-                  child: new RaisedButton(
-                    padding: EdgeInsets.all(8.0),
-                    color: Theme.of(context).accentColor,
-                    shape: new CircleBorder(
-                      side: new BorderSide(
-                        color: Theme.of(context).accentColor
-                      )
-                    ),
-                    child: new Icon(Icons.add, size: 34.0),
-                    onPressed: () {
-                      Intents.setFocused(Provider.of(context),indice: -1);
-                      Intents.editEditing(Provider.of(context), new ActivityType());
-                      Navigator.of(context).pushNamed(Routes.addEditActivityType);
-                    },
+          new Column(
+            children: <Widget>[
+              new Column(
+                children: stateVal.activityTypes.map(
+                  (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
+                ).toList(),
+              ),
+              new Padding(
+                padding: EdgeInsets.symmetric(vertical: 6.0),
+                child: new RaisedButton(
+                  padding: EdgeInsets.all(8.0),
+                  color: Theme.of(context).accentColor,
+                  shape: new CircleBorder(
+                    side: new BorderSide(
+                      color: Theme.of(context).accentColor
+                    )
                   ),
+                  child: new Icon(Icons.add, size: 34.0),
+                  onPressed: () {
+                    Intents.setFocused(Provider.of(context), indice: -1);
+                    Intents.editEditing(Provider.of(context), new ActivityType(color: theme.accentColor));
+                    Navigator.of(context).pushNamed(Routes.addEditActivityType);
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          //   child: new ListView(
-          //     padding: EdgeInsets.symmetric(horizontal: 24.0),
-          //     children: [
-          //       (stateVal.activityTypes.map(
-          //         (it) => new ActivityTypeCard(it)
-          //       ).toList() as List<Widget>),
-          //       new MaterialButton(
-          //         child: new Text('NEW'),
-          //         onPressed: () {  },
-          //       )
-          //     ].expand((l) => l).toList(),
-          // ),
-          // new Container(
-          //   width: double.infinity,
-          //   height: 100.0,
-          //   child: new Card(
-          //     child: new Text('NEW'),
-          //   ),
-          // ),
         ],
       ),
     );

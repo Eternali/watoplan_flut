@@ -52,11 +52,13 @@ class Intents {
       });
   }
 
-  static Future addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
+  static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
     for (ActivityType type in activityTypes) {
+    if (type.params.keys.length < 1 || type.name == '') return false;      
       await LocalDb().add(type);
     }
     appState.value = Reducers.addActivityTypes(appState.value, activityTypes);
+    return true;
   }
 
   static Future removeActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
@@ -70,9 +72,11 @@ class Intents {
     return [activityTypes, activities];
   }
 
-  static Future changeActivityType(AppStateObservable appState, ActivityType newType) async {
+  static Future<bool> changeActivityType(AppStateObservable appState, ActivityType newType) async {
+    if (newType.params.keys.length < 1 || newType.name == '') return false;
     await LocalDb().update(newType);
     appState.value = Reducers.changeActivityType(appState.value, newType);
+    return true;
   }
 
   // because this will mostly be used for restoring activity types
@@ -93,7 +97,7 @@ class Intents {
             notiPlug: notiPlug,
             typeName: typeName,
             channel: activity.typeId.toString(),
-            base: activity.data.containsKey('start') ? activity.data['start'] : activity.data['end'],
+            base: activity.data['start'] ?? activity.data['end'],
           );
         }
       }

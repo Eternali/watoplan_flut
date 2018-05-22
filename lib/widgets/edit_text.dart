@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
   final int maxLines;
+  final TextAlign alignment;
   final String label;
   final String initVal;
   final Function editField;
 
-  EditText({ this.maxLines, this.label, this.initVal, this.editField});
+  EditText({ this.maxLines = 1, this.alignment = TextAlign.center, this.label, this.initVal, this.editField});
 
   @override
   State<EditText> createState() => new EditTextState();
@@ -37,7 +38,7 @@ class EditTextState extends State<EditText> {
       child: new TextField(
         keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
         maxLines: widget.maxLines,
-        textAlign: TextAlign.center,
+        textAlign: widget.alignment,
         style: Theme.of(context).textTheme.body1.copyWith(
           fontSize: 20.0,
         ),

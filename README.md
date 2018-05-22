@@ -36,4 +36,5 @@ If you do not want to go through Google Play, you can manually build the app fro
 3. change into the app directory: ```cd watoplan_flut```
 4. Build:
     - Android: ```flutter build apk --flavor free```
-    - IOS: currently not supported (even though Flutter is cross-platform some dependancies only work on Android)
+    - IOS: ```flutter build ios --flavor free```
+        - __WARNING__: Since I don't own a mac, I haven't actually tried to build for IOS, so if anyone can try, please let me know.
