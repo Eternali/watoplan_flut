@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
@@ -147,11 +147,16 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                           ? new Text(
                             widget.activity.data['desc'],
                             style: theme.textTheme.body1.copyWith(fontSize: 14.0),
-                          )
-                          : widget.activity.data.containsKey('long') && widget.activity.data['long'].length > 0
-                            ? new HtmlView(
-                              data: widget.activity.data['long'],
-                            ) : null,
+                          ) : null,
+                        widget.activity.data.containsKey('long') && widget.activity.data['long'].length > 0
+                          ? new Column(
+                            children: <Widget>[
+                              new Divider(height: 4.0),
+                              new MarkdownBody(
+                                data: widget.activity.data['long'],
+                              ),
+                            ],
+                          ) : null,
                       ].where((it) => it != null).toList(),
                     ),
                   ),

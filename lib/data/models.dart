@@ -160,7 +160,7 @@ class ActivityType {
     int id,
     this.name = '',
     this.icon = const IconData(0),
-    this.color = const Color(0xFFAAAAAA),
+    this.color = const Color(0xffaaaaaa),
     this.params,
   }) : _id = id ?? generateId() {
     params ??= {  };

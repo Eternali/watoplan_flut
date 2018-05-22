@@ -12,6 +12,18 @@
       }
     },
     {
+      "_id": 9464445,
+      "name": "todo",
+      "icon": "0xe877",
+      "color": "0xff8f54ff",
+      "params": {
+        "name": "",
+        "long": "",
+        "progress": 0,
+        "priority": 0
+      }
+    },
+    {
       "_id": 3004445,
       "name": "activity",
       "icon": "0x0E84E",
@@ -22,7 +34,6 @@
         "progress": 0,
         "priority": 0,
         "start": "1525976515775",
-        "end": "1525976515775",
         "notis": []
       }
     },
@@ -36,7 +47,6 @@
         "desc": "",
         "priority": 0,
         "start": "1525976515779",
-        "end": "1525976515779",
         "notis": []
       }
     },
@@ -47,7 +57,7 @@
       "color": "0xff4caf50",
       "params": {
         "name": "",
-        "desc": "",
+        "long": "",
         "priority": 0,
         "start": "1525976515779",
         "end": "1525976515779",
@@ -65,21 +75,7 @@
         "progress": 0,
         "priority": 0,
         "start": "1525976515779",
-        "notis": []
-      }
-    },
-    {
-      "_id": 4354356,
-      "name": "project",
-      "icon": "0x0E0DF",
-      "color": "0xffe91e63",
-      "params": {
-        "name": "",
-        "desc": "",
-        "progress": 0,
-        "priority": 0,
-        "start": "1525989354356",
-        "end": "1525976515779",
+        "end": "1525976515779",        
         "notis": []
       }
     }

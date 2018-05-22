@@ -37,3 +37,14 @@
 ### Minor Tweaks:
 - Small changes to the activity card animation.
 - The paddingon activity type cards is now matching.
+
+0.9.7
+-----
+
+### New Features:
+- A new parameter type has been added that enables longer descriptions that support markdown for more detailed and structured notes.
+    - A TODO type has been added to the default activity types that uses the new long description parameter (and some others have been updated to utilise it as well).
+
+### Bugs Fixed:
+- (__0013__) When activity types continue off the settings screen, the user is unable to add new types because the scrolling mechanic is overriden by the type listview.
+- (__0014__) The activity type editing screen will allow the user to save even if the data is invalid, leading to an irrecoverable database state.

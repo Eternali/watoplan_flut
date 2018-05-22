@@ -57,7 +57,7 @@ class WatoplanLocalizations {
   Map<String, StrGet> validParams = {
     'name': () => 'name',
     'desc': () => 'short description',
-    'long': () => 'description (supports HTML)',
+    'long': () => 'description (Markdown)',
     'priority': () => 'priority',
     'progress': () => 'progress',
     'start': () => 'start',
