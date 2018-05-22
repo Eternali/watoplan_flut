@@ -63,14 +63,14 @@ class Reducers {
     AppState newState = new AppState.from(oldState);
     newState.activities.addAll(toadd);
 
-    return newState;    
+    return newState;
   }
 
   static AppState removeActivities(AppState oldState, List<Activity> activities) {
     AppState newState = new AppState.from(oldState);
     for (Activity activity in activities) newState.activities.remove(activity);
 
-    return newState;    
+    return newState;
   }
 
   static AppState changeActivity(AppState oldState, Activity newActivity) {
