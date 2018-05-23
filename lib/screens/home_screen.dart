@@ -91,7 +91,7 @@ class HomeScreenState extends State<HomeScreen> {
               );
               Navigator.of(context).pushNamed(Routes.addEditActivity);
             },
-            itemBuilder: (BuildContext context) => 
+            itemBuilder: (BuildContext context) =>
               stateVal.activityTypes.map((type) =>
                 new PopupMenuItem<ActivityType>(
                   value: type,

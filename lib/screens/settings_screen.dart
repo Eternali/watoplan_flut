@@ -21,6 +21,7 @@ class SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
+    final locales = WatoplanLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
     themes.forEach((name, theme) {
       if (stateVal.theme == theme) {
@@ -34,8 +35,68 @@ class SettingsScreenState extends State<SettingsScreen> {
         leading: new BackButton(),
         centerTitle: true,
         title: new Text(
-          WatoplanLocalizations.of(context).settingsTitle
+          locales.settingsTitle
         ),
+        actions: <Widget>[
+          new PopupMenuButton<int>(
+            onSelected: (int choice) {
+              if (choice == 0) {
+                showDialog<bool>(
+                  context: context,
+                  builder: (BuildContext context) => new SimpleDialog(
+                    title: new Text(
+                      locales.dataWarning,
+                    ),
+                    children: <Widget>[
+                      new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new FlatButton(
+                            child: new Text(
+                              locales.cancel,
+                              style: theme.textTheme.button,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            },
+                          ),
+                          new FlatButton(
+                            child: new Text(
+                              locales.cont,
+                              style: theme.textTheme.button.copyWith(
+                                color: theme.accentColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ).then((cont) {
+                  return cont
+                    ? Intents.reset(Provider.of(context))
+                    : null;
+                });
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              new PopupMenuItem<int>(
+                value: 0,
+                child: new Row(
+                  children: <Widget>[
+                    new Icon(Icons.settings_backup_restore),
+                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
+                    new Text(locales.resetApp),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: new ListView(
         children: <Widget>[

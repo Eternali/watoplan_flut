@@ -22,22 +22,18 @@ class Intents {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
       .then((db) => db.loadAtOnce())
-      // .then((dataStream) async {
-      //   await for (var item in dataStream) {
-      //     if (item is ActivityType) {
-      //       appState.value = Reducers.addActivityTypes(appState.value, [item]);
-      //     } else if (item is Activity) {
-      //       appState.value = Reducers.addActivities(appState.value, [item]);
-      //     }
-      //   }
-      // });
       .then((data) {
         if (data[0].length < 1) {
-          return LoadDefaults.loadDefaultData()
-            .then((_) {
-              LocalDb().saveOver(LoadDefaults.defaultData[0], LoadDefaults.defaultData[1]);
-              return LoadDefaults.defaultData;
-            });
+          return (LoadDefaults.defaultData.keys.length < 1
+            ? LoadDefaults.loadDefaultData()
+            : new Future.value(LoadDefaults.defaultData)
+            // ).then((_) => LocalDb().saveOver(
+            //   [],
+            //   [],
+            ).then((_) => [
+              LoadDefaults.defaultData['activityTypes'],
+              LoadDefaults.defaultData['activities'],
+            ]);
         } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
@@ -50,6 +46,25 @@ class Intents {
           sortRev: appState.value.sortRev,
         );
       });
+  }
+
+  static Future<Map<String, dynamic>> getDefaults(SharedPreferences prefs) async {
+    if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
+    return {
+      'focused': LoadDefaults.defaultData['focused'] ?? 0,
+      'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
+      'sorter': prefs.getString('sorter') ?? LoadDefaults.defaultData['sorter'] ?? 'start',
+      'sortRev': prefs.getBool('sortRev') ?? LoadDefaults.defaultData['sortRev'] ?? false,
+      'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
+    };
+  }
+
+  static Future reset(AppStateObservable appState) async {
+    await LocalDb().saveOver([], []);
+    appState.value = Reducers.set(
+      activities: <Activity>[],
+      activityTypes: <ActivityType>[],
+    );
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {

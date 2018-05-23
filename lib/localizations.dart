@@ -26,6 +26,7 @@ class WatoplanLocalizations {
   String get end => 'End';
   String get reverse => 'Reverse';
   String get reversed => 'Reversed';
+  String get cont => 'Continue';
 
   String get chooseColor => 'Choose Color';
 
@@ -36,6 +37,8 @@ class WatoplanLocalizations {
   String get progress => 'Progress';
 
   String get addNotification => 'Add another notification';
+  String get resetApp => 'Reset to Defaults';
+  String get dataWarning => 'Warning, this will delete all your data! Continue?';
 
   String get schedule => 'Schedule';
 

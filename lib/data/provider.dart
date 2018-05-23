@@ -31,31 +31,28 @@ class _ProviderState extends State<Provider> {
     super.initState();
     widget.state.addListener(didStateChange);
 
-    SharedPreferences.getInstance()
+    LoadDefaults.loadIcons()
       .then(
-        (prefs) { Intents.setTheme(widget.state, prefs.getString('theme') ?? 'light'); },
-        onError: (Exception e) { Intents.setTheme(widget.state, 'light'); }
-      ).then(
-        (_) => LoadDefaults.loadIcons()
-      ).then(
         (_) => Intents.loadAll(widget.state)
       ).then(
         (data) { setState(() {  }); }
       ).then(
-        (_) => SharedPreferences.getInstance()  // re-retrieve because if the previous errors, we won't get prefs
-      ).then(
-        (prefs) {
-          Intents.sortActivities(
-            widget.state,
-            sorterName: prefs.getString('sorter') ?? 'start',
-            reversed: prefs.getBool('sortRev') ?? false,
-          );
-        },
-        onError: (Exception e) { Intents.sortActivities(widget.state, sorterName: 'start', reversed: false); }
-      ).then(
         (_) => SharedPreferences.getInstance()
       ).then(
-        (prefs) {  } // for email
+        (prefs) => Intents.getDefaults(prefs)
+      ).then(
+        (defaults) { Intents.setTheme(widget.state, defaults['theme']); return defaults; },
+        onError: (Exception e) => Intents.setTheme(widget.state, 'light')
+      ).then(
+        (defaults) { Intents.setFocused(widget.state, indice: defaults['focused']); return defaults; }
+      ).then(
+        (defaults) => Intents.sortActivities(
+          widget.state,
+          sorterName: defaults['sorter'],
+          reversed: defaults['sortRev'],
+          needsRefresh: defaults['needsRefresh'],
+        ),
+        onError: (Exception e) => Intents.sortActivities(widget.state, sorterName: 'start', reversed: false)
       ).then(
         (_) { setState(() {  }); }
       );
