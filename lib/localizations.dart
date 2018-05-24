@@ -40,7 +40,7 @@ class WatoplanLocalizations {
   String get resetApp => 'Reset to Defaults';
   String get dataWarning => 'Warning, this will delete all your data, continue?';
 
-  String get schedule => 'Schedule';
+  String get layoutList => 'Order by';
 
   String get invalidType => 'Make sure your type is valid before saving.';
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';

@@ -71,7 +71,9 @@ class WatoplanState extends State<Watoplan> {
         },
         builder: (BuildContext context, Widget child) => new Theme(
           data: Provider.of(context).value.theme ?? themes['light'],
-          child: child,
+          child: new SafeArea(
+            child: child,
+          ),
         ),
       ),
     );

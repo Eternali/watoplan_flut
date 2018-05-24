@@ -157,7 +157,7 @@ class HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     new Text(
-                      locales.schedule.toUpperCase(),
+                      locales.layoutList.toUpperCase(),
                       style: new TextStyle(
                         letterSpacing: 1.4,
                         fontWeight: FontWeight.w700,
