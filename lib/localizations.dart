@@ -38,7 +38,7 @@ class WatoplanLocalizations {
 
   String get addNotification => 'Add another notification';
   String get resetApp => 'Reset to Defaults';
-  String get dataWarning => 'Warning, this will delete all your data! Continue?';
+  String get dataWarning => 'Warning, this will delete all your data, continue?';
 
   String get schedule => 'Schedule';
 

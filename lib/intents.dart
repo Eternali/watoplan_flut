@@ -24,16 +24,19 @@ class Intents {
       .then((db) => db.loadAtOnce())
       .then((data) {
         if (data[0].length < 1) {
-          return (LoadDefaults.defaultData.keys.length < 1
+          return ((LoadDefaults.defaultData.keys.length < 1
             ? LoadDefaults.loadDefaultData()
-            : new Future.value(LoadDefaults.defaultData)
-            // ).then((_) => LocalDb().saveOver(
-            //   [],
-            //   [],
-            ).then((_) => [
-              LoadDefaults.defaultData['activityTypes'],
-              LoadDefaults.defaultData['activities'],
-            ]);
+            : Future.value(LoadDefaults.defaultData)
+            )).then((_) {
+              var types = LoadDefaults.defaultData['activityTypes']
+                ?.map((type) => new ActivityType.fromJson(type))
+                .retype<ActivityType>().toList() ?? <ActivityType>[];
+              var activities = LoadDefaults.defaultData['activities']
+                  ?.map((activity) => new Activity.fromJson(activity, types))
+                  .retype<Activity>().toList() ?? <Activity>[];
+              
+              return [types, activities];
+            });
         } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
@@ -48,7 +51,7 @@ class Intents {
       });
   }
 
-  static Future<Map<String, dynamic>> getDefaults(SharedPreferences prefs) async {
+  static Future<Map<String, dynamic>> getSettings(SharedPreferences prefs) async {
     if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
     return {
       'focused': LoadDefaults.defaultData['focused'] ?? 0,

@@ -39,18 +39,18 @@ class _ProviderState extends State<Provider> {
       ).then(
         (_) => SharedPreferences.getInstance()
       ).then(
-        (prefs) => Intents.getDefaults(prefs)
+        (prefs) => Intents.getSettings(prefs)
       ).then(
-        (defaults) { Intents.setTheme(widget.state, defaults['theme']); return defaults; },
+        (settings) { Intents.setTheme(widget.state, settings['theme']); return settings; },
         onError: (Exception e) => Intents.setTheme(widget.state, 'light')
       ).then(
-        (defaults) { Intents.setFocused(widget.state, indice: defaults['focused']); return defaults; }
+        (settings) { Intents.setFocused(widget.state, indice: settings['focused']); return settings; }
       ).then(
-        (defaults) => Intents.sortActivities(
+        (settings) => Intents.sortActivities(
           widget.state,
-          sorterName: defaults['sorter'],
-          reversed: defaults['sortRev'],
-          needsRefresh: defaults['needsRefresh'],
+          sorterName: settings['sorter'],
+          reversed: settings['sortRev'],
+          needsRefresh: settings['needsRefresh'],
         ),
         onError: (Exception e) => Intents.sortActivities(widget.state, sorterName: 'start', reversed: false)
       ).then(
