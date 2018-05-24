@@ -44,6 +44,11 @@ class LocalDb {
     _self = null;
   }
 
+  Future delete() async {
+    await _db.delete();
+    destroy();
+  }
+
   Stream<ActivityType> loadTypes() async* {
     // _db.openRead();
   }

@@ -14,6 +14,17 @@ import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
+  static Future initData(AppStateObservable appState) => (LoadDefaults.icons.length < 1
+    ? LoadDefaults.loadIcons()
+    : Future.value(LoadDefaults.icons)
+    ).then(
+      (_) => Intents.loadAll(appState)
+    ).then(
+      (_) => SharedPreferences.getInstance()
+    ).then(
+      (prefs) => Intents.initSettings(appState, prefs)
+    );
+
   static Future<void> refresh(AppStateObservable appState) async {
     appState.value = Reducers.refresh(appState.value);
   }
@@ -22,34 +33,62 @@ class Intents {
     return getApplicationDocumentsDirectory()
       .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
       .then((db) => db.loadAtOnce())
-      // .then((dataStream) async {
-      //   await for (var item in dataStream) {
-      //     if (item is ActivityType) {
-      //       appState.value = Reducers.addActivityTypes(appState.value, [item]);
-      //     } else if (item is Activity) {
-      //       appState.value = Reducers.addActivities(appState.value, [item]);
-      //     }
-      //   }
-      // });
       .then((data) {
         if (data[0].length < 1) {
-          return LoadDefaults.loadDefaultData()
-            .then((_) {
-              LocalDb().saveOver(LoadDefaults.defaultData[0], LoadDefaults.defaultData[1]);
-              return LoadDefaults.defaultData;
+          return ((LoadDefaults.defaultData.keys.length < 1
+            ? LoadDefaults.loadDefaultData()
+            : Future.value(LoadDefaults.defaultData)
+            )).then((_) {
+              var types = LoadDefaults.defaultData['activityTypes']
+                ?.map((type) => new ActivityType.fromJson(type))
+                .retype<ActivityType>().toList() ?? <ActivityType>[];
+              var activities = LoadDefaults.defaultData['activities']
+                  ?.map((activity) => new Activity.fromJson(activity, types))
+                  .retype<Activity>().toList() ?? <Activity>[];
+              return LocalDb().saveOver(types, activities)
+                .then((_) => [types, activities]);
             });
         } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
-        appState.value = Reducers.set(
+        appState.value = Reducers.setData(
+          appState.value,
           activityTypes: (data as List)[0],
           activities: (data as List)[1],
-          focused: appState.value.focused,
-          theme: appState.value.theme,
-          sorter: appState.value.sorter,
-          sortRev: appState.value.sortRev,
         );
       });
+  }
+
+  static Future initSettings(AppStateObservable appState, SharedPreferences prefs) async {
+    if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
+    return Future.value({
+      'focused': LoadDefaults.defaultData['focused'] ?? 0,
+      'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
+      'sorter': prefs.getString('sorter') ?? LoadDefaults.defaultData['sorter'] ?? 'start',
+      'sortRev': prefs.getBool('sortRev') ?? LoadDefaults.defaultData['sortRev'] ?? false,
+      'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
+    }).then(
+      (settings) { Intents.setTheme(appState, settings['theme']); return settings; },
+      onError: (Exception e) => Intents.setTheme(appState, 'light')
+    ).then(
+      (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
+    ).then(
+      (settings) => Intents.sortActivities(
+        appState,
+        sorterName: settings['sorter'],
+        reversed: settings['sortRev'],
+        needsRefresh: settings['needsRefresh'],
+      ),
+      onError: (Exception e) => Intents.sortActivities(appState, sorterName: 'start', reversed: false)
+    );
+  }
+
+  static Future reset(AppStateObservable appState, SharedPreferences prefs) async {
+    await LocalDb().delete();
+    await prefs.remove('theme');
+    await prefs.remove('sorter');
+    await prefs.remove('sortRev');    
+    appState.value = Reducers.firstDefault;
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {

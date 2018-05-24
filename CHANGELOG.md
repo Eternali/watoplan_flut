@@ -48,3 +48,13 @@
 ### Bugs Fixed:
 - (__0013__) When activity types continue off the settings screen, the user is unable to add new types because the scrolling mechanic is overriden by the type listview.
 - (__0014__) The activity type editing screen will allow the user to save even if the data is invalid, leading to an irrecoverable database state.
+
+0.9.8
+-----
+
+### Modifications due to feedback:
+- All app screens are now wrapped with a SafeArea to ensure notches do not hind content.
+- 'SCHEDULE' was renamed to 'ORDER BY' in app drawer, hopefully to clear some confusion (note that I do intend to have different home layouts in the future, so hopefully this is just a temporary fix).
+
+### New Features:
+- An option was added to settings that enables the user to reset the app to defaults. The main use case for this is that if a bug in the app causes the database to get in an irrecoverable state, the user doesn't have to reinstall the app or manually delete the database file to get it back in a working order.

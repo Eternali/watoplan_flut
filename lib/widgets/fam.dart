@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-import 'package:watoplan/data/models.dart';
-
 class SubFAB {
   final IconData icon;
   final Color color;
@@ -98,7 +96,7 @@ class FloatingActionMenuState
             animation: _controller,
             builder: (BuildContext context, Widget child) {
               return new Transform(
-                transform: new Matrix4.rotationZ(_controller.value * 0.75 * math.pi),
+                transform: new Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
                 alignment: FractionalOffset.center,
                 child: new Icon(Icons.add),
               );
