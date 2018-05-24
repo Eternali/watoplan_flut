@@ -27,6 +27,7 @@ The main home screen displays the list of activities as such:
     - only the 4 most used types are shown, for an entire list of the possible types, see the add button in the appbar
 The about page shows app information and important links for feedback and further information
 The settings page allows you to change the theme and add/change/remove activity types.
+__NOTE:__ If the app ever becomes corrupted due to the database getting into an irrecoverable state, the menu in the settings appbar has an action that will completely reset the app (along with any user data) which should fix any portions of the app that may have been corrupted.
 
 ## Installation
 If you do not want to go through Google Play, you can manually build the app from source:
