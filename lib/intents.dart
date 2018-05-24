@@ -40,13 +40,10 @@ class Intents {
         } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
-        appState.value = Reducers.set(
+        appState.value = Reducers.initData(
+          appState.value,
           activityTypes: (data as List)[0],
           activities: (data as List)[1],
-          focused: appState.value.focused,
-          theme: appState.value.theme,
-          sorter: appState.value.sorter,
-          sortRev: appState.value.sortRev,
         );
       });
   }
@@ -64,7 +61,8 @@ class Intents {
 
   static Future reset(AppStateObservable appState) async {
     await LocalDb().saveOver([], []);
-    appState.value = Reducers.set(
+    appState.value = Reducers.initData(
+      appState.value,
       activities: <Activity>[],
       activityTypes: <ActivityType>[],
     );

@@ -6,27 +6,12 @@ typedef T EditingModifier<T>();
 
 class Reducers {
 
-  static AppState set({
-    List<ActivityType> activityTypes,
-    List<Activity> activities,
-    Activity editingActivity,
-    ActivityType editingType,
-    int focused,
-    ThemeData theme,
-    String sorter,
-    bool sortRev,
-    bool needsRefresh,
-  }) {
-    return new AppState(
+  static AppState initData(
+    AppState oldState,
+    { List<ActivityType> activityTypes, List<Activity> activities }) {
+    return oldState.copyWith(
       activityTypes: activityTypes,
       activities: activities,
-      editingActivity: editingActivity,
-      editingType: editingType,
-      focused: focused,
-      theme: theme,
-      sorter: sorter,
-      sortRev: sortRev,
-      needsRefresh: needsRefresh,
     );
   }
 
