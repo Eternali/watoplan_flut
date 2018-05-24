@@ -14,8 +14,10 @@ import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
-  static Future initData(AppStateObservable appState) => LoadDefaults.loadIcons()
-    .then(
+  static Future initData(AppStateObservable appState) => (LoadDefaults.icons.length < 1
+    ? LoadDefaults.loadIcons()
+    : Future.value(LoadDefaults.icons)
+    ).then(
       (_) => Intents.loadAll(appState)
     ).then(
       (_) => SharedPreferences.getInstance()
@@ -43,8 +45,8 @@ class Intents {
               var activities = LoadDefaults.defaultData['activities']
                   ?.map((activity) => new Activity.fromJson(activity, types))
                   .retype<Activity>().toList() ?? <Activity>[];
-              
-              return [types, activities];
+              return LocalDb().saveOver(types, activities)
+                .then((_) => [types, activities]);
             });
         } else return data;
       }).then((data) {
