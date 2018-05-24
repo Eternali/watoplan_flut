@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/models.dart';
 
 typedef T EditingModifier<T>();
 
 class Reducers {
 
-  static AppState initData(
+  // this is the state that will be set before any data or settings have been loaded from storage yet.
+  static AppState get firstDefault => new AppState(
+    activityTypes: [],
+    activities: [],
+    focused: 0,
+    theme: themes['light'],
+    sorter: 'start',
+  );
+
+  static AppState setData(
     AppState oldState,
     { List<ActivityType> activityTypes, List<Activity> activities }) {
     return oldState.copyWith(
-      activityTypes: activityTypes,
-      activities: activities,
+      activityTypes: activityTypes ?? oldState.activityTypes,
+      activities: activities ?? oldState.activities,
     );
   }
 

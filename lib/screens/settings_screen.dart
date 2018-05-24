@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
@@ -77,9 +79,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                     ],
                   ),
                 ).then((cont) {
-                  return cont
-                    ? Intents.reset(Provider.of(context))
-                    : null;
+                  if (cont) {
+                    SharedPreferences.getInstance()
+                      .then((prefs) => Intents.reset(Provider.of(context), prefs))
+                      .then((_) => Intents.initData(Provider.of(context)));
+                  }
                 });
               }
             },

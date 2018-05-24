@@ -7,6 +7,7 @@ import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/run_after.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/data/reducers.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/screens/home_screen.dart';
@@ -31,15 +32,7 @@ class Watoplan extends StatefulWidget {
   AppStateObservable watoplanState;
 
   Watoplan() {
-    watoplanState = new AppStateObservable(
-      new AppState(
-        activityTypes: [],
-        activities: [],
-        focused: 0,
-        theme: themes['light'],
-        sorter: 'start',
-      )
-    );
+    watoplanState = new AppStateObservable(Reducers.firstDefault);
   }
 
   @override

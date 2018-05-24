@@ -1,9 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/utils/load_defaults.dart';
 
 class Provider extends StatefulWidget {
 
@@ -31,31 +31,7 @@ class _ProviderState extends State<Provider> {
     super.initState();
     widget.state.addListener(didStateChange);
 
-    LoadDefaults.loadIcons()
-      .then(
-        (_) => Intents.loadAll(widget.state)
-      ).then(
-        (data) { setState(() {  }); }
-      ).then(
-        (_) => SharedPreferences.getInstance()
-      ).then(
-        (prefs) => Intents.getSettings(prefs)
-      ).then(
-        (settings) { Intents.setTheme(widget.state, settings['theme']); return settings; },
-        onError: (Exception e) => Intents.setTheme(widget.state, 'light')
-      ).then(
-        (settings) { Intents.setFocused(widget.state, indice: settings['focused']); return settings; }
-      ).then(
-        (settings) => Intents.sortActivities(
-          widget.state,
-          sorterName: settings['sorter'],
-          reversed: settings['sortRev'],
-          needsRefresh: settings['needsRefresh'],
-        ),
-        onError: (Exception e) => Intents.sortActivities(widget.state, sorterName: 'start', reversed: false)
-      ).then(
-        (_) { setState(() {  }); }
-      );
+    Intents.initData(widget.state);
   }
 
   @override

@@ -14,6 +14,15 @@ import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
+  static Future initData(AppStateObservable appState) => LoadDefaults.loadIcons()
+    .then(
+      (_) => Intents.loadAll(appState)
+    ).then(
+      (_) => SharedPreferences.getInstance()
+    ).then(
+      (prefs) => Intents.initSettings(appState, prefs)
+    );
+
   static Future<void> refresh(AppStateObservable appState) async {
     appState.value = Reducers.refresh(appState.value);
   }
@@ -40,7 +49,7 @@ class Intents {
         } else return data;
       }).then((data) {
         // Damn dart and its terrible type inferencing
-        appState.value = Reducers.initData(
+        appState.value = Reducers.setData(
           appState.value,
           activityTypes: (data as List)[0],
           activities: (data as List)[1],
@@ -48,24 +57,36 @@ class Intents {
       });
   }
 
-  static Future<Map<String, dynamic>> getSettings(SharedPreferences prefs) async {
+  static Future initSettings(AppStateObservable appState, SharedPreferences prefs) async {
     if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
-    return {
+    return Future.value({
       'focused': LoadDefaults.defaultData['focused'] ?? 0,
       'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'sorter': prefs.getString('sorter') ?? LoadDefaults.defaultData['sorter'] ?? 'start',
       'sortRev': prefs.getBool('sortRev') ?? LoadDefaults.defaultData['sortRev'] ?? false,
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
-    };
+    }).then(
+      (settings) { Intents.setTheme(appState, settings['theme']); return settings; },
+      onError: (Exception e) => Intents.setTheme(appState, 'light')
+    ).then(
+      (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
+    ).then(
+      (settings) => Intents.sortActivities(
+        appState,
+        sorterName: settings['sorter'],
+        reversed: settings['sortRev'],
+        needsRefresh: settings['needsRefresh'],
+      ),
+      onError: (Exception e) => Intents.sortActivities(appState, sorterName: 'start', reversed: false)
+    );
   }
 
-  static Future reset(AppStateObservable appState) async {
-    await LocalDb().saveOver([], []);
-    appState.value = Reducers.initData(
-      appState.value,
-      activities: <Activity>[],
-      activityTypes: <ActivityType>[],
-    );
+  static Future reset(AppStateObservable appState, SharedPreferences prefs) async {
+    await LocalDb().delete();
+    await prefs.remove('theme');
+    await prefs.remove('sorter');
+    await prefs.remove('sortRev');    
+    appState.value = Reducers.firstDefault;
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
