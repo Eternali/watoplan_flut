@@ -90,5 +90,10 @@
         "priority": 7
       }
     }
-  ]
+  ],
+  "focused": 0,
+  "theme": "light",
+  "sorter": "start",
+  "sortRev": false,
+  "needsRefresh": false
 }

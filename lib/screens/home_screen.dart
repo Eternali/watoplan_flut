@@ -91,7 +91,7 @@ class HomeScreenState extends State<HomeScreen> {
               );
               Navigator.of(context).pushNamed(Routes.addEditActivity);
             },
-            itemBuilder: (BuildContext context) => 
+            itemBuilder: (BuildContext context) =>
               stateVal.activityTypes.map((type) =>
                 new PopupMenuItem<ActivityType>(
                   value: type,
@@ -157,7 +157,7 @@ class HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     new Text(
-                      locales.schedule.toUpperCase(),
+                      locales.layoutList.toUpperCase(),
                       style: new TextStyle(
                         letterSpacing: 1.4,
                         fontWeight: FontWeight.w700,
