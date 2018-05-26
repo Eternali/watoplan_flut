@@ -25,64 +25,66 @@ class AboutScreenState extends State<AboutScreen> {
           WatoplanLocalizations.of(context).aboutTitle
         ),
       ),
-      body: new Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: new Column(
-          children: <Widget>[
-            new RichText(
-              text: new TextSpan(
-                children: <TextSpan>[
-                  new TextSpan(
-                    style: aboutTextSyle,
-                    text: '${locales.aboutFeedback} '
-                  ),
-                  new LinkTextSpan(
-                    style: linkTextStyle,
-                    url: 'https://github.com/Eternali/watoplan_flut/blob/release/KNOWN_BUGS.md',
-                    text: 'known bugs'
-                  ),
-                  new TextSpan(
-                    style: aboutTextSyle,
-                    text: ' and '
-                  ),
-                  new LinkTextSpan(
-                    style: linkTextStyle,
-                    url: 'https://github.com/Eternali/watoplan_flut/blob/release/TODO.md',
-                    text: 'the roadmap'
-                  ),
-                  new TextSpan(
-                    style: aboutTextSyle,
-                    text: ' before emailing '
-                  ),
-                  new LinkTextSpan(
-                    style: linkTextStyle,
-                    url: 'mailto:chipthinkstudios@gmail.com',
-                    text: 'chipthinkstudios@gmail.com',
-                    whenCant: () {  },
-                  ),
-                ]
+      body: new SafeArea(
+        child: new Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: new Column(
+            children: <Widget>[
+              new RichText(
+                text: new TextSpan(
+                  children: <TextSpan>[
+                    new TextSpan(
+                      style: aboutTextSyle,
+                      text: '${locales.aboutFeedback} '
+                    ),
+                    new LinkTextSpan(
+                      style: linkTextStyle,
+                      url: 'https://github.com/Eternali/watoplan_flut/blob/release/KNOWN_BUGS.md',
+                      text: 'known bugs'
+                    ),
+                    new TextSpan(
+                      style: aboutTextSyle,
+                      text: ' and '
+                    ),
+                    new LinkTextSpan(
+                      style: linkTextStyle,
+                      url: 'https://github.com/Eternali/watoplan_flut/blob/release/TODO.md',
+                      text: 'the roadmap'
+                    ),
+                    new TextSpan(
+                      style: aboutTextSyle,
+                      text: ' before emailing '
+                    ),
+                    new LinkTextSpan(
+                      style: linkTextStyle,
+                      url: 'mailto:chipthinkstudios@gmail.com',
+                      text: 'chipthinkstudios@gmail.com',
+                      whenCant: () {  },
+                    ),
+                  ]
+                ),
               ),
-            ),
-            new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Divider()
-            ),
-            new RichText(
-              text: new TextSpan(
-                children: <TextSpan>[
-                  new TextSpan(
-                    style: aboutTextSyle,
-                    text: '${locales.developFeedback} '
-                  ),
-                  new LinkTextSpan(
-                    style: linkTextStyle,
-                    url: 'https://github.com/eternali/watoplan_flut',
-                    text: 'github.com/eternali/watoplan_flut',
-                  ),
-                ]
+              new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Divider()
               ),
-            ),
-          ],
+              new RichText(
+                text: new TextSpan(
+                  children: <TextSpan>[
+                    new TextSpan(
+                      style: aboutTextSyle,
+                      text: '${locales.developFeedback} '
+                    ),
+                    new LinkTextSpan(
+                      style: linkTextStyle,
+                      url: 'https://github.com/eternali/watoplan_flut',
+                      text: 'github.com/eternali/watoplan_flut',
+                    ),
+                  ]
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -102,66 +102,68 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      body: new ListView(
-        children: <Widget>[
-          new Builder(
-            builder: (BuildContext context) {
-              return new SwitchListTile(
-                title: new Text('Join the dark side?'),
-                selected: true,
-                value: widget.isDark,
-                activeColor: Theme.of(context).accentColor,
-                onChanged: (newVal) {
-                  if (newVal) {
-                    if (Theme.of(context) != themes['dark']) Intents.setTheme(Provider.of(context), 'dark');
-                  } else {
-                    if (Theme.of(context) != themes['light']) Intents.setTheme(Provider.of(context), 'light');
-                  }
-                  setState(() { widget.isDark = newVal; });
-                },
-              );
-            }
-          ),
-          
-          new Container(
-            padding: EdgeInsets.only(bottom: 12.0),
-            child: new Text(
-              'Activity Types',
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          new Column(
-            children: <Widget>[
-              new Column(
-                children: stateVal.activityTypes.map(
-                  (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
-                ).toList(),
-              ),
-              new Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0),
-                child: new RaisedButton(
-                  padding: EdgeInsets.all(8.0),
-                  color: Theme.of(context).accentColor,
-                  shape: new CircleBorder(
-                    side: new BorderSide(
-                      color: Theme.of(context).accentColor
-                    )
-                  ),
-                  child: new Icon(Icons.add, size: 34.0),
-                  onPressed: () {
-                    Intents.setFocused(Provider.of(context), indice: -1);
-                    Intents.editEditing(Provider.of(context), new ActivityType(color: theme.accentColor));
-                    Navigator.of(context).pushNamed(Routes.addEditActivityType);
+      body: new SafeArea(
+        child: new ListView(
+          children: <Widget>[
+            new Builder(
+              builder: (BuildContext context) {
+                return new SwitchListTile(
+                  title: new Text('Join the dark side?'),
+                  selected: true,
+                  value: widget.isDark,
+                  activeColor: Theme.of(context).accentColor,
+                  onChanged: (newVal) {
+                    if (newVal) {
+                      if (Theme.of(context) != themes['dark']) Intents.setTheme(Provider.of(context), 'dark');
+                    } else {
+                      if (Theme.of(context) != themes['light']) Intents.setTheme(Provider.of(context), 'light');
+                    }
+                    setState(() { widget.isDark = newVal; });
                   },
+                );
+              }
+            ),
+            
+            new Container(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: new Text(
+                'Activity Types',
+                textAlign: TextAlign.center,
+                style: new TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            new Column(
+              children: <Widget>[
+                new Column(
+                  children: stateVal.activityTypes.map(
+                    (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
+                  ).toList(),
+                ),
+                new Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6.0),
+                  child: new RaisedButton(
+                    padding: EdgeInsets.all(8.0),
+                    color: Theme.of(context).accentColor,
+                    shape: new CircleBorder(
+                      side: new BorderSide(
+                        color: Theme.of(context).accentColor
+                      )
+                    ),
+                    child: new Icon(Icons.add, size: 34.0),
+                    onPressed: () {
+                      Intents.setFocused(Provider.of(context), indice: -1);
+                      Intents.editEditing(Provider.of(context), new ActivityType(color: theme.accentColor));
+                      Navigator.of(context).pushNamed(Routes.addEditActivityType);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

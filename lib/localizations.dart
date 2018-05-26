@@ -9,52 +9,41 @@ class WatoplanLocalizations {
     return Localizations.of<WatoplanLocalizations>(context, WatoplanLocalizations);
   }
 
-  String get appTitle => 'WAToPlan';
-  String get addActivity => 'Add Activity';
-  String get newtxt => 'New';
-  String get newActivity => 'New Activity';
-  String get addActivityType => 'Add Type';
-  String get newActivityType => 'New Type';
-  String get newNoti => 'New Notification';
-  String get editNoti => 'Edit Notification';
-  String get settingsTitle => 'Settings';
+  String get aboutFeedback => 'For feedback, feature requests, or bug reports, please first check';  
   String get aboutTitle => 'About';
-  String get save => 'Save';
-  String get select => 'Select';
-  String get cancel => 'Cancel';
-  String get start => 'Start';
-  String get end => 'End';
-  String get reverse => 'Reverse';
-  String get reversed => 'Reversed';
-  String get cont => 'Continue';
-
-  String get chooseColor => 'Choose Color';
-
-  String get remove => 'Remove';
-  String get undo => 'Undo';
-
-  String get priority => 'Priority';
-  String get progress => 'Progress';
-
+  String get addActivity => 'Add Activity';
+  String get addActivityType => 'Add Type';
   String get addNotification => 'Add another notification';
-  String get resetApp => 'Reset to Defaults';
+  String get appTitle => 'WAToPlan';
+  String get cancel => 'Cancel';
+  String get chooseColor => 'Choose Color';
+  String get cont => 'Continue';
   String get dataWarning => 'Warning, this will delete all your data, continue?';
-
-  String get layoutList => 'Order by';
-
-  String get invalidType => 'Make sure your type is valid before saving.';
+  String get developFeedback => 'If you\'re a developer with ideas, issues, or just interested in '
+    'checking out the app source, you can find us at';
+  String get editNoti => 'Edit Notification';
+  String get end => 'End';
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
-  String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
+  String get invalidType => 'Make sure your type is valid before saving.';
+  String get layoutList => 'Order by';
+  String get newActivity => 'New Activity';
+  String get newActivityType => 'New Type';
+  String get newNoti => 'New Notification';
+  String get newtxt => 'New';
+  String get priority => 'Priority';
+  String get progress => 'Progress';
+  String get remove => 'Remove';
+  String get resetApp => 'Reset to Defaults';
+  String get reverse => 'Reverse';
+  String get reversed => 'Reversed';
+  String get save => 'Save';
+  String get select => 'Select';
+  String get settingsTitle => 'Settings';
+  String get start => 'Start';
+  String get undo => 'Undo';
 
-  // Sort locales
-  Map<String, StrGet> validSorts = {
-    'start': () => 'start time',
-    'end': () => 'end time',
-    'priority': () => 'priority',
-    'progress': () => 'progress',
-    'type': () => 'type',
-  };
+  String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
 
   // Param locales
   Map<String, StrGet> validParams = {
@@ -71,9 +60,14 @@ class WatoplanLocalizations {
     // 'tags': () => 'tags',
   };
 
-  String get aboutFeedback => 'For feedback, feature requests, or bug reports, please first check';
-  String get developFeedback => 'If you\'re a developer with ideas, issues, or just interested in checking out the app source, '
-    'you can find us at';
+  // Sort locales
+  Map<String, StrGet> validSorts = {
+    'start': () => 'start time',
+    'end': () => 'end time',
+    'priority': () => 'priority',
+    'progress': () => 'progress',
+    'type': () => 'type',
+  };
 
 }
 

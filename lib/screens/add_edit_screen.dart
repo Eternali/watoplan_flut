@@ -85,181 +85,183 @@ class AddEditScreenState extends State<AddEditScreen> {
           )
         ],
       ),
-      body: new ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        shrinkWrap: true,
-        children: [
-          stateVal.editingActivity.data.containsKey('name')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new EditText(
-                label: locales.validParams['name'](),
-                initVal: stateVal.editingActivity.data['name'],
-                // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
-                editField: (String changed) { stateVal.editingActivity.data['name'] = changed; },
-              )
-            ) : null,
-          stateVal.editingActivity.data.containsKey('desc')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new EditText(
-                maxLines: 3,
-                alignment: TextAlign.start,
-                label: locales.validParams['desc'](),
-                initVal: stateVal.editingActivity.data['desc'],
-                editField: (String changed) { stateVal.editingActivity.data['desc'] = changed; },
-              )
-            ) : null,
-          stateVal.editingActivity.data.containsKey('long')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new EditText(
-                maxLines: 5,
-                alignment: TextAlign.start,
-                label: locales.validParams['long'](),
-                initVal: stateVal.editingActivity.data['long'],
-                editField: (String changed) { stateVal.editingActivity.data['long'] = changed; },
-              ),
-            ) : null,         
-          stateVal.editingActivity.data.containsKey('priority')
-            ? new Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: new CustomExpansion(
-                items: [
-                  new ExpansionItem<int>(
-                    name: locales.validParams['priority'](),
-                    value: stateVal.editingActivity.data['priority'],
-                    hint: '${locales.select} ${locales.validParams['priority']()}',
-                    valToString: (int priority) => priority.toString(),
-                    builder: (ExpansionItem<int> item) {
-                      void close() {
-                        setState(() {
-                          item.isExpanded = false;
-                        });
-                      }
+      body: new SafeArea(
+        child: new ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          shrinkWrap: true,
+          children: [
+            stateVal.editingActivity.data.containsKey('name')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new EditText(
+                  label: locales.validParams['name'](),
+                  initVal: stateVal.editingActivity.data['name'],
+                  // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
+                  editField: (String changed) { stateVal.editingActivity.data['name'] = changed; },
+                )
+              ) : null,
+            stateVal.editingActivity.data.containsKey('desc')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new EditText(
+                  maxLines: 3,
+                  alignment: TextAlign.start,
+                  label: locales.validParams['desc'](),
+                  initVal: stateVal.editingActivity.data['desc'],
+                  editField: (String changed) { stateVal.editingActivity.data['desc'] = changed; },
+                )
+              ) : null,
+            stateVal.editingActivity.data.containsKey('long')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new EditText(
+                  maxLines: 5,
+                  alignment: TextAlign.start,
+                  label: locales.validParams['long'](),
+                  initVal: stateVal.editingActivity.data['long'],
+                  editField: (String changed) { stateVal.editingActivity.data['long'] = changed; },
+                ),
+              ) : null,         
+            stateVal.editingActivity.data.containsKey('priority')
+              ? new Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: new CustomExpansion(
+                  items: [
+                    new ExpansionItem<int>(
+                      name: locales.validParams['priority'](),
+                      value: stateVal.editingActivity.data['priority'],
+                      hint: '${locales.select} ${locales.validParams['priority']()}',
+                      valToString: (int priority) => priority.toString(),
+                      builder: (ExpansionItem<int> item) {
+                        void close() {
+                          setState(() {
+                            item.isExpanded = false;
+                          });
+                        }
 
-                      return new Form(
-                        child: new Builder(
-                          builder: (BuildContext context) =>
-                            new CollapsibleBody(
-                              onSave: () { Form.of(context).save(); close(); },  // should probably reset the editing field now
-                              onCancel: () { Form.of(context).reset(); close(); },
-                              child: new FormField<int>(
-                                initialValue: item.value,
-                                onSaved: (int value) { item.value = value; stateVal.editingActivity.data['priority'] = value; },
-                                builder: (FormFieldState<int> field) => new Slider(
-                                  value: field.value.toDouble(),
-                                  min: 0.0,
-                                  max: 10.0,
-                                  divisions: 10,
-                                  activeColor: type.color,
-                                  onChanged: (double value) => field.didChange(value.round()),
+                        return new Form(
+                          child: new Builder(
+                            builder: (BuildContext context) =>
+                              new CollapsibleBody(
+                                onSave: () { Form.of(context).save(); close(); },  // should probably reset the editing field now
+                                onCancel: () { Form.of(context).reset(); close(); },
+                                child: new FormField<int>(
+                                  initialValue: item.value,
+                                  onSaved: (int value) { item.value = value; stateVal.editingActivity.data['priority'] = value; },
+                                  builder: (FormFieldState<int> field) => new Slider(
+                                    value: field.value.toDouble(),
+                                    min: 0.0,
+                                    max: 10.0,
+                                    divisions: 10,
+                                    activeColor: type.color,
+                                    onChanged: (double value) => field.didChange(value.round()),
+                                  ),
                                 ),
                               ),
-                            ),
-                        ),
-                      );
-                    }
-                  ),
-                ],
-              ),
-            ) : null,
-          stateVal.editingActivity.data.containsKey('progress')
-            ? new Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: new CustomExpansion(
-                items: [
-                  new ExpansionItem<int>(
-                    name: locales.validParams['progress'](),
-                    value: stateVal.editingActivity.data['progress'],
-                    hint: '${locales.select} ${locales.validParams['progress']()}',
-                    valToString: (int progress) => progress.toString(),
-                    builder: (ExpansionItem<int> item) {
-                      void close() {
-                        setState(() {
-                          item.isExpanded = false;
-                        });
+                          ),
+                        );
                       }
+                    ),
+                  ],
+                ),
+              ) : null,
+            stateVal.editingActivity.data.containsKey('progress')
+              ? new Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: new CustomExpansion(
+                  items: [
+                    new ExpansionItem<int>(
+                      name: locales.validParams['progress'](),
+                      value: stateVal.editingActivity.data['progress'],
+                      hint: '${locales.select} ${locales.validParams['progress']()}',
+                      valToString: (int progress) => progress.toString(),
+                      builder: (ExpansionItem<int> item) {
+                        void close() {
+                          setState(() {
+                            item.isExpanded = false;
+                          });
+                        }
 
-                      return new Form(
-                        child: new Builder(
-                          builder: (BuildContext context) =>
-                            new CollapsibleBody(
-                              onSave: () { Form.of(context).save(); close(); },
-                              onCancel: () { Form.of(context).reset(); close(); },
-                              child: new FormField<int>(
-                                initialValue: item.value,
-                                onSaved: (int value) { item.value = value; stateVal.editingActivity.data['progress'] = value; },
-                                builder: (FormFieldState<int> field) => new Slider(
-                                  value: field.value.toDouble(),
-                                  min: 0.0,
-                                  max: 100.0,
-                                  divisions: 100,
-                                  activeColor: type.color,
-                                  onChanged: (double value) => field.didChange(value.round()),
+                        return new Form(
+                          child: new Builder(
+                            builder: (BuildContext context) =>
+                              new CollapsibleBody(
+                                onSave: () { Form.of(context).save(); close(); },
+                                onCancel: () { Form.of(context).reset(); close(); },
+                                child: new FormField<int>(
+                                  initialValue: item.value,
+                                  onSaved: (int value) { item.value = value; stateVal.editingActivity.data['progress'] = value; },
+                                  builder: (FormFieldState<int> field) => new Slider(
+                                    value: field.value.toDouble(),
+                                    min: 0.0,
+                                    max: 100.0,
+                                    divisions: 100,
+                                    activeColor: type.color,
+                                    onChanged: (double value) => field.didChange(value.round()),
+                                  ),
                                 ),
                               ),
-                            ),
-                        ),
-                      );
-                    }
-                  ),
-                ],
-              ),
-            ) : null,
-          stateVal.editingActivity.data.containsKey('start')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6.0),
-              child: new DateTimePicker(
-                label: locales.validParams['start'](),
-                color: theme.disabledColor,
-                when: stateVal.editingActivity.data['start'],
-                setDate: (date) {
-                  stateVal.editingActivity.data['start'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['start'], date);
-                  return stateVal.editingActivity.data['start'];
-                },
-                setTime: (time) {
-                  stateVal.editingActivity.data['start'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['start'], time);
-                  return stateVal.editingActivity.data['start'];
-                },
-              )
-            ) : null,
-          stateVal.editingActivity.data.containsKey('end')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6.0),
-              child: new DateTimePicker(
-                label: locales.validParams['end'](),
-                color: theme.disabledColor,
-                when: stateVal.editingActivity.data['end'],
-                setDate: (date) {
-                  stateVal.editingActivity.data['end'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['end'], date);
-                  return stateVal.editingActivity.data['end'];
-                },
-                setTime: (time) {
-                    stateVal.editingActivity.data['end'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['end'], time);
-                  return stateVal.editingActivity.data['end'];
-                },
-              )
-            ) : null,
-          stateVal.editingActivity.data.containsKey('location')
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new Container(),                
-            ) : null,
-          stateVal.editingActivity.data.keys.where((key) => ['start', 'end', 'notis'].contains(key)).length > 1
-            ? new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
-              ),
-            ) : null,
-          // tmpActivity.data.containsKey('tags')
-          //   ? new Padding(
-          //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
-          //     child: new TagListItem(0, tmpActivity),
-          //   ) : null,
-        ].where((it) => it != null).toList(),
+                          ),
+                        );
+                      }
+                    ),
+                  ],
+                ),
+              ) : null,
+            stateVal.editingActivity.data.containsKey('start')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: new DateTimePicker(
+                  label: locales.validParams['start'](),
+                  color: theme.disabledColor,
+                  when: stateVal.editingActivity.data['start'],
+                  setDate: (date) {
+                    stateVal.editingActivity.data['start'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['start'], date);
+                    return stateVal.editingActivity.data['start'];
+                  },
+                  setTime: (time) {
+                    stateVal.editingActivity.data['start'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['start'], time);
+                    return stateVal.editingActivity.data['start'];
+                  },
+                )
+              ) : null,
+            stateVal.editingActivity.data.containsKey('end')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: new DateTimePicker(
+                  label: locales.validParams['end'](),
+                  color: theme.disabledColor,
+                  when: stateVal.editingActivity.data['end'],
+                  setDate: (date) {
+                    stateVal.editingActivity.data['end'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['end'], date);
+                    return stateVal.editingActivity.data['end'];
+                  },
+                  setTime: (time) {
+                      stateVal.editingActivity.data['end'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['end'], time);
+                    return stateVal.editingActivity.data['end'];
+                  },
+                )
+              ) : null,
+            stateVal.editingActivity.data.containsKey('location')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new Container(),                
+              ) : null,
+            stateVal.editingActivity.data.keys.where((key) => ['start', 'end', 'notis'].contains(key)).length > 1
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
+                ),
+              ) : null,
+            // tmpActivity.data.containsKey('tags')
+            //   ? new Padding(
+            //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+            //     child: new TagListItem(0, tmpActivity),
+            //   ) : null,
+          ].where((it) => it != null).toList(),
+        ),
       ),
     );
   }

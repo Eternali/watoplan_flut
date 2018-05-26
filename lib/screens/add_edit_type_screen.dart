@@ -61,58 +61,60 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        shrinkWrap: true,
-        children: <Widget>[
-          new Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: new EditText(
-              maxLines: 1,
-              label: locales.validParams['name'](),
-              initVal: stateVal.editingType.name,
-              editField: (String changed) { stateVal.editingType.name = changed; },
-            ),
-          ),
-          new Container(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            alignment: Alignment.center,
-            child: new IconPickButton(
-              label: 'Choose Icon',
-              curIcon: stateVal.editingType.icon,
-              changeIcon: (IconData changed) { stateVal.editingType.icon = changed; },
-            ),
-          ),
-          new Container(
-            padding: new EdgeInsets.symmetric(vertical: 10.0),
-            alignment: Alignment.center,
-            child: new ColorPickButton(activityType: stateVal.editingType),
-          ),
-          new Container(
-            padding: const EdgeInsets.only(top: 16.0),
-            alignment: Alignment.center,
-            child: new Text(
-              '${stateVal.editingType.name?.toUpperCase()} PARAMETERS',
-              style: new TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w100,
+      body: new SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          shrinkWrap: true,
+          children: <Widget>[
+            new Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: new EditText(
+                maxLines: 1,
+                label: locales.validParams['name'](),
+                initVal: stateVal.editingType.name,
+                editField: (String changed) { stateVal.editingType.name = changed; },
               ),
             ),
-          ),
-          new Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: new CheckboxList<String>(
-              entries: locales.validParams.values.map((getStr) => getStr()).toList(),
-              values: locales.validParams.keys.toList(),
-              color: stateVal.editingType.color,
-              isActive: (String match) => stateVal.editingType.params.keys.contains(match),
-              onChange: (bool selected, String param) {
-                if (selected) stateVal.editingType.params[param] = validParams[param];
-                else stateVal.editingType.params.remove(param);
-              },
+            new Container(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              alignment: Alignment.center,
+              child: new IconPickButton(
+                label: 'Choose Icon',
+                curIcon: stateVal.editingType.icon,
+                changeIcon: (IconData changed) { stateVal.editingType.icon = changed; },
+              ),
             ),
-          )
-        ],
+            new Container(
+              padding: new EdgeInsets.symmetric(vertical: 10.0),
+              alignment: Alignment.center,
+              child: new ColorPickButton(activityType: stateVal.editingType),
+            ),
+            new Container(
+              padding: const EdgeInsets.only(top: 16.0),
+              alignment: Alignment.center,
+              child: new Text(
+                '${stateVal.editingType.name?.toUpperCase()} PARAMETERS',
+                style: new TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: new CheckboxList<String>(
+                entries: locales.validParams.values.map((getStr) => getStr()).toList(),
+                values: locales.validParams.keys.toList(),
+                color: stateVal.editingType.color,
+                isActive: (String match) => stateVal.editingType.params.keys.contains(match),
+                onChange: (bool selected, String param) {
+                  if (selected) stateVal.editingType.params[param] = validParams[param];
+                  else stateVal.editingType.params.remove(param);
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

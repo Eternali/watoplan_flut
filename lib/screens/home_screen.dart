@@ -222,13 +222,15 @@ class HomeScreenState extends State<HomeScreen> {
       //   shrinkWrap: true,
       //   children: stateVal.activities.map((act) => new ActivityCard(act)).toList().retype<ActivityCard>(),
       // ),
-      body: new ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        shrinkWrap: true,
-        itemCount: stateVal.activities.length,
-        itemBuilder: (BuildContext context, int indice) {
-          return new ActivityCard(stateVal.activities[indice]);
-        },
+      body: new SafeArea(
+        child: new ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
+          shrinkWrap: true,
+          itemCount: stateVal.activities.length,
+          itemBuilder: (BuildContext context, int indice) {
+            return new ActivityCard(stateVal.activities[indice]);
+          },
+        ),
       ),
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,
