@@ -1,5 +1,5 @@
 name: watoplan
-description: A new Flutter project.
+description: A simple, yet flexible time management app built with Flutter.
 
 dependencies:
   flutter:
@@ -12,6 +12,7 @@ dependencies:
   crypto: ^2.0.2
   flutter_local_notifications: ^0.2.2
   flutter_markdown: ^0.1.5
+  location_picker: "^0.0.15"
   # sms: ^0.1.0
   # android_alarm_manager: ^0.1.0
   # leveldb: ^5.0.1

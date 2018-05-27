@@ -74,15 +74,23 @@ class FloatingActionMenuState
                 curve: Curves.easeOut
               ),
             ),
-            child: new FloatingActionButton(
-              heroTag: null,
-              backgroundColor: values[indice].color,
-              mini: true,
-              child: new Icon(values[indice].icon),
-              onPressed: () {
-                _controller.reverse();
-                values[indice].onPressed();
-                },
+            child: new Row(
+              children: <Widget>[
+                new Container(
+                  color: Colors.black,
+                  child: new Text('test'),
+                ),
+                new FloatingActionButton(
+                  heroTag: null,
+                  backgroundColor: values[indice].color,
+                  mini: true,
+                  child: new Icon(values[indice].icon),
+                  onPressed: () {
+                    _controller.reverse();
+                    values[indice].onPressed();
+                    },
+                ),
+              ],
             )
           ),
         );

@@ -186,6 +186,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0-alpha.9"
+  location_picker:
+    dependency: "direct main"
+    description:
+      name: location_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.15"
   logging:
     dependency: transitive
     description:
