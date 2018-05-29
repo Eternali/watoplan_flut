@@ -142,7 +142,7 @@ final Map<String, dynamic> validParams = {
   'start': new DateTime.now(),
   'end': new DateTime.now(),
   'notis': <Noti>[],
-  'location': '',
+  'location': {  },
   // 'entities': <Person>[],
   // 'tags': <String>[],
 };
