@@ -2,6 +2,7 @@ import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/person.dart';
 import 'package:watoplan/data/models.dart';
@@ -53,13 +54,11 @@ class Converters {
           for (Noti noti in v.map((noti) => new Noti.fromJson(noti)).toList()) value.add(noti);
           return new MapEntry(k, value);
           break;
-        case 'entities':
-          List<Person> value = <Person>[];
-          for (Person person in v.map((entity) => new Person.fromJson(entity)).toList()) value.add(person);
-          return new MapEntry(k, value);
-          break;
         case 'location':
-          return new MapEntry(k, v.toString());
+          return new MapEntry(k, new Location.fromJson(v));
+          break;
+        case 'entities':
+          return new MapEntry(k, v.map((entity) => new Person.fromJson(entity)).toList().retype(Person));
           break;
         default:
           if (validParams.containsKey(k))
@@ -81,11 +80,11 @@ class Converters {
         case 'notis':
           return new MapEntry(k, v.map((noti) => noti.toJson()).toList());
           break;
-        case 'entities':
-          return new MapEntry(k, v.map((entity) => entity.toJson()).toList() as List<Person>);
-          break;
         case 'location':
-          return new MapEntry(k, v.toString());
+          return new MapEntry(k, v.toJson());
+          break;
+        case 'entities':
+          return new MapEntry(k, v.map((entity) => entity.toJson()).toList());
           break;
         default:
           if (validParams.containsKey(k))

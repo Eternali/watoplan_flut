@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/data/converters.dart';
+import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/person.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
@@ -142,8 +143,8 @@ final Map<String, dynamic> validParams = {
   'start': new DateTime.now(),
   'end': new DateTime.now(),
   'notis': <Noti>[],
-  'location': {  },
-  // 'entities': <Person>[],
+  'location': new Location(lat: 0.0, long: 0.0),
+  'entities': <Person>[],
   // 'tags': <String>[],
 };
 
