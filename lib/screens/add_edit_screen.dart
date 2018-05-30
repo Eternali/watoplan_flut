@@ -255,7 +255,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                   child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
                 ),
               ) : null,
-              stateVal.editingActivity.data.containsKey('entities')
+              stateVal.editingActivity.data.containsKey('contacts')
                 ? new Padding(
                   
                 ) : null,

@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/contact_picker.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/data/person.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
@@ -144,7 +144,7 @@ final Map<String, dynamic> validParams = {
   'end': new DateTime.now(),
   'notis': <Noti>[],
   'location': new Location(lat: 0.0, long: 0.0),
-  'entities': <Person>[],
+  'contacts': <Contact>[],
   // 'tags': <String>[],
 };
 

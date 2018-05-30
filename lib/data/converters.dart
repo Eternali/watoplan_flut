@@ -2,9 +2,9 @@ import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/contact_picker.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/data/person.dart';
 import 'package:watoplan/data/models.dart';
 
 class Converters {
@@ -57,8 +57,8 @@ class Converters {
         case 'location':
           return new MapEntry(k, new Location.fromJson(v));
           break;
-        case 'entities':
-          return new MapEntry(k, v.map((entity) => new Person.fromJson(entity)).toList().retype(Person));
+        case 'contacts':
+          return new MapEntry(k, v.map((contact) => new Contact.fromJson(contact)).toList().retype(Contact));
           break;
         default:
           if (validParams.containsKey(k))
@@ -83,8 +83,8 @@ class Converters {
         case 'location':
           return new MapEntry(k, v.toJson());
           break;
-        case 'entities':
-          return new MapEntry(k, v.map((entity) => entity.toJson()).toList());
+        case 'contacts':
+          return new MapEntry(k, v.map((contact) => contact.toJson()).toList());
           break;
         default:
           if (validParams.containsKey(k))

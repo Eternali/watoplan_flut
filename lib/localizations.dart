@@ -56,7 +56,7 @@ class WatoplanLocalizations {
     'end': () => 'end',
     'notis': () => 'notifications',
     'location': () => 'location',
-    // 'entities': () => 'entities',
+    'contacts': () => 'contacts',
     // 'tags': () => 'tags',
   };
 
