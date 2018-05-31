@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:contact_finder/contact_finder.dart';
 
-import 'package:watoplan/contact_picker.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';

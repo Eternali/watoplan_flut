@@ -13,6 +13,9 @@ dependencies:
   flutter_local_notifications: ^0.2.2
   flutter_markdown: ^0.1.5
   flutter_calendar: ^0.0.1
+  contact_finder:
+    git:
+      url: git://github.com/eternali/contact_finder.git
   # location_picker: ^0.0.15
   # sms: ^0.1.0
   # android_alarm_manager: ^0.1.0

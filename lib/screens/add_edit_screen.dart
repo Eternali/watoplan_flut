@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:contact_finder/contact_finder.dart';
 
 import 'package:watoplan/keys.dart';
 import 'package:watoplan/init_plugs.dart';
@@ -255,30 +256,36 @@ class AddEditScreenState extends State<AddEditScreen> {
                   child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
                 ),
               ) : null,
-              stateVal.editingActivity.data.containsKey('contacts')
-                ? new Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: stateVal.editingActivity.data['contacts'].length + 1,
-                    itemBuilder: (BuildContext context, int idx) => idx < stateVal.editingActivity.data['contacts'].length
-                      ? new CircleAvatar(
-                        radius: 20.0,
-                        backgroundImage: stateVal.editingActivity.data['contacts'][idx].avatar,
-                        child: new Text(
-                          stateVal.editingActivity.data['contacts'][idx].name
-                        ),
-                      ) : new CircleAvatar(
-                        radius: 20.0,
-                        child: new IconButton(
-                          icon: new Icon(Icons.add),
-                          onPressed: () {
-
-                          },
-                        ),
+            stateVal.editingActivity.data.containsKey('contacts')
+              ? new Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: new ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    stateVal.editingActivity.data['contacts'].map((Contact contact) => new CircleAvatar(
+                      radius: 20.0,
+                      backgroundImage: new MemoryImage(contact.avatar),
+                      child: new Text(
+                        contact.name
                       ),
-                  ),
-                ) : null,
+                    )).toList(),
+                    [ new CircleAvatar(
+                      radius: 20.0,
+                      child: new IconButton(
+                        icon: new Icon(Icons.add),
+                        onPressed: () {
+                          ContactFinder().selectContact()
+                            .then((Contact contact) {
+                              setState(() {
+                                stateVal.editingActivity.data['contacts'].add(contact);
+                              });
+                            });
+                        },
+                      ),
+                    ) ],
+                  ].expand((a) => a).retype<Widget>().toList(),
+                ),
+              ) : null,
             // tmpActivity.data.containsKey('tags')
             //   ? new Padding(
             //     padding: new EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
