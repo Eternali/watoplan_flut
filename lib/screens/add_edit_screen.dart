@@ -257,7 +257,27 @@ class AddEditScreenState extends State<AddEditScreen> {
               ) : null,
               stateVal.editingActivity.data.containsKey('contacts')
                 ? new Padding(
-                  
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: new ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: stateVal.editingActivity.data['contacts'].length + 1,
+                    itemBuilder: (BuildContext context, int idx) => idx < stateVal.editingActivity.data['contacts'].length
+                      ? new CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: stateVal.editingActivity.data['contacts'][idx].avatar,
+                        child: new Text(
+                          stateVal.editingActivity.data['contacts'][idx].name
+                        ),
+                      ) : new CircleAvatar(
+                        radius: 20.0,
+                        child: new IconButton(
+                          icon: new Icon(Icons.add),
+                          onPressed: () {
+
+                          },
+                        ),
+                      ),
+                  ),
                 ) : null,
             // tmpActivity.data.containsKey('tags')
             //   ? new Padding(
