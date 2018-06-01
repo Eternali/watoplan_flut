@@ -264,7 +264,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         new Container(
-                          padding: const EdgeInsets.only(top: 16.0),
+                          padding: const EdgeInsets.only(top: 18.0),
                           child: new Text(
                             locales.contacts.toUpperCase(),
                             style: theme.textTheme.title.copyWith(color: theme.hintColor),
@@ -273,7 +273,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                       ],
                     ),
                     new Container(
-                      margin: const EdgeInsets.symmetric(vertical: 16.0),
+                      margin: const EdgeInsets.symmetric(vertical: 12.0),
                       alignment: Alignment.centerLeft,
                       height: 52.0,
                       child: new ListView(

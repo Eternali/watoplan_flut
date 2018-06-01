@@ -16,10 +16,9 @@ class FloatingActionMenu extends StatefulWidget {
   final entries;
   final double width;
   final double height;
+  final bool expanded;
 
-  FloatingActionMenu({ this.color, this.width, this.height, this.entries }) {
-    
-  }
+  FloatingActionMenu({ this.color, this.width, this.height, this.entries, this.expanded = false });
 
   @override
   State<FloatingActionMenu> createState() => new FloatingActionMenuState();
@@ -32,6 +31,27 @@ class FloatingActionMenuState
 
   AnimationController _controller;
   List<SubFAB> values;
+
+  Widget generateMenu() => new FloatingActionButton(
+    heroTag: null,
+    backgroundColor: widget.color,
+    child: new AnimatedBuilder(
+      animation: _controller,
+      builder: (BuildContext context, Widget child) {
+        return new Transform(
+          transform: new Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
+          alignment: FractionalOffset.center,
+          child: new Icon(Icons.add),
+        );
+      },
+    ),
+    onPressed: () {
+      if (_controller.isDismissed)
+        _controller.forward();
+      else
+        _controller.reverse();
+    },
+  );
 
   void init() {
     _controller = new AnimationController(
@@ -63,11 +83,11 @@ class FloatingActionMenuState
       mainAxisSize: MainAxisSize.min,
       children: new List.generate(values.length, (int indice) {
         Widget child = new Container(
-          alignment: FractionalOffset.topRight,
           // if nothing is passed in, these will default to null,
           // so the width and height will match the child
           width: widget.width,
           height: widget.height,
+          alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
           child: new ScaleTransition(
             scale: new CurvedAnimation(
               parent: _controller,
@@ -77,51 +97,42 @@ class FloatingActionMenuState
                 curve: Curves.easeOut
               ),
             ),
-            child: new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: widget.expanded ? new Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: new FloatingActionButton.extended(
                 heroTag: null,
                 tooltip: values[indice].label,
                 label: new Text(
                   values[indice].label,
                 ),
-                icon: new Icon(values[indice].icon),
                 backgroundColor: values[indice].color,
+                icon: new Icon(values[indice].icon),
                 onPressed: () {
                   _controller.reverse();
                   values[indice].onPressed();
                 },
               ),
+            ) : new FloatingActionButton(
+              heroTag: null,
+              tooltip: values[indice].label,
+              mini: true,
+              backgroundColor: values[indice].color,
+              child: new Icon(values[indice].icon),
+              onPressed: () {
+                _controller.reverse();
+                values[indice].onPressed();
+              },
             ),
           ),
         );
         return child;
       }).toList()
       ..add(
-        new Container(
+        widget.expanded ? new Container(
           alignment: FractionalOffset.bottomRight,
-          padding: const EdgeInsets.only(top: 4.0),
-          child: new FloatingActionButton(
-            heroTag: null,
-            backgroundColor: widget.color,
-            child: new AnimatedBuilder(
-              animation: _controller,
-              builder: (BuildContext context, Widget child) {
-                return new Transform(
-                  transform: new Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
-                  alignment: FractionalOffset.center,
-                  child: new Icon(Icons.add),
-                );
-              },
-            ),
-            onPressed: () {
-              if (_controller.isDismissed)
-                _controller.forward();
-              else
-                _controller.reverse();
-            },
-          ),
-        ),
+          padding: const EdgeInsets.only(top: 8.0),
+          child: generateMenu(),
+        ) : generateMenu()
       ),
     );
   }

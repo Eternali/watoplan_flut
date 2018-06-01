@@ -219,10 +219,6 @@ class HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      // body: new ListView(
-      //   shrinkWrap: true,
-      //   children: stateVal.activities.map((act) => new ActivityCard(act)).toList().retype<ActivityCard>(),
-      // ),
       body: new SafeArea(
         child: new ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -236,6 +232,7 @@ class HomeScreenState extends State<HomeScreen> {
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,
         entries: widget.subFabs,
+        expanded: true,
       ),
     );
   }
