@@ -283,14 +283,16 @@ class AddEditScreenState extends State<AddEditScreen> {
                           stateVal.editingActivity.data['contacts']
                             .map((Contact contact) => new CircleAvatar(
                               radius: 20.0,
-                              backgroundImage: new MemoryImage(contact.avatar),
+                              backgroundImage: contact.avatar == null
+                                ? new AssetImage('assets/defaults/default-avatar.png')
+                                : new MemoryImage(contact.avatar),
                               child: new Text(
                                 contact.name
                               ),
                             )).toList(),
                           [ new InkWell(
                             onTap: () {
-                              ContactFinder().selectContact()
+                              ContactFinder.selectContact()
                                 .then((Contact contact) {
                                   debugPrint(contact.name);
                                 });

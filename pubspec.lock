@@ -60,11 +60,9 @@ packages:
   contact_finder:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: d1bdf622c94abfb822cce09689d6be9456c24214
-      url: "git://github.com/eternali/contact_finder.git"
-    source: git
+      path: "../../contact_finder"
+      relative: true
+    source: path
     version: "0.0.1"
   convert:
     dependency: transitive

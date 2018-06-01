@@ -58,7 +58,9 @@ class Converters {
           return new MapEntry(k, new Location.fromJson(v));
           break;
         case 'contacts':
-          return new MapEntry(k, v.map((contact) => new Contact.fromJson(contact)).toList().retype(Contact));
+        List<Contact> value = <Contact>[];
+        for (Contact contact in v.map((contact) => new Contact.fromJson(contact)).toList()) value.add(contact);
+          return new MapEntry(k, value);
           break;
         default:
           if (validParams.containsKey(k))
