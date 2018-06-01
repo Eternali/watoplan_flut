@@ -14,7 +14,7 @@ dependencies:
   flutter_markdown: ^0.1.5
   flutter_calendar: ^0.0.1
   contact_finder:
-    path: ../../contact_finder/
+    path: ../contact_finder/
     # git:
     #   url: git://github.com/eternali/contact_finder.git
   # location_picker: ^0.0.15
