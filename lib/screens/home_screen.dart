@@ -42,6 +42,7 @@ class HomeScreenState extends State<HomeScreen> {
       .map((it) =>
         new SubFAB(
           icon: it.icon,
+          label: it.name,
           color: it.color,
           onPressed: () {
             Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
@@ -234,8 +235,6 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,
-        width: 56.0,
-        height: 70.0,
         entries: widget.subFabs,
       ),
     );

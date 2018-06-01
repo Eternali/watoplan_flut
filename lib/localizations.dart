@@ -18,6 +18,7 @@ class WatoplanLocalizations {
   String get cancel => 'Cancel';
   String get chooseColor => 'Choose Color';
   String get cont => 'Continue';
+  String get contacts => 'Related Contacts';
   String get dataWarning => 'Warning, this will delete all your data, continue?';
   String get developFeedback => 'If you\'re a developer with ideas, issues, or just interested in '
     'checking out the app source, you can find us at';
