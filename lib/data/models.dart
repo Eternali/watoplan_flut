@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:contact_finder/contact_finder.dart';
+// import 'package:contact_finder/contact_finder.dart';
 
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/location.dart';
@@ -144,7 +144,7 @@ final Map<String, dynamic> validParams = {
   'end': new DateTime.now(),
   'notis': <Noti>[],
   'location': new Location(lat: 0.0, long: 0.0),
-  'contacts': <Contact>[],
+  // 'contacts': <Contact>[],
   // 'tags': <String>[],
 };
 

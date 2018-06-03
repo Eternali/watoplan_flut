@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:contact_finder/contact_finder.dart';
+// import 'package:contact_finder/contact_finder.dart';
 
 import 'package:watoplan/keys.dart';
 import 'package:watoplan/init_plugs.dart';
@@ -256,67 +256,67 @@ class AddEditScreenState extends State<AddEditScreen> {
                     child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
                   ),
                 ) : null,
-              stateVal.editingActivity.data.containsKey('contacts')
-                ? new Column(
-                  children: <Widget>[
-                    new Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Container(
-                          padding: const EdgeInsets.only(top: 18.0),
-                          child: new Text(
-                            locales.contacts.toUpperCase(),
-                            style: theme.textTheme.title.copyWith(color: theme.hintColor),
-                          ),
-                        )
-                      ],
-                    ),
-                    new Container(
-                      margin: const EdgeInsets.symmetric(vertical: 12.0),
-                      alignment: Alignment.centerLeft,
-                      height: 52.0,
-                      child: new ListView(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        children: [
-                          stateVal.editingActivity.data['contacts']
-                            .map((Contact contact) => new CircleAvatar(
-                              radius: 20.0,
-                              backgroundImage: contact.avatar == null
-                                ? new AssetImage('assets/defaults/default-avatar.png')
-                                : new MemoryImage(contact.avatar),
-                              child: new Text(
-                                contact.name
-                              ),
-                            )).toList(),
-                          [ new InkWell(
-                            onTap: () {
-                              ContactFinder.selectContact()
-                                .then((Contact contact) {
-                                  debugPrint(contact.name);
-                                });
-                            },
-                            borderRadius: new BorderRadius.circular(26.0),
-                            child: new Container(
-                              width: 52.0,
-                              height: 52.0,
-                              decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                                border: new Border.all(
-                                  color: theme.accentColor,
-                                  width: 2.0
-                                ),
-                              ),
-                              child: new Icon(Icons.add, color: theme.accentColor),
-                            ),
-                          ) ],
-                        ].where((w) => w != null).expand((w) => w).retype<Widget>().toList()
-                      ),
-                    ),
-                  ],
-                ) : null,
+              // stateVal.editingActivity.data.containsKey('contacts')
+              //   ? new Column(
+              //     children: <Widget>[
+              //       new Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: <Widget>[
+              //           new Container(
+              //             padding: const EdgeInsets.only(top: 18.0),
+              //             child: new Text(
+              //               locales.contacts.toUpperCase(),
+              //               style: theme.textTheme.title.copyWith(color: theme.hintColor),
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //       new Container(
+              //         margin: const EdgeInsets.symmetric(vertical: 12.0),
+              //         alignment: Alignment.centerLeft,
+              //         height: 52.0,
+              //         child: new ListView(
+              //           scrollDirection: Axis.horizontal,
+              //           shrinkWrap: true,
+              //           children: [
+              //             stateVal.editingActivity.data['contacts']
+              //               .map((Contact contact) => new CircleAvatar(
+              //                 radius: 20.0,
+              //                 backgroundImage: contact.avatar == null
+              //                   ? new AssetImage('assets/defaults/default-avatar.png')
+              //                   : new MemoryImage(contact.avatar),
+              //                 child: new Text(
+              //                   contact.name
+              //                 ),
+              //               )).toList(),
+              //             [ new InkWell(
+              //               onTap: () {
+              //                 ContactFinder.selectContact()
+              //                   .then((Contact contact) {
+              //                     debugPrint(contact.name);
+              //                   });
+              //               },
+              //               borderRadius: new BorderRadius.circular(26.0),
+              //               child: new Container(
+              //                 width: 52.0,
+              //                 height: 52.0,
+              //                 decoration: new BoxDecoration(
+              //                   shape: BoxShape.circle,
+              //                   color: Colors.transparent,
+              //                   border: new Border.all(
+              //                     color: theme.accentColor,
+              //                     width: 2.0
+              //                   ),
+              //                 ),
+              //                 child: new Icon(Icons.add, color: theme.accentColor),
+              //               ),
+              //             ) ],
+              //           ].where((w) => w != null).expand((w) => w).retype<Widget>().toList()
+              //         ),
+              //       ),
+              //     ],
+              //   ) : null,
             ].where((it) => it != null).toList(),
           ),
         ),

@@ -1,7 +1,7 @@
 import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
-import 'package:contact_finder/contact_finder.dart';
+// import 'package:contact_finder/contact_finder.dart';
 
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
@@ -57,11 +57,11 @@ class Converters {
         case 'location':
           return new MapEntry(k, new Location.fromJson(v));
           break;
-        case 'contacts':
-        List<Contact> value = <Contact>[];
-        for (Contact contact in v.map((contact) => new Contact.fromJson(contact)).toList()) value.add(contact);
-          return new MapEntry(k, value);
-          break;
+        // case 'contacts':
+        // List<Contact> value = <Contact>[];
+        // for (Contact contact in v.map((contact) => new Contact.fromJson(contact)).toList()) value.add(contact);
+        //   return new MapEntry(k, value);
+        //   break;
         default:
           if (validParams.containsKey(k))
             return new MapEntry(k, v);

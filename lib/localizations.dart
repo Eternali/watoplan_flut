@@ -15,6 +15,7 @@ class WatoplanLocalizations {
   String get addActivityType => 'Add Type';
   String get addNotification => 'Add another notification';
   String get appTitle => 'WAToPlan';
+  String get by => 'by';
   String get cancel => 'Cancel';
   String get chooseColor => 'Choose Color';
   String get cont => 'Continue';
@@ -27,7 +28,8 @@ class WatoplanLocalizations {
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
   String get invalidType => 'Make sure your type is valid before saving.';
-  String get layoutList => 'Order by';
+  String get layoutList => 'Schedule';
+  String get layoutMonth => 'Month';
   String get newActivity => 'New Activity';
   String get newActivityType => 'New Type';
   String get newNoti => 'New Notification';

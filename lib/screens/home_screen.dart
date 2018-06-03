@@ -152,7 +152,7 @@ class HomeScreenState extends State<HomeScreen> {
             ),
             new Divider(),
             new Padding(
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 14.0),
+              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 7.0),
               child: new ExpansionTile(
                 title: new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -167,7 +167,8 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                     new Expanded(child: new Container()),
                     new Text(
-                      stateVal.sortRev ? stateVal.sorter.split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase(),
+                      '${locales.by} '
+                      '${stateVal.sortRev ? stateVal.sorter.split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase()}',
                       style: new TextStyle(
                         letterSpacing: 1.4,
                         fontFamily: 'Timeburner',
@@ -214,6 +215,25 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                 ],
+              ),
+            ),
+            new Padding(
+              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 7.0, bottom: 14.0),
+              child: new ExpansionTile(
+                title: new Row(
+                  children: <Widget>[
+                    new Text(
+                      locales.layoutMonth.toUpperCase(),
+                      style: new TextStyle(
+                        letterSpacing: 1.4,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Timeburner',
+                      )
+                    ),
+                  ],
+                ),
+                trailing: new Icon(new IconData(0)),
+                initiallyExpanded: ,
               )
             ),
           ],
