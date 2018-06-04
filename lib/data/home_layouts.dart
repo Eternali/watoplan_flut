@@ -18,7 +18,7 @@ final Map<String, HomeLayout> validLayouts = {
     },
     menuBuilder: (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
-      final Map<String, dynamic> options = Provider.of(context).value.homeOptions;
+      final Map<String, dynamic> options = stateVal.homeOptions['schedule'];
       final locales = WatoplanLocalizations.of(context);
 
       return new ExpansionTile(
