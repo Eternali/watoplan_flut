@@ -66,7 +66,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AppState stateVal = Provider.of(context).value;
-    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
+    final locales = WatoplanLocalizations.of(context);
 
     widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
@@ -151,34 +151,14 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             new Divider(),
-            new Padding(
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 7.0),
-              child: 
-            ),
-            new Padding(
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 7.0, bottom: 14.0),
-              child: new ExpansionTile(
-                title: new Row(
-                  children: <Widget>[
-                    new Text(
-                      locales.layoutMonth.toUpperCase(),
-                      style: new TextStyle(
-                        letterSpacing: 1.4,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Timeburner',
-                      )
-                    ),
-                  ],
-                ),
-                trailing: new Icon(new IconData(0)),
-                initiallyExpanded: ,
-              )
-            ),
-          ],
+          ]..addAll(validLayouts.values.map((HomeLayout layout) => new Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+            child: layout.menuBuilder(context),
+          ))),
         ),
       ),
       body: new SafeArea(
-        child: validLayouts[stateVal.homeLayout].withOptions(stateVal.layoutOptions).builder(context)
+        child: validLayouts[stateVal.homeLayout].builder(context)
       ),
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,

@@ -13,9 +13,9 @@ class AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
-    TextStyle aboutTextSyle = Theme.of(context).textTheme.display1.copyWith(fontSize: 20.0);
-    TextStyle linkTextStyle = aboutTextSyle.copyWith(color: Theme.of(context).accentColor);    
+    final locales = WatoplanLocalizations.of(context);
+    final TextStyle aboutTextSyle = Theme.of(context).textTheme.display1.copyWith(fontSize: 20.0);
+    final TextStyle linkTextStyle = aboutTextSyle.copyWith(color: Theme.of(context).accentColor);    
 
     return new Scaffold(
       appBar: new AppBar(

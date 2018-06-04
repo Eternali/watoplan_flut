@@ -93,7 +93,10 @@
   ],
   "focused": 0,
   "theme": "light",
-  "sorter": "start",
-  "sortRev": false,
-  "needsRefresh": false
+  "needsRefresh": false,
+  "homeLayout": "schedule",
+  "homeOptions": {
+    "sorter": "start",
+    "sortRev": false
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/themes.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 
 typedef T EditingModifier<T>();
@@ -13,7 +14,11 @@ class Reducers {
     activities: [],
     focused: 0,
     theme: themes['light'],
-    sorter: 'start',
+    homeLayout: validLayouts.keys.first,
+    homeOptions: {
+      'sorter': 'start',
+      'sortRev': false,
+    },
   );
 
   static AppState setData(

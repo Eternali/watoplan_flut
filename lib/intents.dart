@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -6,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
@@ -64,30 +66,29 @@ class Intents {
     return Future.value({
       'focused': LoadDefaults.defaultData['focused'] ?? 0,
       'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
-      'sorter': prefs.getString('sorter') ?? LoadDefaults.defaultData['sorter'] ?? 'start',
-      'sortRev': prefs.getBool('sortRev') ?? LoadDefaults.defaultData['sortRev'] ?? false,
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
+      'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'schedule',
+      'homeOptions': json.decode(prefs.getString('homeOptions'))
+        ?? LoadDefaults.defaultData['homeOptions']
+        ?? {
+          'sorter': 'start',
+          'sortRev': false,
+        },
     }).then(
       (settings) { Intents.setTheme(appState, settings['theme']); return settings; },
       onError: (Exception e) => Intents.setTheme(appState, 'light')
     ).then(
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
     ).then(
-      (settings) => Intents.sortActivities(
-        appState,
-        sorterName: settings['sorter'],
-        reversed: settings['sortRev'],
-        needsRefresh: settings['needsRefresh'],
-      ),
-      onError: (Exception e) => Intents.sortActivities(appState, sorterName: 'start', reversed: false)
+      (settings) => validLayouts[settings['homeLayout']].onChange(appState, settings['homeOptions'])
     );
   }
 
   static Future reset(AppStateObservable appState, SharedPreferences prefs) async {
     await LocalDb().delete();
     await prefs.remove('theme');
-    await prefs.remove('sorter');
-    await prefs.remove('sortRev');    
+    await prefs.remove('homeLayout');
+    await prefs.remove('homeOptions');
     appState.value = Reducers.firstDefault;
   }
 

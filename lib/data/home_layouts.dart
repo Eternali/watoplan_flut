@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/intents.dart';
@@ -11,8 +13,9 @@ final Map<String, HomeLayout> validLayouts = {
   'schedule': new HomeLayout(
     name: 'schedule',
     menuBuilder: (BuildContext context) {
-      AppState stateVal = Provider.of(context).value;
-      WatoplanLocalizations locales = WatoplanLocalizations.of(context);
+      Map<String, dynamic> options = Provider.of(context).value.homeOptions;
+      final locales = WatoplanLocalizations.of(context);
+
       return new ExpansionTile(
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -28,7 +31,7 @@ final Map<String, HomeLayout> validLayouts = {
             new Expanded(child: new Container()),
             new Text(
               '${locales.by} '
-              '${ stateVal.layoutOptions['sortRev'] ? stateVal.layoutOptions['sorter'].split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase()}',
+              '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
               style: new TextStyle(
                 letterSpacing: 1.4,
                 fontFamily: 'Timeburner',
@@ -43,7 +46,7 @@ final Map<String, HomeLayout> validLayouts = {
                 title: new Text(
                   locales.validSorts[name](),
                 ),
-                groupValue: stateVal.sorter,
+                groupValue: options['sorter'],
                 value: name,
                 onChanged: (name) {
                   Intents.sortActivities(Provider.of(context), sorterName: name);
@@ -56,12 +59,12 @@ final Map<String, HomeLayout> validLayouts = {
             padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
             child: new OutlineButton(
               padding: const EdgeInsets.all(0.0),
-              textColor: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
+              textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
               borderSide: new BorderSide(
-                color: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).hintColor,
+                color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
               ),
               child: new Text(
-                stateVal.sortRev ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
+                options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
                 style: new TextStyle(
                   fontFamily: 'Timeburner',
                   fontSize: 12.0,
@@ -70,7 +73,7 @@ final Map<String, HomeLayout> validLayouts = {
                 ),
               ),
               onPressed: () {
-                Intents.sortActivities(Provider.of(context), sorterName: stateVal.sorter, reversed: !stateVal.sortRev);
+                Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
               },
             ),
           )
@@ -79,6 +82,7 @@ final Map<String, HomeLayout> validLayouts = {
     },
     builder: (BuildContext context) {
       AppState stateVal = Provider.of(context).value;
+
       return new ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         shrinkWrap: true,
@@ -88,33 +92,64 @@ final Map<String, HomeLayout> validLayouts = {
         },
       );
     },
+    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
+      await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
+    },
   ),
   'month': new HomeLayout(
     name: 'month',
-    menuBuilder: (BuildContext context) {},
-    builder: (BuildContext context) {},
+    menuBuilder: (BuildContext context) {
+      final locales = WatoplanLocalizations.of(context);
+
+      return new ExpansionTile(
+        title: new Row(
+          children: <Widget>[
+            new Text(
+              locales.layoutMonth.toUpperCase(),
+              style: new TextStyle(
+                letterSpacing: 1.4,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Timeburner',
+              )
+            ),
+          ],
+        ),
+        trailing: new Icon(new IconData(0)),
+        initiallyExpanded: false,
+      );
+    },
+    builder: (BuildContext context) {
+      
+    },
+    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
+
+    },
   ),
 };
 
 
 typedef Widget LayoutBuilder(BuildContext context);
+typedef Future LayoutDepsChange(AppStateObservable appState, Map<String, dynamic> options);
 
 class HomeLayout {
 
   final String name;
   final LayoutBuilder menuBuilder;
   final LayoutBuilder builder;
+  final LayoutDepsChange onChange;
 
-  HomeLayout({ this.name, this.menuBuilder, this.builder });
+  HomeLayout({ this.name, this.menuBuilder, this.builder, this.onChange });
   
   HomeLayout copyWith({
     String name,
     LayoutBuilder menuBuilder,
     LayoutBuilder builder,
+    LayoutDepsChange onChange,
   }) => new HomeLayout(
     name: name ?? this.name,
     menuBuilder: menuBuilder ?? this.menuBuilder,
     builder: builder ?? this.builder,
+    onChange: onChange ?? this.onChange,
   );
 
 }

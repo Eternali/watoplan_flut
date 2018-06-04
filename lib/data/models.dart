@@ -52,7 +52,7 @@ class AppState {
   final bool needsRefresh;
 
   final String homeLayout;
-  final Map<String, dynamic> layoutOptions;
+  final Map<String, dynamic> homeOptions;
 
   AppState({
     this.activities,
@@ -62,7 +62,7 @@ class AppState {
     this.focused,
     this.theme,
     this.homeLayout,
-    this.layoutOptions,
+    this.homeOptions,
     this.needsRefresh = false,
   });
   factory AppState.from(AppState prev) {
@@ -75,7 +75,7 @@ class AppState {
       focused: prev.focused,
       theme: prev.theme,
       homeLayout: prev.homeLayout,
-      layoutOptions: prev.layoutOptions,
+      homeOptions: prev.homeOptions,
       needsRefresh: prev.needsRefresh,
     );
   }
@@ -88,7 +88,7 @@ class AppState {
     int focused,
     ThemeData theme,
     String homeLayout,
-    Map<String, dynamic> layoutOptions,
+    Map<String, dynamic> homeOptions,
     bool needsRefresh,
   }) {
     return new AppState(
@@ -99,7 +99,7 @@ class AppState {
       focused: focused ?? this.focused,
       theme: theme ?? this.theme,
       homeLayout: homeLayout ?? this.homeLayout,
-      layoutOptions: layoutOptions ?? this.layoutOptions,
+      homeOptions: homeOptions ?? this.homeOptions,
       needsRefresh: needsRefresh ?? this.needsRefresh,
     );
   }
@@ -112,7 +112,7 @@ class AppState {
                     + focused.hashCode
                     + theme.hashCode
                     + homeLayout.hashCode
-                    + layoutOptions.hashCode
+                    + homeOptions.hashCode
                     + needsRefresh.hashCode;
 
 }
