@@ -16,13 +16,28 @@ final Map<String, HomeLayout> validLayouts = {
       'sorter': 'start',
       'sortRev': false,
     },
-    menuBuilder: (BuildContext context) {
+    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
+      // if the preferences schema changes this could error out because an installed app
+      // could already have the field populated with an invalid value.
+      try {
+        await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
+        return true;
+      } on Error {
+        return false;
+      }
+    },
+  )..withMenuBuilder((HomeLayout self) => (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
-      final Map<String, dynamic> options = stateVal.homeOptions['schedule'];
+      final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
 
       return new ExpansionTile(
-        initiallyExpanded: stateVal.homeLayout == 'schedule',
+        initiallyExpanded: stateVal.homeLayout == self.name,
+        onExpansionChanged: (opening) {
+          if (opening) {
+            Intents.switchHome(Provider.of(context), layout: self.name, options: stateVal.homeOptions[self.name]);
+          }
+        },
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -85,8 +100,8 @@ final Map<String, HomeLayout> validLayouts = {
           )
         ],
       );
-    },
-    builder: (BuildContext context) {
+    }
+  )..withBuilder((HomeLayout self) => (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
 
       return new ListView.builder(
@@ -98,25 +113,24 @@ final Map<String, HomeLayout> validLayouts = {
         },
       );
     },
-    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
-      // if the preferences schema changes this could error out because an installed app
-      // could already have the field populated with an invalid value.
-      try {
-        await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
-        return true;
-      } on Exception {
-        return false;
-      }
-    },
   ),
   'month': new HomeLayout(
     name: 'month',
     defaultOptions: {  },
-    menuBuilder: (BuildContext context) {
+    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
+
+    },
+  )..withMenuBuilder((HomeLayout self) => (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
 
       return new ExpansionTile(
+        initiallyExpanded: stateVal.homeLayout == self.name,
+        onExpansionChanged: (opening) {
+          if (opening) {
+            Intents.switchHome(Provider.of(context), layout: self.name, options: stateVal.homeOptions[self.name]);
+          }
+        },
         title: new Row(
           children: <Widget>[
             new Text(
@@ -130,22 +144,20 @@ final Map<String, HomeLayout> validLayouts = {
           ],
         ),
         trailing: new Icon(new IconData(0)),
-        initiallyExpanded: stateVal.homeLayout == 'month',
       );
-    },
-    builder: (BuildContext context) {
+    }
+  )..withBuilder((HomeLayout self) => (BuildContext context) {
       return new Container(
         
       );
     },
-    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
-
-    },
+    
   ),
 };
 
 
 typedef Widget LayoutBuilder(BuildContext context);
+typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
 typedef Future LayoutDepsChange(AppStateObservable appState, Map<String, dynamic> options);
 
 class HomeLayout {
@@ -172,7 +184,7 @@ class HomeLayout {
     onChange: onChange ?? this.onChange,
   );
 
-  HomeLayout withMenuBuilder(LayoutBuilder menuBuilder) => copyWith(menuBuilder: menuBuilder);
-  HomeLayout withBuilder(LayoutBuilder builder) => copyWith(builder: builder);
+  HomeLayout withMenuBuilder(ContextLayoutBuilder builderWithContext) => copyWith(menuBuilder: builderWithContext(this));
+  HomeLayout withBuilder(ContextLayoutBuilder builderWithContext) => copyWith(builder: builderWithContext(this));
 
 }
