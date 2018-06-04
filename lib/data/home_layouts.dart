@@ -12,11 +12,17 @@ import 'package:watoplan/widgets/activity_card.dart';
 final Map<String, HomeLayout> validLayouts = {
   'schedule': new HomeLayout(
     name: 'schedule',
+    defaultOptions: {
+      'sorter': 'start',
+      'sortRev': false,
+    },
     menuBuilder: (BuildContext context) {
-      Map<String, dynamic> options = Provider.of(context).value.homeOptions;
+      final AppState stateVal = Provider.of(context).value;
+      final Map<String, dynamic> options = Provider.of(context).value.homeOptions;
       final locales = WatoplanLocalizations.of(context);
 
       return new ExpansionTile(
+        initiallyExpanded: stateVal.homeLayout == 'schedule',
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -81,7 +87,7 @@ final Map<String, HomeLayout> validLayouts = {
       );
     },
     builder: (BuildContext context) {
-      AppState stateVal = Provider.of(context).value;
+      final AppState stateVal = Provider.of(context).value;
 
       return new ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
@@ -98,7 +104,9 @@ final Map<String, HomeLayout> validLayouts = {
   ),
   'month': new HomeLayout(
     name: 'month',
+    defaultOptions: {  },
     menuBuilder: (BuildContext context) {
+      final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
 
       return new ExpansionTile(
@@ -115,11 +123,13 @@ final Map<String, HomeLayout> validLayouts = {
           ],
         ),
         trailing: new Icon(new IconData(0)),
-        initiallyExpanded: false,
+        initiallyExpanded: stateVal.homeLayout == 'month',
       );
     },
     builder: (BuildContext context) {
-      
+      return new Container(
+        
+      );
     },
     onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
 
@@ -134,22 +144,28 @@ typedef Future LayoutDepsChange(AppStateObservable appState, Map<String, dynamic
 class HomeLayout {
 
   final String name;
+  final Map<String, dynamic> defaultOptions;
   final LayoutBuilder menuBuilder;
   final LayoutBuilder builder;
   final LayoutDepsChange onChange;
 
-  HomeLayout({ this.name, this.menuBuilder, this.builder, this.onChange });
+  HomeLayout({ this.name, this.defaultOptions, this.menuBuilder, this.builder, this.onChange });
   
   HomeLayout copyWith({
     String name,
+    Map<String, dynamic> defaultOptions,
     LayoutBuilder menuBuilder,
     LayoutBuilder builder,
     LayoutDepsChange onChange,
   }) => new HomeLayout(
     name: name ?? this.name,
+    defaultOptions: defaultOptions ?? this.defaultOptions,
     menuBuilder: menuBuilder ?? this.menuBuilder,
     builder: builder ?? this.builder,
     onChange: onChange ?? this.onChange,
   );
+
+  HomeLayout withMenuBuilder(LayoutBuilder menuBuilder) => copyWith(menuBuilder: menuBuilder);
+  HomeLayout withBuilder(LayoutBuilder builder) => copyWith(builder: builder);
 
 }

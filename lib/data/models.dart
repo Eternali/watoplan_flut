@@ -52,7 +52,7 @@ class AppState {
   final bool needsRefresh;
 
   final String homeLayout;
-  final Map<String, dynamic> homeOptions;
+  final Map<String, Map<String, dynamic>> homeOptions;
 
   AppState({
     this.activities,
@@ -87,10 +87,13 @@ class AppState {
     ActivityType editingType,
     int focused,
     ThemeData theme,
-    String homeLayout,
-    Map<String, dynamic> homeOptions,
     bool needsRefresh,
+    String homeLayout,
+    Map<String, Map<String, dynamic>> homeOptions,
+    Map<String, dynamic> specificOptions,
   }) {
+    if (specificOptions != null)
+      (homeOptions ?? this.homeOptions)[homeLayout ?? this.homeLayout] = specificOptions;
     return new AppState(
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,
@@ -98,9 +101,9 @@ class AppState {
       editingType: editingType ?? this.editingType,
       focused: focused ?? this.focused,
       theme: theme ?? this.theme,
+      needsRefresh: needsRefresh ?? this.needsRefresh,
       homeLayout: homeLayout ?? this.homeLayout,
       homeOptions: homeOptions ?? this.homeOptions,
-      needsRefresh: needsRefresh ?? this.needsRefresh,
     );
   }
 

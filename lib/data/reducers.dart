@@ -15,10 +15,7 @@ class Reducers {
     focused: 0,
     theme: themes['light'],
     homeLayout: validLayouts.keys.first,
-    homeOptions: {
-      'sorter': 'start',
-      'sortRev': false,
-    },
+    homeOptions: validLayouts.map((name, layout) => new MapEntry(name, layout.defaultOptions)),
   );
 
   static AppState setData(
@@ -32,6 +29,10 @@ class Reducers {
 
   static AppState refresh(AppState oldState) {
     return oldState.copyWith(needsRefresh: false);
+  }
+
+  static AppState switchHome(AppState oldState, { String layout, Map<String, dynamic> options }) {
+    return oldState.copyWith(homeLayout: layout, specificOptions: options);
   }
 
   static AppState addActivityTypes(AppState oldState, List<ActivityType> toadd) {
@@ -101,8 +102,10 @@ class Reducers {
   static AppState sortActivities(AppState oldState, { String sorterName, bool reversed = false }) {
     return oldState.copyWith(
       activities: validSorts[sorterName](oldState.activities, reversed),
-      sorter: sorterName,
-      sortRev: reversed,
+      specificOptions: {
+        'sorter': sorterName,
+        'sortRev': reversed,
+      },
     );
   }
 

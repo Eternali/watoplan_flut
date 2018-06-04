@@ -68,19 +68,16 @@ class Intents {
       'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
       'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'schedule',
-      'homeOptions': json.decode(prefs.getString('homeOptions'))
-        ?? LoadDefaults.defaultData['homeOptions']
-        ?? {
-          'sorter': 'start',
-          'sortRev': false,
-        },
+      'homeOptions': prefs.getString('homeOptions') != null
+        ? json.decode(prefs.getString('homeOptions'))
+        : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions
     }).then(
       (settings) { Intents.setTheme(appState, settings['theme']); return settings; },
       onError: (Exception e) => Intents.setTheme(appState, 'light')
     ).then(
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
     ).then(
-      (settings) => validLayouts[settings['homeLayout']].onChange(appState, settings['homeOptions'])
+      (settings) => validLayouts[settings['homeLayout']].onChange(appState, settings['homeOptions'][settings['homeLayout']])
     );
   }
 
@@ -90,6 +87,14 @@ class Intents {
     await prefs.remove('homeLayout');
     await prefs.remove('homeOptions');
     appState.value = Reducers.firstDefault;
+  }
+
+  static Future switchHome(
+    AppStateObservable appState,
+    { HomeLayout layout, Map<String, dynamic> options }
+  ) async {
+    Reducers.switchHome(appState.value, layout: layout.name, options: options);
+    layout.onChange(appState, options);
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
@@ -216,14 +221,15 @@ class Intents {
     AppStateObservable appState,
     { String sorterName, bool reversed, bool needsRefresh = false }
   ) async {
-    if (sorterName != null)
+    if (sorterName != null && appState.value.homeLayout == 'schedule')
       await SharedPreferences.getInstance()
-        .then((prefs) { prefs.setString('sorter', sorterName); return prefs; })
-        .then((prefs) => prefs.setBool('sortRev', reversed));
+        .then((prefs) {
+          prefs.setString('homeOptions', json.encode({ 'sorter': sorterName, 'sortRev': reversed }));
+        });
     appState.value = Reducers.sortActivities(
       appState.value,
-      sorterName: sorterName ?? appState.value.sorter,
-      reversed: reversed ?? appState.value.sortRev,
+      sorterName: sorterName ?? appState.value.homeOptions['sorter'],
+      reversed: reversed ?? appState.value.homeOptions['sortRev'],
     );
   }
 
