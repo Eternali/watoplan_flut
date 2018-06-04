@@ -94,7 +94,7 @@ class Intents {
     { HomeLayout layout, Map<String, dynamic> options }
   ) async {
     Reducers.switchHome(appState.value, layout: layout.name, options: options);
-    layout.onChange(appState, options);
+    layout.onChange(appState, options[layout.name]);
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {

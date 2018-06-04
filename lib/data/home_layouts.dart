@@ -99,7 +99,14 @@ final Map<String, HomeLayout> validLayouts = {
       );
     },
     onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
-      await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
+      // if the preferences schema changes this could error out because an installed app
+      // could already have the field populated with an invalid value.
+      try {
+        await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
+        return true;
+      } on Exception {
+        return false;
+      }
     },
   ),
   'month': new HomeLayout(
