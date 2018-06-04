@@ -48,9 +48,11 @@ class AppState {
 
   final ThemeData theme;
   final String email;
-  final String sorter;
-  final bool sortRev;
+
   final bool needsRefresh;
+
+  final String homeLayout;
+  final Map<String, dynamic> layoutOptions;
 
   AppState({
     this.activities,
@@ -59,8 +61,8 @@ class AppState {
     this.editingType,
     this.focused,
     this.theme,
-    this.sorter,
-    this.sortRev = false,
+    this.homeLayout,
+    this.layoutOptions,
     this.needsRefresh = false,
   });
   factory AppState.from(AppState prev) {
@@ -72,8 +74,8 @@ class AppState {
       editingType: prev.editingType,
       focused: prev.focused,
       theme: prev.theme,
-      sorter: prev.sorter,
-      sortRev: prev.sortRev,
+      homeLayout: prev.homeLayout,
+      layoutOptions: prev.layoutOptions,
       needsRefresh: prev.needsRefresh,
     );
   }
@@ -85,8 +87,8 @@ class AppState {
     ActivityType editingType,
     int focused,
     ThemeData theme,
-    String sorter,
-    bool sortRev,
+    String homeLayout,
+    Map<String, dynamic> layoutOptions,
     bool needsRefresh,
   }) {
     return new AppState(
@@ -96,8 +98,8 @@ class AppState {
       editingType: editingType ?? this.editingType,
       focused: focused ?? this.focused,
       theme: theme ?? this.theme,
-      sorter: sorter ?? this.sorter,
-      sortRev: sortRev ?? this.sortRev,
+      homeLayout: homeLayout ?? this.homeLayout,
+      layoutOptions: layoutOptions ?? this.layoutOptions,
       needsRefresh: needsRefresh ?? this.needsRefresh,
     );
   }
@@ -109,8 +111,8 @@ class AppState {
                     + editingType.hashCode
                     + focused.hashCode
                     + theme.hashCode
-                    + sorter.hashCode
-                    + sortRev.hashCode
+                    + homeLayout.hashCode
+                    + layoutOptions.hashCode
                     + needsRefresh.hashCode;
 
 }

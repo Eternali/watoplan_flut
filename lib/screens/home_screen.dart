@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
-import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/fam.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -153,69 +153,7 @@ class HomeScreenState extends State<HomeScreen> {
             new Divider(),
             new Padding(
               padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 7.0),
-              child: new ExpansionTile(
-                title: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    new Text(
-                      locales.layoutList.toUpperCase(),
-                      style: new TextStyle(
-                        letterSpacing: 1.4,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Timeburner',
-                      )
-                    ),
-                    new Expanded(child: new Container()),
-                    new Text(
-                      '${locales.by} '
-                      '${stateVal.sortRev ? stateVal.sorter.split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase()}',
-                      style: new TextStyle(
-                        letterSpacing: 1.4,
-                        fontFamily: 'Timeburner',
-                      ),
-                    )
-                  ],
-                ),
-                children: <Widget>[
-                  new Column(
-                    children: locales.validSorts.keys.map(
-                      (name) => new RadioListTile(
-                        title: new Text(
-                          locales.validSorts[name](),
-                        ),
-                        groupValue: stateVal.sorter,
-                        value: name,
-                        onChanged: (name) {
-                          setState(() { Intents.sortActivities(Provider.of(context), sorterName: name); });
-                        },
-                      )
-                    ).toList(),
-                  ),
-                  new Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
-                    child: new OutlineButton(
-                      padding: const EdgeInsets.all(0.0),
-                      textColor: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
-                      borderSide: new BorderSide(
-                        color: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).hintColor,
-                      ),
-                      child: new Text(
-                        stateVal.sortRev ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
-                        style: new TextStyle(
-                          fontFamily: 'Timeburner',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.4,
-                        ),
-                      ),
-                      onPressed: () {
-                        Intents.sortActivities(Provider.of(context), sorterName: stateVal.sorter, reversed: !stateVal.sortRev);
-                      },
-                    ),
-                  )
-                ],
-              ),
+              child: 
             ),
             new Padding(
               padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 7.0, bottom: 14.0),
@@ -240,14 +178,7 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: new SafeArea(
-        child: new ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-          shrinkWrap: true,
-          itemCount: stateVal.activities.length,
-          itemBuilder: (BuildContext context, int indice) {
-            return new ActivityCard(stateVal.activities[indice]);
-          },
-        ),
+        child: validLayouts[stateVal.homeLayout].withOptions(stateVal.layoutOptions).builder(context)
       ),
       floatingActionButton: new FloatingActionMenu(
         color: Theme.of(context).accentColor,
