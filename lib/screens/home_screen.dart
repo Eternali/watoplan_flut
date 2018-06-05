@@ -151,13 +151,10 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             new Divider(),
-          ]..addAll(validLayouts.values.map((HomeLayout layout) {
-            debugPrint(validLayouts['schedule'].builder.toString());
-            return new Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-              child: layout.menuBuilder(context),
-            );
-          })),
+          ]..addAll(validLayouts.values.map((HomeLayout layout) => new Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+            child: layout.menuBuilder(context),
+          ))),
         ),
       ),
       body: new SafeArea(

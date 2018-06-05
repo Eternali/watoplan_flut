@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:flutter_calendar/calendar_tile.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -25,8 +27,9 @@ final Map<String, HomeLayout> validLayouts = {
       } on Error {
         return false;
       }
-    },
-  )..withMenuBuilder((HomeLayout self) => (BuildContext context) {
+    }
+  )..withMenuBuilder((HomeLayout self) =>
+    (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -101,7 +104,8 @@ final Map<String, HomeLayout> validLayouts = {
         ],
       );
     }
-  )..withBuilder((HomeLayout self) => (BuildContext context) {
+  )..withBuilder((HomeLayout self) =>
+    (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
 
       return new ListView.builder(
@@ -112,15 +116,16 @@ final Map<String, HomeLayout> validLayouts = {
           return new ActivityCard(stateVal.activities[indice]);
         },
       );
-    },
+    }
   ),
   'month': new HomeLayout(
     name: 'month',
     defaultOptions: {  },
     onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
 
-    },
-  )..withMenuBuilder((HomeLayout self) => (BuildContext context) {
+    }
+  )..withMenuBuilder((HomeLayout self) =>
+    (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
 
@@ -146,12 +151,17 @@ final Map<String, HomeLayout> validLayouts = {
         trailing: new Icon(new IconData(0)),
       );
     }
-  )..withBuilder((HomeLayout self) => (BuildContext context) {
-      return new Container(
-        
+  )..withBuilder((HomeLayout self) =>
+    (BuildContext context) {
+      final AppState stateVal = Provider.of(context).value;
+      final locales = WatoplanLocalizations.of(context);
+      
+      return new Calendar(
+        dayBuilder: (BuildContext context, DateTime day) => new Container(
+          child: new Text('test'),
+        ),
       );
-    },
-    
+    }
   ),
 };
 
@@ -164,8 +174,8 @@ class HomeLayout {
 
   final String name;
   final Map<String, dynamic> defaultOptions;
-  final LayoutBuilder menuBuilder;
-  final LayoutBuilder builder;
+  LayoutBuilder menuBuilder;
+  LayoutBuilder builder;
   final LayoutDepsChange onChange;
 
   HomeLayout({ this.name, this.defaultOptions, this.menuBuilder, this.builder, this.onChange });
@@ -184,7 +194,7 @@ class HomeLayout {
     onChange: onChange ?? this.onChange,
   );
 
-  HomeLayout withMenuBuilder(ContextLayoutBuilder builderWithContext) => copyWith(menuBuilder: builderWithContext(this));
-  HomeLayout withBuilder(ContextLayoutBuilder builderWithContext) => copyWith(builder: builderWithContext(this));
+  void withMenuBuilder(ContextLayoutBuilder builderWithContext) => menuBuilder = builderWithContext(this);
+  void withBuilder(ContextLayoutBuilder builderWithContext) => builder = builderWithContext(this);
 
 }
