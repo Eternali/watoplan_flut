@@ -9,6 +9,7 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_card.dart';
+import 'package:watoplan/widgets/expansion_radio_group.dart';
 
 
 final Map<String, HomeLayout> validLayouts = {
@@ -34,74 +35,72 @@ final Map<String, HomeLayout> validLayouts = {
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
 
-      return new ExpansionTile(
-        initiallyExpanded: stateVal.homeLayout == self.name,
-        onExpansionChanged: (opening) {
-          if (opening) {
-            Intents.switchHome(Provider.of(context), layout: self.name, options: stateVal.homeOptions[self.name]);
-          }
+      return new RadioExpansion(
+        expansionCallback: (bool curExpanded) {
+
         },
-        title: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            new Text(
-              locales.layoutList.toUpperCase(),
-              style: new TextStyle(
-                letterSpacing: 1.4,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Timeburner',
+        headerBuilder: (BuildContext context, bool isExpanded) {
+          return new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new Text(
+                locales.layoutList.toUpperCase(),
+                style: new TextStyle(
+                  letterSpacing: 1.4,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Timeburner',
+                )
+              ),
+              new Expanded(child: new Container()),
+              new Text(
+                '${locales.by} '
+                '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
+                style: new TextStyle(
+                  letterSpacing: 1.4,
+                  fontFamily: 'Timeburner',
+                ),
               )
-            ),
-            new Expanded(child: new Container()),
-            new Text(
-              '${locales.by} '
-              '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
-              style: new TextStyle(
-                letterSpacing: 1.4,
-                fontFamily: 'Timeburner',
+            ],
+          );
+        },
+        body: new Column(
+          children: (locales.validSorts.keys.map(
+            (name) => new RadioListTile(
+              title: new Text(
+                locales.validSorts[name](),
+              ),
+              groupValue: options['sorter'],
+              value: name,
+              onChanged: (name) {
+                Intents.sortActivities(Provider.of(context), sorterName: name);
+              },
+            )
+          ).toList() as List<Widget>)..add(
+            new Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
+              child: new OutlineButton(
+                padding: const EdgeInsets.all(0.0),
+                textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
+                borderSide: new BorderSide(
+                  color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
+                ),
+                child: new Text(
+                  options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
+                  style: new TextStyle(
+                    fontFamily: 'Timeburner',
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.4,
+                  ),
+                ),
+                onPressed: () {
+                  Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
+                },
               ),
             )
-          ],
-        ),
-        children: <Widget>[
-          new Column(
-            children: locales.validSorts.keys.map(
-              (name) => new RadioListTile(
-                title: new Text(
-                  locales.validSorts[name](),
-                ),
-                groupValue: options['sorter'],
-                value: name,
-                onChanged: (name) {
-                  Intents.sortActivities(Provider.of(context), sorterName: name);
-                },
-              )
-            ).toList(),
           ),
-          new Container(
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
-            child: new OutlineButton(
-              padding: const EdgeInsets.all(0.0),
-              textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
-              borderSide: new BorderSide(
-                color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
-              ),
-              child: new Text(
-                options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
-                style: new TextStyle(
-                  fontFamily: 'Timeburner',
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.4,
-                ),
-              ),
-              onPressed: () {
-                Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
-              },
-            ),
-          )
-        ],
+        )
       );
     }
   )..withBuilder((HomeLayout self) =>
@@ -129,26 +128,24 @@ final Map<String, HomeLayout> validLayouts = {
       final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
 
-      return new ExpansionTile(
-        initiallyExpanded: stateVal.homeLayout == self.name,
-        onExpansionChanged: (opening) {
-          if (opening) {
-            Intents.switchHome(Provider.of(context), layout: self.name, options: stateVal.homeOptions[self.name]);
-          }
+      return new RadioExpansion(
+        expansionCallback: (bool curExpanded) {
+
         },
-        title: new Row(
-          children: <Widget>[
-            new Text(
-              locales.layoutMonth.toUpperCase(),
-              style: new TextStyle(
-                letterSpacing: 1.4,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Timeburner',
-              )
-            ),
-          ],
-        ),
-        trailing: new Icon(new IconData(0)),
+        headerBuilder: (BuildContext context, bool isExpanded) {
+          return new Row(
+            children: <Widget>[
+              new Text(
+                locales.layoutMonth.toUpperCase(),
+                style: new TextStyle(
+                  letterSpacing: 1.4,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Timeburner',
+                )
+              ),
+            ],
+          );
+        },
       );
     }
   )..withBuilder((HomeLayout self) =>
@@ -165,16 +162,17 @@ final Map<String, HomeLayout> validLayouts = {
   ),
 };
 
-
+typedef RadioExpansion MenuItemBuilder(BuildContext context);
 typedef Widget LayoutBuilder(BuildContext context);
 typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
+typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);
 typedef Future LayoutDepsChange(AppStateObservable appState, Map<String, dynamic> options);
 
 class HomeLayout {
 
   final String name;
   final Map<String, dynamic> defaultOptions;
-  LayoutBuilder menuBuilder;
+  MenuItemBuilder menuBuilder;
   LayoutBuilder builder;
   final LayoutDepsChange onChange;
 
@@ -183,7 +181,7 @@ class HomeLayout {
   HomeLayout copyWith({
     String name,
     Map<String, dynamic> defaultOptions,
-    LayoutBuilder menuBuilder,
+    MenuItemBuilder menuBuilder,
     LayoutBuilder builder,
     LayoutDepsChange onChange,
   }) => new HomeLayout(
@@ -194,7 +192,7 @@ class HomeLayout {
     onChange: onChange ?? this.onChange,
   );
 
-  void withMenuBuilder(ContextLayoutBuilder builderWithContext) => menuBuilder = builderWithContext(this);
+  void withMenuBuilder(ContextExpansionBuilder builderWithContext) => menuBuilder = builderWithContext(this);
   void withBuilder(ContextLayoutBuilder builderWithContext) => builder = builderWithContext(this);
 
 }
