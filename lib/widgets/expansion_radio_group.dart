@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-typedef Future ExpansionCallback(bool curExpanded);
+typedef Future ExpansionCallback(bool isExpanded);
 typedef Widget ExpansionBuilder(BuildContext context, bool isExpanded);
 
 class RadioExpansion extends ExpansionPanel {
@@ -12,7 +12,22 @@ class RadioExpansion extends ExpansionPanel {
     this.expansionCallback,
     ExpansionBuilder headerBuilder,
     Widget body,
-  }) : super(headerBuilder: headerBuilder, body: body);
+    bool isExpanded = false,
+  }) : super(headerBuilder: headerBuilder, body: body, isExpanded: isExpanded);
+
+  RadioExpansion copyWith({
+    ExpansionCallback expansionCallback,
+    ExpansionBuilder headerBuilder,
+    Widget body,
+    bool isExpanded,
+  }) {
+    return new RadioExpansion(
+      expansionCallback: expansionCallback ?? this.expansionCallback,
+      headerBuilder: headerBuilder ?? this.headerBuilder,
+      body: body ?? this.body,
+      isExpanded: isExpanded ?? this.isExpanded,
+    );
+  }
 }
 
 class ExpansionRadioGroup extends StatefulWidget {
@@ -34,13 +49,17 @@ class ExpansionRadioGroupState extends State<ExpansionRadioGroup> {
   Widget build(BuildContext context) {
     return new ExpansionPanelList(
       expansionCallback: (int select, bool isExpanded) {
-        widget.members[select].expansionCallback(isExpanded);
+        widget.members[select].expansionCallback(!isExpanded)
+          .then((_) {
+            setState(() {
+              if (isExpanded == false)
+                widget.selected = select;
+            });
+          });
       },
-      children: widget.members.map((RadioExpansion member) => new ExpansionPanel(
-        headerBuilder: member.headerBuilder,
-        body: member.body,
+      children: widget.members.map((RadioExpansion member) => member.copyWith(
         isExpanded: widget.selected == widget.members.indexOf(member),
-      )),
+      )).toList(),
     );
   }
 

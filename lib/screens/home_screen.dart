@@ -8,6 +8,7 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/fam.dart';
+import 'package:watoplan/widgets/expansion_radio_group.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -151,10 +152,13 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             new Divider(),
-          ]..addAll(validLayouts.values.map((HomeLayout layout) => new Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
-            child: layout.menuBuilder(context),
-          ))),
+          ]..add(
+            new ExpansionRadioGroup(
+              name: 'layoutMenu',
+              selected: validLayouts.keys.toList().indexOf(stateVal.homeLayout),
+              members: validLayouts.values.map((HomeLayout layout) => layout.menuBuilder(context)).toList(),
+            )
+          ),
         ),
       ),
       body: new SafeArea(

@@ -36,7 +36,7 @@ final Map<String, HomeLayout> validLayouts = {
       final locales = WatoplanLocalizations.of(context);
 
       return new RadioExpansion(
-        expansionCallback: (bool curExpanded) {
+        expansionCallback: (bool isExpanded) {
 
         },
         headerBuilder: (BuildContext context, bool isExpanded) {
@@ -64,7 +64,7 @@ final Map<String, HomeLayout> validLayouts = {
           );
         },
         body: new Column(
-          children: (locales.validSorts.keys.map(
+          children: locales.validSorts.keys.map(
             (name) => new RadioListTile(
               title: new Text(
                 locales.validSorts[name](),
@@ -74,8 +74,8 @@ final Map<String, HomeLayout> validLayouts = {
               onChanged: (name) {
                 Intents.sortActivities(Provider.of(context), sorterName: name);
               },
-            )
-          ).toList() as List<Widget>)..add(
+            ) as Widget
+          ).toList()..add(
             new Container(
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
@@ -146,6 +146,7 @@ final Map<String, HomeLayout> validLayouts = {
             ],
           );
         },
+        body: new Container()
       );
     }
   )..withBuilder((HomeLayout self) =>
