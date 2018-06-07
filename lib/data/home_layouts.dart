@@ -9,7 +9,7 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_card.dart';
-import 'package:watoplan/widgets/expansion_radio_group.dart';
+import 'package:watoplan/widgets/radio_expansion.dart';
 
 
 final Map<String, HomeLayout> validLayouts = {
@@ -36,6 +36,68 @@ final Map<String, HomeLayout> validLayouts = {
       final locales = WatoplanLocalizations.of(context);
 
       return new RadioExpansion(
+        value: self.name,
+        groupValue: stateVal.homeLayout,
+        title: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new Text(
+              locales.layoutList.toUpperCase(),
+              style: new TextStyle(
+                letterSpacing: 1.4,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Timeburner',
+              )
+            ),
+            new Expanded(child: new Container()),
+            new Text(
+              options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase(),
+              style: new TextStyle(
+                letterSpacing: 1.4,
+                fontFamily: 'Timeburner',
+              ),
+            )
+          ],
+        ),
+        children: <Widget>[
+          new Column(
+            children: locales.validSorts.keys.map(
+              (name) => new RadioListTile(
+                title: new Text(
+                  locales.validSorts[name](),
+                ),
+                groupValue: options['sorter'],
+                value: name,
+                onChanged: (name) {
+                  Intents.sortActivities(Provider.of(context), sorterName: name);
+                },
+              )
+            ).toList()
+          ),
+          new Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
+            child: new OutlineButton(
+              padding: const EdgeInsets.all(0.0),
+              textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
+              borderSide: new BorderSide(
+                color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
+              ),
+              child: new Text(
+                options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
+                style: new TextStyle(
+                  fontFamily: 'Timeburner',
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 1.4,
+                ),
+              ),
+              onPressed: () {
+                Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
+              },
+            ),
+          ),
+        ],
         expansionCallback: (bool isExpanded) {
 
         },

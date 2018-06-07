@@ -23,7 +23,7 @@ const Duration _kExpand = const Duration(milliseconds: 200);
 ///    expansion tile represents a sublist.
 ///  * The "Expand/collapse" section of
 ///    <https://material.io/guidelines/components/lists-controls.html>.
-class RadioExpansion extends StatefulWidget {
+class RadioExpansion<T> extends StatefulWidget {
   /// Creates a single-line [ListTile] with a trailing button that expands or collapses
   /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
   /// be non-null.
@@ -32,10 +32,11 @@ class RadioExpansion extends StatefulWidget {
     this.leading,
     this.title,
     this.backgroundColor,
-    this.onExpansionChanged,
     this.children = const <Widget>[],
     this.trailing,
-    this.isExpanded = false,
+    @required this.onChanged,
+    @required this.value,
+    @required this.groupValue,
   }) : super(key: key);
 
   /// A widget to display before the title.
@@ -48,13 +49,6 @@ class RadioExpansion extends StatefulWidget {
   /// Typically a [Text] widget.
   final Widget title;
 
-  /// Called when the tile expands or collapses.
-  ///
-  /// When the tile starts expanding, this function is called with the value
-  /// true. When the tile starts collapsing, this function is called with
-  /// the value false.
-  final ValueChanged<bool> onExpansionChanged;
-
   /// The widgets that are displayed when the tile expands.
   ///
   /// Typically [ListTile] widgets.
@@ -66,14 +60,32 @@ class RadioExpansion extends StatefulWidget {
   /// A widget to display instead of a rotating arrow icon.
   final Widget trailing;
 
-  /// Specifies if the list tile is expanded (true) or collapsed (false, the default).
-  final bool isExpanded;
+  /// The value represented by this radio button.
+  final T value;
+
+  /// The currently selected value for this group of radio buttons.
+  ///
+  /// This radio button is considered selected if its [value] matches the
+  /// [groupValue].
+  final T groupValue;
+
+  bool get checked => value == groupValue;
+
+  /// Called when the tile's value changes with respect to it's groupValue,
+  /// if they become equal, the tile will expand (true), otherwise it will collapse (false).
+  final ValueChanged<T> onChanged;
 
   @override
-  _RadioExpansionState createState() => new _RadioExpansionState();
+  _RadioExpansionState createState() => new _RadioExpansionState<T>(value, groupValue);
 }
 
-class _RadioExpansionState extends State<RadioExpansion> with SingleTickerProviderStateMixin {
+class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerProviderStateMixin {
+
+  _RadioExpansionState(this.value, this.groupValue);
+
+  T value;
+  T groupValue;
+  bool get isExpanded => value == groupValue;
   AnimationController _controller;
   CurvedAnimation _easeOutAnimation;
   CurvedAnimation _easeInAnimation;
@@ -95,8 +107,7 @@ class _RadioExpansionState extends State<RadioExpansion> with SingleTickerProvid
     _iconTurns = new Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
     _backgroundColor = new ColorTween();
 
-    _isExpanded = PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
-    if (_isExpanded)
+    if (isExpanded)
       _controller.value = 1.0;
   }
 
@@ -108,8 +119,8 @@ class _RadioExpansionState extends State<RadioExpansion> with SingleTickerProvid
 
   void _handleTap() {
     setState(() {
-      _isExpanded = !_isExpanded;
-      if (_isExpanded)
+      widget.onChanged(value);
+      if (isExpanded)
         _controller.forward();
       else
         _controller.reverse().then<void>((Null value) {
@@ -117,10 +128,7 @@ class _RadioExpansionState extends State<RadioExpansion> with SingleTickerProvid
             // Rebuild without widget.children.
           });
         });
-      PageStorage.of(context)?.writeState(context, _isExpanded);
     });
-    if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
@@ -176,7 +184,7 @@ class _RadioExpansionState extends State<RadioExpansion> with SingleTickerProvid
       ..end = theme.accentColor;
     _backgroundColor.end = widget.backgroundColor;
 
-    final bool closed = !_isExpanded && _controller.isDismissed;
+    final bool closed = !isExpanded && _controller.isDismissed;
     return new AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,

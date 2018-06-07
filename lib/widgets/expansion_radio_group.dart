@@ -2,33 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-typedef Future ExpansionCallback(bool isExpanded);
-typedef Widget ExpansionBuilder(BuildContext context, bool isExpanded);
-
-class RadioExpansion extends ExpansionPanel {
-  ExpansionCallback expansionCallback;
-
-  RadioExpansion({
-    this.expansionCallback,
-    ExpansionBuilder headerBuilder,
-    Widget body,
-    bool isExpanded = false,
-  }) : super(headerBuilder: headerBuilder, body: body, isExpanded: isExpanded);
-
-  RadioExpansion copyWith({
-    ExpansionCallback expansionCallback,
-    ExpansionBuilder headerBuilder,
-    Widget body,
-    bool isExpanded,
-  }) {
-    return new RadioExpansion(
-      expansionCallback: expansionCallback ?? this.expansionCallback,
-      headerBuilder: headerBuilder ?? this.headerBuilder,
-      body: body ?? this.body,
-      isExpanded: isExpanded ?? this.isExpanded,
-    );
-  }
-}
+import 'package:watoplan/widgets/radio_expansion.dart';
 
 class ExpansionRadioGroup extends StatefulWidget {
 
