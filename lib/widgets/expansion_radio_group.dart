@@ -21,6 +21,9 @@ class ExpansionRadioGroupState extends State<ExpansionRadioGroup> {
 
   @override
   Widget build(BuildContext context) {
+    return new Column(
+      children: widget.members,
+    )
     return new ExpansionPanelList(
       expansionCallback: (int select, bool isExpanded) {
         widget.members[select].expansionCallback(!isExpanded)

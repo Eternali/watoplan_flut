@@ -38,6 +38,9 @@ final Map<String, HomeLayout> validLayouts = {
       return new RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
+        onChanged: (value) {
+          Intents.switchHome(Provider.of(context), layout: value, options: options);
+        },
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -51,7 +54,8 @@ final Map<String, HomeLayout> validLayouts = {
             ),
             new Expanded(child: new Container()),
             new Text(
-              options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase(),
+              '${locales.by} '
+              '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
               style: new TextStyle(
                 letterSpacing: 1.4,
                 fontFamily: 'Timeburner',
@@ -98,71 +102,6 @@ final Map<String, HomeLayout> validLayouts = {
             ),
           ),
         ],
-        expansionCallback: (bool isExpanded) {
-
-        },
-        headerBuilder: (BuildContext context, bool isExpanded) {
-          return new Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              new Text(
-                locales.layoutList.toUpperCase(),
-                style: new TextStyle(
-                  letterSpacing: 1.4,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Timeburner',
-                )
-              ),
-              new Expanded(child: new Container()),
-              new Text(
-                '${locales.by} '
-                '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
-                style: new TextStyle(
-                  letterSpacing: 1.4,
-                  fontFamily: 'Timeburner',
-                ),
-              )
-            ],
-          );
-        },
-        body: new Column(
-          children: locales.validSorts.keys.map(
-            (name) => new RadioListTile(
-              title: new Text(
-                locales.validSorts[name](),
-              ),
-              groupValue: options['sorter'],
-              value: name,
-              onChanged: (name) {
-                Intents.sortActivities(Provider.of(context), sorterName: name);
-              },
-            ) as Widget
-          ).toList()..add(
-            new Container(
-              alignment: Alignment.centerRight,
-              padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
-              child: new OutlineButton(
-                padding: const EdgeInsets.all(0.0),
-                textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
-                borderSide: new BorderSide(
-                  color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
-                ),
-                child: new Text(
-                  options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
-                  style: new TextStyle(
-                    fontFamily: 'Timeburner',
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.4,
-                  ),
-                ),
-                onPressed: () {
-                  Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
-                },
-              ),
-            )
-          ),
-        )
       );
     }
   )..withBuilder((HomeLayout self) =>
@@ -188,27 +127,31 @@ final Map<String, HomeLayout> validLayouts = {
   )..withMenuBuilder((HomeLayout self) =>
     (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
+      final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
 
       return new RadioExpansion(
-        expansionCallback: (bool curExpanded) {
-
+        value: self.name,
+        groupValue: stateVal.homeLayout,
+        onChanged: (value) {
+          Intents.switchHome(Provider.of(context), layout: value, options: options);
         },
-        headerBuilder: (BuildContext context, bool isExpanded) {
-          return new Row(
-            children: <Widget>[
-              new Text(
-                locales.layoutMonth.toUpperCase(),
-                style: new TextStyle(
-                  letterSpacing: 1.4,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Timeburner',
-                )
-              ),
-            ],
-          );
-        },
-        body: new Container()
+        title: new Row(
+          children: <Widget>[
+            new Text(
+              locales.layoutMonth.toUpperCase(),
+              style: new TextStyle(
+                letterSpacing: 1.4,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Timeburner',
+              )
+            ),
+          ],
+        ),
+        trailing: new Icon(new IconData(0)),
+        children: <Widget>[
+          new Container()
+        ],
       );
     }
   )..withBuilder((HomeLayout self) =>

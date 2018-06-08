@@ -49,12 +49,7 @@ class WatoplanState extends State<Watoplan> {
 
       };
     }
-    // getApplicationDocumentsDirectory()
-    //   .then((dir) => LevelDB.openUtf8('${dir.path}/testdb'))
-    //   .then((db) {
-    //     db.put('testkey', 'testval');
-    //     print('testing: testkey = ${db.get('testkey')}');
-    //   });
+
     return new Provider(
       state: widget.watoplanState,
       child: new MaterialApp(
