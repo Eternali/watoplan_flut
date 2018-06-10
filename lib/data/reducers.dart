@@ -32,6 +32,7 @@ class Reducers {
   }
 
   static AppState switchHome(AppState oldState, { String layout, Map<String, dynamic> options }) {
+    debugPrint(layout);
     return oldState.copyWith(homeLayout: layout, specificOptions: options);
   }
 

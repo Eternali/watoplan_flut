@@ -39,6 +39,7 @@ final Map<String, HomeLayout> validLayouts = {
         value: self.name,
         groupValue: stateVal.homeLayout,
         onChanged: (value) {
+          print(value);
           Intents.switchHome(Provider.of(context), layout: value, options: options);
         },
         title: new Row(
@@ -64,20 +65,20 @@ final Map<String, HomeLayout> validLayouts = {
           ],
         ),
         children: <Widget>[
-          new Column(
-            children: locales.validSorts.keys.map(
-              (name) => new RadioListTile(
-                title: new Text(
-                  locales.validSorts[name](),
-                ),
-                groupValue: options['sorter'],
-                value: name,
-                onChanged: (name) {
-                  Intents.sortActivities(Provider.of(context), sorterName: name);
-                },
-              )
-            ).toList()
-          ),
+          // new Column(
+          //   children: locales.validSorts.keys.map(
+          //     (name) => new RadioListTile(
+          //       title: new Text(
+          //         locales.validSorts[name](),
+          //       ),
+          //       groupValue: options['sorter'],
+          //       value: name,
+          //       onChanged: (name) {
+          //         Intents.sortActivities(Provider.of(context), sorterName: name);
+          //       },
+          //     )
+          //   ).toList()
+          // ),
           new Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
@@ -97,7 +98,7 @@ final Map<String, HomeLayout> validLayouts = {
                 ),
               ),
               onPressed: () {
-                Intents.sortActivities(Provider.of(context), sorterName: options['sortRev'], reversed: !options['sortRev']);
+                Intents.sortActivities(Provider.of(context), sorterName: options['sorter'], reversed: !options['sortRev']);
               },
             ),
           ),
@@ -134,7 +135,8 @@ final Map<String, HomeLayout> validLayouts = {
         value: self.name,
         groupValue: stateVal.homeLayout,
         onChanged: (value) {
-          Intents.switchHome(Provider.of(context), layout: value, options: options);
+          print(value);
+          Intents.switchHome(Provider.of(context), layout: value, options: options).then((_) {  });
         },
         title: new Row(
           children: <Widget>[

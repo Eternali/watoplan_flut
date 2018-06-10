@@ -93,7 +93,8 @@ class Intents {
     AppStateObservable appState,
     { String layout, Map<String, dynamic> options }
   ) async {
-    Reducers.switchHome(appState.value, layout: layout, options: options);
+    debugPrint(layout);
+    appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
     validLayouts[layout].onChange(appState, options);
   }
 
