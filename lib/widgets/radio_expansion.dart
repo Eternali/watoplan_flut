@@ -79,6 +79,7 @@ class RadioExpansion<T> extends StatefulWidget {
   _RadioExpansionState createState() => new _RadioExpansionState<T>(value, groupValue);
 }
 
+
 class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerProviderStateMixin {
 
   _RadioExpansionState(this.value, this.groupValue);
@@ -120,6 +121,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
   void _handleTap() {
     setState(() {
       widget.onChanged(value);
+      groupValue = value;
       if (isExpanded)
         _controller.forward();
       else
