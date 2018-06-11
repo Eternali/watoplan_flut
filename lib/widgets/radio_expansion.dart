@@ -4,6 +4,7 @@
 // but still have the UI customization capabilities of an ExpansionTile.
 // Oh and yeah, it can be a radio button too.
 
+import 'package:meta/meta.dart';  // apparently I need this on linux, though it works fine on mac without.
 import 'package:flutter/material.dart';
 
 const Duration _kExpand = const Duration(milliseconds: 200);
@@ -121,7 +122,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
   void _handleTap() {
     setState(() {
       widget.onChanged(value);
-      groupValue = value;
+      groupValue = null;
       if (isExpanded)
         _controller.forward();
       else
