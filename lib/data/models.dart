@@ -80,6 +80,24 @@ class AppState {
     );
   }
 
+  Map<String, dynamic> overrideOptions(dynamic base, dynamic changes) {
+    if (base is! Map) return changes;
+    else if (changes is! Map)
+      throw Exception('Incompatable types: ${changes.runtimeType} cannot be used to override ${base.runtimeType}.');
+    (changes as Map).forEach((key, value) {
+      if (!base.containsKey(key)) throw Exception('Changes are not compatible to the base map: $key does not exist.');
+      base[key] = overrideOptions(base[key], value);
+    });
+
+    return base;
+  }
+
+  /// This will return a new AppState object with the same attributes as the old one, changing only what is specified.
+  /// Note on option parameters: if homeOptions is specified, that will be the only options parameter used,
+  /// if specificOptions is specified, it will only change the map entry corresponding to the specified homeLayout,
+  /// optionOverrides are used to only change the entries specified (the difference between this and specificOptions is
+  /// that specificOptions is used as a shortcut to change entire top level entries of homeOptions, while optionOverrides
+  /// can make modifications on a deep Map)
   AppState copyWith({
     List<Activity> activities,
     List<ActivityType> activityTypes,
@@ -91,9 +109,12 @@ class AppState {
     String homeLayout,
     Map<String, Map<String, dynamic>> homeOptions,
     Map<String, dynamic> specificOptions,
+    Map<String, dynamic> optionOverrides
   }) {
-    if (specificOptions != null)
-      (homeOptions ?? this.homeOptions)[homeLayout ?? this.homeLayout] = specificOptions;
+    if (specificOptions != null) {
+      homeOptions ??= this.homeOptions;
+      homeOptions[homeLayout ?? this.homeLayout] = specificOptions;
+    }
     return new AppState(
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,
@@ -103,7 +124,7 @@ class AppState {
       theme: theme ?? this.theme,
       needsRefresh: needsRefresh ?? this.needsRefresh,
       homeLayout: homeLayout ?? this.homeLayout,
-      homeOptions: homeOptions ?? this.homeOptions,
+      homeOptions: homeOptions ?? (optionOverrides != null ? overrideOptions(this.homeOptions, optionOverrides) : this.homeOptions),
     );
   }
 

@@ -76,7 +76,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                       .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
                   else return Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
                 }).then((_) {
-                  return Intents.sortActivities(Provider.of(context), needsRefresh: true);
+                  return Intents.sortActivities(Provider.of(context));
                 }).whenComplete(() {
                   Navigator.pop(context);
                 });

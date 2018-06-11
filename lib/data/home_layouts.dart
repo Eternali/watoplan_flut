@@ -23,7 +23,7 @@ final Map<String, HomeLayout> validLayouts = {
       // if the preferences schema changes this could error out because an installed app
       // could already have the field populated with an invalid value.
       try {
-        await Intents.sortActivities(appState, sorterName: options['sorter'], reversed: options['sortRev']);
+        await Intents.sortActivities(appState, options: options);
         return true;
       } on Error {
         return false;
@@ -65,20 +65,20 @@ final Map<String, HomeLayout> validLayouts = {
           ],
         ),
         children: <Widget>[
-          // new Column(
-          //   children: locales.validSorts.keys.map(
-          //     (name) => new RadioListTile(
-          //       title: new Text(
-          //         locales.validSorts[name](),
-          //       ),
-          //       groupValue: options['sorter'],
-          //       value: name,
-          //       onChanged: (name) {
-          //         Intents.sortActivities(Provider.of(context), sorterName: name);
-          //       },
-          //     )
-          //   ).toList()
-          // ),
+          new Column(
+            children: locales.validSorts.keys.map(
+              (name) => new RadioListTile(
+                title: new Text(
+                  locales.validSorts[name](),
+                ),
+                groupValue: options['sorter'],
+                value: name,
+                onChanged: (name) {
+                  Intents.sortActivities(Provider.of(context), options: options);
+                },
+              )
+            ).toList()
+          ),
           new Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
@@ -98,7 +98,9 @@ final Map<String, HomeLayout> validLayouts = {
                 ),
               ),
               onPressed: () {
-                Intents.sortActivities(Provider.of(context), sorterName: options['sorter'], reversed: !options['sortRev']);
+                Map<String, dynamic> newOptions = options;
+                newOptions['sortRev'] = !newOptions['sortRev'];
+                Intents.sortActivities(Provider.of(context), options: newOptions);
               },
             ),
           ),

@@ -93,7 +93,6 @@ class Intents {
     AppStateObservable appState,
     { String layout, Map<String, dynamic> options }
   ) async {
-    debugPrint(layout);
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
     validLayouts[layout].onChange(appState, options);
   }
@@ -220,17 +219,15 @@ class Intents {
 
   static Future<void> sortActivities(
     AppStateObservable appState,
-    { String sorterName, bool reversed, bool needsRefresh = false }
+    { String layout, Map<String, dynamic> options}
   ) async {
-    if (sorterName != null && appState.value.homeLayout == 'schedule')
-      await SharedPreferences.getInstance()
-        .then((prefs) {
-          prefs.setString('homeOptions', json.encode({ 'sorter': sorterName, 'sortRev': reversed }));
-        });
+    Map<String, dynamic> wholeOptions = appState.value.homeOptions;
+    if (options != null) wholeOptions[layout ?? appState.value.homeLayout] = options;
+    await SharedPreferences.getInstance()
+      .then((prefs) => prefs.setString('homeOptions', json.encode(wholeOptions)));
     appState.value = Reducers.sortActivities(
       appState.value,
-      sorterName: sorterName ?? appState.value.homeOptions['sorter'],
-      reversed: reversed ?? appState.value.homeOptions['sortRev'],
+      wholeOptions[layout ?? appState.value.homeLayout],
     );
   }
 
@@ -263,9 +260,7 @@ class Intents {
           params: params ?? editor.params,
         )
       );
-
     }
-
   }
 
   static void clearEditing(AppStateObservable appState, dynamic clearing) {

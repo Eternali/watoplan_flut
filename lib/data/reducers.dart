@@ -32,7 +32,6 @@ class Reducers {
   }
 
   static AppState switchHome(AppState oldState, { String layout, Map<String, dynamic> options }) {
-    debugPrint(layout);
     return oldState.copyWith(homeLayout: layout, specificOptions: options);
   }
 
@@ -100,13 +99,10 @@ class Reducers {
     return newState;
   }
 
-  static AppState sortActivities(AppState oldState, { String sorterName, bool reversed = false }) {
+  static AppState sortActivities(AppState oldState, Map<String, dynamic> sortOptions) {
     return oldState.copyWith(
-      activities: validSorts[sorterName](oldState.activities, reversed),
-      specificOptions: {
-        'sorter': sorterName,
-        'sortRev': reversed,
-      },
+      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev']),
+      specificOptions: sortOptions,
     );
   }
 
