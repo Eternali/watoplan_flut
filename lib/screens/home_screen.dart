@@ -155,7 +155,7 @@ class HomeScreenState extends State<HomeScreen> {
           ]..add(
             new ExpansionRadioGroup(
               name: 'layoutMenu',
-              members: validLayouts.values.map((HomeLayout layout) => layout.menuBuilder(context)).toList(),
+              members: validLayouts.values.map((HomeLayout layout) => layout.menuBuilder(context, this)).toList(),
             )
           ),
         ),

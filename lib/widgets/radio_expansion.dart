@@ -4,10 +4,13 @@
 // but still have the UI customization capabilities of an ExpansionTile.
 // Oh and yeah, it can be a radio button too.
 
-import 'package:meta/meta.dart';  // apparently I need this on linux, though it works fine on mac without.
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';  // apparently I need this on linux, though it works fine on mac without.
 
 const Duration _kExpand = const Duration(milliseconds: 200);
+
+typedef Future ExpansionChanged<T>(T value);
 
 /// A single-line [RadioExpansion] with a trailing button that expands or collapses
 /// the tile to reveal or hide the [children].
@@ -72,9 +75,9 @@ class RadioExpansion<T> extends StatefulWidget {
 
   bool get checked => value == groupValue;
 
-  /// Called when the tile's value changes with respect to it's groupValue,
-  /// if they become equal, the tile will expand (true), otherwise it will collapse (false).
-  final ValueChanged<T> onChanged;
+  /// Called when the tile is tapped. If a value other than null is returned,
+  /// the widget will set it to be its new group value and rebuild.
+  final ExpansionChanged<T> onChanged;
 
   @override
   _RadioExpansionState createState() => new _RadioExpansionState<T>(value, groupValue);
@@ -120,18 +123,19 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
   }
 
   void _handleTap() {
-    setState(() {
-      widget.onChanged(value);
-      groupValue = null;
-      if (isExpanded)
-        _controller.forward();
-      else
-        _controller.reverse().then<void>((Null value) {
-          setState(() {
-            // Rebuild without widget.children.
-          });
-        });
-    });
+    widget.onChanged(value)
+      .then((_) =>
+        setState(() {
+          if (isExpanded)
+            _controller.forward();
+          else
+            _controller.reverse().then<void>((Null value) {
+              setState(() {
+                // Rebuild without widget.children.
+              });
+            });
+        })
+      );
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
