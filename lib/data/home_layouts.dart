@@ -8,6 +8,7 @@ import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/screens/home_screen.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/radio_expansion.dart';
 
@@ -30,17 +31,18 @@ final Map<String, HomeLayout> validLayouts = {
       }
     }
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, State state) {
+    (BuildContext context, Function rebuilder) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
+      final theme = Theme.of(context);
 
       return new RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
         onChanged: (value) {
           return Intents.switchHome(Provider.of(context), layout: value, options: options)
-            .then((_) => state.setState(() {  }));
+            .then((_) => rebuilder());
         },
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -71,6 +73,7 @@ final Map<String, HomeLayout> validLayouts = {
                 title: new Text(
                   locales.validSorts[name](),
                 ),
+                activeColor: theme.accentColor,
                 groupValue: options['sorter'],
                 value: name,
                 onChanged: (name) {
@@ -128,7 +131,7 @@ final Map<String, HomeLayout> validLayouts = {
 
     }
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, State state) {
+    (BuildContext context, Function rebuilder) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -138,7 +141,7 @@ final Map<String, HomeLayout> validLayouts = {
         groupValue: stateVal.homeLayout,
         onChanged: (value) {
           return Intents.switchHome(Provider.of(context), layout: value, options: options)
-            .then((_) => state.setState(() {  }));
+            .then((_) => rebuilder(() {  }));
         },
         title: new Row(
           children: <Widget>[
@@ -172,7 +175,7 @@ final Map<String, HomeLayout> validLayouts = {
   ),
 };
 
-typedef RadioExpansion MenuItemBuilder(BuildContext context, State state);
+typedef RadioExpansion MenuItemBuilder(BuildContext context, Function rebuilder);
 typedef Widget LayoutBuilder(BuildContext context);
 typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
 typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);
@@ -182,24 +185,24 @@ class HomeLayout {
 
   final String name;
   final Map<String, dynamic> defaultOptions;
+  final LayoutDepsChange onChange;
   MenuItemBuilder menuBuilder;
   LayoutBuilder builder;
-  final LayoutDepsChange onChange;
 
-  HomeLayout({ this.name, this.defaultOptions, this.menuBuilder, this.builder, this.onChange });
+  HomeLayout({ this.name, this.defaultOptions, this.onChange, this.menuBuilder, this.builder });
   
   HomeLayout copyWith({
     String name,
     Map<String, dynamic> defaultOptions,
+    LayoutDepsChange onChange,
     MenuItemBuilder menuBuilder,
     LayoutBuilder builder,
-    LayoutDepsChange onChange,
   }) => new HomeLayout(
     name: name ?? this.name,
     defaultOptions: defaultOptions ?? this.defaultOptions,
+    onChange: onChange ?? this.onChange,
     menuBuilder: menuBuilder ?? this.menuBuilder,
     builder: builder ?? this.builder,
-    onChange: onChange ?? this.onChange,
   );
 
   void withMenuBuilder(ContextExpansionBuilder builderWithContext) => menuBuilder = builderWithContext(this);
