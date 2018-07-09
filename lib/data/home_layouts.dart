@@ -77,7 +77,7 @@ final Map<String, HomeLayout> validLayouts = {
                 groupValue: options['sorter'],
                 value: name,
                 onChanged: (name) {
-                  Intents.sortActivities(Provider.of(context), options: options);
+                  Intents.sortActivities(Provider.of(context), options: options..['sorter'] = name);
                 },
               )
             ).toList()
@@ -101,9 +101,7 @@ final Map<String, HomeLayout> validLayouts = {
                 ),
               ),
               onPressed: () {
-                Map<String, dynamic> newOptions = options;
-                newOptions['sortRev'] = !newOptions['sortRev'];
-                Intents.sortActivities(Provider.of(context), options: newOptions);
+                Intents.sortActivities(Provider.of(context), options: options..['sortRev'] = !options['sortRev']);
               },
             ),
           ),
