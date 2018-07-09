@@ -2,7 +2,7 @@
 // which can be found here: https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expansion_tile.dart
 // I just changed it to behave a little more like an ExpansionPanel,
 // but still have the UI customization capabilities of an ExpansionTile.
-// Oh and yeah, it can be a radio button too.
+// It can be a radio button too.
 
 import 'dart:async';
 import 'package:flutter/material.dart';

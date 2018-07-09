@@ -20,18 +20,8 @@ final Map<String, HomeLayout> validLayouts = {
       'sorter': 'start',
       'sortRev': false,
     },
-    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
-      // if the preferences schema changes this could error out because an installed app
-      // could already have the field populated with an invalid value.
-      try {
-        await Intents.sortActivities(appState, options: options);
-        return true;
-      } on Error {
-        return false;
-      }
-    }
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, Function rebuilder) {
+    (BuildContext context, ValueChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -40,10 +30,7 @@ final Map<String, HomeLayout> validLayouts = {
       return new RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
-        onChanged: (value) {
-          return Intents.switchHome(Provider.of(context), layout: value, options: options)
-            .then((_) => rebuilder());
-        },
+        onChanged: onChanged,
         title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -116,8 +103,8 @@ final Map<String, HomeLayout> validLayouts = {
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         shrinkWrap: true,
         itemCount: stateVal.activities.length,
-        itemBuilder: (BuildContext context, int indice) {
-          return new ActivityCard(stateVal.activities[indice]);
+        itemBuilder: (BuildContext context, int idx) {
+          return new ActivityCard(stateVal.activities[idx]);
         },
       );
     }
@@ -125,11 +112,8 @@ final Map<String, HomeLayout> validLayouts = {
   'month': new HomeLayout(
     name: 'month',
     defaultOptions: {  },
-    onChange: (AppStateObservable appState, Map<String, dynamic> options) async {
-
-    }
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, Function rebuilder) {
+    (BuildContext context, ValueChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -137,10 +121,7 @@ final Map<String, HomeLayout> validLayouts = {
       return new RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
-        onChanged: (value) {
-          return Intents.switchHome(Provider.of(context), layout: value, options: options)
-            .then((_) => rebuilder(() {  }));
-        },
+        onChanged: onChanged,
         title: new Row(
           children: <Widget>[
             new Text(
@@ -173,32 +154,28 @@ final Map<String, HomeLayout> validLayouts = {
   ),
 };
 
-typedef RadioExpansion MenuItemBuilder(BuildContext context, Function rebuilder);
+typedef RadioExpansion MenuItemBuilder(BuildContext context, ValueChanged onChanged);
 typedef Widget LayoutBuilder(BuildContext context);
 typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
 typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);
-typedef Future LayoutDepsChange(AppStateObservable appState, Map<String, dynamic> options);
 
 class HomeLayout {
 
   final String name;
   final Map<String, dynamic> defaultOptions;
-  final LayoutDepsChange onChange;
   MenuItemBuilder menuBuilder;
   LayoutBuilder builder;
 
-  HomeLayout({ this.name, this.defaultOptions, this.onChange, this.menuBuilder, this.builder });
+  HomeLayout({ this.name, this.defaultOptions, this.menuBuilder, this.builder });
   
   HomeLayout copyWith({
     String name,
     Map<String, dynamic> defaultOptions,
-    LayoutDepsChange onChange,
     MenuItemBuilder menuBuilder,
     LayoutBuilder builder,
   }) => new HomeLayout(
     name: name ?? this.name,
     defaultOptions: defaultOptions ?? this.defaultOptions,
-    onChange: onChange ?? this.onChange,
     menuBuilder: menuBuilder ?? this.menuBuilder,
     builder: builder ?? this.builder,
   );

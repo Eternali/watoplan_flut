@@ -156,7 +156,9 @@ class HomeScreenState extends State<HomeScreen> {
             new ExpansionRadioGroup(
               name: 'layoutMenu',
               members: validLayouts.values.map((HomeLayout layout) =>
-                layout.menuBuilder(context, () => Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]) /*stateVal.homeLayout*/)
+                layout.menuBuilder(context, (value) async {
+                  await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
+                } /*stateVal.homeLayout*/)
               ).toList(),
             )
           ),
