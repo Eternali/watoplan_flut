@@ -16,10 +16,10 @@ class WatoplanDb {
   DbCollection activityCollection;
 
   factory WatoplanDb(String loc) =>
-    _watoplandb ?? new WatoplanDb._init(loc);
+    _watoplandb ?? WatoplanDb._init(loc);
 
   WatoplanDb._init(this.loc) {
-    _db = new Db(loc);
+    _db = Db(loc);
     _db.open();
   }
 

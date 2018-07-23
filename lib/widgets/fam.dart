@@ -21,7 +21,7 @@ class FloatingActionMenu extends StatefulWidget {
   FloatingActionMenu({ this.color, this.width, this.height, this.entries, this.expanded = false });
 
   @override
-  State<FloatingActionMenu> createState() => new FloatingActionMenuState();
+  State<FloatingActionMenu> createState() => FloatingActionMenuState();
 
 }
 
@@ -32,16 +32,16 @@ class FloatingActionMenuState
   AnimationController _controller;
   List<SubFAB> values;
 
-  Widget generateMenu() => new FloatingActionButton(
+  Widget generateMenu() => FloatingActionButton(
     heroTag: null,
     backgroundColor: widget.color,
-    child: new AnimatedBuilder(
+    child: AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget child) {
-        return new Transform(
-          transform: new Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
+        return Transform(
+          transform: Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
           alignment: FractionalOffset.center,
-          child: new Icon(Icons.add),
+          child: Icon(Icons.add),
         );
       },
     ),
@@ -54,9 +54,9 @@ class FloatingActionMenuState
   );
 
   void init() {
-    _controller = new AnimationController(
+    _controller = AnimationController(
       vsync: this,
-      duration: new Duration(milliseconds: widget.entries.value.length * 70),
+      duration: Duration(milliseconds: widget.entries.value.length * 70),
     );
   }
 
@@ -79,45 +79,45 @@ class FloatingActionMenuState
 
     values = widget.entries is ValueNotifier ? widget.entries.value : widget.entries;
 
-    return new Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      children: new List.generate(values.length, (int indice) {
-        Widget child = new Container(
+      children: List.generate(values.length, (int indice) {
+        Widget child = Container(
           // if nothing is passed in, these will default to null,
           // so the width and height will match the child
           width: widget.width,
           height: widget.height,
           alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
-          child: new ScaleTransition(
-            scale: new CurvedAnimation(
+          child: ScaleTransition(
+            scale: CurvedAnimation(
               parent: _controller,
-              curve: new Interval(
+              curve: Interval(
                 0.0,
                 1.0 - indice / values.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
-            child: widget.expanded ? new Padding(
+            child: widget.expanded ? Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: new FloatingActionButton.extended(
+              child: FloatingActionButton.extended(
                 heroTag: null,
                 tooltip: values[indice].label,
-                label: new Text(
+                label: Text(
                   values[indice].label,
                 ),
                 backgroundColor: values[indice].color,
-                icon: new Icon(values[indice].icon),
+                icon: Icon(values[indice].icon),
                 onPressed: () {
                   _controller.reverse();
                   values[indice].onPressed();
                 },
               ),
-            ) : new FloatingActionButton(
+            ) : FloatingActionButton(
               heroTag: null,
               tooltip: values[indice].label,
               mini: true,
               backgroundColor: values[indice].color,
-              child: new Icon(values[indice].icon),
+              child: Icon(values[indice].icon),
               onPressed: () {
                 _controller.reverse();
                 values[indice].onPressed();
@@ -128,7 +128,7 @@ class FloatingActionMenuState
         return child;
       }).toList()
       ..add(
-        widget.expanded ? new Container(
+        widget.expanded ? Container(
           alignment: FractionalOffset.bottomRight,
           padding: const EdgeInsets.only(top: 8.0),
           child: generateMenu(),

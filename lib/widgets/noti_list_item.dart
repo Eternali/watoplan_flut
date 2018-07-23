@@ -24,7 +24,7 @@ class NotiListItem extends StatefulWidget {
   NotiListItem({ this.noti, this.activity, this.editor });
 
   @override
-  State<NotiListItem> createState() => new NotiListItemState();
+  State<NotiListItem> createState() => NotiListItemState();
 
 }
 
@@ -34,19 +34,19 @@ class NotiListItemState extends State<NotiListItem> {
   Widget build(BuildContext context) {
   final state = Provider.of(context);
 
-    return new InkWell(
+    return InkWell(
       onTap: () {
         showDialog<List>(
           context: context,
-          builder: (BuildContext context) => new NotiEditDialog(
+          builder: (BuildContext context) => NotiEditDialog(
             type: widget.noti.type,
             timeBefore: widget.timeBefore,
             isNew: false,
           ),
         ).then((List tmb) {  // type and milliseconds before
           if (tmb != null) {
-            // needs to be new so a new ID is generated (otherwise we could just use noti.copyWith)
-            widget.activity.data['notis'][widget.idx] = new Noti(
+            // needs to be so a ID is generated (otherwise we could just use noti.copyWith)
+            widget.activity.data['notis'][widget.idx] = Noti(
               title: widget.noti.title,
               msg: widget.noti.title,
               offset: tmb[1],
@@ -62,19 +62,19 @@ class NotiListItemState extends State<NotiListItem> {
           }
         });
       },
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Expanded(
-            child: new Text(
+          Expanded(
+            child: Text(
               '${widget.timeBefore.time} ${widget.timeBefore.unit.key}${widget.timeBefore.time.abs() != 1 ? 's' : ''} '
               'before as ${widget.noti.type.name.toLowerCase()}',
-              style: new TextStyle(
+              style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
           ),
-          new IconButton(
-            icon: new Icon(Icons.clear),
+          IconButton(
+            icon: Icon(Icons.clear),
             onPressed: () {
               widget.editor(
                 state,

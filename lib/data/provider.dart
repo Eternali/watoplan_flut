@@ -18,7 +18,7 @@ class Provider extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() => new _ProviderState();
+  State<StatefulWidget> createState() => _ProviderState();
 
 }
 
@@ -42,7 +42,7 @@ class _ProviderState extends State<Provider> {
 
   @override
   Widget build(BuildContext context) {
-    return new _InheritedProvider(
+    return _InheritedProvider(
       state: widget.state,
       child: widget.child,
     );

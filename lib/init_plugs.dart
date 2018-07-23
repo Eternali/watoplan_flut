@@ -4,11 +4,11 @@ import 'package:flutter_local_notifications/platform_specifics/android/initializ
 import 'package:flutter_local_notifications/platform_specifics/ios/initialization_settings_ios.dart';
 // import 'package:location_picker/location_picker.dart';
 
-FlutterLocalNotificationsPlugin notiPlug = new FlutterLocalNotificationsPlugin()
+FlutterLocalNotificationsPlugin notiPlug = FlutterLocalNotificationsPlugin()
   ..initialize(
-    new InitializationSettings(
-      new InitializationSettingsAndroid('app_icon'),
-      new InitializationSettingsIOS(),
+    InitializationSettings(
+      InitializationSettingsAndroid('app_icon'),
+      InitializationSettingsIOS(),
     ),
   );
 

@@ -22,7 +22,7 @@ class ExpansionInput<T> extends StatefulWidget {
   });
 
   @override
-  State<ExpansionInput> createState() => new ExpansionInputState();
+  State<ExpansionInput> createState() => ExpansionInputState();
 
 }
 
@@ -41,32 +41,32 @@ class ExpansionInputState extends State<ExpansionInput> {
     final ThemeData theme = Theme.of(context);
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
 
-    return new ExpansionTile(
+    return ExpansionTile(
       initiallyExpanded: false,
       onExpansionChanged: (expanded) {
         setState(() { hint = !expanded ? widget.value.toString() : widget.hint; });
       },
-      title: new Row(
+      title: Row(
         children: <Widget>[
-          new Expanded(
+          Expanded(
             flex: 2,
-            child: new Container(
+            child: Container(
               margin: const EdgeInsets.only(left: 0.0),
-              child: new FittedBox(
+              child: FittedBox(
                 fit: BoxFit.scaleDown,
                 alignment: Alignment.centerLeft,
-                child: new Text(
+                child: Text(
                   widget.title,
                   style: theme.textTheme.body1.copyWith(fontSize: 15.0),
                 ),
               ),
             ),
           ),
-          new Expanded(
+          Expanded(
             flex: 3,
-            child: new Container(
+            child: Container(
               margin: const EdgeInsets.only(left: 0.0),
-              child: new Text(
+              child: Text(
                 hint,
                 style: theme.textTheme.caption.copyWith(fontSize: 15.0),
               ),
@@ -75,28 +75,28 @@ class ExpansionInputState extends State<ExpansionInput> {
         ],
       ),
       children: <Widget>[
-        new Container(
+        Container(
           margin: const EdgeInsets.only(
             left: 24.0,
             right: 24.0,
           ),
-          child: new Center(
-            child: new DefaultTextStyle(
+          child: Center(
+            child: DefaultTextStyle(
               style: theme.textTheme.caption.copyWith(fontSize: 15.0),
               child: widget.builder(context, widget.value),
             )
           )
         ),
-        new Container(
+        Container(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: new Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              new Container(
+              Container(
                 margin: const EdgeInsets.only(right: 8.0),
-                child: new FlatButton(
+                child: FlatButton(
                   onPressed: () { setState(() {  }); },
-                  child: new Text(
+                  child: Text(
                     locales.cancel.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.black54,
@@ -106,9 +106,9 @@ class ExpansionInputState extends State<ExpansionInput> {
                   )
                 )
               ),
-              new Container(
+              Container(
                 margin: const EdgeInsets.only(right: 8.0),
-                child: new FlatButton(
+                child: FlatButton(
                   onPressed: () { widget.onSave(widget.value); setState(() {  }); },
                   textTheme: ButtonTextTheme.accent,
                   child: Text(

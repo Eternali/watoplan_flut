@@ -14,7 +14,7 @@ import 'package:watoplan/widgets/radio_expansion.dart';
 
 
 final Map<String, HomeLayout> validLayouts = {
-  'schedule': new HomeLayout(
+  'schedule': HomeLayout(
     name: 'schedule',
     defaultOptions: {
       'sorter': 'start',
@@ -27,26 +27,26 @@ final Map<String, HomeLayout> validLayouts = {
       final locales = WatoplanLocalizations.of(context);
       final theme = Theme.of(context);
 
-      return new RadioExpansion(
+      return RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
         onChanged: onChanged,
-        title: new Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Text(
+            Text(
               locales.layoutList.toUpperCase(),
-              style: new TextStyle(
+              style: TextStyle(
                 letterSpacing: 1.4,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Timeburner',
               )
             ),
-            new Expanded(child: new Container()),
-            new Text(
+            Expanded(child: Container()),
+            Text(
               '${locales.by} '
               '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
-              style: new TextStyle(
+              style: TextStyle(
                 letterSpacing: 1.4,
                 fontFamily: 'Timeburner',
               ),
@@ -54,10 +54,10 @@ final Map<String, HomeLayout> validLayouts = {
           ],
         ),
         children: <Widget>[
-          new Column(
+          Column(
             children: locales.validSorts.keys.map(
-              (name) => new RadioListTile(
-                title: new Text(
+              (name) => RadioListTile(
+                title: Text(
                   locales.validSorts[name](),
                 ),
                 activeColor: theme.accentColor,
@@ -69,18 +69,18 @@ final Map<String, HomeLayout> validLayouts = {
               )
             ).toList()
           ),
-          new Container(
+          Container(
             alignment: Alignment.centerRight,
             padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
-            child: new OutlineButton(
+            child: OutlineButton(
               padding: const EdgeInsets.all(0.0),
               textColor: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
-              borderSide: new BorderSide(
+              borderSide: BorderSide(
                 color: options['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
               ),
-              child: new Text(
+              child: Text(
                 options['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
-                style: new TextStyle(
+                style: TextStyle(
                   fontFamily: 'Timeburner',
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
@@ -99,17 +99,17 @@ final Map<String, HomeLayout> validLayouts = {
     (BuildContext context) {
       final AppState stateVal = Provider.of(context).value;
 
-      return new ListView.builder(
+      return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         shrinkWrap: true,
         itemCount: stateVal.activities.length,
         itemBuilder: (BuildContext context, int idx) {
-          return new ActivityCard(stateVal.activities[idx]);
+          return ActivityCard(stateVal.activities[idx]);
         },
       );
     }
   ),
-  'month': new HomeLayout(
+  'month': HomeLayout(
     name: 'month',
     defaultOptions: {  },
   )..withMenuBuilder((HomeLayout self) =>
@@ -118,15 +118,15 @@ final Map<String, HomeLayout> validLayouts = {
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
 
-      return new RadioExpansion(
+      return RadioExpansion(
         value: self.name,
         groupValue: stateVal.homeLayout,
         onChanged: onChanged,
-        title: new Row(
+        title: Row(
           children: <Widget>[
-            new Text(
+            Text(
               locales.layoutMonth.toUpperCase(),
-              style: new TextStyle(
+              style: TextStyle(
                 letterSpacing: 1.4,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Timeburner',
@@ -134,9 +134,9 @@ final Map<String, HomeLayout> validLayouts = {
             ),
           ],
         ),
-        trailing: new Icon(new IconData(0)),
+        trailing: Icon(new IconData(0)),
         children: <Widget>[
-          new Container()
+          Container()
         ],
       );
     }
@@ -145,9 +145,9 @@ final Map<String, HomeLayout> validLayouts = {
       final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
       
-      return new Calendar(
-        dayBuilder: (BuildContext context, DateTime day) => new Container(
-          child: new Text('test'),
+      return Calendar(
+        dayBuilder: (BuildContext context, DateTime day) => Container(
+          child: Text('test'),
         ),
       );
     }
@@ -173,7 +173,7 @@ class HomeLayout {
     Map<String, dynamic> defaultOptions,
     MenuItemBuilder menuBuilder,
     LayoutBuilder builder,
-  }) => new HomeLayout(
+  }) => HomeLayout(
     name: name ?? this.name,
     defaultOptions: defaultOptions ?? this.defaultOptions,
     menuBuilder: menuBuilder ?? this.menuBuilder,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final globalThemeKey = new GlobalKey(debugLabel: 'app_theme');
+final globalThemeKey = GlobalKey(debugLabel: 'app_theme');
 
 class AppTheme extends StatefulWidget {
 
@@ -11,7 +11,7 @@ class AppTheme extends StatefulWidget {
   }) : super(key: globalThemeKey);
 
   @override
-  State<AppTheme> createState() => new AppThemeState();
+  State<AppTheme> createState() => AppThemeState();
 
 }
 
@@ -25,7 +25,7 @@ class AppThemeState extends State<AppTheme> {
 
   @override
   Widget build(BuildContext context) {
-    return new Container();
+    return Container();
   }
 
 }
@@ -35,12 +35,12 @@ final Map<String, ThemeData> themes = {
   'light': LightTheme,
 };
 
-final ThemeData DarkTheme = new ThemeData.dark().copyWith(
+final ThemeData DarkTheme = ThemeData.dark().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
 );
 
-final ThemeData LightTheme = new ThemeData.light().copyWith(
+final ThemeData LightTheme = ThemeData.light().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
 );

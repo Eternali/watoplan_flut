@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
   HomeScreen({ Key key, this.title }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => new HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 
 }
 
@@ -41,7 +41,7 @@ class HomeScreenState extends State<HomeScreen> {
       .reversed.toList()
       .map((it) => it[0] as ActivityType).toList()
       .map((it) =>
-        new SubFAB(
+        SubFAB(
           icon: it.icon,
           label: it.name,
           color: it.color,
@@ -49,10 +49,10 @@ class HomeScreenState extends State<HomeScreen> {
             Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
             Intents.editEditing(
               Provider.of(context),
-              new Activity(
+              Activity(
                 type: it,
                 data: it.params
-                  .map((key, value) => new MapEntry(key, value is DateTime
+                  .map((key, value) => MapEntry(key, value is DateTime
                     ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                     : value
                   )),
@@ -71,21 +71,21 @@ class HomeScreenState extends State<HomeScreen> {
 
     widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         centerTitle: true,
-        title: new Text(widget.title ?? locales.appTitle),
+        title: Text(widget.title ?? locales.appTitle),
         actions: <Widget>[
-          new PopupMenuButton<ActivityType>(
-            icon: new Icon(Icons.add),
+          PopupMenuButton<ActivityType>(
+            icon: Icon(Icons.add),
             onSelected: (ActivityType type) {
               Intents.setFocused(Provider.of(context), indice: -(stateVal.activityTypes.indexOf(type) + 1));
               Intents.editEditing(
                 Provider.of(context),
-                new Activity(
+                Activity(
                   type: type,
                   data: type.params
-                    .map((key, value) => new MapEntry(key, value is DateTime
+                    .map((key, value) => MapEntry(key, value is DateTime
                       ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                       : value
                     )),
@@ -95,32 +95,32 @@ class HomeScreenState extends State<HomeScreen> {
             },
             itemBuilder: (BuildContext context) =>
               stateVal.activityTypes.map((type) =>
-                new PopupMenuItem<ActivityType>(
+                PopupMenuItem<ActivityType>(
                   value: type,
-                  child: new ListTileTheme(
+                  child: ListTileTheme(
                     iconColor: type.color,
                     textColor: type.color,
-                    child: new ListTile(
-                      leading: new Icon(type.icon),
-                      title: new Text(type.name),
+                    child: ListTile(
+                      leading: Icon(type.icon),
+                      title: Text(type.name),
                     ),
                   ),
                 )
               ).toList(),
           ),
-          new PopupMenuButton<MenuChoice>(
+          PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
               Navigator.of(context).pushNamed(choice.route);
             },
             itemBuilder: (BuildContext context) =>
               widget.overflow.map((MenuChoice choice) =>
-                new PopupMenuItem<MenuChoice>(
+                PopupMenuItem<MenuChoice>(
                 value: choice,
-                child: new Row(
+                child: Row(
                   children: <Widget>[
-                    new Icon(choice.icon),
-                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
-                    new Text(choice.title)
+                    Icon(choice.icon),
+                    Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
+                    Text(choice.title)
                   ],
                 ),
                 )
@@ -128,20 +128,20 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: new Drawer(
-        child: new ListView(
+      drawer: Drawer(
+        child: ListView(
           children: <Widget>[
-            new Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 18.0, bottom: 8.0),
-              child: new Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Image.asset('assets/icons/logo.png', width: 36.0, height: 36.0,),
-                  new Padding(
+                  Image.asset('assets/icons/logo.png', width: 36.0, height: 36.0,),
+                  Padding(
                     padding: const EdgeInsets.only(left: 14.0),
-                    child: new Text(
+                    child: Text(
                       locales.appTitle,
-                      style: new TextStyle(
+                      style: TextStyle(
                         letterSpacing: 2.6,
                         fontSize: 24.0,
                         fontFamily: 'Timeburner',
@@ -151,14 +151,14 @@ class HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            new Divider(),
+            Divider(),
           ]..addAll(validLayouts.values.map((HomeLayout layout) =>
             layout.menuBuilder(context, (value) async {
               await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
             } /*stateVal.homeLayout*/)
           )),
           // ]..add(
-          //   new ExpansionRadioGroup(
+          //   ExpansionRadioGroup(
           //     name: 'layoutMenu',
           //     members: validLayouts.values.map((HomeLayout layout) =>
           //       layout.menuBuilder(context, (value) async {
@@ -169,10 +169,10 @@ class HomeScreenState extends State<HomeScreen> {
           // ),
         ),
       ),
-      body: new SafeArea(
+      body: SafeArea(
         child: validLayouts[stateVal.homeLayout].builder(context)
       ),
-      floatingActionButton: new FloatingActionMenu(
+      floatingActionButton: FloatingActionMenu(
         color: Theme.of(context).accentColor,
         entries: widget.subFabs,
         expanded: true,

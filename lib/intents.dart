@@ -33,7 +33,7 @@ class Intents {
 
   static Future<void> loadAll(AppStateObservable appState) async {
     return getApplicationDocumentsDirectory()
-      .then((dir) => new LocalDb('${dir.path}/watoplan.json'))
+      .then((dir) => LocalDb('${dir.path}/watoplan.json'))
       .then((db) => db.loadAtOnce())
       .then((data) {
         if (data[0].length < 1) {
@@ -42,10 +42,10 @@ class Intents {
             : Future.value(LoadDefaults.defaultData)
             )).then((_) {
               var types = LoadDefaults.defaultData['activityTypes']
-                ?.map((type) => new ActivityType.fromJson(type))
+                ?.map((type) => ActivityType.fromJson(type))
                 .cast<ActivityType>().toList() ?? <ActivityType>[];
               var activities = LoadDefaults.defaultData['activities']
-                  ?.map((activity) => new Activity.fromJson(activity, types))
+                  ?.map((activity) => Activity.fromJson(activity, types))
                   .cast<Activity>().toList() ?? <Activity>[];
               return LocalDb().saveOver(types, activities)
                 .then((_) => [types, activities]);
@@ -247,12 +247,12 @@ class Intents {
       appState.value = Reducers.inlineEditChange(
         appState.value,
         Activity,
-        () => editor.copyWith(entries: [ new MapEntry(param, value ?? validParams[param]) ]));
+        () => editor.copyWith(entries: [ MapEntry(param, value ?? validParams[param]) ]));
     } else if (editor is ActivityType) {
       appState.value = Reducers.inlineEditChange(
         appState.value,
         ActivityType,
-        () => new ActivityType(
+        () => ActivityType(
           name: name ?? editor.name,
           icon: icon ?? editor.icon,
           color: color ?? editor.color,

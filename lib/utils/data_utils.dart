@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 int generateId([int length = 10]) {
-  if (length < 4 || length > 18) throw new Exception('Invalid length');
+  if (length < 4 || length > 18) throw Exception('Invalid length');
   String now = DateTime.now().millisecondsSinceEpoch.toString();
   int div = (length / 2).round();
   return int.parse(
@@ -35,7 +35,7 @@ String generateUniqueId(String value) {
 class DateTimeUtils {
 
   static DateTime fromDate(DateTime source, DateTime date) {
-    return new DateTime(
+    return DateTime(
       date.year,
       date.month,
       date.day,
@@ -49,7 +49,7 @@ class DateTimeUtils {
   static DateTime copyWith(DateTime source,
     { int year, int month, int day, int hour, int minute, int second, int millisecond, int microsecond }
   ) {
-    return new DateTime(
+    return DateTime(
       year ?? source.year,
       month ?? source.month,
       day ?? source.day,
@@ -62,7 +62,7 @@ class DateTimeUtils {
   }
 
   static DateTime fromTimeOfDay(DateTime source, TimeOfDay time) {
-    return new DateTime(
+    return DateTime(
       source.year,
       source.month,
       source.day,

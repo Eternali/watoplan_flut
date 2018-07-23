@@ -19,7 +19,7 @@ import 'package:watoplan/utils/data_utils.dart';
 class AddEditScreen extends StatefulWidget {
 
   @override
-  State<AddEditScreen> createState() => new AddEditScreenState();
+  State<AddEditScreen> createState() => AddEditScreenState();
 
 }
 
@@ -32,19 +32,19 @@ class AddEditScreenState extends State<AddEditScreen> {
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
     final ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
 
-    return new Scaffold(
+    return Scaffold(
       key: AppKeys.AddEditScreenKey,
-      appBar: new AppBar(
+      appBar: AppBar(
         backgroundColor: type.color,
-        leading: new BackButton(),
+        leading: BackButton(),
         centerTitle: true,
-        title: new Text(stateVal.focused >= 0
+        title: Text(stateVal.focused >= 0
           ? stateVal.activities[stateVal.focused].data['name']
           : '${locales.newtxt} ${type.name}'
         ),
         actions: <Widget>[
-          new FlatButton(
-            child: new Text(
+          FlatButton(
+            child: Text(
               locales.save.toUpperCase(),
               style: theme.textTheme.button.copyWith(color: Colors.white),
             ),
@@ -52,13 +52,13 @@ class AddEditScreenState extends State<AddEditScreen> {
               // validate activity times
               if (stateVal.editingActivity.data.containsKey('notis')) {
                 for (Noti noti in stateVal.editingActivity.data['notis']) {
-                  var now = new DateTime.now();
+                  var now = DateTime.now();
                   if (noti.when?.compareTo(now) ?? stateVal.editingActivity.data[
                       stateVal.editingActivity.data.containsKey('start') ? 'start': 'end'
                     ].millisecondsSinceEpoch - noti.offset - now.millisecondsSinceEpoch <= 0) {
                     AppKeys.AddEditScreenKey.currentState.showSnackBar(
-                      new SnackBar(
-                        content: new Text(
+                      SnackBar(
+                        content: Text(
                           locales.timeToEarly(what: 'Notifications'),
                         ),
                         backgroundColor: type.color,
@@ -85,16 +85,16 @@ class AddEditScreenState extends State<AddEditScreen> {
           )
         ],
       ),
-      body: new SafeArea(
-        child: new Padding(
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),          
-          child: new Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               stateVal.editingActivity.data.containsKey('name')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new EditText(
+                  child: EditText(
                     label: locales.validParams['name'](),
                     initVal: stateVal.editingActivity.data['name'],
                     // Intents.inlineChange(Provider.of(context), stateVal.editingActivity, param: 'name', value: changed);
@@ -102,9 +102,9 @@ class AddEditScreenState extends State<AddEditScreen> {
                   )
                 ) : null,
               stateVal.editingActivity.data.containsKey('desc')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new EditText(
+                  child: EditText(
                     maxLines: 3,
                     alignment: TextAlign.start,
                     label: locales.validParams['desc'](),
@@ -113,9 +113,9 @@ class AddEditScreenState extends State<AddEditScreen> {
                   )
                 ) : null,
               stateVal.editingActivity.data.containsKey('long')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new EditText(
+                  child: EditText(
                     maxLines: 5,
                     alignment: TextAlign.start,
                     label: locales.validParams['long'](),
@@ -124,11 +124,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                   ),
                 ) : null,         
               stateVal.editingActivity.data.containsKey('priority')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: new CustomExpansion(
+                  child: CustomExpansion(
                     items: [
-                      new ExpansionItem<int>(
+                      ExpansionItem<int>(
                         name: locales.validParams['priority'](),
                         value: stateVal.editingActivity.data['priority'],
                         hint: '${locales.select} ${locales.validParams['priority']()}',
@@ -140,16 +140,16 @@ class AddEditScreenState extends State<AddEditScreen> {
                             });
                           }
 
-                          return new Form(
-                            child: new Builder(
+                          return Form(
+                            child: Builder(
                               builder: (BuildContext context) =>
-                                new CollapsibleBody(
+                                CollapsibleBody(
                                   onSave: () { Form.of(context).save(); close(); },  // should probably reset the editing field now
                                   onCancel: () { Form.of(context).reset(); close(); },
-                                  child: new FormField<int>(
+                                  child: FormField<int>(
                                     initialValue: item.value,
                                     onSaved: (int value) { item.value = value; stateVal.editingActivity.data['priority'] = value; },
-                                    builder: (FormFieldState<int> field) => new Slider(
+                                    builder: (FormFieldState<int> field) => Slider(
                                       value: field.value.toDouble(),
                                       min: 0.0,
                                       max: 10.0,
@@ -167,11 +167,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                   ),
                 ) : null,
               stateVal.editingActivity.data.containsKey('progress')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: new CustomExpansion(
+                  child: CustomExpansion(
                     items: [
-                      new ExpansionItem<int>(
+                      ExpansionItem<int>(
                         name: locales.validParams['progress'](),
                         value: stateVal.editingActivity.data['progress'],
                         hint: '${locales.select} ${locales.validParams['progress']()}',
@@ -183,16 +183,16 @@ class AddEditScreenState extends State<AddEditScreen> {
                             });
                           }
 
-                          return new Form(
-                            child: new Builder(
+                          return Form(
+                            child: Builder(
                               builder: (BuildContext context) =>
-                                new CollapsibleBody(
+                                CollapsibleBody(
                                   onSave: () { Form.of(context).save(); close(); },
                                   onCancel: () { Form.of(context).reset(); close(); },
-                                  child: new FormField<int>(
+                                  child: FormField<int>(
                                     initialValue: item.value,
                                     onSaved: (int value) { item.value = value; stateVal.editingActivity.data['progress'] = value; },
-                                    builder: (FormFieldState<int> field) => new Slider(
+                                    builder: (FormFieldState<int> field) => Slider(
                                       value: field.value.toDouble(),
                                       min: 0.0,
                                       max: 100.0,
@@ -210,9 +210,9 @@ class AddEditScreenState extends State<AddEditScreen> {
                   ),
                 ) : null,
               stateVal.editingActivity.data.containsKey('start')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: new DateTimePicker(
+                  child: DateTimePicker(
                     label: locales.validParams['start'](),
                     color: theme.disabledColor,
                     when: stateVal.editingActivity.data['start'],
@@ -227,9 +227,9 @@ class AddEditScreenState extends State<AddEditScreen> {
                   )
                 ) : null,
               stateVal.editingActivity.data.containsKey('end')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: new DateTimePicker(
+                  child: DateTimePicker(
                     label: locales.validParams['end'](),
                     color: theme.disabledColor,
                     when: stateVal.editingActivity.data['end'],
@@ -244,72 +244,72 @@ class AddEditScreenState extends State<AddEditScreen> {
                   )
                 ) : null,
               stateVal.editingActivity.data.containsKey('location')
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new Container(),                
+                  child: Container(),                
                 ) : null,
               stateVal.editingActivity.data.keys.where((key) => ['start', 'end', 'notis'].contains(key)).length > 1
-                ? new Padding(
+                ? Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: new Padding(
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: new NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
+                    child: NotiList(activity: stateVal.editingActivity, editor: Intents.editEditing),
                   ),
                 ) : null,
               // stateVal.editingActivity.data.containsKey('contacts')
-              //   ? new Column(
+              //   ? Column(
               //     children: <Widget>[
-              //       new Row(
+              //       Row(
               //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               //         crossAxisAlignment: CrossAxisAlignment.center,
               //         children: <Widget>[
-              //           new Container(
+              //           Container(
               //             padding: const EdgeInsets.only(top: 18.0),
-              //             child: new Text(
+              //             child: Text(
               //               locales.contacts.toUpperCase(),
               //               style: theme.textTheme.title.copyWith(color: theme.hintColor),
               //             ),
               //           )
               //         ],
               //       ),
-              //       new Container(
+              //       Container(
               //         margin: const EdgeInsets.symmetric(vertical: 12.0),
               //         alignment: Alignment.centerLeft,
               //         height: 52.0,
-              //         child: new ListView(
+              //         child: ListView(
               //           scrollDirection: Axis.horizontal,
               //           shrinkWrap: true,
               //           children: [
               //             stateVal.editingActivity.data['contacts']
-              //               .map((Contact contact) => new CircleAvatar(
+              //               .map((Contact contact) => CircleAvatar(
               //                 radius: 20.0,
               //                 backgroundImage: contact.avatar == null
-              //                   ? new AssetImage('assets/defaults/default-avatar.png')
-              //                   : new MemoryImage(contact.avatar),
-              //                 child: new Text(
+              //                   ? AssetImage('assets/defaults/default-avatar.png')
+              //                   : MemoryImage(contact.avatar),
+              //                 child: Text(
               //                   contact.name
               //                 ),
               //               )).toList(),
-              //             [ new InkWell(
+              //             [ InkWell(
               //               onTap: () {
               //                 ContactFinder.selectContact()
               //                   .then((Contact contact) {
               //                     debugPrint(contact.name);
               //                   });
               //               },
-              //               borderRadius: new BorderRadius.circular(26.0),
-              //               child: new Container(
+              //               borderRadius: BorderRadius.circular(26.0),
+              //               child: Container(
               //                 width: 52.0,
               //                 height: 52.0,
-              //                 decoration: new BoxDecoration(
+              //                 decoration: BoxDecoration(
               //                   shape: BoxShape.circle,
               //                   color: Colors.transparent,
-              //                   border: new Border.all(
+              //                   border: Border.all(
               //                     color: theme.accentColor,
               //                     width: 2.0
               //                   ),
               //                 ),
-              //                 child: new Icon(Icons.add, color: theme.accentColor),
+              //                 child: Icon(Icons.add, color: theme.accentColor),
               //               ),
               //             ) ],
               //           ].where((w) => w != null).expand((w) => w).retype<Widget>().toList()

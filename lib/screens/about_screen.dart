@@ -6,7 +6,7 @@ import 'package:watoplan/widgets/link_text_span.dart';
 class AboutScreen extends StatefulWidget {
 
   @override
-  State<AboutScreen> createState() => new AboutScreenState();
+  State<AboutScreen> createState() => AboutScreenState();
 }
 
 class AboutScreenState extends State<AboutScreen> {
@@ -17,45 +17,45 @@ class AboutScreenState extends State<AboutScreen> {
     final TextStyle aboutTextSyle = Theme.of(context).textTheme.display1.copyWith(fontSize: 20.0);
     final TextStyle linkTextStyle = aboutTextSyle.copyWith(color: Theme.of(context).accentColor);    
 
-    return new Scaffold(
-      appBar: new AppBar(
-        leading: new BackButton(),
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
         centerTitle: true,
-        title: new Text(
+        title: Text(
           WatoplanLocalizations.of(context).aboutTitle
         ),
       ),
-      body: new SafeArea(
-        child: new Padding(
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: new Column(
+          child: Column(
             children: <Widget>[
-              new RichText(
-                text: new TextSpan(
+              RichText(
+                text: TextSpan(
                   children: <TextSpan>[
-                    new TextSpan(
+                    TextSpan(
                       style: aboutTextSyle,
                       text: '${locales.aboutFeedback} '
                     ),
-                    new LinkTextSpan(
+                    LinkTextSpan(
                       style: linkTextStyle,
                       url: 'https://github.com/Eternali/watoplan_flut/blob/release/KNOWN_BUGS.md',
                       text: 'known bugs'
                     ),
-                    new TextSpan(
+                    TextSpan(
                       style: aboutTextSyle,
                       text: ' and '
                     ),
-                    new LinkTextSpan(
+                    LinkTextSpan(
                       style: linkTextStyle,
                       url: 'https://github.com/Eternali/watoplan_flut/blob/release/TODO.md',
                       text: 'the roadmap'
                     ),
-                    new TextSpan(
+                    TextSpan(
                       style: aboutTextSyle,
                       text: ' before emailing '
                     ),
-                    new LinkTextSpan(
+                    LinkTextSpan(
                       style: linkTextStyle,
                       url: 'mailto:chipthinkstudios@gmail.com',
                       text: 'chipthinkstudios@gmail.com',
@@ -64,18 +64,18 @@ class AboutScreenState extends State<AboutScreen> {
                   ]
                 ),
               ),
-              new Padding(
+              Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Divider()
               ),
-              new RichText(
-                text: new TextSpan(
+              RichText(
+                text: TextSpan(
                   children: <TextSpan>[
-                    new TextSpan(
+                    TextSpan(
                       style: aboutTextSyle,
                       text: '${locales.developFeedback} '
                     ),
-                    new LinkTextSpan(
+                    LinkTextSpan(
                       style: linkTextStyle,
                       url: 'https://github.com/eternali/watoplan_flut',
                       text: 'github.com/eternali/watoplan_flut',

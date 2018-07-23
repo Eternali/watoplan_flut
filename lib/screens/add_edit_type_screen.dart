@@ -14,7 +14,7 @@ import 'package:watoplan/widgets/icon_pick_button.dart';
 class AddEditTypeScreen extends StatefulWidget {
 
   @override
-  State<AddEditTypeScreen> createState() => new AddEditTypeScreenState();
+  State<AddEditTypeScreen> createState() => AddEditTypeScreenState();
 
 }
 
@@ -27,18 +27,18 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
     final locales = WatoplanLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
 
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         backgroundColor: stateVal.editingType.color ?? theme.accentColor,
-        leading: new BackButton(),
+        leading: BackButton(),
         centerTitle: true,
-        title: new Text(
+        title: Text(
           stateVal.editingType.name ?? locales.newActivityType
         ),
         actions: <Widget>[
-          new Builder(
-            builder: (BuildContext context) => new FlatButton(
-              child: new Text(
+          Builder(
+            builder: (BuildContext context) => FlatButton(
+              child: Text(
                 locales.save.toUpperCase(),
                 style: theme.textTheme.button.copyWith(color: Colors.white),
               ),
@@ -50,7 +50,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
                   ).then((valid) {
                     if (valid) Navigator.pop(context);
                     else Scaffold.of(context).showSnackBar(new SnackBar(
-                      content: new Text(
+                      content: Text(
                         locales.invalidType,
                       ),
                       duration: const Duration(seconds: 2),
@@ -61,48 +61,48 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
           ),
         ],
       ),
-      body: new SafeArea(
+      body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           shrinkWrap: true,
           children: <Widget>[
-            new Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: new EditText(
+              child: EditText(
                 maxLines: 1,
                 label: locales.validParams['name'](),
                 initVal: stateVal.editingType.name,
                 editField: (String changed) { stateVal.editingType.name = changed; },
               ),
             ),
-            new Container(
+            Container(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               alignment: Alignment.center,
-              child: new IconPickButton(
+              child: IconPickButton(
                 label: 'Choose Icon',
                 curIcon: stateVal.editingType.icon,
                 changeIcon: (IconData changed) { stateVal.editingType.icon = changed; },
               ),
             ),
-            new Container(
-              padding: new EdgeInsets.symmetric(vertical: 10.0),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
               alignment: Alignment.center,
-              child: new ColorPickButton(activityType: stateVal.editingType),
+              child: ColorPickButton(activityType: stateVal.editingType),
             ),
-            new Container(
+            Container(
               padding: const EdgeInsets.only(top: 16.0),
               alignment: Alignment.center,
-              child: new Text(
+              child: Text(
                 '${stateVal.editingType.name?.toUpperCase()} PARAMETERS',
-                style: new TextStyle(
+                style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w100,
                 ),
               ),
             ),
-            new Padding(
+            Padding(
               padding: const EdgeInsets.only(bottom: 10.0),
-              child: new CheckboxList<String>(
+              child: CheckboxList<String>(
                 entries: locales.validParams.values.map((getStr) => getStr()).toList(),
                 values: locales.validParams.keys.toList(),
                 color: stateVal.editingType.color,

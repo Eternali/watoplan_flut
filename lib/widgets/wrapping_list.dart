@@ -10,7 +10,7 @@ class WrappingList extends StatefulWidget {
   WrappingList({ this.direction, this.items });
 
   @override
-  State<WrappingList> createState() => new WrappingListState();
+  State<WrappingList> createState() => WrappingListState();
 
 }
 

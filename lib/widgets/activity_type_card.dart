@@ -20,45 +20,45 @@ class ActivityTypeCard extends StatelessWidget {
     final locales = WatoplanLocalizations.of(context);
     final state = Provider.of(context);
 
-    return new InkWell(
-      child: new Card(
+    return InkWell(
+      child: Card(
         color: data.color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32.0)
         ),
-        child: new ListTile(
-          leading: new Icon(data.icon),
+        child: ListTile(
+          leading: Icon(data.icon),
           dense: true,
-          title: new Text(
+          title: Text(
             data.name,
-            style: new TextStyle(
+            style: TextStyle(
               fontSize: 18.0
             ),
           ),
-          subtitle: new Text(
+          subtitle: Text(
             data.params.keys.join(', '),
-            style: new TextStyle(
+            style: TextStyle(
               fontSize: 12.0
             ),
           ),
           onTap: () {
             Intents.setFocused(state, indice: indice);
-            Intents.editEditing(state, new ActivityType.from(data));
+            Intents.editEditing(state, ActivityType.from(data));
             Navigator.of(context).pushNamed(Routes.addEditActivityType);
           },
-          trailing: new IconButton(
+          trailing: IconButton(
             padding: const EdgeInsets.all(0.0),
             alignment: Alignment.centerRight,
-            icon: new Icon(Icons.clear),
+            icon: Icon(Icons.clear),
             onPressed: () {
-              List<Activity> activities = new List.from(state.value.activities);
+              List<Activity> activities = List.from(state.value.activities);
               Intents.removeActivityTypes(state, [data])
                 .then((tas) => Scaffold.of(context).showSnackBar(new SnackBar(  // tas = [types, activities] removed
                   duration: const Duration(seconds: 3),
-                  content: new Text(
+                  content: Text(
                     'Deleted ${tas[0][0].name} and ${tas[1].length} associated activities',
                   ),
-                  action: new SnackBarAction(
+                  action: SnackBarAction(
                     label: locales.undo.toUpperCase(),
                     onPressed: () {
                       Intents.insertActivityType(state, tas[0][0], indice)

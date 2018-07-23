@@ -10,7 +10,7 @@ class EditText extends StatefulWidget {
   EditText({ this.maxLines = 1, this.alignment = TextAlign.center, this.label, this.initVal, this.editField});
 
   @override
-  State<EditText> createState() => new EditTextState();
+  State<EditText> createState() => EditTextState();
 }
 
 class EditTextState extends State<EditText> {
@@ -20,7 +20,7 @@ class EditTextState extends State<EditText> {
   @override
   initState() {
     super.initState();
-    _controller = new TextEditingController(text: widget.initVal)
+    _controller = TextEditingController(text: widget.initVal)
       ..addListener(() => widget.editField(_controller.value.text));
   }
 
@@ -33,16 +33,16 @@ class EditTextState extends State<EditText> {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
-      padding: new EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
-      child: new TextField(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+      child: TextField(
         keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
         maxLines: widget.maxLines,
         textAlign: widget.alignment,
         style: Theme.of(context).textTheme.body1.copyWith(
           fontSize: 20.0,
         ),
-        decoration: new InputDecoration(
+        decoration: InputDecoration(
           labelText: widget.label,
           border: OutlineInputBorder(),
         ),

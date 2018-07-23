@@ -8,7 +8,7 @@ class ColorPicker extends StatefulWidget {
   ColorPicker([this.r, this.g, this.b]);
 
   @override
-  State<ColorPicker> createState() => new ColorPickerState(r, g, b);
+  State<ColorPicker> createState() => ColorPickerState(r, g, b);
 
 }
 
@@ -19,26 +19,26 @@ class ColorPickerState extends State<ColorPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return new AlertDialog(
-      contentPadding: new EdgeInsets.all(0.0),
-      content: new IntrinsicWidth(
-        child: new Column(
+    return AlertDialog(
+      contentPadding: EdgeInsets.all(0.0),
+      content: IntrinsicWidth(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            new ClipRect(
-              child: new Container(
+            ClipRect(
+              child: Container(
                 width: 50.0,
                 height: 180.0,
-                decoration: new BoxDecoration(
-                  color: new Color.fromARGB(255, r.round(), g.round(), b.round()),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, r.round(), g.round(), b.round()),
                 ),
               ),
             ),
-            new Padding(
-              padding: new EdgeInsets.only(top: 30.0),
+            Padding(
+              padding: EdgeInsets.only(top: 30.0),
             ),
-            new Slider(
+            Slider(
               value: r,
               min: 0.0,
               max: 255.0,
@@ -47,10 +47,10 @@ class ColorPickerState extends State<ColorPicker> {
                 setState(() { r = value; });
               }
             ),
-            new Padding(
-              padding: new EdgeInsets.only(top: 10.0)
+            Padding(
+              padding: EdgeInsets.only(top: 10.0)
             ),
-            new Slider(
+            Slider(
               value: g,
               min: 0.0,
               max: 255.0,
@@ -59,10 +59,10 @@ class ColorPickerState extends State<ColorPicker> {
                 setState(() { g = value; });
               }
             ),
-            new Padding(
-              padding: new EdgeInsets.only(top: 10.0)
+            Padding(
+              padding: EdgeInsets.only(top: 10.0)
             ),
-            new Slider(
+            Slider(
               value: b,
               min: 0.0,
               max: 255.0,
@@ -75,20 +75,20 @@ class ColorPickerState extends State<ColorPicker> {
         ),
       ),
       actions: <Widget>[
-        new FlatButton(
-          child: new Text(
+        FlatButton(
+          child: Text(
             WatoplanLocalizations.of(context).cancel,
           ),
           onPressed: () {
             Navigator.pop(context, null);
           },
         ),
-        new FlatButton(
-          child: new Text(
+        FlatButton(
+          child: Text(
             WatoplanLocalizations.of(context).select,
           ),
           onPressed: () {
-            Color c = new Color.fromARGB(255, r.round(), g.round(), b.round());
+            Color c = Color.fromARGB(255, r.round(), g.round(), b.round());
             Navigator.pop(context, c);
           },
         )

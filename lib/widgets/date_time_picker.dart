@@ -21,7 +21,7 @@ class DateTimePicker extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<DateTimePicker> createState() => new DateTimePickerState();
+  State<DateTimePicker> createState() => DateTimePickerState();
 
 }
 
@@ -31,8 +31,8 @@ class DateTimePickerState extends State<DateTimePicker> {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: widget.when,
-      firstDate: new DateTime(2018),
-      lastDate: new DateTime(2100),
+      firstDate: DateTime(2018),
+      lastDate: DateTime(2100),
     );
     if (picked != null && picked != widget.when)
       setState(() {
@@ -43,9 +43,9 @@ class DateTimePickerState extends State<DateTimePicker> {
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
       context: context,
-      initialTime: new TimeOfDay.fromDateTime(widget.when),
+      initialTime: TimeOfDay.fromDateTime(widget.when),
     );
-    if (picked != null && picked != new TimeOfDay.fromDateTime(widget.when))
+    if (picked != null && picked != TimeOfDay.fromDateTime(widget.when))
       setState(() {
         widget.when = widget.setTime(picked);
       });
@@ -55,41 +55,41 @@ class DateTimePickerState extends State<DateTimePicker> {
   Widget build(BuildContext context) {
     final TextStyle valueStyle = Theme.of(context).textTheme.title;
 
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        new Text(
+        Text(
           widget.label,
-          style: new TextStyle(
+          style: TextStyle(
             fontSize: 16.0,
             color: Theme.of(context).hintColor,
           ),
         ),
-        new MaterialButton(
-          padding: new EdgeInsets.all(12.0),
-          child: new Row(
+        MaterialButton(
+          padding: EdgeInsets.all(12.0),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(
+              Text(
                 TimeOfDay.fromDateTime(widget.when).format(context),
                 style: valueStyle,
               ),
-              new Icon(Icons.arrow_drop_down, color: widget.color),
+              Icon(Icons.arrow_drop_down, color: widget.color),
             ],
           ),
           onPressed: () { _selectTime(context); },
         ),
-        new MaterialButton(
-          padding: new EdgeInsets.all(12.0),
+        MaterialButton(
+          padding: EdgeInsets.all(12.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              new Text(
+              Text(
                 DateTimeUtils.formatDMY(widget.when),
                 style: valueStyle,
               ),
-              new Icon(Icons.arrow_drop_down, color: widget.color),
+              Icon(Icons.arrow_drop_down, color: widget.color),
             ],
           ),
           onPressed: () { _selectDate(context); },

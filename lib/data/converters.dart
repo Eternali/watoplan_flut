@@ -14,7 +14,7 @@ class Converters {
 
   static IconData iconFromString(String iconStr) {
     // generates icondata from a unicode (hex) representation.
-    return new IconData(int.parse(iconStr), fontFamily: 'MaterialIcons');
+    return IconData(int.parse(iconStr), fontFamily: 'MaterialIcons');
   }
 
   static String iconToString(IconData icon) {
@@ -23,7 +23,7 @@ class Converters {
   }
 
   static Color colorFromString(String colorStr) {
-    return new Color(int.parse(colorStr));
+    return Color(int.parse(colorStr));
   }
 
   static String colorToString(Color color) {
@@ -31,7 +31,7 @@ class Converters {
   }
 
   static DateTime dateTimeFromString(String millis) {
-    return new DateTime.fromMillisecondsSinceEpoch(int.parse(millis));
+    return DateTime.fromMillisecondsSinceEpoch(int.parse(millis));
   }
 
   static String dateTimeToString(DateTime datetime) {
@@ -45,28 +45,28 @@ class Converters {
       switch (k) {
         case 'start':
         case 'end':
-          return new MapEntry(k, dateTimeFromString(v));
+          return MapEntry(k, dateTimeFromString(v));
           break;
         case 'notis':
           // this is a dumb workaround for type checking
           // List<Noti> x = []; List<Noti> y = <Noti>[]; assert x.runtimeType != y.runtimeType
           List<Noti> value = <Noti>[];
-          for (Noti noti in v.map((noti) => new Noti.fromJson(noti)).toList()) value.add(noti);
-          return new MapEntry(k, value);
+          for (Noti noti in v.map((noti) => Noti.fromJson(noti)).toList()) value.add(noti);
+          return MapEntry(k, value);
           break;
         case 'location':
-          return new MapEntry(k, new Location.fromJson(v));
+          return MapEntry(k, Location.fromJson(v));
           break;
         // case 'contacts':
         // List<Contact> value = <Contact>[];
-        // for (Contact contact in v.map((contact) => new Contact.fromJson(contact)).toList()) value.add(contact);
-        //   return new MapEntry(k, value);
+        // for (Contact contact in v.map((contact) => Contact.fromJson(contact)).toList()) value.add(contact);
+        //   return MapEntry(k, value);
         //   break;
         default:
           if (validParams.containsKey(k))
-            return new MapEntry(k, v);
+            return MapEntry(k, v);
           else
-            throw new Exception('$k is not a valid parameter');
+            throw Exception('$k is not a valid parameter');
           break;
       }
     });
@@ -77,22 +77,22 @@ class Converters {
       switch (k) {
         case 'start':
         case 'end':
-          return new MapEntry(k, dateTimeToString(v));
+          return MapEntry(k, dateTimeToString(v));
           break;
         case 'notis':
-          return new MapEntry(k, v.map((noti) => noti.toJson()).toList());
+          return MapEntry(k, v.map((noti) => noti.toJson()).toList());
           break;
         case 'location':
-          return new MapEntry(k, v.toJson());
+          return MapEntry(k, v.toJson());
           break;
         case 'contacts':
-          return new MapEntry(k, v.map((contact) => contact.toJson()).toList());
+          return MapEntry(k, v.map((contact) => contact.toJson()).toList());
           break;
         default:
           if (validParams.containsKey(k))
-            return new MapEntry(k, v);
+            return MapEntry(k, v);
           else
-            throw new Exception('$k is not a valid parameter');
+            throw Exception('$k is not a valid parameter');
           break;
       }
     });

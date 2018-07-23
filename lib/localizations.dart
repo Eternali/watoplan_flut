@@ -79,7 +79,7 @@ class WatoplanLocalizationsDelegate
 
   @override
   Future<WatoplanLocalizations> load(Locale locale) {
-    return new Future(() => new WatoplanLocalizations());
+    return Future(() => WatoplanLocalizations());
   }
 
   @override

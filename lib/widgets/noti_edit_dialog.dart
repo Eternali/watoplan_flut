@@ -6,20 +6,20 @@ import 'package:watoplan/data/noti.dart';
 typedef String ActivatableString(bool active);
 
 Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, ThemeData theme, bool enabled = true }) {
-  return new InkWell(
+  return InkWell(
     onTap: onTap,
-    child: new Padding(
+    child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Text(
+          Text(
             name(active),
-            style: new TextStyle(
+            style: TextStyle(
               color: enabled ? active ? theme.accentColor : theme.textTheme.subhead.color : theme.disabledColor,
             ),
           ),
-          new Expanded(child: new Container()),
-          active && enabled ? new Icon(Icons.check, color: theme.accentColor) : new Icon(new IconData(0)),
+          Expanded(child: Container()),
+          active && enabled ? Icon(Icons.check, color: theme.accentColor) : Icon(new IconData(0)),
         ],
       ),
     ),
@@ -36,7 +36,7 @@ class NotiEditDialog extends StatefulWidget {
   NotiEditDialog({ this.type, this.timeBefore, this.isNew = true });
 
   @override
-  State<NotiEditDialog> createState() => new NotiEditDialogState();
+  State<NotiEditDialog> createState() => NotiEditDialogState();
 
 }
 
@@ -52,7 +52,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   initState() {
     super.initState();
     inputListener = () => widget.timeBefore.time = int.tryParse(_controller.value.text, radix: 10) ?? 0;
-    _controller = new TextEditingController(text: widget.timeBefore.time.toString())
+    _controller = TextEditingController(text: widget.timeBefore.time.toString())
       // force base 10 so if user prefixes 0x it won't be hex
       ..addListener(inputListener);
   }
@@ -68,19 +68,19 @@ class NotiEditDialogState extends State<NotiEditDialog> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    return new AlertDialog(
-      contentPadding: new EdgeInsets.all(0.0),
-      title: new Center(
-        child: new Text(widget.isNew ? WatoplanLocalizations.of(context).newNoti : WatoplanLocalizations.of(context).editNoti),
+    return AlertDialog(
+      contentPadding: EdgeInsets.all(0.0),
+      title: Center(
+        child: Text(widget.isNew ? WatoplanLocalizations.of(context).newNoti : WatoplanLocalizations.of(context).editNoti),
       ),
-      content: new SingleChildScrollView(
-        child: new Padding(
+      content: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6.0),
-          child: new ListBody(
+          child: ListBody(
             children: <Widget>[
-              new Padding(
+              Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
-                child: new TextField(
+                child: TextField(
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: _controller,
@@ -104,7 +104,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
                 onTap: () { setState(() { widget.timeBefore.unit = TimeUnits[2]; }); },
                 theme: theme,
               ),
-              new Divider(),
+              Divider(),
               checkedItem(
                 name: (_) => 'as Notification',
                 active: typeActive(NotiTypes['PUSH']),
@@ -130,15 +130,15 @@ class NotiEditDialogState extends State<NotiEditDialog> {
                 theme: theme,
                 enabled: false,
               ),
-              new Padding(
+              Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: new Row(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Text(
+                    Text(
                       widget.displayCorrection ? WatoplanLocalizations.of(context).featureUnavailable : '',
-                      style: new TextStyle(
+                      style: TextStyle(
                         color: theme.hintColor,
                       ),
                     ),
@@ -150,19 +150,19 @@ class NotiEditDialogState extends State<NotiEditDialog> {
         ),
       ),
       actions: <Widget>[
-        new FlatButton(
-          child: new Text(
+        FlatButton(
+          child: Text(
             WatoplanLocalizations.of(context).cancel,
-            style: new TextStyle(
+            style: TextStyle(
               color: theme.accentColor,
             ),
           ),
           onPressed: () { Navigator.pop(context, null); },
         ),
-        new FlatButton(
-          child: new Text(
+        FlatButton(
+          child: Text(
             WatoplanLocalizations.of(context).save,
-            style: new TextStyle(
+            style: TextStyle(
               color: theme.accentColor,
             ),
           ),

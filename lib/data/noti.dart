@@ -28,7 +28,7 @@ class TimeBefore {
       }
     });
 
-    return new TimeBefore(time: (diff / unit.value).round(), unit: unit);
+    return TimeBefore(time: (diff / unit.value).round(), unit: unit);
   }
 }
 
@@ -46,9 +46,9 @@ class NotiType {
 }
 
 Map<String, NotiType> NotiTypes = {
-  'PUSH': new NotiType('PUSH', () {  }),
-  'EMAIL': new NotiType('EMAIL', () {  }),
-  'SMS': new NotiType('SMS', () {  }),
+  'PUSH': NotiType('PUSH', () {  }),
+  'EMAIL': NotiType('EMAIL', () {  }),
+  'SMS': NotiType('SMS', () {  }),
 };
 
 typedef DateTime NextTimeGenerator(DateTime last);
@@ -83,13 +83,13 @@ class Noti {
   }) async {
     switch (type.name) {
       case 'PUSH':
-        NotificationDetails platformSpecifics = new NotificationDetails(
-          new NotificationDetailsAndroid(
+        NotificationDetails platformSpecifics = NotificationDetails(
+          NotificationDetailsAndroid(
             channel ?? id.toString(),
             typeName ?? 'WAToPlan',
             'Notifications regarding activities of type $typeName',
           ),
-          new NotificationDetailsIOS(),
+          NotificationDetailsIOS(),
         );
         await notiPlug.schedule(id, title, msg,
           base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),
@@ -110,7 +110,7 @@ class Noti {
   }
 
   factory Noti.fromJson(Map<String, dynamic> jsonMap) {
-    return new Noti(
+    return Noti(
       id: jsonMap['_id'],
       title: jsonMap['title'],
       msg: jsonMap['msg'],
@@ -137,7 +137,7 @@ class Noti {
     int offset,
     NotiType type,
     NextTimeGenerator generateNext,
-  }) => new Noti(
+  }) => Noti(
     id: id ?? this._id,
     title: title ?? this.title,
     msg: msg ?? this.msg,

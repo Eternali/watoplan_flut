@@ -12,7 +12,7 @@ class ExpansionRadioGroup extends StatefulWidget {
   ExpansionRadioGroup({ this.name, this.members });
 
   @override
-  State<ExpansionRadioGroup> createState() => new ExpansionRadioGroupState();
+  State<ExpansionRadioGroup> createState() => ExpansionRadioGroupState();
 
 }
 
@@ -20,7 +20,7 @@ class ExpansionRadioGroupState extends State<ExpansionRadioGroup> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: widget.members,

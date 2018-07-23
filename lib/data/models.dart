@@ -67,7 +67,7 @@ class AppState {
   });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
-    return new AppState(
+    return AppState(
       activities: prev.activities,
       activityTypes: prev.activityTypes,
       editingActivity: prev.editingActivity,
@@ -92,7 +92,7 @@ class AppState {
     return base;
   }
 
-  /// This will return a new AppState object with the same attributes as the old one, changing only what is specified.
+  /// This will return a AppState object with the same attributes as the old one, changing only what is specified.
   /// Note on option parameters: if homeOptions is specified, that will be the only options parameter used,
   /// if specificOptions is specified, it will only change the map entry corresponding to the specified homeLayout,
   /// optionOverrides are used to only change the entries specified (the difference between this and specificOptions is
@@ -115,7 +115,7 @@ class AppState {
       homeOptions ??= this.homeOptions;
       homeOptions[homeLayout ?? this.homeLayout] = specificOptions;
     }
-    return new AppState(
+    return AppState(
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,
       editingActivity: editingActivity ?? this.editingActivity,
@@ -166,10 +166,10 @@ final Map<String, dynamic> validParams = {
   'long': '',
   'priority': 0,
   'progress': 0,
-  'start': new DateTime.now(),
-  'end': new DateTime.now(),
+  'start': DateTime.now(),
+  'end': DateTime.now(),
   'notis': <Noti>[],
-  'location': new Location(lat: 0.0, long: 0.0),
+  'location': Location(lat: 0.0, long: 0.0),
   // 'contacts': <Contact>[],
   // 'tags': <String>[],
 };
@@ -193,24 +193,24 @@ class ActivityType {
     params ??= {  };
     params.forEach((name, type) {
       if (!validParams.keys.contains(name))
-        throw new Exception('$name is not a valid parameter');
+        throw Exception('$name is not a valid parameter');
       else if (type.runtimeType != validParams[name].runtimeType)
-        throw new Exception('${type.runtimeType} is! ${validParams[name].runtimeType}: $name is not a supported type of parameter');
+        throw Exception('${type.runtimeType} is! ${validParams[name].runtimeType}: $name is not a supported type of parameter');
     });
   }
 
   factory ActivityType.from(ActivityType prev) {
-    return new ActivityType(
+    return ActivityType(
       id: prev.id,
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
-      params: new Map.from(prev.params),
+      params: Map.from(prev.params),
     );
   }
 
   factory ActivityType.fromJson(Map<String, dynamic> jsonMap) {
-    return new ActivityType(
+    return ActivityType(
       id: jsonMap['_id'],
       name: jsonMap['name'],
       icon: Converters.iconFromString(jsonMap['icon']),
@@ -225,7 +225,7 @@ class ActivityType {
     IconData icon,
     Color color,
     Map<String, dynamic> params,
-  }) => new ActivityType(
+  }) => ActivityType(
     id: id ?? this._id,
     name: name ?? this.name,
     icon: icon ?? this.icon,
@@ -248,7 +248,7 @@ class ActivityType {
 
 // NOTE: I am only storing the ActivityType id because this way I don't need a
 // reference to the same exact object all the time (when an activityType changes, since everything
-// is immutable, a new object gets generated with similar properties, but this breaks its reference to activities,
+// is immutable, a object gets generated with similar properties, but this breaks its reference to activities,
 // since a activityType's id never changes, an activity can always have an unbroken reference to its type).
 class Activity {
 
@@ -268,36 +268,36 @@ class Activity {
       tmpData = data;
     } else if (type is ActivityType) {
       typeId = type.id;
-      tmpData = new Map.from(type.params);
+      tmpData = Map.from(type.params);
       data.forEach((String name, dynamic value) {
         int idx = tmpData.keys.toList().indexOf(name);
         if (idx < 0)
-          throw new Exception('$name is not a parameter of ${type.name}');
+          throw Exception('$name is not a parameter of ${type.name}');
         else if (value.runtimeType != tmpData[name].runtimeType)
-          throw new Exception('$name is not a valid parameter for ${type.name}');
+          throw Exception('$name is not a valid parameter for ${type.name}');
         else
           tmpData[name] = value;
       });
-    } else throw new Exception('dynamic type parameter must be an int or an ActivityType');
+    } else throw Exception('dynamic type parameter must be an int or an ActivityType');
 
     this.data = tmpData;
   }
 
   factory Activity.from(Activity prev) {
-    return new Activity(
+    return Activity(
       id: prev.id,
       type: prev.typeId,
       data: prev.data.map((name, value) =>
         // Thanks to dart, I can't do any sort of dynamic typing from variables (which I only have to because of its bad type inferencing)
-        new MapEntry(name, value is List<Noti>
-          ? new List<Noti>.from(value) : value is Map
-            ? new Map.from(value) : value)
+        MapEntry(name, value is List<Noti>
+          ? List<Noti>.from(value) : value is Map
+            ? Map.from(value) : value)
       ),
     );
   }
 
   factory Activity.fromJson(Map<String, dynamic> jsonMap, List<ActivityType> activityTypes) {
-    return new Activity(
+    return Activity(
       id: jsonMap['_id'],
       type: jsonMap['typeId'],
       data: Converters.paramsFromJson(jsonMap['data']),
@@ -310,7 +310,7 @@ class Activity {
     Map<String, dynamic> data,
     List<MapEntry<String, dynamic>> entries,
   }) {
-    Activity newActivity = new Activity(
+    Activity newActivity = Activity(
       id: id ?? this._id,
       type: type ?? this.typeId,
       data: data ?? this.data,
