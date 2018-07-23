@@ -152,16 +152,21 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             new Divider(),
-          ]..add(
-            new ExpansionRadioGroup(
-              name: 'layoutMenu',
-              members: validLayouts.values.map((HomeLayout layout) =>
-                layout.menuBuilder(context, (value) async {
-                  await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
-                } /*stateVal.homeLayout*/)
-              ).toList(),
-            )
-          ),
+          ]..addAll(validLayouts.values.map((HomeLayout layout) =>
+            layout.menuBuilder(context, (value) async {
+              await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
+            } /*stateVal.homeLayout*/)
+          )),
+          // ]..add(
+          //   new ExpansionRadioGroup(
+          //     name: 'layoutMenu',
+          //     members: validLayouts.values.map((HomeLayout layout) =>
+          //       layout.menuBuilder(context, (value) async {
+          //         await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
+          //       } /*stateVal.homeLayout*/)
+          //     ).toList(),
+          //   )
+          // ),
         ),
       ),
       body: new SafeArea(

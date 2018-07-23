@@ -23,6 +23,9 @@ class ActivityTypeCard extends StatelessWidget {
     return new InkWell(
       child: new Card(
         color: data.color,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(32.0)
+        ),
         child: new ListTile(
           leading: new Icon(data.icon),
           dense: true,

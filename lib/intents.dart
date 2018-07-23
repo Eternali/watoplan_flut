@@ -43,10 +43,10 @@ class Intents {
             )).then((_) {
               var types = LoadDefaults.defaultData['activityTypes']
                 ?.map((type) => new ActivityType.fromJson(type))
-                .retype<ActivityType>().toList() ?? <ActivityType>[];
+                .cast<ActivityType>().toList() ?? <ActivityType>[];
               var activities = LoadDefaults.defaultData['activities']
                   ?.map((activity) => new Activity.fromJson(activity, types))
-                  .retype<Activity>().toList() ?? <Activity>[];
+                  .cast<Activity>().toList() ?? <Activity>[];
               return LocalDb().saveOver(types, activities)
                 .then((_) => [types, activities]);
             });
@@ -76,8 +76,6 @@ class Intents {
       onError: (Exception e) => Intents.setTheme(appState, 'light')
     ).then(
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
-    ).then(
-      (settings) => validLayouts[settings['homeLayout']].onChange(appState, settings['homeOptions'][settings['homeLayout']])
     );
   }
 
