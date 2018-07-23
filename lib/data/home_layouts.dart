@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar/flutter_calendar.dart';
-import 'package:flutter_calendar/calendar_tile.dart';
+import 'package:small_calendar/small_calendar.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -145,10 +144,30 @@ final Map<String, HomeLayout> validLayouts = {
       final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
       
-      return Calendar(
-        dayBuilder: (BuildContext context, DateTime day) => Container(
-          child: Text('test'),
-        ),
+      return Column(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: SmallCalendarData(
+              child: SmallCalendarStyle(
+                showWeekdayIndication: true,
+                child: SmallCalendarPager(
+                  pageBuilder: (BuildContext context, DateTime month) {
+                    return SmallCalendar(
+                      month: month,
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: ListView(
+
+            ),
+          )
+        ],
       );
     }
   ),

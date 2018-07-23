@@ -72,8 +72,14 @@ class Intents {
         ? json.decode(prefs.getString('homeOptions'))
         : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions
     }).then(
-      (settings) { Intents.setTheme(appState, settings['theme']); return settings; },
+      (settings) => Intents.setTheme(appState, settings['theme']).then((_) => settings),
       onError: (Exception e) => Intents.setTheme(appState, 'light')
+    ).then(
+      (settings) => Intents.switchHome(
+        appState,
+        layout: settings['homeLayout'],
+        options: settings['homeOptions'][settings['homeLayout']]
+      ).then((_) => settings)
     ).then(
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
     );
@@ -91,6 +97,9 @@ class Intents {
     AppStateObservable appState,
     { String layout, Map<String, dynamic> options }
   ) async {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.setString('homeLayout', layout);
+    await prefs.setString('homeOptions', json.encode(appState.value.homeOptions..[layout] = options));
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
     return true;
     // validLayouts[layout].onChange(appState, options);
@@ -266,10 +275,10 @@ class Intents {
     appState.value = Reducers.clearEditing(appState.value, clearing);
   }
 
-  static void setTheme(AppStateObservable appState, String themeName) async {
-    await SharedPreferences.getInstance()
-      .then((prefs) => prefs.setString('theme', themeName));
-    appState.value = Reducers.setTheme(appState.value, themes[themeName]);
+  static Future setTheme(AppStateObservable appState, String themeName) async {
+    return SharedPreferences.getInstance()
+      .then((prefs) => prefs.setString('theme', themeName))
+      .then((_) => appState.value = Reducers.setTheme(appState.value, themes[themeName]));
   }
 
 }
