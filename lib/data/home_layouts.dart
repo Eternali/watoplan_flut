@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:small_calendar/small_calendar.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -148,18 +147,7 @@ final Map<String, HomeLayout> validLayouts = {
         children: <Widget>[
           Expanded(
             flex: 2,
-            child: SmallCalendarData(
-              child: SmallCalendarStyle(
-                showWeekdayIndication: true,
-                child: SmallCalendarPager(
-                  pageBuilder: (BuildContext context, DateTime month) {
-                    return SmallCalendar(
-                      month: month,
-                    );
-                  },
-                ),
-              ),
-            ),
+            child: Calendar(),
           ),
           Expanded(
             flex: 1,

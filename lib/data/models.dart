@@ -129,15 +129,16 @@ class AppState {
   }
 
   @override
-  int get hashCode => activities.hashCode
-                    + activityTypes.hashCode
-                    + editingActivity.hashCode
-                    + editingType.hashCode
-                    + focused.hashCode
-                    + theme.hashCode
-                    + homeLayout.hashCode
-                    + homeOptions.hashCode
-                    + needsRefresh.hashCode;
+  int get hashCode =>
+    activities.hashCode +
+    activityTypes.hashCode +
+    editingActivity.hashCode +
+    editingType.hashCode +
+    focused.hashCode +
+    theme.hashCode +
+    homeLayout.hashCode +
+    homeOptions.hashCode +
+    needsRefresh.hashCode;
 
 }
 

@@ -60,8 +60,8 @@ class _InheritedProvider extends InheritedWidget {
     : _stateVal = state.value, super(child: child);
 
   @override
-  bool updateShouldNotify(_InheritedProvider oldWidget) {
-    return _stateVal != oldWidget._stateVal;
+  bool updateShouldNotify(_InheritedProvider old) {
+    return _stateVal != old._stateVal;
   }
 
 }
