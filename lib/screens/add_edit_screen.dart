@@ -30,7 +30,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     final AppState stateVal = Provider.of(context).value;
     final ThemeData theme = Theme.of(context);
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
-    final ActivityType type = stateVal.activityTypes.firstWhere((type) => type.id == stateVal.editingActivity.typeId);
+    final ActivityType type = stateVal.editingActivity.getType(stateVal.activityTypes);
 
     return Scaffold(
       key: AppKeys.AddEditScreenKey,

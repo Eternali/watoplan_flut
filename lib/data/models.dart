@@ -45,6 +45,8 @@ class AppState {
 
   // negative values denote activityTypes (-1 = index 0) while zero and positives indicate activities
   final int focused;
+  // for calendar views
+  final DateTime focusedDate;
 
   final ThemeData theme;
   final String email;
@@ -60,6 +62,7 @@ class AppState {
     this.editingActivity,
     this.editingType,
     this.focused,
+    this.focusedDate,
     this.theme,
     this.homeLayout,
     this.homeOptions,
@@ -73,6 +76,7 @@ class AppState {
       editingActivity: prev.editingActivity,
       editingType: prev.editingType,
       focused: prev.focused,
+      focusedDate: prev.focusedDate,
       theme: prev.theme,
       homeLayout: prev.homeLayout,
       homeOptions: prev.homeOptions,
@@ -104,6 +108,7 @@ class AppState {
     Activity editingActivity,
     ActivityType editingType,
     int focused,
+    DateTime focusedDate,
     ThemeData theme,
     bool needsRefresh,
     String homeLayout,
@@ -121,6 +126,7 @@ class AppState {
       editingActivity: editingActivity ?? this.editingActivity,
       editingType: editingType ?? this.editingType,
       focused: focused ?? this.focused,
+      focusedDate: focusedDate ?? this.focusedDate,
       theme: theme ?? this.theme,
       needsRefresh: needsRefresh ?? this.needsRefresh,
       homeLayout: homeLayout ?? this.homeLayout,
@@ -135,6 +141,7 @@ class AppState {
     editingActivity.hashCode +
     editingType.hashCode +
     focused.hashCode +
+    focusedDate.hashCode +
     theme.hashCode +
     homeLayout.hashCode +
     homeOptions.hashCode +
@@ -326,6 +333,8 @@ class Activity {
     'typeId': typeId,
     'data': Converters.paramsToJson(data),
   };
+
+  ActivityType getType(List<ActivityType> types) => types.firstWhere((type) => type.id == typeId);
 
   @override
   int get hashCode => id.hashCode + typeId.hashCode + data.hashCode;

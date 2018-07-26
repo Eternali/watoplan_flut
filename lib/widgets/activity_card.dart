@@ -51,7 +51,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
     final locales = WatoplanLocalizations.of(context);
     final ThemeData theme = Theme.of(context);
     final AppStateObservable state = Provider.of(context);
-    final ActivityType tmpType = state.value.activityTypes.firstWhere((type) => type.id == widget.activity.typeId);
+    final ActivityType tmpType = widget.activity.getType(state.value.activityTypes);
 
     return Dismissible(
       key: Key(widget.activity.id.toString()),

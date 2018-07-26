@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/home_layouts.dart';
+import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
@@ -65,6 +66,7 @@ class Intents {
     if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
     return Future.value({
       'focused': LoadDefaults.defaultData['focused'] ?? 0,
+      'focusedDate': Converters.dateTimeFromString(prefs.getString('focusedDate')) ?? DateTime.now(),
       'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
       'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'schedule',
@@ -82,6 +84,8 @@ class Intents {
       ).then((_) => settings)
     ).then(
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
+    ).then(
+      (settings) { Intents.focusOnDay(appState, settings['focusedDate']); return settings; }
     );
   }
 
@@ -279,6 +283,12 @@ class Intents {
     return SharedPreferences.getInstance()
       .then((prefs) => prefs.setString('theme', themeName))
       .then((_) => appState.value = Reducers.setTheme(appState.value, themes[themeName]));
+  }
+
+  static Future focusOnDay(AppStateObservable appState, DateTime day) async {
+    return SharedPreferences.getInstance()
+      .then((prefs) => prefs.setString('focusedDate', Converters.dateTimeToString(day)))
+      .then((_) => appState.value = Reducers.focusOnDay(appState.value, day));
   }
 
 }

@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:flutter_calendar/date_utils.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/screens/home_screen.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/radio_expansion.dart';
+import 'package:watoplan/widgets/tick_scroller.dart';
 
 
 final Map<String, HomeLayout> validLayouts = {
@@ -140,23 +142,38 @@ final Map<String, HomeLayout> validLayouts = {
     }
   )..withBuilder((HomeLayout self) =>
     (BuildContext context) {
-      final AppState stateVal = Provider.of(context).value;
       final locales = WatoplanLocalizations.of(context);
-      
-      return Column(
-        children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Calendar(),
-          ),
-          Expanded(
-            flex: 1,
-            child: ListView(
+      final AppState stateVal = Provider.of(context).value;
+      final theme = Theme.of(context);
 
-            ),
-          )
-        ],
-      );
+      return Calendar(
+            isExpandable: true,
+            // dayBuilder: (BuildContext context, DateTime date) {
+            //   return InkWell(
+            //     child: Column(
+            //       children: <Widget>[
+            //         Container(
+            //           alignment: Alignment.center,
+            //           decoration: Utils.isSameDay(date, DateTime.now())
+            //             ? BoxDecoration(
+            //               shape: BoxShape.circle,
+            //               color: theme.primaryColor,
+            //             ) : Utils.isSameDay(date, stateVal.focusedDate)
+            //               ? BoxDecoration(
+            //                 shape: BoxShape.circle,
+            //                 color: theme.accentColor,
+            //               ) : BoxDecoration(),
+            //           child: Text(
+            //             date.day.toString(),
+            //             textAlign: TextAlign.center,
+            //           ),
+            //         ),
+            //         TickScroller(date),
+            //       ],
+            //     ),
+            //   );
+            // },
+          );
     }
   ),
 };

@@ -144,8 +144,10 @@ class Reducers {
     );
   }
 
-  static AppState removeTags(AppState oldState, Activity activity, List<int> indices) {
-  
+  static AppState focusOnDay(AppState oldState, DateTime day) {
+    return oldState.copyWith(
+      focusedDate: day,
+    );
   }
 
 }

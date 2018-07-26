@@ -31,11 +31,11 @@ class Converters {
   }
 
   static DateTime dateTimeFromString(String millis) {
-    return DateTime.fromMillisecondsSinceEpoch(int.parse(millis));
+    return millis == null ? null : DateTime.fromMillisecondsSinceEpoch(int.tryParse(millis));
   }
 
   static String dateTimeToString(DateTime datetime) {
-    return datetime.millisecondsSinceEpoch.toString();
+    return datetime == null ? null : datetime.millisecondsSinceEpoch.toString();
   }
 
   static Map<String, dynamic> paramsFromJson(Map<String, dynamic> params) {
