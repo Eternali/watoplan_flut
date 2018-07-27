@@ -146,34 +146,49 @@ final Map<String, HomeLayout> validLayouts = {
       final AppState stateVal = Provider.of(context).value;
       final theme = Theme.of(context);
 
-      return Calendar(
-            isExpandable: true,
-            // dayBuilder: (BuildContext context, DateTime date) {
-            //   return InkWell(
-            //     child: Column(
-            //       children: <Widget>[
-            //         Container(
-            //           alignment: Alignment.center,
-            //           decoration: Utils.isSameDay(date, DateTime.now())
-            //             ? BoxDecoration(
-            //               shape: BoxShape.circle,
-            //               color: theme.primaryColor,
-            //             ) : Utils.isSameDay(date, stateVal.focusedDate)
-            //               ? BoxDecoration(
-            //                 shape: BoxShape.circle,
-            //                 color: theme.accentColor,
-            //               ) : BoxDecoration(),
-            //           child: Text(
-            //             date.day.toString(),
-            //             textAlign: TextAlign.center,
-            //           ),
-            //         ),
-            //         TickScroller(date),
-            //       ],
-            //     ),
-            //   );
-            // },
-          );
+      return Column(
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Calendar(
+              isExpandable: true,
+              // dayBuilder: (BuildContext context, DateTime date) {
+              //   return InkWell(
+              //     child: Column(
+              //       children: <Widget>[
+              //         Container(
+              //           alignment: Alignment.center,
+              //           decoration: Utils.isSameDay(date, DateTime.now())
+              //             ? BoxDecoration(
+              //               shape: BoxShape.circle,
+              //               color: theme.primaryColor,
+              //             ) : Utils.isSameDay(date, stateVal.focusedDate)
+              //               ? BoxDecoration(
+              //                 shape: BoxShape.circle,
+              //                 color: theme.accentColor,
+              //               ) : BoxDecoration(),
+              //           child: Text(
+              //             date.day.toString(),
+              //             textAlign: TextAlign.center,
+              //           ),
+              //         ),
+              //         TickScroller(date),
+              //       ],
+              //     ),
+              //   );
+              // },
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: AnimatedList(
+              itemBuilder: (BuildContext context, int pos, Animation<double> anim) {
+                return Container();
+              },
+            ),
+          ),
+        ],
+      );
     }
   ),
 };
