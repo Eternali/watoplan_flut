@@ -126,6 +126,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
     widget.onChanged(value)
       .then((_) =>
         setState(() {
+          debugPrint('test');
           if (isExpanded)
             _controller.forward();
           else

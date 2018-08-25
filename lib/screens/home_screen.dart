@@ -9,6 +9,7 @@ import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/fam.dart';
 import 'package:watoplan/widgets/expansion_radio_group.dart';
+import 'package:watoplan/widgets/radio_expansion.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -66,8 +67,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppState stateVal = Provider.of(context).value;
+    final AppState stateVal = Provider.of(context).value;
+    final Map<String, dynamic> soptions = stateVal.homeOptions['schedule'];
+    final Map<String, dynamic> moptions = stateVal.homeOptions['month'];
     final locales = WatoplanLocalizations.of(context);
+    final theme = Theme.of(context);
 
     widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
@@ -152,14 +156,113 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Divider(),
-          ]..addAll(validLayouts.values.map((HomeLayout layout) =>
-            layout.menuBuilder(context, (value) async {
-              await Intents.switchHome(
-                Provider.of(context),
-                layout: layout.name, options: stateVal.homeOptions[layout.name]
-              );
-            } /*stateVal.homeLayout*/)
-          )),
+            RadioExpansion(
+              value: 'month',
+              groupValue: stateVal.homeLayout,
+              onChanged: (value) async {
+                return Intents.switchHome(
+                  Provider.of(context),
+                  layout: 'month', options: stateVal.homeOptions['month']
+                );
+              },
+              title: Row(
+                children: <Widget>[
+                  Text(
+                    locales.layoutMonth.toUpperCase(),
+                    style: TextStyle(
+                      letterSpacing: 1.4,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Timeburner',
+                    )
+                  ),
+                ],
+              ),
+              trailing: Icon(new IconData(0)),
+              children: <Widget>[
+                Container()
+              ],
+            ),
+            RadioExpansion(
+              value: 'schedule',
+              groupValue: stateVal.homeLayout,
+              onChanged: (value) async {
+                return Intents.switchHome(
+                  Provider.of(context),
+                  layout: 'schedule', options: stateVal.homeOptions['schedule']
+                );
+              },
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    locales.layoutList.toUpperCase(),
+                    style: TextStyle(
+                      letterSpacing: 1.4,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Timeburner',
+                    )
+                  ),
+                  Expanded(child: Container()),
+                  Text(
+                    '${locales.by} '
+                    '${soptions['sortRev'] ? soptions['sorter'].split('').reversed.join('').toUpperCase() : soptions['sorter'].toUpperCase()}',
+                    style: TextStyle(
+                      letterSpacing: 1.4,
+                      fontFamily: 'Timeburner',
+                    ),
+                  )
+                ],
+              ),
+              children: <Widget>[
+                Column(
+                  children: locales.validSorts.keys.map(
+                    (name) => RadioListTile(
+                      title: Text(
+                        locales.validSorts[name](),
+                      ),
+                      activeColor: theme.accentColor,
+                      groupValue: soptions['sorter'],
+                      value: name,
+                      onChanged: (name) {
+                        Intents.sortActivities(Provider.of(context), options: soptions..['sorter'] = name);
+                      },
+                    )
+                  ).toList()
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
+                  child: OutlineButton(
+                    padding: const EdgeInsets.all(0.0),
+                    textColor: soptions['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
+                    borderSide: BorderSide(
+                      color: soptions['sortRev'] ? Theme.of(context).accentColor : Theme.of(context).hintColor,
+                    ),
+                    child: Text(
+                      soptions['sortRev'] ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
+                      style: TextStyle(
+                        fontFamily: 'Timeburner',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.4,
+                      ),
+                    ),
+                    onPressed: () {
+                      Intents.sortActivities(Provider.of(context), options: soptions..['sortRev'] = !soptions['sortRev']);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+          // ]..addAll(validLayouts.values.map((HomeLayout layout) =>
+          //   layout.menuBuilder(context, (value) async {
+          //     await Intents.switchHome(
+          //       Provider.of(context),
+          //       layout: layout.name, options: stateVal.homeOptions[layout.name]
+          //     );
+          //   } /*stateVal.homeLayout*/)
+          // )),
           // ]..add(
           //   ExpansionRadioGroup(
           //     name: 'layoutMenu',
