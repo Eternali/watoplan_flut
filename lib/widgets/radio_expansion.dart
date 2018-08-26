@@ -55,9 +55,9 @@ class RadioExpansion<T> extends StatefulWidget {
   ///
   /// This radio button is considered selected if its [value] matches the
   /// [groupValue].
-  final T groupValue;
+  final ValueNotifier<T> groupValue;
 
-  bool get checked => value == groupValue;
+  bool get checked => value == groupValue.value;
 
   /// Called when the tile is tapped. If a value other than null is returned,
   /// the widget will set it to be its group value and rebuild.
@@ -96,10 +96,13 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
 
     if (widget.checked)
       _controller.value = 1.0;
+
+    widget.groupValue.addListener(_handleTap);
   }
 
   @override
   void dispose() {
+    widget.groupValue.removeListener(_handleTap);
     _controller.dispose();
     super.dispose();
   }
@@ -164,7 +167,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('rebuilding ${widget.groupValue}');
+    debugPrint('rebuilding ${widget.groupValue.value}');
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor

@@ -8,7 +8,7 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/fam.dart';
-import 'package:watoplan/widgets/expansion_radio_group.dart';
+import 'package:watoplan/widgets/radio_expansion_group.dart';
 import 'package:watoplan/widgets/radio_expansion.dart';
 
 class HomeScreen extends StatefulWidget {

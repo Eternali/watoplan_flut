@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 
 import 'package:watoplan/widgets/radio_expansion.dart';
 
-class ExpansionRadioGroup extends StatefulWidget {
+class RadioExpansionGroup<T> extends StatefulWidget {
 
   final String name;
+  T groupValue;
   List<RadioExpansion> members;
 
-  ExpansionRadioGroup({ this.name, this.members });
+  RadioExpansionGroup({ this.name, this.groupValue, this.members });
 
   @override
-  State<ExpansionRadioGroup> createState() => ExpansionRadioGroupState();
+  State<RadioExpansionGroup> createState() => RadioExpansionGroupState();
 
 }
 
-class ExpansionRadioGroupState extends State<ExpansionRadioGroup> {
+class RadioExpansionGroupState extends State<RadioExpansionGroup> {
 
   @override
   Widget build(BuildContext context) {

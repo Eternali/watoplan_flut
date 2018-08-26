@@ -30,7 +30,7 @@ final Map<String, HomeLayout> validLayouts = {
 
       return RadioExpansion(
         value: self.name,
-        groupValue: stateVal.homeLayout,
+        groupValue: ValueNotifier(stateVal.homeLayout),
         onChanged: onChanged,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -122,7 +122,7 @@ final Map<String, HomeLayout> validLayouts = {
 
       return RadioExpansion(
         value: self.name,
-        groupValue: stateVal.homeLayout,
+        groupValue: ValueNotifier(stateVal.homeLayout),
         onChanged: onChanged,
         title: Row(
           children: <Widget>[
