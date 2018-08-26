@@ -167,7 +167,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('rebuilding ${widget.groupValue.value}');
+    // debugPrint('rebuilding ${widget.groupValue.value}');
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor

@@ -105,7 +105,7 @@ class Intents {
     await prefs.setString('homeLayout', layout);
     await prefs.setString('homeOptions', json.encode(appState.value.homeOptions..[layout] = options));
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
-    return true;
+    return layout;
     // validLayouts[layout].onChange(appState, options);
   }
 

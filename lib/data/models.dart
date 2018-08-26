@@ -49,7 +49,7 @@ class AppState {
   final DateTime focusedDate;
 
   final ThemeData theme;
-  final String email;
+  // final String email;
 
   final bool needsRefresh;
 

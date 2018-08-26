@@ -21,7 +21,7 @@ final Map<String, HomeLayout> validLayouts = {
       'sortRev': false,
     },
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, ExpansionChanged onChanged) {
+    (BuildContext context, ValueNotifier groupNotifier, ExpansionChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -30,7 +30,7 @@ final Map<String, HomeLayout> validLayouts = {
 
       return RadioExpansion(
         value: self.name,
-        groupValue: ValueNotifier(stateVal.homeLayout),
+        groupValue: groupNotifier,
         onChanged: onChanged,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -114,7 +114,7 @@ final Map<String, HomeLayout> validLayouts = {
     name: 'month',
     defaultOptions: {  },
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, ExpansionChanged onChanged) {
+    (BuildContext context, ValueNotifier groupNotifier, ExpansionChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
@@ -122,7 +122,7 @@ final Map<String, HomeLayout> validLayouts = {
 
       return RadioExpansion(
         value: self.name,
-        groupValue: ValueNotifier(stateVal.homeLayout),
+        groupValue: groupNotifier,
         onChanged: onChanged,
         title: Row(
           children: <Widget>[
@@ -196,7 +196,7 @@ final Map<String, HomeLayout> validLayouts = {
 };
 
 typedef Future ExpansionChanged<T>(T value);
-typedef RadioExpansion MenuItemBuilder(BuildContext context, ExpansionChanged onChanged);
+typedef RadioExpansion MenuItemBuilder(BuildContext context, ValueNotifier groupNotifier, ExpansionChanged onChanged);
 typedef Widget LayoutBuilder(BuildContext context);
 typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
 typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);
