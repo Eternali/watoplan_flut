@@ -21,11 +21,12 @@ final Map<String, HomeLayout> validLayouts = {
       'sortRev': false,
     },
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, ValueChanged onChanged) {
+    (BuildContext context, ExpansionChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
       final theme = Theme.of(context);
+      // debugPrint('${stateVal.homeLayout} + ${self.name}');
 
       return RadioExpansion(
         value: self.name,
@@ -113,10 +114,11 @@ final Map<String, HomeLayout> validLayouts = {
     name: 'month',
     defaultOptions: {  },
   )..withMenuBuilder((HomeLayout self) =>
-    (BuildContext context, ValueChanged onChanged) {
+    (BuildContext context, ExpansionChanged onChanged) {
       final AppState stateVal = Provider.of(context).value;
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
+      // debugPrint('${stateVal.homeLayout} + ${self.name}');
 
       return RadioExpansion(
         value: self.name,
@@ -136,7 +138,7 @@ final Map<String, HomeLayout> validLayouts = {
         ),
         trailing: Icon(new IconData(0)),
         children: <Widget>[
-          Container()
+          Container(),
         ],
       );
     }
@@ -193,7 +195,8 @@ final Map<String, HomeLayout> validLayouts = {
   ),
 };
 
-typedef RadioExpansion MenuItemBuilder(BuildContext context, ValueChanged onChanged);
+typedef Future ExpansionChanged<T>(T value);
+typedef RadioExpansion MenuItemBuilder(BuildContext context, ExpansionChanged onChanged);
 typedef Widget LayoutBuilder(BuildContext context);
 typedef LayoutBuilder ContextLayoutBuilder(HomeLayout self);
 typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);

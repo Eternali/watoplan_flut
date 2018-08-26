@@ -12,25 +12,9 @@ const Duration _kExpand = const Duration(milliseconds: 200);
 
 typedef Future ExpansionChanged<T>(T value);
 
-/// A single-line [RadioExpansion] with a trailing button that expands or collapses
-/// the tile to reveal or hide the [children].
-///
-/// This widget is typically used with [ListView] to create an
-/// "expand / collapse" list entry. When used with scrolling widgets like
-/// [ListView], a unique [PageStorageKey] must be specified to enable the
-/// [ExpansionTile] to save and restore its expanded state when it is scrolled
-/// in and out of view.
-///
-/// See also:
-///
-///  * [ListTile], useful for creating expansion tile [children] when the
-///    expansion tile represents a sublist.
-///  * The "Expand/collapse" section of
-///    <https://material.io/guidelines/components/lists-controls.html>.
+
 class RadioExpansion<T> extends StatefulWidget {
-  /// Creates a single-line [ListTile] with a trailing button that expands or collapses
-  /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
-  /// be non-null.
+
   const RadioExpansion({
     Key key,
     this.leading,
@@ -80,17 +64,15 @@ class RadioExpansion<T> extends StatefulWidget {
   final ExpansionChanged<T> onChanged;
 
   @override
-  _RadioExpansionState createState() => _RadioExpansionState<T>(value, groupValue);
+  _RadioExpansionState createState() => _RadioExpansionState<T>();
+
 }
 
 
 class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerProviderStateMixin {
 
-  _RadioExpansionState(this.value, this.groupValue);
+  _RadioExpansionState();
 
-  T value;
-  T groupValue;
-  bool get isExpanded => value == groupValue;
   AnimationController _controller;
   CurvedAnimation _easeOutAnimation;
   CurvedAnimation _easeInAnimation;
@@ -112,7 +94,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
     _iconTurns = Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
     _backgroundColor = ColorTween();
 
-    if (isExpanded)
+    if (widget.checked)
       _controller.value = 1.0;
   }
 
@@ -123,11 +105,11 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
   }
 
   void _handleTap() {
-    widget.onChanged(value)
+    widget.onChanged(widget.value)
       .then((_) =>
         setState(() {
-          debugPrint('test');
-          if (isExpanded)
+          debugPrint('changing ${widget.value}');
+          if (widget.checked)
             _controller.forward();
           else
             _controller.reverse().then<void>((Null value) {
@@ -182,6 +164,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('rebuilding ${widget.groupValue}');
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor
@@ -192,7 +175,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
       ..end = theme.accentColor;
     _backgroundColor.end = widget.backgroundColor;
 
-    final bool closed = !isExpanded && _controller.isDismissed;
+    final bool closed = !widget.checked && _controller.isDismissed;
     return AnimatedBuilder(
       animation: _controller.view,
       builder: _buildChildren,
