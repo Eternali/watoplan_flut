@@ -1,8 +1,8 @@
-// This is a modified version of the ExpansionTile build by the Flutter team,
+// This is a modified version of the ExpansionTile built by the Flutter team,
 // which can be found here: https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expansion_tile.dart
 // I just changed it to behave a little more like an ExpansionPanel,
 // but still have the UI customization capabilities of an ExpansionTile.
-// It can be a radio button too.
+// While also behaving like a radio button.
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -55,9 +55,9 @@ class RadioExpansion<T> extends StatefulWidget {
   ///
   /// This radio button is considered selected if its [value] matches the
   /// [groupValue].
-  final ValueNotifier<T> groupValue;
+  final T groupValue;
 
-  bool get checked => value == groupValue.value;
+  bool get checked => value == groupValue;
 
   /// Called when the tile is tapped. If a value other than null is returned,
   /// the widget will set it to be its group value and rebuild.
@@ -69,7 +69,7 @@ class RadioExpansion<T> extends StatefulWidget {
 }
 
 
-class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerProviderStateMixin {
+class _RadioExpansionState<T> extends State<RadioExpansion> with TickerProviderStateMixin {
 
   _RadioExpansionState();
 
@@ -96,13 +96,10 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
 
     if (widget.checked)
       _controller.value = 1.0;
-
-    widget.groupValue.addListener(_handleTap);
   }
 
   @override
   void dispose() {
-    widget.groupValue.removeListener(_handleTap);
     _controller.dispose();
     super.dispose();
   }
