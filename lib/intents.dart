@@ -121,7 +121,7 @@ class Intents {
   static Future removeActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
     var activities = <Activity>[];
     for (ActivityType type in activityTypes) {
-      activities.addAll(appState.value.activities.where((a) => a.typeId == type.id).toList().retype<Activity>());
+      activities.addAll(appState.value.activities.where((a) => a.typeId == type.id).toList());
       await LocalDb().remove(type);
     }
     await Intents.removeActivities(appState, activities);    
@@ -206,7 +206,7 @@ class Intents {
       var oldIds = old.data['notis'].map((n) => n.id);
       await Future.wait<dynamic>(old.data['notis']
         .where((Noti noti) => !newIds.contains(noti.id))
-        .map((Noti noti) => noti.cancel(notiPlug)).retype<Future<void>>()
+        .map((Noti noti) => noti.cancel(notiPlug))
       );
       await Future.wait<dynamic>(newActivity.data['notis']
         .where((Noti noti) => !oldIds.contains(noti.id))
@@ -217,7 +217,7 @@ class Intents {
             channel: newActivity.typeId.toString(),
             base: newActivity.data[poi],
           )
-        ).retype<Future<void>>()
+        )
       );
     }
     appState.value = Reducers.changeActivity(appState.value, newActivity);

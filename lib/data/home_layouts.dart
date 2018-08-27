@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
-import 'package:flutter_calendar/date_utils.dart';
+// import 'package:flutter_calendar/date_utils.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -26,7 +26,11 @@ final Map<String, HomeLayout> validLayouts = {
       final Map<String, dynamic> options = stateVal.homeOptions[self.name];
       final locales = WatoplanLocalizations.of(context);
       final theme = Theme.of(context);
-      // debugPrint('${stateVal.homeLayout} + ${self.name}');
+      final sortStr = options != null
+        ? options['sortRev']
+          ? options['sorter'].split('').reversed.join('').toUpperCase()
+          : options['sorter'].toUpperCase()
+        : '';
 
       return RadioExpansion(
         value: self.name,
@@ -45,8 +49,7 @@ final Map<String, HomeLayout> validLayouts = {
             ),
             Expanded(child: Container()),
             Text(
-              '${locales.by} '
-              '${options['sortRev'] ? options['sorter'].split('').reversed.join('').toUpperCase() : options['sorter'].toUpperCase()}',
+              '${locales.by} $sortStr',
               style: TextStyle(
                 letterSpacing: 1.4,
                 fontFamily: 'Timeburner',

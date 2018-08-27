@@ -2,14 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
+import 'package:watoplan/init_plugs.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
-
-
 
 class ActivityCard extends StatefulWidget {
 
@@ -68,7 +67,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
       ),
       onDismissed: (direction) {
         int idx = getIdx(state.value.activities);
-        Intents.removeActivities(state, [widget.activity])
+        Intents.removeActivities(state, [widget.activity], notiPlug)
           .then((activities) => Scaffold.of(context).showSnackBar(new SnackBar(
             duration: const Duration(seconds: 3),
             content: Text(

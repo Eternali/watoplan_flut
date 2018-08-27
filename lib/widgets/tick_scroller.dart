@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar/date_utils.dart';
+// import 'package:flutter_calendar/date_utils.dart';
 
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/data/models.dart';
@@ -29,7 +29,7 @@ class TickScroller extends StatelessWidget {
   TickScroller(this.date);
 
   // -1 if b is before a, 1 if b is after a, and 0 if they are on the same day
-  int getRelation(DateTime a, DateTime b) => DateUtils.isSameDay(a, b)
+  int getRelation(DateTime a, DateTime b) =>  true//  DateUtils.isSameDay(a, b)
     ? 0 : b.isAfter(a) ? 1 : b.isBefore(a) ? -1 : null;
 
   List getTicks({

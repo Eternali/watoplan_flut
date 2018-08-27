@@ -1,12 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_local_notifications/notification_details.dart';
-import 'package:flutter_local_notifications/platform_specifics/android/notification_details_android.dart';
-import 'package:flutter_local_notifications/platform_specifics/ios/notification_details_ios.dart';
 
 import 'package:watoplan/data/converters.dart';
-import 'package:watoplan/data/models.dart';
 import 'package:watoplan/utils/data_utils.dart';
 
 class TimeBefore {
@@ -84,12 +80,12 @@ class Noti {
     switch (type.name) {
       case 'PUSH':
         NotificationDetails platformSpecifics = NotificationDetails(
-          NotificationDetailsAndroid(
+          AndroidNotificationDetails(
             channel ?? id.toString(),
             typeName ?? 'WAToPlan',
             'Notifications regarding activities of type $typeName',
           ),
-          NotificationDetailsIOS(),
+          IOSNotificationDetails(),
         );
         await notiPlug.schedule(id, title, msg,
           base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),

@@ -71,6 +71,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  date_utils:
+    dependency: transitive
+    description:
+      name: date_utils
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -89,7 +96,7 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.9"
+    version: "0.3.7"
   flutter_markdown:
     dependency: "direct main"
     description:
@@ -451,5 +458,5 @@ packages:
     source: hosted
     version: "2.1.15"
 sdks:
-  dart: ">=2.0.0-dev.68.0 <2.4.0"
+  dart: ">=2.0.0 <3.0.0"
   flutter: ">=0.1.4 <2.0.0"

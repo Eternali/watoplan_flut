@@ -96,7 +96,12 @@
   "needsRefresh": false,
   "homeLayout": "schedule",
   "homeOptions": {
-    "sorter": "start",
-    "sortRev": false
+    "schedule": {
+      "sorter": "start",
+      "sortRev": false
+    },
+    "month": {
+      
+    }
   }
 }
