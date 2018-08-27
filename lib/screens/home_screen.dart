@@ -8,8 +8,6 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/fam.dart';
-import 'package:watoplan/widgets/radio_expansion_group.dart';
-import 'package:watoplan/widgets/radio_expansion.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -28,6 +26,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+
+  final ValueNotifier<String> layoutNotifier;
+
+  HomeScreenState() : layoutNotifier = ValueNotifier('');
 
   // Generate a list of 4 FABs to display the most used activityTypes for easy access
   List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
@@ -72,7 +74,10 @@ class HomeScreenState extends State<HomeScreen> {
     // final Map<String, dynamic> moptions = stateVal.homeOptions['month'];
     final locales = WatoplanLocalizations.of(context);
     final theme = Theme.of(context);
-    final layoutNotifier = ValueNotifier(stateVal.homeLayout);
+
+    if (layoutNotifier.value == '') {
+      layoutNotifier.value = stateVal.homeLayout;
+    }
 
     widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
@@ -157,9 +162,6 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Divider(),
-          //////////
-          /// ISSUE COULD BE THAT RADIOEXPANSIONS ARE BEING REBUILT BEFORE THE STATE IS UPDATED WITH NEW HOMELAYOUT
-          //////////
           ]..addAll(validLayouts.values.map((HomeLayout layout) =>
             layout.menuBuilder(context, layoutNotifier, (value) {
               return Intents.switchHome(

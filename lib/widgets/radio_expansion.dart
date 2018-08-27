@@ -1,8 +1,8 @@
-// This is a modified version of the ExpansionTile build by the Flutter team,
+// This is a modified version of the ExpansionTile built by the Flutter team,
 // which can be found here: https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/expansion_tile.dart
 // I just changed it to behave a little more like an ExpansionPanel,
 // but still have the UI customization capabilities of an ExpansionTile.
-// It can be a radio button too.
+// While also behaving like a radio button.
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -97,31 +97,32 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
     if (widget.checked)
       _controller.value = 1.0;
 
-    widget.groupValue.addListener(_handleTap);
+    widget.groupValue.addListener(updateState);
   }
 
   @override
   void dispose() {
-    widget.groupValue.removeListener(_handleTap);
+    widget.groupValue.removeListener(updateState);
     _controller.dispose();
     super.dispose();
   }
 
   void _handleTap() {
     widget.onChanged(widget.value)
-      .then((_) =>
-        setState(() {
-          debugPrint('changing ${widget.value}');
-          if (widget.checked)
-            _controller.forward();
-          else
-            _controller.reverse().then<void>((Null value) {
-              setState(() {
-                // Rebuild without widget.children.
-              });
-            });
-        })
-      );
+      .then((_) => updateState());
+  }
+
+  void updateState() {
+    setState(() {
+      if (widget.checked)
+        _controller.forward();
+      else
+        _controller.reverse().then<void>((Null value) {
+          setState(() {
+            // Rebuild without widget.children.
+          });
+        });
+    });
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
