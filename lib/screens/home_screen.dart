@@ -161,14 +161,11 @@ class HomeScreenState extends State<HomeScreen> {
             ),
             Divider(),
           ]..addAll(validLayouts.values.map((HomeLayout layout) =>
-            layout.menuBuilder(context, layoutNotifier, (value) {
+            layout.menuBuilder(context, (value) {
               return Intents.switchHome(
                 Provider.of(context),
                 layout: layout.name, options: stateVal.homeOptions[layout.name]
-              ).then((newLayout) {
-                layoutNotifier.value = newLayout;
-                return newLayout;
-              });
+              );
             })
           )),
           // ]..add(
