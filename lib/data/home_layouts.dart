@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
-// import 'package:flutter_calendar/date_utils.dart';
+import 'package:flutter_calendar/tick.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
@@ -10,8 +10,6 @@ import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/radio_expansion.dart';
-import 'package:watoplan/widgets/tick_scroller.dart';
-
 
 final Map<String, HomeLayout> validLayouts = {
   'list': HomeLayout(
@@ -157,31 +155,11 @@ final Map<String, HomeLayout> validLayouts = {
             flex: 2,
             child: Calendar(
               isExpandable: true,
-              // dayBuilder: (BuildContext context, DateTime date) {
-              //   return InkWell(
-              //     child: Column(
-              //       children: <Widget>[
-              //         Container(
-              //           alignment: Alignment.center,
-              //           decoration: Utils.isSameDay(date, DateTime.now())
-              //             ? BoxDecoration(
-              //               shape: BoxShape.circle,
-              //               color: theme.primaryColor,
-              //             ) : Utils.isSameDay(date, stateVal.focusedDate)
-              //               ? BoxDecoration(
-              //                 shape: BoxShape.circle,
-              //                 color: theme.accentColor,
-              //               ) : BoxDecoration(),
-              //           child: Text(
-              //             date.day.toString(),
-              //             textAlign: TextAlign.center,
-              //           ),
-              //         ),
-              //         TickScroller(date),
-              //       ],
-              //     ),
-              //   );
-              // },
+              ticksBuilder: (BuildContext context, DateTime day) {
+                return stateVal.activities
+                  .where((Activity a) => a.data.values.where((d) => d is DateTime).toList().length > 0)
+                  .map(f);
+              },
             ),
           ),
           Expanded(

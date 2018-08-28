@@ -22,11 +22,19 @@ class Tick extends StatelessWidget {
 
 }
 
+import 'package:flutter/material.dart';
+
+import 'package:flutter_calendar/tick.dart';
+
 class TickScroller extends StatelessWidget {
     
-  final DateTime date;
+  final List<Tick> ticks;
+  final AlignmentDirectional scrollDirection;
 
-  TickScroller(this.date);
+  TickScroller({
+    this.ticks,
+    this.scrollDirection,
+  });
 
   // -1 if b is before a, 1 if b is after a, and 0 if they are on the same day
   int getRelation(DateTime a, DateTime b) =>  true//  DateUtils.isSameDay(a, b)
