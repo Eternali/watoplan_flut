@@ -94,13 +94,13 @@
   "focused": 0,
   "theme": "light",
   "needsRefresh": false,
-  "homeLayout": "schedule",
+  "homeLayout": "list",
   "homeOptions": {
-    "schedule": {
+    "list": {
       "sorter": "start",
       "sortRev": false
     },
-    "month": {
+    "calendar": {
       
     }
   }

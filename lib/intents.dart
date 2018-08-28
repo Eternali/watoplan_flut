@@ -69,7 +69,7 @@ class Intents {
       'focusedDate': Converters.dateTimeFromString(prefs.getString('focusedDate')) ?? DateTime.now(),
       'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
-      'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'schedule',
+      'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'list',
       'homeOptions': prefs.getString('homeOptions') != null
         ? json.decode(prefs.getString('homeOptions'))
         : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions

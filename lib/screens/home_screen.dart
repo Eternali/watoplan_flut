@@ -70,8 +70,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
-    // final Map<String, dynamic> soptions = stateVal.homeOptions['schedule'];
-    // final Map<String, dynamic> moptions = stateVal.homeOptions['month'];
     final locales = WatoplanLocalizations.of(context);
     final theme = Theme.of(context);
 

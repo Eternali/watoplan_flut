@@ -14,8 +14,8 @@ import 'package:watoplan/widgets/tick_scroller.dart';
 
 
 final Map<String, HomeLayout> validLayouts = {
-  'schedule': HomeLayout(
-    name: 'schedule',
+  'list': HomeLayout(
+    name: 'list',
     defaultOptions: {
       'sorter': 'start',
       'sortRev': false,
@@ -113,8 +113,8 @@ final Map<String, HomeLayout> validLayouts = {
       );
     }
   ),
-  'month': HomeLayout(
-    name: 'month',
+  'calendar': HomeLayout(
+    name: 'calendar',
     defaultOptions: {  },
   )..withMenuBuilder((HomeLayout self) =>
     (BuildContext context, ValueNotifier groupNotifier, ExpansionChanged onChanged) {
@@ -130,7 +130,7 @@ final Map<String, HomeLayout> validLayouts = {
         title: Row(
           children: <Widget>[
             Text(
-              locales.layoutMonth.toUpperCase(),
+              locales.layoutCalendar.toUpperCase(),
               style: TextStyle(
                 letterSpacing: 1.4,
                 fontWeight: FontWeight.w700,

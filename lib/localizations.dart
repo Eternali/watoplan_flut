@@ -28,8 +28,8 @@ class WatoplanLocalizations {
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
   String get invalidType => 'Make sure your type is valid before saving.';
-  String get layoutList => 'Schedule';
-  String get layoutMonth => 'Month';
+  String get layoutList => 'List';
+  String get layoutCalendar => 'Calendar';
   String get newActivity => 'New Activity';
   String get newActivityType => 'New Type';
   String get newNoti => 'New Notification';
