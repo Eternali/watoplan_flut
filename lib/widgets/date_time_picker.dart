@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:watoplan/utils/data_utils.dart';
 
 class DateTimePicker extends StatefulWidget {
 
@@ -86,7 +86,7 @@ class DateTimePickerState extends State<DateTimePicker> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                DateTimeUtils.formatDMY(widget.when),
+                Utils.formatDMY(widget.when),
                 style: valueStyle,
               ),
               Icon(Icons.arrow_drop_down, color: widget.color),

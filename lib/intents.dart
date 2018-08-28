@@ -239,7 +239,7 @@ class Intents {
       .then((prefs) => prefs.setString('homeOptions', json.encode(wholeOptions)));
     appState.value = Reducers.sortActivities(
       appState.value,
-      wholeOptions[layout ?? appState.value.homeLayout],
+      wholeOptions[layout ?? 'list'],
     );
   }
 

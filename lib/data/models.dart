@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 // import 'package:contact_finder/contact_finder.dart';
 
@@ -55,6 +56,28 @@ class AppState {
 
   final String homeLayout;
   final Map<String, Map<String, dynamic>> homeOptions;
+
+  // Getters
+  List<Activity> activitiesOn(DateTime day) {
+    return activities
+      .where((Activity a) {
+        if (a.data.containsKey('start') && !a.data.containsKey('end')) {
+          return Utils.isSameDay(a.data['start'], day);
+        } else if (!a.data.containsKey('start') && a.data.containsKey('end')) {
+          return Utils.isSameDay(a.data['end'], day);
+        } else if (a.data.containsKey('start') && a.data.containsKey('end')) {
+          // accommodates cases where the 'day' is after the activity but still on the same day
+          // (shouldn't ever happen, but we should be careful).
+          return (Utils.isSameDay(a.data['start'], day) || a.data['start'].isBefore(day)) &&
+            (Utils.isSameDay(a.data['end'], day) || a.data['end'].isAfter(day));
+        } else {
+          return false;
+        }
+      }).toList();
+  }
+  List<Activity> get timeSensitive => activities.where(
+      (Activity a) => a.data.values.where((v) => v is DateTime).isNotEmpty
+    ).toList();
 
   AppState({
     this.activities,

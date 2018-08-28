@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 // import 'package:contact_finder/contact_finder.dart';
 
@@ -14,7 +15,6 @@ import 'package:watoplan/widgets/custom_expansion.dart';
 import 'package:watoplan/widgets/date_time_picker.dart';
 import 'package:watoplan/widgets/edit_text.dart';
 import 'package:watoplan/widgets/noti_list.dart';
-import 'package:watoplan/utils/data_utils.dart';
 
 class AddEditScreen extends StatefulWidget {
 
@@ -217,11 +217,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                     color: theme.disabledColor,
                     when: stateVal.editingActivity.data['start'],
                     setDate: (date) {
-                      stateVal.editingActivity.data['start'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['start'], date);
+                      stateVal.editingActivity.data['start'] = Utils.fromDate(stateVal.editingActivity.data['start'], date);
                       return stateVal.editingActivity.data['start'];
                     },
                     setTime: (time) {
-                      stateVal.editingActivity.data['start'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['start'], time);
+                      stateVal.editingActivity.data['start'] = Utils.fromTimeOfDay(stateVal.editingActivity.data['start'], time);
                       return stateVal.editingActivity.data['start'];
                     },
                   )
@@ -234,11 +234,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                     color: theme.disabledColor,
                     when: stateVal.editingActivity.data['end'],
                     setDate: (date) {
-                      stateVal.editingActivity.data['end'] = DateTimeUtils.fromDate(stateVal.editingActivity.data['end'], date);
+                      stateVal.editingActivity.data['end'] = Utils.fromDate(stateVal.editingActivity.data['end'], date);
                       return stateVal.editingActivity.data['end'];
                     },
                     setTime: (time) {
-                        stateVal.editingActivity.data['end'] = DateTimeUtils.fromTimeOfDay(stateVal.editingActivity.data['end'], time);
+                        stateVal.editingActivity.data['end'] = Utils.fromTimeOfDay(stateVal.editingActivity.data['end'], time);
                       return stateVal.editingActivity.data['end'];
                     },
                   )

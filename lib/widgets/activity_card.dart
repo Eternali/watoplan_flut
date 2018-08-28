@@ -1,3 +1,4 @@
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -8,7 +9,6 @@ import 'package:watoplan/routes.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/utils/data_utils.dart';
 
 class ActivityCard extends StatefulWidget {
 
@@ -166,7 +166,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          widget.activity.data.containsKey('start') ? DateTimeUtils.formatEM(widget.activity.data['start']) : '',
+                          widget.activity.data.containsKey('start') ? Utils.formatEM(widget.activity.data['start']) : '',
                           style: theme.textTheme.body1.copyWith(color: theme.hintColor),
                         ),
                         Container(
@@ -178,7 +178,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                           )
                         ),
                         Text(
-                          widget.activity.data.containsKey('end') ? DateTimeUtils.formatEM(widget.activity.data['end']) : '',
+                          widget.activity.data.containsKey('end') ? Utils.formatEM(widget.activity.data['end']) : '',
                           style: theme.textTheme.body1.copyWith(color: theme.hintColor),
                         ),
                       ],

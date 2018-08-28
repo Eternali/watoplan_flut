@@ -30,6 +30,7 @@ class WatoplanLocalizations {
   String get invalidType => 'Make sure your type is valid before saving.';
   String get layoutList => 'List';
   String get layoutCalendar => 'Calendar';
+  String get layoutUndefined => 'The specified layout can\'t be found.';
   String get newActivity => 'New Activity';
   String get newActivityType => 'New Type';
   String get newNoti => 'New Notification';
@@ -45,6 +46,8 @@ class WatoplanLocalizations {
   String get settingsTitle => 'Settings';
   String get start => 'Start';
   String get undo => 'Undo';
+  String get updateError => 'This is likely due to an update that caused a breaking change in configuration.'
+    'To make the app usable, go to settings and select \'$resetApp\' from the overflow menu. Sorry :(';
 
   String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
 

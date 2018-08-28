@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
 import 'package:flutter_calendar/tick.dart';
@@ -156,9 +157,10 @@ final Map<String, HomeLayout> validLayouts = {
             child: Calendar(
               isExpandable: true,
               ticksBuilder: (BuildContext context, DateTime day) {
-                return stateVal.activities
-                  .where((Activity a) => a.data.values.where((d) => d is DateTime).toList().length > 0)
-                  .map(f);
+                return stateVal.activitiesOn(day)
+                  .map((Activity a) => Tick(
+                    color: stateVal.activityTypes.firstWhere((ActivityType t) => t.id == a.typeId).color,
+                  )).toList();
               },
             ),
           ),

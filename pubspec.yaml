@@ -12,10 +12,14 @@ dependencies:
   crypto: ^2.0.2
   flutter_local_notifications: ^0.3.7
   flutter_markdown: ^0.2.0
+  date_utils:
+    path: ../date_utils
+    # git:
+    #   url: git://github.com/eternali/date_utils.git
   flutter_calendar:
     path: ../flutter_calendar
     # git:
-    #   url: git://github.com/zachtib/flutter_calendar.git
+    #   url: git://github.com/eternali/flutter_calendar.git
   # contact_finder:
   #   path: ../contact_finder/
     # git:

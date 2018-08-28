@@ -1,3 +1,4 @@
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
@@ -6,7 +7,6 @@ import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/fam.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class HomeScreenState extends State<HomeScreen> {
                 type: it,
                 data: it.params
                   .map((key, value) => MapEntry(key, value is DateTime
-                    ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
+                    ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                     : value
                   )),
               )
@@ -94,7 +94,7 @@ class HomeScreenState extends State<HomeScreen> {
                   type: type,
                   data: type.params
                     .map((key, value) => MapEntry(key, value is DateTime
-                      ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
+                      ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                       : value
                     )),
                 )
@@ -181,7 +181,16 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SafeArea(
-        child: validLayouts[stateVal.homeLayout].builder(context)
+        child: validLayouts[stateVal.homeLayout]?.builder(context) ?? Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              '${locales.layoutUndefined} ${locales.updateError}',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.body2.copyWith(fontSize: 18.0),
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionMenu(
         color: Theme.of(context).accentColor,
