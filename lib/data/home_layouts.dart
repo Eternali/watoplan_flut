@@ -152,26 +152,30 @@ final Map<String, HomeLayout> validLayouts = {
 
       return Column(
         children: <Widget>[
-          Expanded(
-            flex: 2,
-            child: Calendar(
-              isExpandable: true,
-              ticksBuilder: (BuildContext context, DateTime day) {
-                return stateVal.activitiesOn(day)
-                  .map((Activity a) => Tick(
-                    color: stateVal.activityTypes.firstWhere((ActivityType t) => t.id == a.typeId).color,
-                  )).toList();
-              },
-            ),
+          Calendar(
+            isExpandable: true,
+            onDateSelected: (DateTime day) {
+              Intents.focusOnDay(Provider.of(context), day);
+            },
+            ticksBuilder: (BuildContext context, DateTime day) {
+              return stateVal.activitiesOn(day)
+                .map((Activity a) => Tick(
+                  color: stateVal.activityTypes.firstWhere((ActivityType t) => t.id == a.typeId).color,
+                )).toList();
+            },
           ),
-          Expanded(
-            flex: 1,
-            child: AnimatedList(
-              itemBuilder: (BuildContext context, int pos, Animation<double> anim) {
-                return Container();
-              },
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+
+            ],
           ),
+          // AnimatedList(
+          //   itemBuilder: (BuildContext context, int pos, Animation<double> anim) {
+          //     return Container();
+          //   },
+          // ),
         ],
       );
     }
