@@ -150,10 +150,11 @@ final Map<String, HomeLayout> validLayouts = {
       final AppState stateVal = Provider.of(context).value;
       final theme = Theme.of(context);
 
-      return Column(
+      return ListView(
         children: <Widget>[
           Calendar(
             isExpandable: true,
+            showCalendarPickerIcon: false,
             onDateSelected: (DateTime day) {
               Intents.focusOnDay(Provider.of(context), day);
             },
@@ -164,18 +165,14 @@ final Map<String, HomeLayout> validLayouts = {
                 )).toList();
             },
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-            ],
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Column(
+              children: stateVal.activitiesOn()
+                .map((Activity a) => ActivityCard(a))
+                .toList(),
+            ),
           ),
-          // AnimatedList(
-          //   itemBuilder: (BuildContext context, int pos, Animation<double> anim) {
-          //     return Container();
-          //   },
-          // ),
         ],
       );
     }

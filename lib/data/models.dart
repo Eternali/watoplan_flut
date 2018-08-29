@@ -58,8 +58,9 @@ class AppState {
   final Map<String, Map<String, dynamic>> homeOptions;
 
   // Getters
-  List<Activity> activitiesOn(DateTime day) {
-    return activities
+  List<Activity> activitiesOn([DateTime day]) {
+    day ??= focusedDate;
+    return day == null ? [] : activities
       .where((Activity a) {
         if (a.data.containsKey('start') && !a.data.containsKey('end')) {
           return Utils.isSameDay(a.data['start'], day);
