@@ -32,6 +32,7 @@ class FloatingActionMenuState
 
   AnimationController _controller;
   List<SubFAB> values;
+  int get animMillis => widget.entries.value.length * 70;
 
   Widget generateMenu() => FloatingActionButton(
     heroTag: null,
@@ -54,23 +55,25 @@ class FloatingActionMenuState
     },
   );
 
-  void init() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: widget.entries.value.length * 70),
-    );
+  void _updateController() {
+    print(animMillis);
+    _controller.reset();
+    _controller.duration = Duration(milliseconds: animMillis);
   }
 
   @override
   initState() {
     super.initState();
-    init();
-    if (widget.entries is ValueNotifier) widget.entries.addListener(init);
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: animMillis),
+    );
+    if (widget.entries is ValueNotifier) widget.entries.addListener(_updateController);
   }
 
   @override
   dispose() {
-    if (widget.entries is ValueNotifier) widget.entries.removeListener(init);
+    if (widget.entries is ValueNotifier) widget.entries.removeListener(_updateController);
     _controller.dispose();
     super.dispose();
   }

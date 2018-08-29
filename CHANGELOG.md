@@ -58,3 +58,19 @@
 
 ### New Features:
 - An option was added to settings that enables the user to reset the app to defaults. The main use case for this is that if a bug in the app causes the database to get in an irrecoverable state, the user doesn't have to reinstall the app or manually delete the database file to get it back in a working order.
+
+0.9.9
+-----
+
+### New Features:
+- The _CALENDAR_ home layout is here! you can now see all your time sensitive activities in a easy to read calendar view that supports both weekly and monthly views. There are still a few kinks to be worked out, but it works as intended for the most part.
+- A check has been put in place so that if the database schema is detected to mismatch (due to a breaking update), the user can still access the menu to reset the app to its defaults.
+- Small UI updates to improve consistency.
+
+### Bugs Fixed:
+- (__0014__ & __0015__) Push notifications now work as intended (they are deleted when the activity is deleted, and past notifications no longer show on reboot).
+- (__0011__) The floating action menu animation duration length should always be consistent now (no more resets to 0).
+
+### Modifications:
+- Home layout system has been reworked under the hood.
+- Drawer menu has been reworked to use custom radio buttons.

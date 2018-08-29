@@ -34,6 +34,7 @@ class AddEditScreenState extends State<AddEditScreen> {
 
     return Scaffold(
       key: AppKeys.AddEditScreenKey,
+      resizeToAvoidBottomPadding: false,  // get rid of render error when keyboard is onscreen (not using a ListView just yet ;)
       appBar: AppBar(
         backgroundColor: type.color,
         leading: BackButton(),

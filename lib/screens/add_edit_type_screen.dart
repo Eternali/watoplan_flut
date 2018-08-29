@@ -28,6 +28,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
     final ThemeData theme = Theme.of(context);
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,  // get rid of render error when keyboard is onscreen (not using a ListView just yet ;)
       appBar: AppBar(
         backgroundColor: stateVal.editingType.color ?? theme.accentColor,
         leading: BackButton(),
