@@ -365,12 +365,6 @@ class Activity {
     } else if (type is ActivityType) {
       typeId = type.id;
       this.data = Map.from(type.params).map((k, v) => MapEntry(k, v.init()));
-      data.forEach((String name, dynamic value) {
-        if (!type.params.keys.contains(name))
-          throw Exception('$name is not a parameter of ${type.name}');
-        else if (value.runtimeType != type.params[name].type.runtimeType)
-          throw Exception('$name is not a valid parameter for ${type.name}');
-      });
     } else throw Exception('dynamic type parameter must be an int or an ActivityType');
   }
 
