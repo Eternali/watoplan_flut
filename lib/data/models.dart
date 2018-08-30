@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:contact_finder/contact_finder.dart';
 
 import 'package:watoplan/data/converters.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
@@ -76,6 +77,7 @@ class AppState {
         }
       }).toList();
   }
+
   List<Activity> get timeSensitive => activities.where(
       (Activity a) => a.data.values.where((v) => v is DateTime).isNotEmpty
     ).toList();
@@ -157,6 +159,11 @@ class AppState {
       homeOptions: homeOptions ?? (optionOverrides != null ? overrideOptions(this.homeOptions, optionOverrides) : this.homeOptions),
     );
   }
+
+  // Static Helpers
+  static String safeHomeLayout(String unsafe) => unsafe == null
+    ? unsafe
+    : (validLayouts..removeWhere((_, hl) => !hl.validKeys.contains(unsafe))).keys.first;
 
   @override
   int get hashCode =>

@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
-import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
@@ -74,6 +73,8 @@ class Intents {
         ? json.decode(prefs.getString('homeOptions'))
         : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions
     }).then(
+      ensureBackwardsCompatible
+    ).then(
       (settings) => Intents.setTheme(appState, settings['theme']).then((_) => settings),
       onError: (Exception e) => Intents.setTheme(appState, 'light')
     ).then(
@@ -86,6 +87,13 @@ class Intents {
       (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
     ).then(
       (settings) { Intents.focusOnDay(appState, settings['focusedDate']); return settings; }
+    );
+  }
+
+  static Future ensureBackwardsCompatible(Map<String, dynamic> settings) {
+    return Future.value(
+      // Make sure homeLayout is safe to use
+      settings..['homeLayout'] = AppState.safeHomeLayout(settings['homeLayout'])
     );
   }
 
@@ -204,13 +212,13 @@ class Intents {
 
       var newIds = newActivity.data['notis'].map((n) => n.id);
       var oldIds = old.data['notis'].map((n) => n.id);
-      await Future.wait<dynamic>(old.data['notis']
+      await Future.wait<void>(old.data['notis']
         .where((Noti noti) => !newIds.contains(noti.id))
-        .map((Noti noti) => noti.cancel(notiPlug))
+        .map<Future<void>>((Noti noti) => noti.cancel(notiPlug))
       );
-      await Future.wait<dynamic>(newActivity.data['notis']
+      await Future.wait<void>(newActivity.data['notis']
         .where((Noti noti) => !oldIds.contains(noti.id))
-        .map((Noti noti) =>
+        .map<Future<void>>((Noti noti) =>
           noti.schedule(
             notiPlug: notiPlug,
             typeName: typeName,

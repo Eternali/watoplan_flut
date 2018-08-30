@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
 import 'package:flutter_calendar/tick.dart';
@@ -12,9 +11,12 @@ import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/radio_expansion.dart';
 
+// The key of each HomeLayout must also be its name and in the validKeys
+// (the name will be added if it is not already included)
 final Map<String, HomeLayout> validLayouts = {
   'list': HomeLayout(
     name: 'list',
+    validKeys: ['list', 'schedule'],  // for backward compatability with the database
     defaultOptions: {
       'sorter': 'start',
       'sortRev': false,
@@ -114,6 +116,7 @@ final Map<String, HomeLayout> validLayouts = {
   ),
   'calendar': HomeLayout(
     name: 'calendar',
+    validKeys: [ 'calendar', 'month' ],  // for backward compatability with the database
     defaultOptions: {  },
   )..withMenuBuilder((HomeLayout self) =>
     (BuildContext context, ExpansionChanged onChanged) {
@@ -188,19 +191,25 @@ typedef MenuItemBuilder ContextExpansionBuilder(HomeLayout self);
 class HomeLayout {
 
   final String name;
+  List<String> validKeys;
   final Map<String, dynamic> defaultOptions;
   MenuItemBuilder menuBuilder;
   LayoutBuilder builder;
 
-  HomeLayout({ this.name, this.defaultOptions, this.menuBuilder, this.builder });
+  HomeLayout({ this.name, this.validKeys, this.defaultOptions, this.menuBuilder, this.builder }) {
+    if (!validKeys.contains(name))
+      validKeys.add(name);
+  }
   
   HomeLayout copyWith({
     String name,
+    List<String> validKeys,
     Map<String, dynamic> defaultOptions,
     MenuItemBuilder menuBuilder,
     LayoutBuilder builder,
   }) => HomeLayout(
     name: name ?? this.name,
+    validKeys: validKeys ?? this.validKeys,
     defaultOptions: defaultOptions ?? this.defaultOptions,
     menuBuilder: menuBuilder ?? this.menuBuilder,
     builder: builder ?? this.builder,

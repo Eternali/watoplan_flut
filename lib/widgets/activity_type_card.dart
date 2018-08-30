@@ -62,10 +62,10 @@ class ActivityTypeCard extends StatelessWidget {
                     label: locales.undo.toUpperCase(),
                     onPressed: () {
                       Intents.insertActivityType(state, tas[0][0], indice)
-                        .then((_) => Future.wait(
+                        .then((_) => Future.wait<dynamic>(
                           // casting just because map doesn't know what type it is being mapped to.
                           // everything works without the cast, dart just complains
-                          tas[1].map((a) => Intents.insertActivity(state, a, activities.indexOf(a))).cast<Future<dynamic>>()
+                          tas[1].map<Future<dynamic>>((a) => Intents.insertActivity(state, a, activities.indexOf(a)))
                         ));
                     },
                   ),
