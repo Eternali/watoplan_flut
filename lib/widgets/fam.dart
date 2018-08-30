@@ -56,9 +56,8 @@ class FloatingActionMenuState
   );
 
   void _updateController() {
-    print(animMillis);
-    _controller.reset();
     _controller.duration = Duration(milliseconds: animMillis);
+    _controller.reset();
   }
 
   @override
@@ -68,12 +67,16 @@ class FloatingActionMenuState
       vsync: this,
       duration: Duration(milliseconds: animMillis),
     );
-    if (widget.entries is ValueNotifier) widget.entries.addListener(_updateController);
+    if (widget.entries is ValueNotifier) {
+      widget.entries.addListener(_updateController);
+    }
   }
 
   @override
   dispose() {
-    if (widget.entries is ValueNotifier) widget.entries.removeListener(_updateController);
+    if (widget.entries is ValueNotifier) {
+      widget.entries.removeListener(_updateController);
+    }
     _controller.dispose();
     super.dispose();
   }

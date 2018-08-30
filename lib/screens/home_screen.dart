@@ -16,7 +16,6 @@ class HomeScreen extends StatefulWidget {
     const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
     const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
   ];
-  ValueNotifier<List<SubFAB>> subFabs = ValueNotifier([]);
 
   HomeScreen({ Key key, this.title }) : super(key: key);
 
@@ -27,9 +26,9 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
-  final ValueNotifier<String> layoutNotifier;
+  final ValueNotifier<List<SubFAB>> subFabs;
 
-  HomeScreenState() : layoutNotifier = ValueNotifier('');
+  HomeScreenState() : subFabs = ValueNotifier([]);
 
   // Generate a list of 4 FABs to display the most used activityTypes for easy access
   List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
@@ -73,11 +72,7 @@ class HomeScreenState extends State<HomeScreen> {
     final locales = WatoplanLocalizations.of(context);
     final theme = Theme.of(context);
 
-    if (layoutNotifier.value == '') {
-      layoutNotifier.value = stateVal.homeLayout;
-    }
-
-    widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
+    subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
     return Scaffold(
       appBar: AppBar(
@@ -168,16 +163,6 @@ class HomeScreenState extends State<HomeScreen> {
               );
             })
           )),
-          // ]..add(
-          //   ExpansionRadioGroup(
-          //     name: 'layoutMenu',
-          //     members: validLayouts.values.map((HomeLayout layout) =>
-          //       layout.menuBuilder(context, (value) async {
-          //         await Intents.switchHome(Provider.of(context), layout: layout.name, options: stateVal.homeOptions[layout.name]);
-          //       } /*stateVal.homeLayout*/)
-          //     ).toList(),
-          //   )
-          // ),
         ),
       ),
       body: SafeArea(
@@ -194,7 +179,7 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionMenu(
         color: Theme.of(context).accentColor,
-        entries: widget.subFabs,
+        entries: subFabs,
         expanded: true,
       ),
     );
