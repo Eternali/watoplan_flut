@@ -226,35 +226,41 @@ final Map<String, dynamic> validParams = {
   'name': ParamType<String>(''),
   'desc': ParamType<String>(''),
   'long': ParamType<String>(''),
-  'priority': ParamType<int>(0),
-  'progress': ParamType<int>(0),
+  'priority': ParamType<int>(
+    0,
+    fromJson: (v) => v is int ? v : int.parse(v),
+  ),
+  'progress': ParamType<int>(
+    0,
+    fromJson: (v) => v is int ? v : int.parse(v),
+  ),
   'start': ParamType<DateTime>(
     DateTime.now(),
     init: () => DateTime.now(),
-    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(int.parse(v)),
+    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(v is int ? v : int.parse(v)),
     toJson: (v) => v.millisecondsSinceEpoch,
-    cloner: (v) => Utils.copyWith(v)
+    cloner: (v) => Utils.copyWith(v),
   ),
   'end': ParamType<DateTime>(
     DateTime.now(),
     init: () => DateTime.now(),
-    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(int.parse(v)),
+    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(v is int ? v : int.parse(v)),
     toJson: (v) => v.millisecondsSinceEpoch,
-    cloner: (v) => Utils.copyWith(v)
+    cloner: (v) => Utils.copyWith(v),
   ),
   'notis': ParamType<List<Noti>>(
     <Noti>[],
     init: () => <Noti>[],
-    fromJson: (v) => v.map((n) => Noti.fromJson(n)).toList(),
-    toJson: (v) => v.map<Noti>((n) => n.toJson()).toList(),
-    cloner: (v) => List<Noti>.from(v)
+    fromJson: (v) => v.map<Noti>((n) => Noti.fromJson(n)).toList(),
+    toJson: (v) => v.map((n) => n.toJson()).toList(),
+    cloner: (v) => List<Noti>.from(v),
   ),
   'location': ParamType<Location>(
     Location(lat: 0.0, long: 0.0),
     init: () => Location(lat: 0.0, long: 0.0),
     fromJson: (v) => Location.fromJson(v),
     toJson: (v) => v.toJson(),
-    cloner: (v) => Location(lat: v.lat, long: v.long)
+    cloner: (v) => Location(lat: v.lat, long: v.long),
   ),
   // 'contacts': ParamType<List<Contact>>(<Contact>[], init: () => <Contact>[]),
   // 'tags': ParamType<List<String>>(<String>[], init: () => <String>[]),
