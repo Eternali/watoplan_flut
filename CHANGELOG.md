@@ -74,3 +74,9 @@
 ### Modifications:
 - Home layout system has been reworked under the hood.
 - Drawer menu has been reworked to use custom radio buttons.
+
+0.9.10
+
+### Bugs Fixed:
+- (__0016__) Activities with a notification parameter could not be edited after creation (introduced in 0.9.9)
+- homeLayout names are now backwards compatible (data can now be retained between updates)
