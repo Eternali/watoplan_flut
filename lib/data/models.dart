@@ -197,20 +197,67 @@ class MenuChoice {
 }
 
 
+typedef TypeInitializer<T>();
+typedef T Cloner<T>(T value);
+typedef dynamic JsonConverter(dynamic value);
+class ParamType<T> {
+
+  final T type;
+  TypeInitializer<T> init;
+  JsonConverter fromJson;
+  JsonConverter toJson;
+  Cloner<T> cloner;
+
+  ParamType(
+    this.type,
+    { this.init, this.fromJson, this.toJson, this.cloner }
+  ) {
+    init ??= () => type;
+    fromJson ??= (value) => value;
+    toJson ??= (value) => value.toString();
+    cloner ??= (value) => value;
+  }
+
+}
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, dynamic> validParams = {
-  'name': '',
-  'desc': '',
-  'long': '',
-  'priority': 0,
-  'progress': 0,
-  'start': DateTime.now(),
-  'end': DateTime.now(),
-  'notis': <Noti>[],
-  'location': Location(lat: 0.0, long: 0.0),
-  // 'contacts': <Contact>[],
-  // 'tags': <String>[],
+  'name': ParamType<String>(''),
+  'desc': ParamType<String>(''),
+  'long': ParamType<String>(''),
+  'priority': ParamType<int>(0),
+  'progress': ParamType<int>(0),
+  'start': ParamType<DateTime>(
+    DateTime.now(),
+    init: () => DateTime.now(),
+    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(int.parse(v)),
+    toJson: (v) => v.millisecondsSinceEpoch,
+    cloner: (v) => Utils.copyWith(v)
+  ),
+  'end': ParamType<DateTime>(
+    DateTime.now(),
+    init: () => DateTime.now(),
+    fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(int.parse(v)),
+    toJson: (v) => v.millisecondsSinceEpoch,
+    cloner: (v) => Utils.copyWith(v)
+  ),
+  'notis': ParamType<List<Noti>>(
+    <Noti>[],
+    init: () => <Noti>[],
+    fromJson: (v) => v.map((n) => Noti.fromJson(n)).toList(),
+    toJson: (v) => v.map<Noti>((n) => n.toJson()).toList(),
+    cloner: (v) => List<Noti>.from(v)
+  ),
+  'location': ParamType<Location>(
+    Location(lat: 0.0, long: 0.0),
+    init: () => Location(lat: 0.0, long: 0.0),
+    fromJson: (v) => Location.fromJson(v),
+    toJson: (v) => v.toJson(),
+    cloner: (v) => Location(lat: v.lat, long: v.long)
+  ),
+  // 'contacts': ParamType<List<Contact>>(<Contact>[], init: () => <Contact>[]),
+  // 'tags': ParamType<List<String>>(<String>[], init: () => <String>[]),
 };
 
 class ActivityType {
@@ -220,21 +267,19 @@ class ActivityType {
   String name;
   IconData icon;
   Color color;
-  Map<String, dynamic> params;
+  Map<String, ParamType> params = {  };
 
   ActivityType({
     int id,
     this.name = '',
     this.icon = const IconData(0),
     this.color = const Color(0xffaaaaaa),
-    this.params,
+    List<String> params = const [],  // only allowed to pass a list of param names to avoid typing issues
   }) : _id = id ?? generateId() {
-    params ??= {  };
-    params.forEach((name, type) {
+    params.forEach((name) {
       if (!validParams.keys.contains(name))
         throw Exception('$name is not a valid parameter');
-      else if (type.runtimeType != validParams[name].runtimeType)
-        throw Exception('${type.runtimeType} is! ${validParams[name].runtimeType}: $name is not a supported type of parameter');
+      this.params[name] = validParams[name];
     });
   }
 
@@ -244,7 +289,7 @@ class ActivityType {
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
-      params: Map.from(prev.params),
+      params: prev.params.keys.toList(),
     );
   }
 
@@ -263,13 +308,13 @@ class ActivityType {
     String name,
     IconData icon,
     Color color,
-    Map<String, dynamic> params,
+    List<String> params,
   }) => ActivityType(
     id: id ?? this._id,
     name: name ?? this.name,
     icon: icon ?? this.icon,
     color: color ?? this.color,
-    params: params ?? this.params,
+    params: params ?? List<ParamType>.from(this.params.keys),
   );
 
   Map<String, dynamic> toJson() => {
@@ -277,8 +322,15 @@ class ActivityType {
     'name': name,
     'icon': Converters.iconToString(icon),
     'color': Converters.colorToString(color),
-    'params': Converters.paramsToJson(params),
+    'params': Converters.paramsToJson(params.keys.toList()),
   };
+
+  Activity createActivity() {
+    return Activity(
+      type: id,
+      data: params.map((key, value) => MapEntry(key, value.init())),
+    );
+  }
 
   @override
   int get hashCode => id.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
@@ -301,37 +353,27 @@ class Activity {
     dynamic type,
     Map<String, dynamic> data
   }) : _id = id ?? generateId() {
-    Map<String, dynamic> tmpData;
     if (type is int) {
       typeId = type;
-      tmpData = data;
+      this.data = data; 
     } else if (type is ActivityType) {
       typeId = type.id;
-      tmpData = Map.from(type.params);
+      this.data = Map.from(type.params).map((k, v) => MapEntry(k, v.init()));
       data.forEach((String name, dynamic value) {
-        int idx = tmpData.keys.toList().indexOf(name);
-        if (idx < 0)
+        if (!type.params.keys.contains(name))
           throw Exception('$name is not a parameter of ${type.name}');
-        else if (value.runtimeType != tmpData[name].runtimeType)
+        else if (value.runtimeType != type.params[name].type.runtimeType)
           throw Exception('$name is not a valid parameter for ${type.name}');
-        else
-          tmpData[name] = value;
       });
     } else throw Exception('dynamic type parameter must be an int or an ActivityType');
-
-    this.data = tmpData;
   }
 
   factory Activity.from(Activity prev) {
     return Activity(
       id: prev.id,
       type: prev.typeId,
-      data: prev.data.map((name, value) =>
-        // Thanks to dart, I can't do any sort of dynamic typing from variables (which I only have to because of its bad type inferencing)
-        MapEntry(name, value is List<Noti>
-          ? List<Noti>.from(value) : value is Map
-            ? Map.from(value) : value)
-      ),
+      data: Map<String, dynamic>.from(prev.data)
+        .map((name, value) => MapEntry(name, validParams[name].cloner(value)))
     );
   }
 
@@ -339,7 +381,7 @@ class Activity {
     return Activity(
       id: jsonMap['_id'],
       type: jsonMap['typeId'],
-      data: Converters.paramsFromJson(jsonMap['data']),
+      data: Converters.paramsFromJson(jsonMap['data'], true),
     );
   }
 
@@ -352,7 +394,8 @@ class Activity {
     Activity newActivity = Activity(
       id: id ?? this._id,
       type: type ?? this.typeId,
-      data: data ?? this.data,
+      data: data ?? Map<String, dynamic>.from(this.data)
+        .map((name, value) => MapEntry(name, validParams[name].cloner(value))),
     );
     entries.forEach((entry) { newActivity.data[entry.key] = entry.value; });
 
@@ -362,7 +405,7 @@ class Activity {
   Map<String, dynamic> toJson() => {
     '_id': _id,
     'typeId': typeId,
-    'data': Converters.paramsToJson(data),
+    'data': Converters.paramsToJson(data, true),
   };
 
   ActivityType getType(List<ActivityType> types) => types.firstWhere((type) => type.id == typeId);

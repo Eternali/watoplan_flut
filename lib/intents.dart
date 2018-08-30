@@ -45,14 +45,13 @@ class Intents {
                 ?.map((type) => ActivityType.fromJson(type))
                 .cast<ActivityType>().toList() ?? <ActivityType>[];
               var activities = LoadDefaults.defaultData['activities']
-                  ?.map((activity) => Activity.fromJson(activity, types))
-                  .cast<Activity>().toList() ?? <Activity>[];
+                ?.map((activity) => Activity.fromJson(activity, types))
+                .cast<Activity>().toList() ?? <Activity>[];
               return LocalDb().saveOver(types, activities)
                 .then((_) => [types, activities]);
             });
         } else return data;
       }).then((data) {
-        // Damn dart and its terrible type inferencing
         appState.value = Reducers.setData(
           appState.value,
           activityTypes: (data as List)[0],
@@ -277,7 +276,7 @@ class Intents {
           name: name ?? editor.name,
           icon: icon ?? editor.icon,
           color: color ?? editor.color,
-          params: params ?? editor.params,
+          params: params ?? editor.params.keys.toList(),
         )
       );
     }

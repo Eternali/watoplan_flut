@@ -5,79 +5,79 @@
       "name": "reminder",
       "icon": "0xE39F",
       "color": "0xfff9a800",
-      "params": {
-        "name": "",
-        "desc": "",
-        "priority": 0
-      }
+      "params": [
+        "name",
+        "desc",
+        "priority"
+      ]
     },
     {
       "_id": 9464445,
       "name": "todo",
       "icon": "0xe877",
       "color": "0xff8f54ff",
-      "params": {
-        "name": "",
-        "long": "",
-        "progress": 0,
-        "priority": 0
-      }
+      "params": [
+        "name",
+        "long",
+        "progress",
+        "priority"
+      ]
     },
     {
       "_id": 3004445,
       "name": "activity",
       "icon": "0x0E84E",
       "color": "0xff607d8b",
-      "params": {
-        "name": "",
-        "desc": "",
-        "progress": 0,
-        "priority": 0,
-        "start": "1525976515775",
-        "notis": []
-      }
+      "params": [
+        "name",
+        "desc",
+        "progress",
+        "priority",
+        "start",
+        "notis"
+      ]
     },
     {
       "_id": 2204449,
       "name": "event",
       "icon": "0x0E878",
       "color": "0xffff5722",
-      "params": {
-        "name": "",
-        "desc": "",
-        "priority": 0,
-        "start": "1525976515779",
-        "notis": []
-      }
+      "params": [
+        "name",
+        "desc",
+        "priority",
+        "start",
+        "notis"
+      ]
     },
     {
       "_id": 3704448,
       "name": "meeting",
       "icon": "0x0E7FC",
       "color": "0xff4caf50",
-      "params": {
-        "name": "",
-        "long": "",
-        "priority": 0,
-        "start": "1525976515779",
-        "end": "1525976515779",
-        "notis": []
-      }
+      "params": [
+        "name",
+        "long",
+        "priority",
+        "start",
+        "end",
+        "notis"
+      ]
     },
     {
       "_id": 2604448,
       "name": "assessment",
       "icon": "0x0E88B",
       "color": "0xff9c27b0",
-      "params": {
-        "name": "",
-        "desc": "",
-        "progress": 0,
-        "priority": 0,
-        "start": "1525976515779",
-        "end": "1525976515779",        
-        "notis": []
-      }
+      "params": [
+        "name",
+        "desc",
+        "progress",
+        "priority",
+        "start",
+        "end",        
+        "notis"
+      ]
     }
   ],
   "activities": [

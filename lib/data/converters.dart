@@ -38,64 +38,24 @@ class Converters {
     return datetime == null ? null : datetime.millisecondsSinceEpoch.toString();
   }
 
-  static Map<String, dynamic> paramsFromJson(Map<String, dynamic> params) {
-    // NOTE: technically params is an already decoded json string,
-    // we're just decoding complex objects that have been encoded in strings.
-    return params.map((k, v) {
-      switch (k) {
-        case 'start':
-        case 'end':
-          return MapEntry(k, dateTimeFromString(v));
-          break;
-        case 'notis':
-          // this is a dumb workaround for type checking
-          // List<Noti> x = []; List<Noti> y = <Noti>[]; assert x.runtimeType != y.runtimeType
-          List<Noti> value = <Noti>[];
-          for (Noti noti in v.map((noti) => Noti.fromJson(noti)).toList()) value.add(noti);
-          return MapEntry(k, value);
-          break;
-        case 'location':
-          return MapEntry(k, Location.fromJson(v));
-          break;
-        // case 'contacts':
-        // List<Contact> value = <Contact>[];
-        // for (Contact contact in v.map((contact) => Contact.fromJson(contact)).toList()) value.add(contact);
-        //   return MapEntry(k, value);
-        //   break;
-        default:
-          if (validParams.containsKey(k))
-            return MapEntry(k, v);
-          else
-            throw Exception('$k is not a valid parameter');
-          break;
-      }
-    });
+  static dynamic paramsFromJson(dynamic params, [ bool getAllData = false ]) {
+    return params is List
+      ? params
+      : params is Map
+        ? getAllData
+          ? params.map<String, dynamic>((k, v) => MapEntry(k, validParams[k]?.fromJson(v)))
+          : params.keys.toList()
+        : throw Exception('Invalid JSON map passed, must be either a List<String> or Map<String, dynamic>');
   }
 
-  static Map<String, dynamic> paramsToJson(Map<String, dynamic> params) {
-    return params.map((k, v) {
-      switch (k) {
-        case 'start':
-        case 'end':
-          return MapEntry(k, dateTimeToString(v));
-          break;
-        case 'notis':
-          return MapEntry(k, v.map((noti) => noti.toJson()).toList());
-          break;
-        case 'location':
-          return MapEntry(k, v.toJson());
-          break;
-        case 'contacts':
-          return MapEntry(k, v.map((contact) => contact.toJson()).toList());
-          break;
-        default:
-          if (validParams.containsKey(k))
-            return MapEntry(k, v);
-          else
-            throw Exception('$k is not a valid parameter');
-          break;
-      }
-    });
+  static dynamic paramsToJson(dynamic params, [ bool saveAllData = false ]) {
+    return params is List
+      ? params
+      : params is Map
+        ? saveAllData
+          ? params.map<String, dynamic>((k, v) => MapEntry(k, validParams[k]?.toJson(v)))
+          : params.keys.toList()
+        : throw Exception('Invalid parameters passed, must be either a List<String> or Map<String, dynamic>.');
   }
 
 }

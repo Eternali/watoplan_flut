@@ -6,6 +6,7 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/fam.dart';
 
@@ -51,14 +52,7 @@ class HomeScreenState extends State<HomeScreen> {
             Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
             Intents.editEditing(
               Provider.of(context),
-              Activity(
-                type: it,
-                data: it.params
-                  .map((key, value) => MapEntry(key, value is DateTime
-                    ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
-                    : value
-                  )),
-              )
+              it.createActivity()
             );
             Navigator.of(context).pushNamed(Routes.addEditActivity);
           },
