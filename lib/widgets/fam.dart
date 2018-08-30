@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+
+import 'package:flutter/material.dart';
 
 class SubFAB {
   final IconData icon;
+  final String label;
   final Color color;
   final VoidCallback onPressed;
 
-  SubFAB({ this.icon, this.color, this.onPressed });
+  SubFAB({ this.icon, this.label, this.color, this.onPressed });
 }
 
 class FloatingActionMenu extends StatefulWidget {
@@ -15,13 +17,12 @@ class FloatingActionMenu extends StatefulWidget {
   final entries;
   final double width;
   final double height;
+  final bool expanded;
 
-  FloatingActionMenu({ this.color, this.width, this.height, this.entries }) {
-    
-  }
+  FloatingActionMenu({ this.color, this.width, this.height, this.entries, this.expanded = false });
 
   @override
-  State<FloatingActionMenu> createState() => new FloatingActionMenuState();
+  State<FloatingActionMenu> createState() => FloatingActionMenuState();
 
 }
 
@@ -31,24 +32,51 @@ class FloatingActionMenuState
 
   AnimationController _controller;
   List<SubFAB> values;
+  int get animMillis => widget.entries.value.length * 70;
 
-  void init() {
-    _controller = new AnimationController(
-      vsync: this,
-      duration: new Duration(milliseconds: widget.entries.value.length * 70),
-    );
+  Widget generateMenu() => FloatingActionButton(
+    heroTag: null,
+    backgroundColor: widget.color,
+    child: AnimatedBuilder(
+      animation: _controller,
+      builder: (BuildContext context, Widget child) {
+        return Transform(
+          transform: Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
+          alignment: FractionalOffset.center,
+          child: Icon(Icons.add),
+        );
+      },
+    ),
+    onPressed: () {
+      if (_controller.isDismissed)
+        _controller.forward();
+      else
+        _controller.reverse();
+    },
+  );
+
+  void _updateController() {
+    _controller.duration = Duration(milliseconds: animMillis);
+    _controller.reset();
   }
 
   @override
   initState() {
     super.initState();
-    init();
-    if (widget.entries is ValueNotifier) widget.entries.addListener(init);
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: animMillis),
+    );
+    if (widget.entries is ValueNotifier) {
+      widget.entries.addListener(_updateController);
+    }
   }
 
   @override
   dispose() {
-    if (widget.entries is ValueNotifier) widget.entries.removeListener(init);
+    if (widget.entries is ValueNotifier) {
+      widget.entries.removeListener(_updateController);
+    }
     _controller.dispose();
     super.dispose();
   }
@@ -58,57 +86,60 @@ class FloatingActionMenuState
 
     values = widget.entries is ValueNotifier ? widget.entries.value : widget.entries;
 
-    return new Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
-      children: new List.generate(values.length, (int indice) {
-        Widget child = new Container(
+      children: List.generate(values.length, (int indice) {
+        Widget child = Container(
+          // if nothing is passed in, these will default to null,
+          // so the width and height will match the child
           width: widget.width,
           height: widget.height,
-          alignment: FractionalOffset.topCenter,
-          child: new ScaleTransition(
-            scale: new CurvedAnimation(
+          alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
+          child: ScaleTransition(
+            scale: CurvedAnimation(
               parent: _controller,
-              curve: new Interval(
+              curve: Interval(
                 0.0,
                 1.0 - indice / values.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
-            child: new FloatingActionButton(
+            child: widget.expanded ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: FloatingActionButton.extended(
+                heroTag: null,
+                tooltip: values[indice].label,
+                label: Text(
+                  values[indice].label,
+                ),
+                backgroundColor: values[indice].color,
+                icon: Icon(values[indice].icon),
+                onPressed: () {
+                  _controller.reverse();
+                  values[indice].onPressed();
+                },
+              ),
+            ) : FloatingActionButton(
               heroTag: null,
-              backgroundColor: values[indice].color,
+              tooltip: values[indice].label,
               mini: true,
-              child: new Icon(values[indice].icon),
+              backgroundColor: values[indice].color,
+              child: Icon(values[indice].icon),
               onPressed: () {
                 _controller.reverse();
                 values[indice].onPressed();
-                },
-            )
+              },
+            ),
           ),
         );
         return child;
       }).toList()
       ..add(
-        new FloatingActionButton(
-          heroTag: null,
-          backgroundColor: widget.color,
-          child: new AnimatedBuilder(
-            animation: _controller,
-            builder: (BuildContext context, Widget child) {
-              return new Transform(
-                transform: new Matrix4.rotationZ(_controller.value * 0.25 * math.pi),
-                alignment: FractionalOffset.center,
-                child: new Icon(Icons.add),
-              );
-            },
-          ),
-          onPressed: () {
-            if (_controller.isDismissed)
-              _controller.forward();
-            else
-              _controller.reverse();
-          },
-        ),
+        widget.expanded ? Container(
+          alignment: FractionalOffset.bottomRight,
+          padding: const EdgeInsets.only(top: 8.0),
+          child: generateMenu(),
+        ) : generateMenu()
       ),
     );
   }

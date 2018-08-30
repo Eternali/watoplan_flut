@@ -135,11 +135,11 @@ class ActivitySorters {
   // the number of activities associated with each type.
   static List<Activity> byType(List<Activity> activities, [ bool rev = false ]) {
     if (activities.length < 1) return activities;
-    List<Activity> sorted = new List.from(activities);
+    List<Activity> sorted = List.from(activities);
 
     List<int> typeIds = sorted.map((activity) => activity.typeId).toList();
-    Map<int, int> typeOrder = new Map.fromIterable(
-      typeIds.map((id) => new MapEntry(id, typeIds.where((i) => i == id).length)),
+    Map<int, int> typeOrder = Map.fromIterable(
+      typeIds.map((id) => MapEntry(id, typeIds.where((i) => i == id).length)),
       key: (entry) => entry.key,
       value: (entry) => entry.value,
       );

@@ -18,7 +18,7 @@ class NotiList extends StatefulWidget {
   NotiList({ this.activity, this.editor});
 
   @override
-  State<NotiList> createState() => new NotiListState();
+  State<NotiList> createState() => NotiListState();
 
 }
 
@@ -28,31 +28,31 @@ class NotiListState extends State<NotiList> {
   Widget build(BuildContext context) {
     final state = Provider.of(context);
 
-    return new Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget> [
         widget.activity.data['notis'].length > 0
-          ? new Column(
+          ? Column(
               children: (widget.activity.data['notis'] as List<Noti>).map(
-                (noti) => new NotiListItem(
+                (noti) => NotiListItem(
                   noti: noti,
                   activity: widget.activity,
                   editor: widget.editor,
                 )
               ).fold(
                 [new Divider()],
-                (acc, ele) => new List.from(acc)..addAll([ele, new Divider()])
+                (acc, ele) => List.from(acc)..addAll([ele, Divider()])
               ),
             )
           : null,
-        new InkWell(
+        InkWell(
           onTap: () {
             showDialog<List>(
               context: context,
-              builder: (BuildContext context) => new NotiEditDialog(
+              builder: (BuildContext context) => NotiEditDialog(
                 type: NotiTypes['PUSH'],
-                timeBefore: new TimeBefore(
+                timeBefore: TimeBefore(
                   time: 10,
                   unit: TimeUnits[0],
                 ),
@@ -64,7 +64,7 @@ class NotiListState extends State<NotiList> {
                   state,
                   widget.activity.copyWith(
                     entries: [ MapEntry('notis', widget.activity.data['notis']..add(
-                      new Noti(
+                      Noti(
                         title: widget.activity.data['name'],
                         msg: widget.activity.data['desc'],
                         offset: tmb[1],
@@ -76,19 +76,19 @@ class NotiListState extends State<NotiList> {
               }
             });
           },
-          child: new Row(
+          child: Row(
             children: <Widget>[
-              new Expanded(
-                child: new Text(
+              Expanded(
+                child: Text(
                   WatoplanLocalizations.of(context).addNotification,
-                  style: new TextStyle(
+                  style: TextStyle(
                     fontSize: 16.0,
                     color: Theme.of(context).hintColor,
                   ),
                 ),
               ),
-              new IconButton(
-                icon: new Icon(Icons.add),
+              IconButton(
+                icon: Icon(Icons.add),
                 onPressed: null,
               ),
             ],

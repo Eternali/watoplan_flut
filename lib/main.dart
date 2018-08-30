@@ -18,7 +18,7 @@ import 'package:watoplan/screens/about_screen.dart';
 
 void main() async {
   runApp(
-    new Watoplan()
+    Watoplan()
   );
   await runDelayed();
 }
@@ -32,11 +32,11 @@ class Watoplan extends StatefulWidget {
   AppStateObservable watoplanState;
 
   Watoplan() {
-    watoplanState = new AppStateObservable(Reducers.firstDefault);
+    watoplanState = AppStateObservable(Reducers.firstDefault);
   }
 
   @override
-  State<Watoplan> createState() => new WatoplanState();
+  State<Watoplan> createState() => WatoplanState();
 
 }
 
@@ -49,31 +49,24 @@ class WatoplanState extends State<Watoplan> {
 
       };
     }
-    // getApplicationDocumentsDirectory()
-    //   .then((dir) => LevelDB.openUtf8('${dir.path}/testdb'))
-    //   .then((db) {
-    //     db.put('testkey', 'testval');
-    //     print('testing: testkey = ${db.get('testkey')}');
-    //   });
-    return new Provider(
+
+    return Provider(
       state: widget.watoplanState,
-      child: new MaterialApp(
+      child: MaterialApp(
         title: 'watoplan',
         localizationsDelegates: [
-          new WatoplanLocalizationsDelegate()
+          WatoplanLocalizationsDelegate()
         ],
         routes: {
-          Routes.home: (context) => new HomeScreen(title: 'WAToPlan'),
-          Routes.addEditActivity: (context) => new AddEditScreen(),
-          Routes.addEditActivityType: (context) => new AddEditTypeScreen(),
-          Routes.settings: (context) => new SettingsScreen(),
-          Routes.about: (context) => new AboutScreen(),
+          Routes.home: (context) => HomeScreen(title: 'WAToPlan'),
+          Routes.addEditActivity: (context) => AddEditScreen(),
+          Routes.addEditActivityType: (context) => AddEditTypeScreen(),
+          Routes.settings: (context) => SettingsScreen(),
+          Routes.about: (context) => AboutScreen(),
         },
-        builder: (BuildContext context, Widget child) => new Theme(
+        builder: (BuildContext context, Widget child) => Theme(
           data: Provider.of(context).value.theme ?? themes['light'],
-          child: new SafeArea(
-            child: child,
-          ),
+          child: child,
         ),
       ),
     );

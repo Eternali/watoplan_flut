@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/themes.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 
 typedef T EditingModifier<T>();
@@ -8,12 +9,13 @@ typedef T EditingModifier<T>();
 class Reducers {
 
   // this is the state that will be set before any data or settings have been loaded from storage yet.
-  static AppState get firstDefault => new AppState(
+  static AppState get firstDefault => AppState(
     activityTypes: [],
     activities: [],
     focused: 0,
     theme: themes['light'],
-    sorter: 'start',
+    homeLayout: validLayouts.keys.first,
+    homeOptions: validLayouts.map((name, layout) => MapEntry(name, layout.defaultOptions)),
   );
 
   static AppState setData(
@@ -29,22 +31,26 @@ class Reducers {
     return oldState.copyWith(needsRefresh: false);
   }
 
+  static AppState switchHome(AppState oldState, { String layout, Map<String, dynamic> options }) {
+    return oldState.copyWith(homeLayout: layout, specificOptions: options);
+  }
+
   static AppState addActivityTypes(AppState oldState, List<ActivityType> toadd) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activityTypes.addAll(toadd);
 
     return newState;
   }
 
   static AppState removeActivityTypes(AppState oldState, List<ActivityType> activityTypes) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     for (ActivityType activityType in activityTypes) newState.activityTypes.remove(activityType);
 
     return newState;    
   }
 
   static AppState changeActivityType(AppState oldState, ActivityType newType) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activityTypes[
       newState.activityTypes.map(
         (type) => type.id
@@ -55,28 +61,28 @@ class Reducers {
   }
 
   static AppState insertActivityType(AppState oldState, ActivityType type, int idx) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activityTypes.insert(idx, type);
 
     return newState;
   }
 
   static AppState addActivities(AppState oldState, List<Activity> toadd) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activities.addAll(toadd);
 
     return newState;
   }
 
   static AppState removeActivities(AppState oldState, List<Activity> activities) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     for (Activity activity in activities) newState.activities.remove(activity);
 
     return newState;
   }
 
   static AppState changeActivity(AppState oldState, Activity newActivity) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activities[
       newState.activities.map(
         (activity) => activity.id
@@ -87,17 +93,16 @@ class Reducers {
   }
 
   static AppState insertActivity(AppState oldState, Activity activity, int idx) {
-    AppState newState = new AppState.from(oldState);
+    AppState newState = AppState.from(oldState);
     newState.activities.insert(idx, activity);
 
     return newState;
   }
 
-  static AppState sortActivities(AppState oldState, { String sorterName, bool reversed = false }) {
+  static AppState sortActivities(AppState oldState, Map<String, dynamic> sortOptions) {
     return oldState.copyWith(
-      activities: validSorts[sorterName](oldState.activities, reversed),
-      sorter: sorterName,
-      sortRev: reversed,
+      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev']),
+      specificOptions: sortOptions,
     );
   }
 
@@ -120,7 +125,7 @@ class Reducers {
   // modified since they are really only temporary value containers.
   static AppState inlineEditChange(AppState oldState, dynamic editing, EditingModifier modifier) {
     if (editing is! Activity && editing is! ActivityType)
-      throw new Exception('Inline editing value must be an Activity or ActivityType');
+      throw Exception('Inline editing value must be an Activity or ActivityType');
     return editing is Activity
       ? oldState.copyWith(editingActivity: modifier())
       : oldState.copyWith(editingType: modifier());
@@ -139,8 +144,10 @@ class Reducers {
     );
   }
 
-  static AppState removeTags(AppState oldState, Activity activity, List<int> indices) {
-  
+  static AppState focusOnDay(AppState oldState, DateTime day) {
+    return oldState.copyWith(
+      focusedDate: day,
+    );
   }
 
 }

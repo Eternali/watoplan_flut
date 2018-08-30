@@ -1,9 +1,10 @@
 import 'dart:convert' show json;
 
 import 'package:flutter/material.dart';
+// import 'package:contact_finder/contact_finder.dart';
 
+import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/data/person.dart';
 import 'package:watoplan/data/models.dart';
 
 class Converters {
@@ -13,7 +14,7 @@ class Converters {
 
   static IconData iconFromString(String iconStr) {
     // generates icondata from a unicode (hex) representation.
-    return new IconData(int.parse(iconStr), fontFamily: 'MaterialIcons');
+    return IconData(int.parse(iconStr), fontFamily: 'MaterialIcons');
   }
 
   static String iconToString(IconData icon) {
@@ -22,7 +23,7 @@ class Converters {
   }
 
   static Color colorFromString(String colorStr) {
-    return new Color(int.parse(colorStr));
+    return Color(int.parse(colorStr));
   }
 
   static String colorToString(Color color) {
@@ -30,11 +31,11 @@ class Converters {
   }
 
   static DateTime dateTimeFromString(String millis) {
-    return new DateTime.fromMillisecondsSinceEpoch(int.parse(millis));
+    return millis == null ? null : DateTime.fromMillisecondsSinceEpoch(int.tryParse(millis));
   }
 
   static String dateTimeToString(DateTime datetime) {
-    return datetime.millisecondsSinceEpoch.toString();
+    return datetime == null ? null : datetime.millisecondsSinceEpoch.toString();
   }
 
   static Map<String, dynamic> paramsFromJson(Map<String, dynamic> params) {
@@ -44,28 +45,28 @@ class Converters {
       switch (k) {
         case 'start':
         case 'end':
-          return new MapEntry(k, dateTimeFromString(v));
+          return MapEntry(k, dateTimeFromString(v));
           break;
         case 'notis':
           // this is a dumb workaround for type checking
           // List<Noti> x = []; List<Noti> y = <Noti>[]; assert x.runtimeType != y.runtimeType
           List<Noti> value = <Noti>[];
-          for (Noti noti in v.map((noti) => new Noti.fromJson(noti)).toList()) value.add(noti);
-          return new MapEntry(k, value);
-          break;
-        case 'entities':
-          List<Person> value = <Person>[];
-          for (Person person in v.map((entity) => new Person.fromJson(entity)).toList()) value.add(person);
-          return new MapEntry(k, value);
+          for (Noti noti in v.map((noti) => Noti.fromJson(noti)).toList()) value.add(noti);
+          return MapEntry(k, value);
           break;
         case 'location':
-          return new MapEntry(k, v.toString());
+          return MapEntry(k, Location.fromJson(v));
           break;
+        // case 'contacts':
+        // List<Contact> value = <Contact>[];
+        // for (Contact contact in v.map((contact) => Contact.fromJson(contact)).toList()) value.add(contact);
+        //   return MapEntry(k, value);
+        //   break;
         default:
           if (validParams.containsKey(k))
-            return new MapEntry(k, v);
+            return MapEntry(k, v);
           else
-            throw new Exception('$k is not a valid parameter');
+            throw Exception('$k is not a valid parameter');
           break;
       }
     });
@@ -76,22 +77,22 @@ class Converters {
       switch (k) {
         case 'start':
         case 'end':
-          return new MapEntry(k, dateTimeToString(v));
+          return MapEntry(k, dateTimeToString(v));
           break;
         case 'notis':
-          return new MapEntry(k, v.map((noti) => noti.toJson()).toList());
-          break;
-        case 'entities':
-          return new MapEntry(k, v.map((entity) => entity.toJson()).toList() as List<Person>);
+          return MapEntry(k, v.map((noti) => noti.toJson()).toList());
           break;
         case 'location':
-          return new MapEntry(k, v.toString());
+          return MapEntry(k, v.toJson());
+          break;
+        case 'contacts':
+          return MapEntry(k, v.map((contact) => contact.toJson()).toList());
           break;
         default:
           if (validParams.containsKey(k))
-            return new MapEntry(k, v);
+            return MapEntry(k, v);
           else
-            throw new Exception('$k is not a valid parameter');
+            throw Exception('$k is not a valid parameter');
           break;
       }
     });

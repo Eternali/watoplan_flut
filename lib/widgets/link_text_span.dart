@@ -18,7 +18,7 @@ class LinkTextSpan extends TextSpan {
   LinkTextSpan({ TextStyle style, String url, String text, Function whenCant, bool inApp = false }) : super(
     style: style,
     text: text ?? url,
-    recognizer: new TapGestureRecognizer()..onTap = () {
+    recognizer: TapGestureRecognizer()..onTap = () {
       canLaunch(url).then((can) {
         if (can) launch(url, forceSafariVC: false, forceWebView: inApp);
         else if (whenCant != null) whenCant();

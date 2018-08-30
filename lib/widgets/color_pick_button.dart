@@ -11,7 +11,7 @@ class ColorPickButton extends StatefulWidget {
   ColorPickButton({ this.activityType });
 
   @override
-  State<ColorPickButton> createState() => new ColorPickButtonState(activityType: activityType);
+  State<ColorPickButton> createState() => ColorPickButtonState(activityType: activityType);
 
 }
 
@@ -24,18 +24,18 @@ class ColorPickButtonState extends State<ColorPickButton> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    return new RaisedButton(
-      padding: new EdgeInsets.all(12.0),
+    return RaisedButton(
+      padding: EdgeInsets.all(12.0),
       color: activityType.color ?? theme.accentColor,
-      child: new Text(
+      child: Text(
         WatoplanLocalizations.of(context).chooseColor,
-        style: new TextStyle(
+        style: TextStyle(
           fontSize: 20.0,
           letterSpacing: 1.2,
         ),
       ),
       onPressed: () {
-        ColorPicker picker = new ColorPicker(
+        ColorPicker picker = ColorPicker(
           (activityType.color ?? theme.accentColor).red.toDouble(),
           (activityType.color ?? theme.accentColor).green.toDouble(),
           (activityType.color ?? theme.accentColor).blue.toDouble()

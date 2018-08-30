@@ -14,7 +14,7 @@ class CheckboxList<T> extends StatefulWidget {
   CheckboxList({ List values, this.entries, this.color, this.isActive, this.onChange }) : values = values ?? entries;
 
   @override
-  State<CheckboxList> createState() => new CheckboxListState();
+  State<CheckboxList> createState() => CheckboxListState();
 
 }
 
@@ -24,11 +24,11 @@ class CheckboxListState extends State<CheckboxList> {
 
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      children: new List<int>.generate(widget.entries.length, (i) => i).map(
-        (i) => new CheckboxListTile(
+    return Column(
+      children: List<int>.generate(widget.entries.length, (i) => i).map(
+        (i) => CheckboxListTile(
           value: widget.isActive(widget.values[i]),
-          title: new Text(widget.entries[i]),
+          title: Text(widget.entries[i]),
           activeColor: widget.color,
           onChanged: (bool selected) {
             widget.onChange(selected, widget.values[i]);

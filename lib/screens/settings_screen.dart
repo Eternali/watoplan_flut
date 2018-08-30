@@ -15,7 +15,7 @@ class SettingsScreen extends StatefulWidget {
   bool isDark = false;
 
   @override
-  State<SettingsScreen> createState() => new SettingsScreenState();
+  State<SettingsScreen> createState() => SettingsScreenState();
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
@@ -32,30 +32,30 @@ class SettingsScreenState extends State<SettingsScreen> {
       }
     });
 
-    return new Scaffold(
-      appBar: new AppBar(
-        leading: new BackButton(),
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
         centerTitle: true,
-        title: new Text(
+        title: Text(
           locales.settingsTitle
         ),
         actions: <Widget>[
-          new PopupMenuButton<int>(
+          PopupMenuButton<int>(
             onSelected: (int choice) {
               if (choice == 0) {
                 showDialog<bool>(
                   context: context,
-                  builder: (BuildContext context) => new SimpleDialog(
-                    title: new Text(
+                  builder: (BuildContext context) => SimpleDialog(
+                    title: Text(
                       locales.dataWarning,
                     ),
                     children: <Widget>[
-                      new Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          new FlatButton(
-                            child: new Text(
+                          FlatButton(
+                            child: Text(
                               locales.cancel,
                               style: theme.textTheme.button,
                             ),
@@ -63,8 +63,8 @@ class SettingsScreenState extends State<SettingsScreen> {
                               Navigator.pop(context, false);
                             },
                           ),
-                          new FlatButton(
-                            child: new Text(
+                          FlatButton(
+                            child: Text(
                               locales.cont,
                               style: theme.textTheme.button.copyWith(
                                 color: theme.accentColor,
@@ -88,13 +88,13 @@ class SettingsScreenState extends State<SettingsScreen> {
               }
             },
             itemBuilder: (BuildContext context) => [
-              new PopupMenuItem<int>(
+              PopupMenuItem<int>(
                 value: 0,
-                child: new Row(
+                child: Row(
                   children: <Widget>[
-                    new Icon(Icons.settings_backup_restore),
-                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
-                    new Text(locales.resetApp),
+                    Icon(Icons.settings_backup_restore),
+                    Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
+                    Text(locales.resetApp),
                   ],
                 ),
               ),
@@ -102,66 +102,68 @@ class SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      body: new ListView(
-        children: <Widget>[
-          new Builder(
-            builder: (BuildContext context) {
-              return new SwitchListTile(
-                title: new Text('Join the dark side?'),
-                selected: true,
-                value: widget.isDark,
-                activeColor: Theme.of(context).accentColor,
-                onChanged: (newVal) {
-                  if (newVal) {
-                    if (Theme.of(context) != themes['dark']) Intents.setTheme(Provider.of(context), 'dark');
-                  } else {
-                    if (Theme.of(context) != themes['light']) Intents.setTheme(Provider.of(context), 'light');
-                  }
-                  setState(() { widget.isDark = newVal; });
-                },
-              );
-            }
-          ),
-          
-          new Container(
-            padding: EdgeInsets.only(bottom: 12.0),
-            child: new Text(
-              'Activity Types',
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          new Column(
-            children: <Widget>[
-              new Column(
-                children: stateVal.activityTypes.map(
-                  (it) => new ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
-                ).toList(),
-              ),
-              new Padding(
-                padding: EdgeInsets.symmetric(vertical: 6.0),
-                child: new RaisedButton(
-                  padding: EdgeInsets.all(8.0),
-                  color: Theme.of(context).accentColor,
-                  shape: new CircleBorder(
-                    side: new BorderSide(
-                      color: Theme.of(context).accentColor
-                    )
-                  ),
-                  child: new Icon(Icons.add, size: 34.0),
-                  onPressed: () {
-                    Intents.setFocused(Provider.of(context), indice: -1);
-                    Intents.editEditing(Provider.of(context), new ActivityType(color: theme.accentColor));
-                    Navigator.of(context).pushNamed(Routes.addEditActivityType);
+      body: SafeArea(
+        child: ListView(
+          children: <Widget>[
+            Builder(
+              builder: (BuildContext context) {
+                return SwitchListTile(
+                  title: Text('Join the dark side?'),
+                  selected: true,
+                  value: widget.isDark,
+                  activeColor: Theme.of(context).accentColor,
+                  onChanged: (newVal) {
+                    if (newVal) {
+                      if (Theme.of(context) != themes['dark']) Intents.setTheme(Provider.of(context), 'dark');
+                    } else {
+                      if (Theme.of(context) != themes['light']) Intents.setTheme(Provider.of(context), 'light');
+                    }
+                    setState(() { widget.isDark = newVal; });
                   },
+                );
+              }
+            ),
+            
+            Container(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: Text(
+                'Activity Types',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            Column(
+              children: <Widget>[
+                Column(
+                  children: stateVal.activityTypes.map(
+                    (it) => ActivityTypeCard(it, stateVal.activityTypes.indexOf(it))
+                  ).toList(),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6.0),
+                  child: RaisedButton(
+                    padding: EdgeInsets.all(8.0),
+                    color: Theme.of(context).accentColor,
+                    shape: CircleBorder(
+                      side: BorderSide(
+                        color: Theme.of(context).accentColor
+                      )
+                    ),
+                    child: Icon(Icons.add, size: 34.0),
+                    onPressed: () {
+                      Intents.setFocused(Provider.of(context), indice: -1);
+                      Intents.editEditing(Provider.of(context), ActivityType(color: theme.accentColor));
+                      Navigator.of(context).pushNamed(Routes.addEditActivityType);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

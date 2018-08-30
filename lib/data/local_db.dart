@@ -28,14 +28,14 @@ class LocalDb {
 
   factory LocalDb([ String loc = '' ]) {
     if (_self == null) {
-      _self = new LocalDb._init(loc);
+      _self = LocalDb._init(loc);
     }
 
     return _self;
   }
 
   LocalDb._init(loc) {
-    _db = new File(loc);
+    _db = File(loc);
     // _db.createSync();
   }
 

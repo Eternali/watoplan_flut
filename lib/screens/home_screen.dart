@@ -1,12 +1,12 @@
+import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
+import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/utils/data_utils.dart';
-import 'package:watoplan/widgets/activity_card.dart';
 import 'package:watoplan/widgets/fam.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,16 +16,19 @@ class HomeScreen extends StatefulWidget {
     const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
     const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
   ];
-  ValueNotifier<List<SubFAB>> subFabs = ValueNotifier([]);
 
   HomeScreen({ Key key, this.title }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => new HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 
 }
 
 class HomeScreenState extends State<HomeScreen> {
+
+  final ValueNotifier<List<SubFAB>> subFabs;
+
+  HomeScreenState() : subFabs = ValueNotifier([]);
 
   // Generate a list of 4 FABs to display the most used activityTypes for easy access
   List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
@@ -40,18 +43,19 @@ class HomeScreenState extends State<HomeScreen> {
       .reversed.toList()
       .map((it) => it[0] as ActivityType).toList()
       .map((it) =>
-        new SubFAB(
+        SubFAB(
           icon: it.icon,
+          label: it.name,
           color: it.color,
           onPressed: () {
             Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
             Intents.editEditing(
               Provider.of(context),
-              new Activity(
+              Activity(
                 type: it,
                 data: it.params
-                  .map((key, value) => new MapEntry(key, value is DateTime
-                    ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
+                  .map((key, value) => MapEntry(key, value is DateTime
+                    ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                     : value
                   )),
               )
@@ -64,27 +68,28 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppState stateVal = Provider.of(context).value;
-    WatoplanLocalizations locales = WatoplanLocalizations.of(context);
+    final AppState stateVal = Provider.of(context).value;
+    final locales = WatoplanLocalizations.of(context);
+    final theme = Theme.of(context);
 
-    widget.subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
+    subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
-    return new Scaffold(
-      appBar: new AppBar(
+    return Scaffold(
+      appBar: AppBar(
         centerTitle: true,
-        title: new Text(widget.title ?? locales.appTitle),
+        title: Text(widget.title ?? locales.appTitle),
         actions: <Widget>[
-          new PopupMenuButton<ActivityType>(
-            icon: new Icon(Icons.add),
+          PopupMenuButton<ActivityType>(
+            icon: Icon(Icons.add),
             onSelected: (ActivityType type) {
               Intents.setFocused(Provider.of(context), indice: -(stateVal.activityTypes.indexOf(type) + 1));
               Intents.editEditing(
                 Provider.of(context),
-                new Activity(
+                Activity(
                   type: type,
                   data: type.params
-                    .map((key, value) => new MapEntry(key, value is DateTime
-                      ? DateTimeUtils.copyWith(DateTime.now(), second: 0, millisecond: 0)
+                    .map((key, value) => MapEntry(key, value is DateTime
+                      ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
                       : value
                     )),
                 )
@@ -93,32 +98,32 @@ class HomeScreenState extends State<HomeScreen> {
             },
             itemBuilder: (BuildContext context) =>
               stateVal.activityTypes.map((type) =>
-                new PopupMenuItem<ActivityType>(
+                PopupMenuItem<ActivityType>(
                   value: type,
-                  child: new ListTileTheme(
+                  child: ListTileTheme(
                     iconColor: type.color,
                     textColor: type.color,
-                    child: new ListTile(
-                      leading: new Icon(type.icon),
-                      title: new Text(type.name),
+                    child: ListTile(
+                      leading: Icon(type.icon),
+                      title: Text(type.name),
                     ),
                   ),
                 )
               ).toList(),
           ),
-          new PopupMenuButton<MenuChoice>(
+          PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
               Navigator.of(context).pushNamed(choice.route);
             },
             itemBuilder: (BuildContext context) =>
               widget.overflow.map((MenuChoice choice) =>
-                new PopupMenuItem<MenuChoice>(
+                PopupMenuItem<MenuChoice>(
                 value: choice,
-                child: new Row(
+                child: Row(
                   children: <Widget>[
-                    new Icon(choice.icon),
-                    new Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
-                    new Text(choice.title)
+                    Icon(choice.icon),
+                    Padding(padding: const EdgeInsets.symmetric(horizontal: 8.0)),
+                    Text(choice.title)
                   ],
                 ),
                 )
@@ -126,20 +131,20 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: new Drawer(
-        child: new ListView(
+      drawer: Drawer(
+        child: ListView(
           children: <Widget>[
-            new Padding(
+            Padding(
               padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 18.0, bottom: 8.0),
-              child: new Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Image.asset('assets/icons/logo.png', width: 36.0, height: 36.0,),
-                  new Padding(
+                  Image.asset('assets/icons/logo.png', width: 36.0, height: 36.0,),
+                  Padding(
                     padding: const EdgeInsets.only(left: 14.0),
-                    child: new Text(
+                    child: Text(
                       locales.appTitle,
-                      style: new TextStyle(
+                      style: TextStyle(
                         letterSpacing: 2.6,
                         fontSize: 24.0,
                         fontFamily: 'Timeburner',
@@ -149,92 +154,33 @@ class HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            new Divider(),
-            new Padding(
-              padding: const EdgeInsets.only(left: 14.0, right: 14.0, top: 8.0, bottom: 14.0),
-              child: new ExpansionTile(
-                title: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    new Text(
-                      locales.layoutList.toUpperCase(),
-                      style: new TextStyle(
-                        letterSpacing: 1.4,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Timeburner',
-                      )
-                    ),
-                    new Expanded(child: new Container()),
-                    new Text(
-                      stateVal.sortRev ? stateVal.sorter.split('').reversed.join('').toUpperCase() : stateVal.sorter.toUpperCase(),
-                      style: new TextStyle(
-                        letterSpacing: 1.4,
-                        fontFamily: 'Timeburner',
-                      ),
-                    )
-                  ],
-                ),
-                children: <Widget>[
-                  new Column(
-                    children: locales.validSorts.keys.map(
-                      (name) => new RadioListTile(
-                        title: new Text(
-                          locales.validSorts[name](),
-                        ),
-                        groupValue: stateVal.sorter,
-                        value: name,
-                        onChanged: (name) {
-                          setState(() { Intents.sortActivities(Provider.of(context), sorterName: name); });
-                        },
-                      )
-                    ).toList(),
-                  ),
-                  new Container(
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 14.0, bottom: 14.0),
-                    child: new OutlineButton(
-                      padding: const EdgeInsets.all(0.0),
-                      textColor: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).textTheme.subhead.color,
-                      borderSide: new BorderSide(
-                        color: stateVal.sortRev ? Theme.of(context).accentColor : Theme.of(context).hintColor,
-                      ),
-                      child: new Text(
-                        stateVal.sortRev ? locales.reversed.toUpperCase() : locales.reverse.toUpperCase(),
-                        style: new TextStyle(
-                          fontFamily: 'Timeburner',
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.4,
-                        ),
-                      ),
-                      onPressed: () {
-                        Intents.sortActivities(Provider.of(context), sorterName: stateVal.sorter, reversed: !stateVal.sortRev);
-                      },
-                    ),
-                  )
-                ],
-              )
-            ),
-          ],
+            Divider(),
+          ]..addAll(validLayouts.values.map((HomeLayout layout) =>
+            layout.menuBuilder(context, (value) {
+              return Intents.switchHome(
+                Provider.of(context),
+                layout: layout.name, options: stateVal.homeOptions[layout.name]
+              );
+            })
+          )),
         ),
       ),
-      // body: new ListView(
-      //   shrinkWrap: true,
-      //   children: stateVal.activities.map((act) => new ActivityCard(act)).toList().retype<ActivityCard>(),
-      // ),
-      body: new ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
-        shrinkWrap: true,
-        itemCount: stateVal.activities.length,
-        itemBuilder: (BuildContext context, int indice) {
-          return new ActivityCard(stateVal.activities[indice]);
-        },
+      body: SafeArea(
+        child: validLayouts[stateVal.homeLayout]?.builder(context) ?? Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              '${locales.layoutUndefined} ${locales.updateError}',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.body2.copyWith(fontSize: 18.0),
+            ),
+          ),
+        ),
       ),
-      floatingActionButton: new FloatingActionMenu(
+      floatingActionButton: FloatingActionMenu(
         color: Theme.of(context).accentColor,
-        width: 56.0,
-        height: 70.0,
-        entries: widget.subFabs,
+        entries: subFabs,
+        expanded: true,
       ),
     );
   }

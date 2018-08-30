@@ -38,4 +38,3 @@ If you do not want to go through Google Play, you can manually build the app fro
 4. Build:
     - Android: ```flutter build apk --flavor free```
     - IOS: ```flutter build ios --flavor free```
-        - __NOTE__: Since I don't own a mac, I am reliant on the generosity of others to let me know how the IOS version is working. So if there's something wrong with it, please let me know.

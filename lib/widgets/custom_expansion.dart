@@ -20,7 +20,7 @@ class DualHeaderWithHint extends StatelessWidget {
   });
 
   Widget crossFade(Widget first, Widget second, bool isExpanded) {
-    return new AnimatedCrossFade(
+    return AnimatedCrossFade(
       firstChild: first,
       secondChild: second,
       firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
@@ -35,32 +35,32 @@ class DualHeaderWithHint extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return new Row(
+    return Row(
       children: <Widget>[
-        new Expanded(
+        Expanded(
           flex: 2,
-          child: new Container(
+          child: Container(
             margin: const EdgeInsets.only(left: 24.0),
-            child: new FittedBox(
+            child: FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
-              child: new Text(
+              child: Text(
                 name,
                 style: theme.textTheme.body1.copyWith(fontSize: 15.0),
               ),
             ),
           ),
         ),
-        new Expanded(
+        Expanded(
           flex: 3,
-          child: new Container(
+          child: Container(
             margin: const EdgeInsets.only(left: 24.0),
             child: crossFade(
-              new Text(
+              Text(
                 value,
                 style: theme.textTheme.caption.copyWith(fontSize: 15.0),
               ),
-              new Text(
+              Text(
                 hint,
                 style: theme.textTheme.caption.copyWith(fontSize: 15.0),
               ),
@@ -93,32 +93,32 @@ class CollapsibleBody extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final WatoplanLocalizations locales = WatoplanLocalizations.of(context);
 
-    return new Column(
+    return Column(
       children: <Widget>[
-        new Container(
+        Container(
           margin: const EdgeInsets.only(
             left: 12.0,
             right: 12.0,
             bottom: 24.0
           ) - margin,
-          child: new Center(
-            child: new DefaultTextStyle(
+          child: Center(
+            child: DefaultTextStyle(
               style: theme.textTheme.caption.copyWith(fontSize: 15.0),
               child: child
             )
           )
         ),
         const Divider(height: 1.0),
-        new Container(
+        Container(
           padding: const EdgeInsets.symmetric(vertical: 12.0),
-          child: new Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              new Container(
+              Container(
                 margin: const EdgeInsets.only(right: 8.0),
-                child: new FlatButton(
+                child: FlatButton(
                   onPressed: onCancel,
-                  child: new Text(
+                  child: Text(
                     locales.cancel.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.black54,
@@ -128,9 +128,9 @@ class CollapsibleBody extends StatelessWidget {
                   )
                 )
               ),
-              new Container(
+              Container(
                 margin: const EdgeInsets.only(right: 8.0),
-                child: new FlatButton(
+                child: FlatButton(
                   onPressed: onSave,
                   textTheme: ButtonTextTheme.accent,
                   child: Text(
@@ -163,11 +163,11 @@ class ExpansionItem<T> {
     this.value,
     this.builder,
     this.valToString,
-  }) : textController = new TextEditingController(text: valToString(value));
+  }) : textController = TextEditingController(text: valToString(value));
 
   ExpansionPanelHeaderBuilder get headerBuilder {
     return (BuildContext context, bool isExpanded) {
-      return new DualHeaderWithHint(
+      return DualHeaderWithHint(
         name: name,
         value: valToString(value),
         hint: hint,
@@ -187,7 +187,7 @@ class CustomExpansion extends StatefulWidget {
   CustomExpansion({ this.items });
 
   @override
-  State<CustomExpansion> createState() => new CustomExpansionState();
+  State<CustomExpansion> createState() => CustomExpansionState();
 
 }
 
@@ -203,13 +203,13 @@ class CustomExpansionState extends State<CustomExpansion> {
 
   @override
   Widget build(BuildContext context) {
-    return new ExpansionPanelList(
+    return ExpansionPanelList(
       expansionCallback: (int i, bool isExpanded) {
         setState(() {
           items[i].isExpanded = !isExpanded;
         });
       },
-      children: items.map((ExpansionItem<dynamic> item) => new ExpansionPanel(
+      children: items.map((ExpansionItem<dynamic> item) => ExpansionPanel(
         isExpanded: item.isExpanded,
         headerBuilder: item.headerBuilder,
         body: item.build(),
