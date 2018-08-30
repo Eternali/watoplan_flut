@@ -80,3 +80,8 @@
 ### Bugs Fixed:
 - (__0016__) Activities with a notification parameter could not be edited after creation (introduced in 0.9.9)
 - homeLayout names are now backwards compatible (data can now be retained between updates)
+
+0.9.11
+
+### Bugs Fixed:
+- __CALENDAR__ is back and fixed (sorry for the barrage of issues)

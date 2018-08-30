@@ -163,7 +163,7 @@ class AppState {
   // Static Helpers
   static String safeHomeLayout(String unsafe) => unsafe == null
     ? unsafe
-    : (validLayouts..removeWhere((_, hl) => !hl.validKeys.contains(unsafe))).keys.first;
+    : validLayouts.values.firstWhere((HomeLayout l) => l.validKeys.contains(unsafe)).name;
 
   @override
   int get hashCode =>
