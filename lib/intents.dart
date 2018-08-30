@@ -204,13 +204,13 @@ class Intents {
 
       var newIds = newActivity.data['notis'].map((n) => n.id);
       var oldIds = old.data['notis'].map((n) => n.id);
-      await Future.wait<dynamic>(old.data['notis']
+      await Future.wait<void>(old.data['notis']
         .where((Noti noti) => !newIds.contains(noti.id))
-        .map((Noti noti) => noti.cancel(notiPlug))
+        .map<Future<void>>((Noti noti) => noti.cancel(notiPlug))
       );
-      await Future.wait<dynamic>(newActivity.data['notis']
+      await Future.wait<void>(newActivity.data['notis']
         .where((Noti noti) => !oldIds.contains(noti.id))
-        .map((Noti noti) =>
+        .map<Future<void>>((Noti noti) =>
           noti.schedule(
             notiPlug: notiPlug,
             typeName: typeName,
