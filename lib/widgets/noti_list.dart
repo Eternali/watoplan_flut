@@ -34,7 +34,7 @@ class NotiListState extends State<NotiList> {
       children: <Widget> [
         widget.activity.data['notis'].length > 0
           ? Column(
-              children: (widget.activity.data['notis'] as List<Noti>).map(
+              children: widget.activity.data['notis'].map<NotiListItem>(
                 (noti) => NotiListItem(
                   noti: noti,
                   activity: widget.activity,
@@ -43,7 +43,7 @@ class NotiListState extends State<NotiList> {
               ).fold(
                 [new Divider()],
                 (acc, ele) => List.from(acc)..addAll([ele, Divider()])
-              ),
+              ).cast<Widget>(),
             )
           : null,
         InkWell(
