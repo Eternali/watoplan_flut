@@ -40,7 +40,7 @@ class Converters {
 
   static dynamic paramsFromJson(dynamic params, [ bool getAllData = false ]) {
     return params is List
-      ? params
+      ? params.cast<String>()
       : params is Map
         ? getAllData
           ? params.map<String, dynamic>((k, v) => MapEntry(k, validParams[k]?.fromJson(v)))
@@ -50,7 +50,7 @@ class Converters {
 
   static dynamic paramsToJson(dynamic params, [ bool saveAllData = false ]) {
     return params is List
-      ? params
+      ? params.cast<String>()
       : params is Map
         ? saveAllData
           ? params.map<String, dynamic>((k, v) => MapEntry(k, validParams[k]?.toJson(v)))

@@ -74,6 +74,7 @@ class LocalDb {
         return [activityTypes, activities];
       })
       .catchError((e) {
+        print(e.toString());
         print('The database at ${_db.path} is empty.');
         return [activityTypes, activities];
       });
