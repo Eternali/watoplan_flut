@@ -17,7 +17,7 @@ class FloatingActionMenu extends StatefulWidget {
 
   final String name;
   final Color color;
-  final entries;
+  final List<SubFAB> entries;
   final double width;
   final double height;
   final bool expanded;
@@ -42,8 +42,9 @@ class FloatingActionMenuState
     with TickerProviderStateMixin {
 
   AnimationController _controller;
-  List<SubFAB> values;
-  int get animMillis => widget.entries.value.length * 70;
+  // helps keep track of when to update the _controller duration.
+  List<SubFAB> prevEntries = [];
+  int get animMillis => widget.entries.length * 70;
 
   Widget generateMenu() => FloatingActionButton(
     heroTag: null,
@@ -74,32 +75,30 @@ class FloatingActionMenuState
   @override
   initState() {
     super.initState();
+    prevEntries = List.from(widget.entries);
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: animMillis),
     );
-    if (widget.entries is ValueNotifier) {
-      widget.entries.addListener(_updateController);
-    }
   }
 
   @override
   dispose() {
-    if (widget.entries is ValueNotifier) {
-      widget.entries.removeListener(_updateController);
-    }
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    values = widget.entries is ValueNotifier ? widget.entries.value : widget.entries;
+    if (widget.entries != prevEntries) {
+      prevEntries = List.from(widget.entries);
+      _updateController();
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(values.length, (int i) {
+      children: List.generate(widget.entries.length, (int i) {
+        SubFAB value = widget.entries[i];
         Widget child = Container(
           // if nothing is passed in, these will default to null,
           // so the width and height will match the child
@@ -112,7 +111,7 @@ class FloatingActionMenuState
               parent: _controller,
               curve: Interval(
                 0.0,
-                1.0 - i / values.length / 2.0,
+                1.0 - i / widget.entries.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
@@ -120,26 +119,26 @@ class FloatingActionMenuState
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: FloatingActionButton.extended(
                 heroTag: null,
-                tooltip: values[i].label,
+                tooltip: value.label,
                 label: Text(
-                  values[i].label,
+                  value.label,
                 ),
-                backgroundColor: values[i].color,
-                icon: Icon(values[i].icon),
+                backgroundColor: value.color,
+                icon: Icon(value.icon),
                 onPressed: () {
                   _controller.reverse();
-                  values[i].onPressed();
+                  value.onPressed();
                 },
               ),
             ) : FloatingActionButton(
               heroTag: null,
-              tooltip: values[i].label,
+              tooltip: value.label,
               mini: true,
-              backgroundColor: values[i].color,
-              child: Icon(values[i].icon),
+              backgroundColor: value.color,
+              child: Icon(value.icon),
               onPressed: () {
                 _controller.reverse();
-                values[i].onPressed();
+                value.onPressed();
               },
             ),
           ),

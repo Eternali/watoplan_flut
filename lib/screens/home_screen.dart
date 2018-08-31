@@ -27,10 +27,6 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
-  final ValueNotifier<List<SubFAB>> subFabs;
-
-  HomeScreenState() : subFabs = ValueNotifier([]);
-
   // Generate a list of 4 FABs to display the most used activityTypes for easy access
   List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
     List toShow = types
@@ -65,8 +61,6 @@ class HomeScreenState extends State<HomeScreen> {
     final AppState stateVal = Provider.of(context).value;
     final locales = WatoplanLocalizations.of(context);
     final theme = Theme.of(context);
-
-    subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
 
     return Scaffold(
       appBar: AppBar(
@@ -174,7 +168,7 @@ class HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionMenu(
         name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
-        entries: subFabs,
+        entries: typesToSubFabs(context, stateVal.activityTypes, stateVal.activities),
         expanded: true,
         key: const Key('create-fam'),
       ),
