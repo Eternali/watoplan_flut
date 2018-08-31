@@ -13,13 +13,22 @@ class SubFAB {
 
 class FloatingActionMenu extends StatefulWidget {
 
+  final String name;
   final Color color;
   final entries;
   final double width;
   final double height;
   final bool expanded;
 
-  FloatingActionMenu({ this.color, this.width, this.height, this.entries, this.expanded = false });
+  FloatingActionMenu({
+    this.name = 'fam',
+    this.color,
+    this.width,
+    this.height,
+    this.entries,
+    this.expanded = false,
+    Key key,
+  }) : super(key: key);
 
   @override
   State<FloatingActionMenu> createState() => FloatingActionMenuState();
@@ -88,10 +97,11 @@ class FloatingActionMenuState
 
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(values.length, (int indice) {
+      children: List.generate(values.length, (int i) {
         Widget child = Container(
           // if nothing is passed in, these will default to null,
           // so the width and height will match the child
+          key: Key('${widget.name}-$i'),
           width: widget.width,
           height: widget.height,
           alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
@@ -100,7 +110,7 @@ class FloatingActionMenuState
               parent: _controller,
               curve: Interval(
                 0.0,
-                1.0 - indice / values.length / 2.0,
+                1.0 - i / values.length / 2.0,
                 curve: Curves.easeOut
               ),
             ),
@@ -108,26 +118,26 @@ class FloatingActionMenuState
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: FloatingActionButton.extended(
                 heroTag: null,
-                tooltip: values[indice].label,
+                tooltip: values[i].label,
                 label: Text(
-                  values[indice].label,
+                  values[i].label,
                 ),
-                backgroundColor: values[indice].color,
-                icon: Icon(values[indice].icon),
+                backgroundColor: values[i].color,
+                icon: Icon(values[i].icon),
                 onPressed: () {
                   _controller.reverse();
-                  values[indice].onPressed();
+                  values[i].onPressed();
                 },
               ),
             ) : FloatingActionButton(
               heroTag: null,
-              tooltip: values[indice].label,
+              tooltip: values[i].label,
               mini: true,
-              backgroundColor: values[indice].color,
-              child: Icon(values[indice].icon),
+              backgroundColor: values[i].color,
+              child: Icon(values[i].icon),
               onPressed: () {
                 _controller.reverse();
-                values[indice].onPressed();
+                values[i].onPressed();
               },
             ),
           ),

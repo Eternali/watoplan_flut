@@ -172,9 +172,11 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionMenu(
+        name: 'create-fam',
         color: Theme.of(context).accentColor,
         entries: subFabs,
         expanded: true,
+        key: const Key('create-fam'),
       ),
     );
   }

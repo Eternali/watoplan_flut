@@ -68,18 +68,20 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
       onDismissed: (direction) {
         int idx = getIdx(state.value.activities);
         Intents.removeActivities(state, [widget.activity], notiPlug)
-          .then((activities) => Scaffold.of(context).showSnackBar(new SnackBar(
-            duration: const Duration(seconds: 3),
-            content: Text(
-              'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',
-            ),
-            action: SnackBarAction(
-              label: locales.undo.toUpperCase(),
-              onPressed: () {
-                Intents.insertActivity(state, activities[0], idx);
-              },
-            ),
-          )));
+          .then((activities) {
+              return Scaffold.of(context).showSnackBar(new SnackBar(
+              duration: const Duration(seconds: 3),
+              content: Text(
+                'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',
+              ),
+              action: SnackBarAction(
+                label: locales.undo.toUpperCase(),
+                onPressed: () {
+                  Intents.insertActivity(state, activities[0], idx);
+                },
+              ),
+            ));
+          });
       },
       child: InkWell(
         child: Stack(
