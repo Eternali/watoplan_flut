@@ -11,9 +11,9 @@ import 'package:watoplan/routes.dart';
 class ActivityTypeCard extends StatelessWidget {
 
   final ActivityType data;
-  final int indice;
+  final int index;
 
-  ActivityTypeCard(this.data, this.indice);
+  ActivityTypeCard(this.data, this.index);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class ActivityTypeCard extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Intents.setFocused(state, indice: indice);
+            Intents.setFocused(state, index: index);
             Intents.editEditing(state, ActivityType.from(data));
             Navigator.of(context).pushNamed(Routes.addEditActivityType);
           },
@@ -61,7 +61,7 @@ class ActivityTypeCard extends StatelessWidget {
                   action: SnackBarAction(
                     label: locales.undo.toUpperCase(),
                     onPressed: () {
-                      Intents.insertActivityType(state, tas[0][0], indice)
+                      Intents.insertActivityType(state, tas[0][0], index)
                         .then((_) => Future.wait<dynamic>(
                           // casting just because map doesn't know what type it is being mapped to.
                           // everything works without the cast, dart just complains

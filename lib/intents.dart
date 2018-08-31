@@ -83,7 +83,7 @@ class Intents {
         options: settings['homeOptions'][settings['homeLayout']]
       ).then((_) => settings)
     ).then(
-      (settings) { Intents.setFocused(appState, indice: settings['focused']); return settings; }
+      (settings) { Intents.setFocused(appState, index: settings['focused']); return settings; }
     ).then(
       (settings) { Intents.focusOnDay(appState, settings['focusedDate']); return settings; }
     );
@@ -250,8 +250,8 @@ class Intents {
     );
   }
 
-  static void setFocused(AppStateObservable appState, { int indice, Activity activity, ActivityType activityType }) {
-    appState.value = Reducers.setFocused(appState.value, indice, activity, activityType);
+  static void setFocused(AppStateObservable appState, { int index, Activity activity, ActivityType activityType }) {
+    appState.value = Reducers.setFocused(appState.value, index, activity, activityType);
   }
 
   static void editEditing(AppStateObservable appState, dynamic editing) {

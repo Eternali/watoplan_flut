@@ -1,12 +1,12 @@
 import 'package:date_utils/date_utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:watoplan/routes.dart';
-import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
+import 'package:watoplan/key_strings.dart';
+import 'package:watoplan/localizations.dart';
+import 'package:watoplan/routes.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/fam.dart';
 
@@ -49,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
           label: it.name,
           color: it.color,
           onPressed: () {
-            Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
+            Intents.setFocused(Provider.of(context), index: -(types.indexOf(it) + 1));
             Intents.editEditing(
               Provider.of(context),
               it.createActivity()
@@ -76,7 +76,7 @@ class HomeScreenState extends State<HomeScreen> {
           PopupMenuButton<ActivityType>(
             icon: Icon(Icons.add),
             onSelected: (ActivityType type) {
-              Intents.setFocused(Provider.of(context), indice: -(stateVal.activityTypes.indexOf(type) + 1));
+              Intents.setFocused(Provider.of(context), index: -(stateVal.activityTypes.indexOf(type) + 1));
               Intents.editEditing(
                 Provider.of(context),
                 Activity(
@@ -172,7 +172,7 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionMenu(
-        name: 'create-fam',
+        name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
         entries: subFabs,
         expanded: true,

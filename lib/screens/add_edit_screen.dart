@@ -33,7 +33,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     final ActivityType type = stateVal.editingActivity.getType(stateVal.activityTypes);
 
     return Scaffold(
-      key: AppKeys.AddEditScreenKey,
+      key: AppKeys.addEditScreenKey,
       resizeToAvoidBottomPadding: false,  // get rid of render error when keyboard is onscreen (not using a ListView just yet ;)
       appBar: AppBar(
         backgroundColor: type.color,
@@ -57,7 +57,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                   if (noti.when?.compareTo(now) ?? stateVal.editingActivity.data[
                       stateVal.editingActivity.data.containsKey('start') ? 'start': 'end'
                     ].millisecondsSinceEpoch - noti.offset - now.millisecondsSinceEpoch <= 0) {
-                    AppKeys.AddEditScreenKey.currentState.showSnackBar(
+                    AppKeys.addEditScreenKey.currentState.showSnackBar(
                       SnackBar(
                         content: Text(
                           locales.timeToEarly(what: 'Notifications'),
@@ -74,7 +74,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 .then((adding) {
                   if (adding) return
                     Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
-                      .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
+                      .then((_) { Intents.setFocused(Provider.of(context), index: stateVal.activities.length - 1); });
                   else return Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
                 }).then((_) {
                   return Intents.sortActivities(Provider.of(context));

@@ -106,9 +106,9 @@ class Reducers {
     );
   }
 
-  static AppState setFocused(AppState oldState, int indice, Activity activity, ActivityType activityType) {
+  static AppState setFocused(AppState oldState, int index, Activity activity, ActivityType activityType) {
     return oldState.copyWith(
-      focused: indice ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
+      focused: index ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
     );
   }
 

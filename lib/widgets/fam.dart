@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/key_strings.dart';
+
 class SubFAB {
   final IconData icon;
   final String label;
@@ -21,7 +23,7 @@ class FloatingActionMenu extends StatefulWidget {
   final bool expanded;
 
   FloatingActionMenu({
-    this.name = 'fam',
+    this.name = '',
     this.color,
     this.width,
     this.height,
@@ -101,7 +103,7 @@ class FloatingActionMenuState
         Widget child = Container(
           // if nothing is passed in, these will default to null,
           // so the width and height will match the child
-          key: Key('${widget.name}-$i'),
+          key: Key(KeyStrings.subFabs(widget.name, i)),
           width: widget.width,
           height: widget.height,
           alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
@@ -149,6 +151,7 @@ class FloatingActionMenuState
           alignment: FractionalOffset.bottomRight,
           padding: const EdgeInsets.only(top: 8.0),
           child: generateMenu(),
+          key: Key(widget.name),
         ) : generateMenu()
       ),
     );

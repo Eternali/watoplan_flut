@@ -154,7 +154,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: Icon(Icons.add, size: 34.0),
                     onPressed: () {
-                      Intents.setFocused(Provider.of(context), indice: -1);
+                      Intents.setFocused(Provider.of(context), index: -1);
                       Intents.editEditing(Provider.of(context), ActivityType(color: theme.accentColor));
                       Navigator.of(context).pushNamed(Routes.addEditActivityType);
                     },

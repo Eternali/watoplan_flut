@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_driver/driver_extension.dart';
 
-import 'package:watoplan/main.dart';
+import 'package:watoplan/main.dart' as app;
 
 void main() {
   enableFlutterDriverExtension();
-
-  runApp(Watoplan());
+  app.main();
 }
