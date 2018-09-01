@@ -27,18 +27,8 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
-  // Generate a list of 4 FABs to display the most used activityTypes for easy access
-  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
-    List toShow = types
-      .map((it) =>
-        [it, activities.where((act) => act.typeId == it.id).length]
-      ).toList()
-      ..sort((a, b) => (b[1] as int).compareTo(a[1] as int));
-
-    return toShow
-      .sublist(0, toShow.length >= 4 ? 4 : toShow.length)
-      .reversed.toList()
-      .map((it) => it[0] as ActivityType).toList()
+  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types) {
+    return types
       .map((it) =>
         SubFAB(
           icon: it.icon,
@@ -166,11 +156,12 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionMenu(
+        key: const Key('create-fam'),
         name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
-        entries: typesToSubFabs(context, stateVal.activityTypes, stateVal.activities),
+        entries: typesToSubFabs(context, stateVal.activityTypes),
         expanded: true,
-        key: const Key('create-fam'),
+        // expansionDirection: Axis.horizontal,
       ),
     );
   }
