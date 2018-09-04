@@ -1,6 +1,8 @@
 name: watoplan
 description: A simple, yet flexible time management app built with Flutter.
 
+version: 0.9.11
+
 dependencies:
   flutter:
     sdk: flutter
