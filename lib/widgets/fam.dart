@@ -81,7 +81,7 @@ class FloatingActionMenuState
   ) : generateMenu();
 
   Widget generateWrap() => Wrap(
-    direction: widget.expansionDirection == Axis.horizontal ? Axis.vertical : Axis.horizontal,
+    direction: widget.expansionDirection,
     spacing: widget.spacing,
     runSpacing: widget.spacing,
     children: List.generate(widget.entries.length, (int i) {
