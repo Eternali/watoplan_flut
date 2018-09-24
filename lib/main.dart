@@ -17,11 +17,10 @@ import 'package:watoplan/screens/settings_screen.dart';
 import 'package:watoplan/screens/about_screen.dart';
 
 void main() async {
-  MaterialPageRoute.debugEnableFadingRoutes = true;
   runApp(
     Watoplan()
   );
-  // await runDelayed();
+  await runAlarms();
 }
 
 class Watoplan extends StatefulWidget {
