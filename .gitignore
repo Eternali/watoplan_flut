@@ -11,3 +11,4 @@ ios/.generated/
 packages
 .flutter-plugins
 android/key.properties
+linux/out
