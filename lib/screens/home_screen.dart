@@ -156,7 +156,6 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionMenu(
-        key: const Key('create-fam'),
         name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
         entries: typesToSubFabs(context, stateVal.activityTypes),
