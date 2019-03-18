@@ -12,6 +12,8 @@ dependencies:
   shared_preferences: ^0.4.0
   path_provider: ^0.4.0
   crypto: ^2.0.2
+  firebase_core: ^0.3.1+1
+  firebase_analytics: ^2.0.3
   flutter_local_notifications: ^0.3.7
   flutter_markdown: ^0.2.0
   date_utils:
@@ -20,6 +22,9 @@ dependencies:
     #   url: git://github.com/eternali/date_utils.git
   flutter_calendar:
     path: ../flutter_calendar
+  sam:
+    path: ../sam
+  sembast: ^1.15.1
     # git:
     #   url: git://github.com/eternali/flutter_calendar.git
   # contact_finder:
@@ -39,21 +44,14 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  test: 1.5.1+1
+  test: 1.5.3
 
 flutter:
-
-  uses-material-design: true
-
-  # To add assets to your application, add an assets section, like this:
   assets:
    - assets/icons/logo.png
    - assets/defaults/codepoints
    - assets/defaults/data.json
    - assets/defaults/default-avatar.png
-
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.io/assets-and-images/#resolution-aware.
 
   fonts:
     - family: Timeburner
@@ -61,3 +59,20 @@ flutter:
         - asset: assets/fonts/timeburner/timeburnernormal.ttf
         - asset: assets/fonts/timeburner/timeburnerbold.ttf
           weight: 700
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto/Roboto-Black.ttf
+          weight: 900
+
+  uses-material-design: true
+

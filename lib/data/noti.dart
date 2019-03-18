@@ -87,7 +87,7 @@ class Noti {
           ),
           IOSNotificationDetails(),
         );
-        await notiPlug.schedule(id, title, msg,
+        await notiPlug?.schedule(id, title, msg,
           base == null ? when : DateTime.fromMillisecondsSinceEpoch(base.millisecondsSinceEpoch - offset),
           platformSpecifics
         );
@@ -102,7 +102,7 @@ class Noti {
   }
 
   Future<void> cancel(FlutterLocalNotificationsPlugin notiPlug) async {
-    await notiPlug.cancel(id);
+    await notiPlug?.cancel(id);
   }
 
   factory Noti.fromJson(Map<String, dynamic> jsonMap) {

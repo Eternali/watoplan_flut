@@ -38,11 +38,17 @@ final Map<String, ThemeData> themes = {
 final ThemeData DarkTheme = ThemeData.dark().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
+  textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Roboto'),
+  // primaryTextTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Roboto'),
+  accentTextTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Roboto'),
 );
 
 final ThemeData LightTheme = ThemeData.light().copyWith(
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
+  textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Roboto'),
+  // primaryTextTheme: ThemeData.light().textTheme.apply(fontFamily: 'Roboto'),
+  accentTextTheme: ThemeData.light().textTheme.apply(fontFamily: 'Roboto'),
 );
 
 class WatoplanColors {

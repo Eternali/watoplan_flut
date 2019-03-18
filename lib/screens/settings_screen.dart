@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/routes.dart';
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/data/shared_prefs.dart';
 import 'package:watoplan/widgets/activity_type_card.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -80,7 +79,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ).then((cont) {
                   if (cont) {
-                    SharedPreferences.getInstance()
+                    SharedPrefs.getInstance()
                       .then((prefs) => Intents.reset(Provider.of(context), prefs))
                       .then((_) => Intents.initData(Provider.of(context)));
                   }

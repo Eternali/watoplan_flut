@@ -207,10 +207,11 @@ class ParamType<T> {
   JsonConverter fromJson;
   JsonConverter toJson;
   Cloner<T> cloner;
+  WidgetBuilder filterBuilder;
 
   ParamType(
     this.type,
-    { this.init, this.fromJson, this.toJson, this.cloner }
+    { this.init, this.fromJson, this.toJson, this.cloner, this.filterBuilder }
   ) {
     init ??= () => type;
     fromJson ??= (value) => value;

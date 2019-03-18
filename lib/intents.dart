@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert' show json;
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/converters.dart';
@@ -12,29 +12,25 @@ import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/reducers.dart';
+import 'package:watoplan/data/shared_prefs.dart';
 import 'package:watoplan/utils/load_defaults.dart';
 
 class Intents {
 
-  static Future initData(AppStateObservable appState) => (LoadDefaults.icons.length < 1
-    ? LoadDefaults.loadIcons()
-    : Future.value(LoadDefaults.icons)
-    ).then(
-      (_) => Intents.loadAll(appState)
-    ).then(
-      (_) => SharedPreferences.getInstance()
-    ).then(
-      (prefs) => Intents.initSettings(appState, prefs)
-    );
+  static Future initData(AppStateObservable appState) =>
+    (LoadDefaults.icons.length < 1 ? LoadDefaults.loadIcons() : Future.value(LoadDefaults.icons))
+      .then((_) => loadAll(appState))
+      .then((_) => SharedPrefs.getInstance())
+      .then((prefs) => initSettings(appState, prefs));
 
   static Future<void> refresh(AppStateObservable appState) async {
     appState.value = Reducers.refresh(appState.value);
   }
 
   static Future<void> loadAll(AppStateObservable appState) async {
-    return getApplicationDocumentsDirectory()
-      .then((dir) => LocalDb('${dir.path}/watoplan.json'))
-      .then((db) => db.loadAtOnce())
+    final Directory dir = (Platform.isAndroid || Platform.isIOS) ? await getApplicationDocumentsDirectory() : Directory.current;
+    final db = LocalDb('${dir.path}/watoplan.json');
+    return db.loadAtOnce()
       .then((data) {
         if (data[0].length < 1) {
           return ((LoadDefaults.defaultData.keys.length < 1
@@ -60,32 +56,33 @@ class Intents {
       });
   }
 
-  static Future initSettings(AppStateObservable appState, SharedPreferences prefs) async {
+  static Future initSettings(AppStateObservable appState, SharedPrefs prefs) async {
     if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
     return Future.value({
       'focused': LoadDefaults.defaultData['focused'] ?? 0,
-      'focusedDate': Converters.dateTimeFromString(prefs.getString('focusedDate')) ?? DateTime.now(),
-      'theme': prefs.getString('theme') ?? LoadDefaults.defaultData['theme'] ?? 'light',
+      'focusedDate': Converters.dateTimeFromString(await prefs.getString('focusedDate')) ?? DateTime.now(),
+      'theme': (await prefs.getString('theme')) ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
-      'homeLayout': prefs.getString('homeLayout') ?? LoadDefaults.defaultData['homeLayout'] ?? 'list',
-      'homeOptions': prefs.getString('homeOptions') != null
-        ? json.decode(prefs.getString('homeOptions'))
+      'homeLayout': (await prefs.getString('homeLayout')) ?? LoadDefaults.defaultData['homeLayout'] ?? 'list',
+      'homeOptions': (await prefs.getString('homeOptions')) != null
+        ? json.decode(await prefs.getString('homeOptions'))
         : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions
     }).then(
       ensureBackwardsCompatible
     ).then(
-      (settings) => Intents.setTheme(appState, settings['theme']).then((_) => settings),
-      onError: (Exception e) => Intents.setTheme(appState, 'light')
+      (settings) => setTheme(appState, settings['theme'])
+        .catchError((e) => setTheme(appState, 'light'))
+        .then((_) => settings)
     ).then(
-      (settings) => Intents.switchHome(
+      (settings) => switchHome(
         appState,
         layout: settings['homeLayout'],
         options: settings['homeOptions'][settings['homeLayout']]
       ).then((_) => settings)
     ).then(
-      (settings) { Intents.setFocused(appState, index: settings['focused']); return settings; }
+      (settings) { setFocused(appState, index: settings['focused']); return settings; }
     ).then(
-      (settings) { Intents.focusOnDay(appState, settings['focusedDate']); return settings; }
+      (settings) { focusOnDay(appState, settings['focusedDate']); return settings; }
     );
   }
 
@@ -96,7 +93,7 @@ class Intents {
     );
   }
 
-  static Future reset(AppStateObservable appState, SharedPreferences prefs) async {
+  static Future reset(AppStateObservable appState, SharedPrefs prefs) async {
     await LocalDb().delete();
     await prefs.remove('theme');
     await prefs.remove('homeLayout');
@@ -108,7 +105,7 @@ class Intents {
     AppStateObservable appState,
     { String layout, Map<String, dynamic> options }
   ) async {
-    var prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPrefs.getInstance();
     await prefs.setString('homeLayout', layout);
     await prefs.setString('homeOptions', json.encode(appState.value.homeOptions..[layout] = options));
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
@@ -131,7 +128,7 @@ class Intents {
       activities.addAll(appState.value.activities.where((a) => a.typeId == type.id).toList());
       await LocalDb().remove(type);
     }
-    await Intents.removeActivities(appState, activities);    
+    await removeActivities(appState, activities);    
     appState.value = Reducers.removeActivityTypes(appState.value, activityTypes);
     return [activityTypes, activities];
   }
@@ -242,8 +239,8 @@ class Intents {
   ) async {
     Map<String, dynamic> wholeOptions = appState.value.homeOptions;
     if (options != null) wholeOptions[layout ?? appState.value.homeLayout] = options;
-    await SharedPreferences.getInstance()
-      .then((prefs) => prefs.setString('homeOptions', json.encode(wholeOptions)));
+    final prefs = await SharedPrefs.getInstance();
+    await prefs.setString('homeOptions', json.encode(wholeOptions));
     appState.value = Reducers.sortActivities(
       appState.value,
       wholeOptions[layout ?? 'list'],
@@ -287,13 +284,13 @@ class Intents {
   }
 
   static Future setTheme(AppStateObservable appState, String themeName) async {
-    return SharedPreferences.getInstance()
+    return SharedPrefs.getInstance()
       .then((prefs) => prefs.setString('theme', themeName))
       .then((_) => appState.value = Reducers.setTheme(appState.value, themes[themeName]));
   }
 
   static Future focusOnDay(AppStateObservable appState, DateTime day) async {
-    return SharedPreferences.getInstance()
+    return SharedPrefs.getInstance()
       .then((prefs) => prefs.setString('focusedDate', Converters.dateTimeToString(day)))
       .then((_) => appState.value = Reducers.focusOnDay(appState.value, day));
   }

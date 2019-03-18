@@ -27,9 +27,7 @@ class LocalDb {
   DbCollection activityCollection;
 
   factory LocalDb([ String loc = '' ]) {
-    if (_self == null) {
-      _self = LocalDb._init(loc);
-    }
+    _self ??= LocalDb._init(loc);
 
     return _self;
   }

@@ -21,13 +21,8 @@
 
 #include <color_panel/color_panel_plugin.h>
 #include <file_chooser/file_chooser_plugin.h>
+#include <flutter_desktop_embedding/flutter_window_controller.h>
 #include <menubar/menubar_plugin.h>
-
-#ifdef USE_FLATTENED_INCLUDES
-#include <flutter_desktop_embedding/embedder.h>
-#else
-#include <flutter_desktop_embedding/glfw/embedder.h>
-#endif
 
 namespace {
 
@@ -53,10 +48,6 @@ std::string GetExecutableDirectory() {
 }  // namespace
 
 int main(int argc, char **argv) {
-  if (!flutter_desktop_embedding::FlutterInit()) {
-    std::cerr << "Couldn't init GLFW" << std::endl;
-  }
-
   // Resources are located relative to the executable.
   std::string base_directory = GetExecutableDirectory();
   if (base_directory.empty()) {
@@ -68,32 +59,30 @@ int main(int argc, char **argv) {
 
   // Arguments for the Flutter Engine.
   std::vector<std::string> arguments;
-  // First argument is argv[0] since the engine is expecting real command line
-  // args.
-  arguments.push_back(argv[0]);
 #ifdef NDEBUG
   arguments.push_back("--disable-dart-asserts");
 #endif
+
+  flutter_desktop_embedding::FlutterWindowController flutter_controller(
+      icu_data_path);
+
   // Start the engine.
-  auto window = flutter_desktop_embedding::CreateFlutterWindowInSnapshotMode(
-      640, 480, assets_path, icu_data_path, arguments);
-  if (window == nullptr) {
-    flutter_desktop_embedding::FlutterTerminate();
+  if (!flutter_controller.CreateWindow(640, 480, assets_path, arguments)) {
     return EXIT_FAILURE;
   }
 
   // Register any native plugins.
   plugins_menubar::MenubarPlugin::RegisterWithRegistrar(
-      flutter_desktop_embedding::GetRegistrarForPlugin(
-          window, "plugins_menubar::MenubarPlugin"));
+      flutter_controller.GetRegistrarForPlugin(
+          "plugins_menubar::MenubarPlugin"));
   plugins_color_panel::ColorPanelPlugin::RegisterWithRegistrar(
-      flutter_desktop_embedding::GetRegistrarForPlugin(
-          window, "plugins_color_panel::ColorPanelPlugin"));
+      flutter_controller.GetRegistrarForPlugin(
+          "plugins_color_panel::ColorPanelPlugin"));
   plugins_file_chooser::FileChooserPlugin::RegisterWithRegistrar(
-      flutter_desktop_embedding::GetRegistrarForPlugin(
-          window, "plugins_file_chooser::FileChooserPlugin"));
+      flutter_controller.GetRegistrarForPlugin(
+          "plugins_file_chooser::FileChooserPlugin"));
 
-  flutter_desktop_embedding::FlutterWindowLoop(window);
-  glfwTerminate();
+  // Run until the window is closed.
+  flutter_controller.RunEventLoop();
   return EXIT_SUCCESS;
 }

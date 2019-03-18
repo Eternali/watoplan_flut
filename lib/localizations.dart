@@ -11,8 +11,10 @@ class WatoplanLocalizations {
 
   String get aboutFeedback => 'For feedback, feature requests, or bug reports, please first check';  
   String get aboutTitle => 'About';
+  String get add => 'Add';
   String get addActivity => 'Add Activity';
   String get addActivityType => 'Add Type';
+  String get addFilter => 'Add Filter';
   String get addNotification => 'Add another notification';
   String get appTitle => 'WAToPlan';
   String get by => 'by';
@@ -27,6 +29,7 @@ class WatoplanLocalizations {
   String get end => 'End';
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
   String get featureComingSoon => 'This feature is coming soon!';
+  String get filterBy => 'Filter By';
   String get invalidType => 'Make sure your type is valid before saving.';
   String get layoutList => 'List';
   String get layoutCalendar => 'Calendar';
@@ -45,9 +48,11 @@ class WatoplanLocalizations {
   String get select => 'Select';
   String get settingsTitle => 'Settings';
   String get start => 'Start';
+  String get type => 'Type';
   String get undo => 'Undo';
   String get updateError => 'This is likely due to an update that caused a breaking change in configuration.'
     'To make the app usable, go to settings and select \'$resetApp\' from the overflow menu. Sorry :(';
+  String get viewAs => 'View As';
 
   String timeToEarly({ String what, String time }) => '$what must be ${time != null ? 'after $time' : 'sometime in the future'}.';
 

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1061590610212",
+    "firebase_url": "https://watoplan-1510204296640.firebaseio.com",
+    "project_id": "watoplan-1510204296640",
+    "storage_bucket": "watoplan-1510204296640.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061590610212:android:ffb7818452f571d5",
+        "android_client_info": {
+          "package_name": "com.chipthinkstudios.watoplan.free"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061590610212-ghof3l7udsh4ta5hv7qju74v8up1k1tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH_cTBdQVg6Gc54AfjY_LLSfC1DeekSJ0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
