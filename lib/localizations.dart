@@ -20,6 +20,7 @@ class WatoplanLocalizations {
   String get by => 'by';
   String get cancel => 'Cancel';
   String get chooseColor => 'Choose Color';
+  String get chooseType => 'Choose Type';
   String get cont => 'Continue';
   String get contacts => 'Related Contacts';
   String get dataWarning => 'Warning, this will delete all your data, continue?';

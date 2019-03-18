@@ -1,5 +1,6 @@
 import 'package:date_utils/date_utils.dart';
-import 'package:flutter/material.dart';
+// we're overriding these menus in widgets/popup_menu.dart
+import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 import 'package:sam/sam.dart';
 
 import 'package:watoplan/intents.dart';
@@ -9,6 +10,7 @@ import 'package:watoplan/routes.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/widgets/popup_menu.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -165,17 +167,29 @@ class HomeScreenState extends State<HomeScreen> {
                   ),
                   Wrap(
                     children: <Widget>[
-                      Chip(label: Text('test'), deleteIcon: Icon(Icons.cancel), onDeleted: () {})
-                    ]..add(ActionChip(
-                      avatar: Icon(Icons.add),
-                      backgroundColor: theme.accentColor,
-                      label: Text(
-                        locales.add.toUpperCase()
+                      Chip(label: Text('test'), deleteIcon: Icon(Icons.cancel), onDeleted: () {}),
+                    ]..add(PopupMenuButton<ActivityType>(
+                      tooltip: locales.chooseType,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      child: Chip(
+                        avatar: Icon(Icons.add),
+                        backgroundColor: theme.accentColor,
+                        label: Text(
+                          locales.add.toUpperCase()
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                      onPressed: () {
-
-                      },
+                      itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
+                        value: t,
+                        enabled: true,
+                        child: Chip(
+                          avatar: Icon(t.icon),
+                          label: Text(
+                            t.name.toUpperCase()
+                          ),
+                          backgroundColor: t.color,
+                        ),
+                      )).toList(),
                     )),
                   ),
                 ],
