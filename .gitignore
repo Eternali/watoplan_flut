@@ -12,3 +12,5 @@ packages
 .flutter-plugins
 android/key.properties
 linux/out
+*.db
+watoplan.json

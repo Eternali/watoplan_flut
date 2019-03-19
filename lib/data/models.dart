@@ -309,6 +309,7 @@ class ActivityType {
 
   final int _id;
   int get id => _id;
+  final int creation;
   String name;
   IconData icon;
   Color color;
@@ -316,11 +317,12 @@ class ActivityType {
 
   ActivityType({
     int id,
+    int creation,
     this.name = '',
     this.icon = const IconData(0),
     this.color = const Color(0xffaaaaaa),
     List<String> params = const [],  // only allowed to pass a list of param names to avoid typing issues
-  }) : _id = id ?? generateId() {
+  }) : _id = id ?? generateId(), creation =creation ?? DateTime.now().millisecondsSinceEpoch {
     params.forEach((name) {
       if (!validParams.keys.contains(name))
         throw Exception('$name is not a valid parameter');
@@ -331,6 +333,7 @@ class ActivityType {
   factory ActivityType.from(ActivityType prev) {
     return ActivityType(
       id: prev.id,
+      creation: prev.creation,
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
@@ -341,6 +344,7 @@ class ActivityType {
   factory ActivityType.fromJson(Map<String, dynamic> jsonMap) {
     return ActivityType(
       id: jsonMap['_id'],
+      creation: jsonMap['creation'],
       name: jsonMap['name'],
       icon: Converters.iconFromString(jsonMap['icon']),
       color: Converters.colorFromString(jsonMap['color']),
@@ -350,12 +354,14 @@ class ActivityType {
 
   ActivityType copyWith({
     int id,
+    int creation,
     String name,
     IconData icon,
     Color color,
     List<String> params,
   }) => ActivityType(
     id: id ?? this._id,
+    creation: creation ?? this.creation,
     name: name ?? this.name,
     icon: icon ?? this.icon,
     color: color ?? this.color,
@@ -364,6 +370,7 @@ class ActivityType {
 
   Map<String, dynamic> toJson() => {
     '_id': _id,
+    'creation': creation,
     'name': name,
     'icon': Converters.iconToString(icon),
     'color': Converters.colorToString(color),
@@ -378,7 +385,7 @@ class ActivityType {
   }
 
   @override
-  int get hashCode => id.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
+  int get hashCode => id.hashCode + creation.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
 
 }
 
@@ -391,13 +398,15 @@ class Activity {
   final int _id;
   int get id => _id;
   int typeId;
+  final int creation;
   Map<String, dynamic> data;
 
   Activity({
     int id,
     dynamic type,
+    int creation,
     Map<String, dynamic> data
-  }) : _id = id ?? generateId() {
+  }) : _id = id ?? generateId(), creation = creation ?? DateTime.now().millisecondsSinceEpoch {
     if (type is int) {
       typeId = type;
       this.data = data; 
@@ -411,6 +420,7 @@ class Activity {
     return Activity(
       id: prev.id,
       type: prev.typeId,
+      creation: prev.creation,
       data: Map<String, dynamic>.from(prev.data)
         .map((name, value) => MapEntry(name, validParams[name].cloner(value)))
     );
@@ -420,6 +430,7 @@ class Activity {
     return Activity(
       id: jsonMap['_id'],
       type: jsonMap['typeId'],
+      creation: jsonMap['creation'],
       data: Converters.paramsFromJson(jsonMap['data'], true),
     );
   }
@@ -427,12 +438,14 @@ class Activity {
   Activity copyWith({
     int id,
     dynamic type,
+    int creation,
     Map<String, dynamic> data,
     List<MapEntry<String, dynamic>> entries,
   }) {
     Activity newActivity = Activity(
       id: id ?? this._id,
       type: type ?? this.typeId,
+      creation: creation ?? this.creation,
       data: data ?? Map<String, dynamic>.from(this.data)
         .map((name, value) => MapEntry(name, validParams[name].cloner(value))),
     );
@@ -444,13 +457,14 @@ class Activity {
   Map<String, dynamic> toJson() => {
     '_id': _id,
     'typeId': typeId,
+    'creation':creation,
     'data': Converters.paramsToJson(data, true),
   };
 
   ActivityType getType(List<ActivityType> types) => types.firstWhere((type) => type.id == typeId);
 
   @override
-  int get hashCode => id.hashCode + typeId.hashCode + data.hashCode;
+  int get hashCode => id.hashCode + typeId.hashCode + creation.hashCode + data.hashCode;
 
 }
 
