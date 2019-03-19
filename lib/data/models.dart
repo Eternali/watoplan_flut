@@ -64,7 +64,7 @@ class AppState {
 
   List<Activity> activitiesOn([DateTime day]) {
     day ??= focusedDate;
-    return day == null ? [] : activities
+    return day == null ? [] : filteredActivities
       .where((Activity a) {
         if (a.data.containsKey('start') && !a.data.containsKey('end')) {
           return Utils.isSameDay(a.data['start'], day);
@@ -81,24 +81,15 @@ class AppState {
       }).toList();
   }
   
-  Future<List<Activity>> get filteredActivities async {
-    return (await Future.wait(activities.map((Activity a) =>
-      Future.wait(filters.entries.map((MapEntry<String, dynamic> f) =>
+  List<Activity> get filteredActivities {
+    return activities.where((Activity a) =>
+      filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) =>
         validParams.keys.contains(f.key)
           ? validParams[f.key].applyFilter(f.value, a)
           : filterApplicators[f.key](f.value, a)
-      )).then((List<bool> results) => results.every((r) => r) ? a : null)
-    ))).where((Activity a) => a != null);
+      )
+    ).toList();
   }
-  // List<Activity> get filteredActivities {
-  //   return activities.where((Activity a) =>
-  //     filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) =>
-  //       validParams.keys.contains(f.key)
-  //         ? validParams[f.key].applyFilter(f.value, a)
-  //         : filterApplicators[f.key](f.value, a)
-  //     )
-  //   );
-  // }
 
   List<Activity> get timeSensitive => activities.where(
       (Activity a) => a.data.values.where((v) => v is DateTime).isNotEmpty
@@ -115,7 +106,7 @@ class AppState {
     this.homeLayout,
     this.homeOptions,
     this.needsRefresh = false,
-    this.filters,
+    this.filters = const {},
   });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
@@ -207,7 +198,7 @@ class AppState {
 
 }
 
-class AppStateObservable extends ValueNotifier {
+class AppStateObservable extends ValueNotifier<AppState> {
   AppStateObservable(AppState value) : super(value);
 }
 
@@ -227,7 +218,8 @@ class MenuChoice {
 typedef TypeInitializer<T>();
 typedef T Cloner<T>(T value);
 typedef dynamic JsonConverter(dynamic value);
-typedef Future<bool> FilterApplicator<U>(U filters, Activity activity);
+typedef bool FilterApplicator<T>(T filters, Activity activity);
+
 class ParamType<T, U> {
 
   final T type;
@@ -254,7 +246,7 @@ class ParamType<T, U> {
     fromJson ??= (value) => value;
     toJson ??= (value) => value.toString();
     cloner ??= (value) => value;
-    applyFilter ??= (U filters, Activity activity) => Future.value(true);
+    applyFilter ??= (U filters, Activity activity) => true;
     filterFromJson ??= (value) => value;
     filterToJson ??= (value) => value.map((v) => v.toString());
   }
@@ -263,7 +255,7 @@ class ParamType<T, U> {
 
 final Map<String, FilterApplicator<List>> filterApplicators = {
   'type': (List types, Activity activity) {
-    return Future.value(types.map((t) => t.id).contains(activity.typeId));
+    return types.length < 1 || types.contains(activity.typeId);
   }
 };
 

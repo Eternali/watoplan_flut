@@ -152,55 +152,76 @@ class HomeScreenState extends State<HomeScreen> {
           ))..addAll([
             buildDrawerSubtitle(context, locales.filterBy),
             Padding(
-              padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    locales.type.toUpperCase(),
-                    style: TextStyle(
-                      letterSpacing: 1.4,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Timeburner',
-                    )
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          locales.type.toUpperCase(),
+                          style: TextStyle(
+                            letterSpacing: 1.4,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Timeburner',
+                          )
+                        ),
+                        PopupMenuButton<ActivityType>(
+                          tooltip: locales.chooseType,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                          onSelected: (ActivityType type) {
+                            List typeList = stateVal.filters['type'];
+                            if (typeList == null || !typeList.contains(type.id)) {
+                              Intents.applyFilter(
+                                Provider.of(context),
+                                'type',
+                                () => typeList != null ? (typeList..add(type.id)) : [ type.id ]);
+                            }
+                          },
+                          child: Chip(
+                            avatar: Icon(Icons.add),
+                            backgroundColor: theme.accentColor,
+                            label: Text(
+                              locales.add.toUpperCase()
+                            ),
+                          ),
+                          itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
+                            value: t,
+                            enabled: true,
+                            child: Chip(
+                              avatar: Icon(t.icon),
+                              label: Text(
+                                t.name.toUpperCase()
+                              ),
+                              backgroundColor: t.color,
+                            ),
+                          )).toList(),
+                        ),
+                      ]
+                    ),
                   ),
                   Wrap(
-                    children: (stateVal.filters.containsKey('type') ? stateVal.filters['type'].map((f) {
-                      final type = stateVal.activityTypes.firstWhere((t) => t.name == f);
+                    children: (stateVal.filters.containsKey('type') ? stateVal.filters['type'].map<Widget>((f) {
+                      final type = stateVal.activityTypes.firstWhere((t) => t.id == f);
                       return Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
                         child: Chip(
                           avatar: Icon(type.icon),
                           backgroundColor: type.color,
                           label: Text(type.name.toUpperCase()),
+                          onDeleted: () {
+                            Intents.applyFilter(
+                              Provider.of(context),
+                              'type',
+                              () => stateVal.filters['type']..remove(type.id));
+                          },
                         ),
                       );
-                    }).toList() : [])..add(PopupMenuButton<ActivityType>(
-                      tooltip: locales.chooseType,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                      onSelected: (ActivityType type) {
-                        Intents.applyFilter(Provider.of(context), 'type', type);
-                      },
-                      child: Chip(
-                        avatar: Icon(Icons.add),
-                        backgroundColor: theme.accentColor,
-                        label: Text(
-                          locales.add.toUpperCase()
-                        ),
-                      ),
-                      itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
-                        value: t,
-                        enabled: true,
-                        child: Chip(
-                          avatar: Icon(t.icon),
-                          label: Text(
-                            t.name.toUpperCase()
-                          ),
-                          backgroundColor: t.color,
-                        ),
-                      )).toList(),
-                    )),
+                    }).toList() : [])
                   ),
                 ],
               ),

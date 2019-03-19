@@ -152,7 +152,7 @@ class Reducers {
 
   static AppState saveFilter(AppState oldState, String filter, dynamic data) {
     return oldState.copyWith(
-      filters: oldState.filters..[filter] = data
+      filters: Map.from(oldState.filters)..[filter] = data
     );
   }
 

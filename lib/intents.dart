@@ -15,6 +15,8 @@ import 'package:watoplan/data/reducers.dart';
 import 'package:watoplan/data/shared_prefs.dart';
 import 'package:watoplan/utils/load_defaults.dart';
 
+typedef T SaveFilter<T>();
+
 class Intents {
 
   static Future initData(AppStateObservable appState) =>
@@ -58,32 +60,30 @@ class Intents {
 
   static Future initSettings(AppStateObservable appState, SharedPrefs prefs) async {
     if (LoadDefaults.defaultData.keys.length < 1) await LoadDefaults.loadDefaultData();
-    return Future.value({
+    Map<String, dynamic> settings = {
       'focused': LoadDefaults.defaultData['focused'] ?? 0,
       'focusedDate': Converters.dateTimeFromString(await prefs.getString('focusedDate')) ?? DateTime.now(),
       'theme': (await prefs.getString('theme')) ?? LoadDefaults.defaultData['theme'] ?? 'light',
       'needsRefresh': LoadDefaults.defaultData['needsRefresh'] ?? false,
       'homeLayout': (await prefs.getString('homeLayout')) ?? LoadDefaults.defaultData['homeLayout'] ?? 'list',
       'homeOptions': (await prefs.getString('homeOptions')) != null
-        ? json.decode(await prefs.getString('homeOptions'))
-        : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions
-    }).then(
-      ensureBackwardsCompatible
-    ).then(
-      (settings) => setTheme(appState, settings['theme'])
-        .catchError((e) => setTheme(appState, 'light'))
-        .then((_) => settings)
-    ).then(
-      (settings) => switchHome(
+        ? await prefs.getJson('homeOptions')
+        : LoadDefaults.defaultData['homeOptions'] ?? Reducers.firstDefault.homeOptions,
+      'filters': await prefs.getJson('filters') ?? {}
+    };
+    settings = await ensureBackwardsCompatible(settings);
+    return setTheme(appState, settings['theme'])
+      .catchError((e) => setTheme(appState, 'light'))
+      .then((_) => switchHome(
         appState,
         layout: settings['homeLayout'],
         options: settings['homeOptions'][settings['homeLayout']]
-      ).then((_) => settings)
-    ).then(
-      (settings) { setFocused(appState, index: settings['focused']); return settings; }
-    ).then(
-      (settings) { focusOnDay(appState, settings['focusedDate']); return settings; }
-    );
+      ))
+      .then((_) => setFocused(appState, index: settings['focused']))
+      .then((_) => focusOnDay(appState, settings['focusedDate']))
+      .then((_) => Future.wait(settings['filters'].entries.map<Future>(
+        (MapEntry<String, dynamic> entry) => applyFilter(appState, entry.key, () => entry.value)
+      )));
   }
 
   static Future ensureBackwardsCompatible(Map<String, dynamic> settings) {
@@ -295,8 +295,10 @@ class Intents {
       .then((_) => appState.value = Reducers.focusOnDay(appState.value, day));
   }
 
-  static applyFilter(AppStateObservable appState, String filter, dynamic data) {
-    appState.value = Reducers.saveFilter(appState.value, filter, data);
+  static Future applyFilter(AppStateObservable appState, String filter, SaveFilter saveFilter) async {
+    appState.value = Reducers.saveFilter(appState.value, filter, saveFilter());
+    await SharedPrefs.getInstance()
+      .then((prefs) => prefs.setJson('filters', appState.value.filters));
   }
 
 }
