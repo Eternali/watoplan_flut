@@ -45,6 +45,8 @@ class AppState {
   final Activity editingActivity;
   final ActivityType editingType;
 
+  final Map<String, dynamic> filters;
+
   // negative values denote activityTypes (-1 = index 0) while zero and positives indicate activities
   final int focused;
   // for calendar views
@@ -58,7 +60,8 @@ class AppState {
   final String homeLayout;
   final Map<String, Map<String, dynamic>> homeOptions;
 
-  // Getters
+  /// Getters ///
+
   List<Activity> activitiesOn([DateTime day]) {
     day ??= focusedDate;
     return day == null ? [] : activities
@@ -77,6 +80,25 @@ class AppState {
         }
       }).toList();
   }
+  
+  Future<List<Activity>> get filteredActivities async {
+    return (await Future.wait(activities.map((Activity a) =>
+      Future.wait(filters.entries.map((MapEntry<String, dynamic> f) =>
+        validParams.keys.contains(f.key)
+          ? validParams[f.key].applyFilter(f.value, a)
+          : filterApplicators[f.key](f.value, a)
+      )).then((List<bool> results) => results.every((r) => r) ? a : null)
+    ))).where((Activity a) => a != null);
+  }
+  // List<Activity> get filteredActivities {
+  //   return activities.where((Activity a) =>
+  //     filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) =>
+  //       validParams.keys.contains(f.key)
+  //         ? validParams[f.key].applyFilter(f.value, a)
+  //         : filterApplicators[f.key](f.value, a)
+  //     )
+  //   );
+  // }
 
   List<Activity> get timeSensitive => activities.where(
       (Activity a) => a.data.values.where((v) => v is DateTime).isNotEmpty
@@ -93,6 +115,7 @@ class AppState {
     this.homeLayout,
     this.homeOptions,
     this.needsRefresh = false,
+    this.filters,
   });
   factory AppState.from(AppState prev) {
     // NOTE: watch out for reference copies of parameters
@@ -107,6 +130,7 @@ class AppState {
       homeLayout: prev.homeLayout,
       homeOptions: prev.homeOptions,
       needsRefresh: prev.needsRefresh,
+      filters: prev.filters,
     );
   }
 
@@ -140,7 +164,8 @@ class AppState {
     String homeLayout,
     Map<String, Map<String, dynamic>> homeOptions,
     Map<String, dynamic> specificOptions,
-    Map<String, dynamic> optionOverrides
+    Map<String, dynamic> optionOverrides,
+    Map<String, dynamic> filters,
   }) {
     if (specificOptions != null) {
       homeOptions ??= this.homeOptions;
@@ -157,6 +182,7 @@ class AppState {
       needsRefresh: needsRefresh ?? this.needsRefresh,
       homeLayout: homeLayout ?? this.homeLayout,
       homeOptions: homeOptions ?? (optionOverrides != null ? overrideOptions(this.homeOptions, optionOverrides) : this.homeOptions),
+      filters: filters ?? this.filters,
     );
   }
 
@@ -176,7 +202,8 @@ class AppState {
     theme.hashCode +
     homeLayout.hashCode +
     homeOptions.hashCode +
-    needsRefresh.hashCode;
+    needsRefresh.hashCode +
+    filters.hashCode;
 
 }
 
@@ -200,7 +227,8 @@ class MenuChoice {
 typedef TypeInitializer<T>();
 typedef T Cloner<T>(T value);
 typedef dynamic JsonConverter(dynamic value);
-class ParamType<T> {
+typedef Future<bool> FilterApplicator<U>(U filters, Activity activity);
+class ParamType<T, U> {
 
   final T type;
   TypeInitializer<T> init;
@@ -208,55 +236,73 @@ class ParamType<T> {
   JsonConverter toJson;
   Cloner<T> cloner;
   WidgetBuilder filterBuilder;
+  FilterApplicator<U> applyFilter;
+  JsonConverter filterFromJson;
+  JsonConverter filterToJson;
 
-  ParamType(
-    this.type,
-    { this.init, this.fromJson, this.toJson, this.cloner, this.filterBuilder }
-  ) {
+  ParamType(this.type, {
+    this.init,
+    this.fromJson,
+    this.toJson,
+    this.cloner,
+    this.filterBuilder,
+    this.applyFilter,
+    this.filterFromJson,
+    this.filterToJson,
+  }) {
     init ??= () => type;
     fromJson ??= (value) => value;
     toJson ??= (value) => value.toString();
     cloner ??= (value) => value;
+    applyFilter ??= (U filters, Activity activity) => Future.value(true);
+    filterFromJson ??= (value) => value;
+    filterToJson ??= (value) => value.map((v) => v.toString());
   }
 
 }
 
+final Map<String, FilterApplicator<List>> filterApplicators = {
+  'type': (List types, Activity activity) {
+    return Future.value(types.map((t) => t.id).contains(activity.typeId));
+  }
+};
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, dynamic> validParams = {
-  'name': ParamType<String>(''),
-  'desc': ParamType<String>(''),
-  'long': ParamType<String>(''),
-  'priority': ParamType<int>(
+  'name': ParamType<String, List<String>>(''),
+  'desc': ParamType<String, List<String>>(''),
+  'long': ParamType<String, List<String>>(''),
+  'priority': ParamType<int, List<int>>(
     0,
     fromJson: (v) => v is int ? v : int.parse(v),
   ),
-  'progress': ParamType<int>(
+  'progress': ParamType<int, List<int>>(
     0,
     fromJson: (v) => v is int ? v : int.parse(v),
   ),
-  'start': ParamType<DateTime>(
+  'start': ParamType<DateTime, List<DateTime>>(
     DateTime.now(),
     init: () => DateTime.now(),
     fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(v is int ? v : int.parse(v)),
     toJson: (v) => v.millisecondsSinceEpoch,
     cloner: (v) => Utils.copyWith(v),
   ),
-  'end': ParamType<DateTime>(
+  'end': ParamType<DateTime, List<DateTime>>(
     DateTime.now(),
     init: () => DateTime.now(),
     fromJson: (v) => DateTime.fromMillisecondsSinceEpoch(v is int ? v : int.parse(v)),
     toJson: (v) => v.millisecondsSinceEpoch,
     cloner: (v) => Utils.copyWith(v),
   ),
-  'notis': ParamType<List<Noti>>(
+  'notis': ParamType<List<Noti>, List<NotiType>>(
     <Noti>[],
     init: () => <Noti>[],
     fromJson: (v) => v.map<Noti>((n) => Noti.fromJson(n)).toList(),
     toJson: (v) => v.map((n) => n.toJson()).toList(),
     cloner: (v) => List<Noti>.from(v),
   ),
-  'location': ParamType<Location>(
+  'location': ParamType<Location, List<Location>>(
     Location(lat: 0.0, long: 0.0),
     init: () => Location(lat: 0.0, long: 0.0),
     fromJson: (v) => Location.fromJson(v),

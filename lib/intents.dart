@@ -295,4 +295,8 @@ class Intents {
       .then((_) => appState.value = Reducers.focusOnDay(appState.value, day));
   }
 
+  static applyFilter(AppStateObservable appState, String filter, dynamic data) {
+    appState.value = Reducers.saveFilter(appState.value, filter, data);
+  }
+
 }

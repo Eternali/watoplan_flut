@@ -166,18 +166,28 @@ class HomeScreenState extends State<HomeScreen> {
                     )
                   ),
                   Wrap(
-                    children: <Widget>[
-                      Chip(label: Text('test'), deleteIcon: Icon(Icons.cancel), onDeleted: () {}),
-                    ]..add(PopupMenuButton<ActivityType>(
+                    children: (stateVal.filters.containsKey('type') ? stateVal.filters['type'].map((f) {
+                      final type = stateVal.activityTypes.firstWhere((t) => t.name == f);
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Chip(
+                          avatar: Icon(type.icon),
+                          backgroundColor: type.color,
+                          label: Text(type.name.toUpperCase()),
+                        ),
+                      );
+                    }).toList() : [])..add(PopupMenuButton<ActivityType>(
                       tooltip: locales.chooseType,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                      onSelected: (ActivityType type) {
+                        Intents.applyFilter(Provider.of(context), 'type', type);
+                      },
                       child: Chip(
                         avatar: Icon(Icons.add),
                         backgroundColor: theme.accentColor,
                         label: Text(
                           locales.add.toUpperCase()
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
                       ),
                       itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
                         value: t,
@@ -217,7 +227,7 @@ class HomeScreenState extends State<HomeScreen> {
         // name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
         entries: typesToSubFabs(context, stateVal.activityTypes),
-        buttonElevation: 0.0,
+        buttonElevation: 0,
       ),
     );
   }
