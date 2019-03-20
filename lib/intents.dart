@@ -19,11 +19,15 @@ typedef T SaveFilter<T>();
 
 class Intents {
 
-  static Future initData(AppStateObservable appState) =>
-    (LoadDefaults.icons.length < 1 ? LoadDefaults.loadIcons() : Future.value(LoadDefaults.icons))
-      .then((_) => loadAll(appState))
+  static Future initData(AppStateObservable appState) {
+    // We only want to apply changes to the actual state watched by the UI once.
+    AppStateObservable tmp = AppStateObservable(appState.value.copyWith());
+    return (LoadDefaults.icons.length < 1 ? LoadDefaults.loadIcons() : Future.value(LoadDefaults.icons))
+      .then((_) => loadAll(tmp))
       .then((_) => SharedPrefs.getInstance())
-      .then((prefs) => initSettings(appState, prefs));
+      .then((prefs) => initSettings(tmp, prefs))
+      .then((_) => appState.value = tmp.value);
+  }
 
   static Future<void> refresh(AppStateObservable appState) async {
     appState.value = Reducers.refresh(appState.value);
