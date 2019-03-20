@@ -29,6 +29,7 @@ class VarargsFunction extends Function {
 
 
 final Map<String, ActivitySort> validSorts = {
+  'creation': ActivitySorters.byCreation,
   'start': ActivitySorters.byStartTime,
   'end': ActivitySorters.byEndTime,
   'priority': ActivitySorters.byPriority,
@@ -256,7 +257,7 @@ class ParamType<T, U> {
 final Map<String, FilterApplicator<List>> filterApplicators = {
   'type': (List types, Activity activity) {
     return types.length < 1 || types.contains(activity.typeId);
-  }
+  },
 };
 
 // this workaround is required because apparently [].runtimeType != List

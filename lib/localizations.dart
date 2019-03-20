@@ -74,6 +74,7 @@ class WatoplanLocalizations {
 
   // Sort locales
   Map<String, StrGet> validSorts = {
+    'creation': () => 'creation time',
     'start': () => 'start time',
     'end': () => 'end time',
     'priority': () => 'priority',

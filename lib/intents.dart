@@ -83,7 +83,8 @@ class Intents {
       .then((_) => focusOnDay(appState, settings['focusedDate']))
       .then((_) => Future.wait(settings['filters'].entries.map<Future>(
         (MapEntry<String, dynamic> entry) => applyFilter(appState, entry.key, () => entry.value)
-      )));
+      )))
+      .then((_) => sortActivities(appState, layout: settings['homeLayout']));
   }
 
   static Future ensureBackwardsCompatible(Map<String, dynamic> settings) {

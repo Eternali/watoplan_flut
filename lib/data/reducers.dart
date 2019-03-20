@@ -101,7 +101,7 @@ class Reducers {
 
   static AppState sortActivities(AppState oldState, Map<String, dynamic> sortOptions) {
     return oldState.copyWith(
-      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev']),
+      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev'] ?? false),
       specificOptions: sortOptions,
     );
   }

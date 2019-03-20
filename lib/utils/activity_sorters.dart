@@ -2,32 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:watoplan/data/models.dart';
 
-List<T> quicksort<T>(List<T> arr, int left, int right, SortCmp<T> cmp) {
-  int idx = partition<T>(arr, left, right, cmp);
-  if (left < idx - 1) quicksort(arr, left, idx - 1, cmp);
-  if (right > idx) quicksort(arr, idx, right, cmp);
-}
-
-int partition<T>(List<T> arr, int left, int right, SortCmp<T> cmp) {
-  T pivot = arr[((left + right) / 2).floor()];
-  int i = left;
-  int j = right;
-  while (i <= j) {
-    while (cmp(arr[i], pivot, true)) i++;
-    while (cmp(arr[j], pivot, false)) j--;
-    if (i <= j) {
-      T tmp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = tmp;
-      i++;
-      j--;
-    }
-  }
-  return i;
-}
-
 typedef List<Activity> ActivitySort(List<Activity> activities, [ bool rev ]);
-typedef bool SortCmp<T>(T a, T b, bool dir);
 
 class ActivitySorters {
 
@@ -35,124 +10,70 @@ class ActivitySorters {
     debugPrint('${name.toUpperCase()}: Left ${unsorted.length} activities unsorted.');
   }
 
-  static List<Activity> byStartTime(List<Activity> activities, [ bool rev = false ]) {
-    List sorted = <Activity>[], unsorted = <Activity>[];
-    // I hate how Dart does not promote type safety or functional programming with functors
-    // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
-    activities.forEach((act) {
-      if (act.data.containsKey('start')) sorted.add(act);
-      else unsorted.add(act);
+  static List<Activity> byCreation(List<Activity> activities, [ bool rev = false ]) {
+    return activities..sort((Activity a, Activity b) {
+      final int sort = a.creation == b.creation ? 0 : a.creation > b.creation ? 1 : -1;
+      return rev ? -sort : sort;
     });
-    if (unsorted.length > 0) printUnsorted('start', unsorted);
-    if (sorted.length < 1) return activities;
+  }
 
-    quicksort(
-      sorted,
-      0, sorted.length - 1,
-      (a, b, dir) {
-        return rev == dir
-          ? a.data['start'].millisecondsSinceEpoch < b.data['start'].millisecondsSinceEpoch
-          : a.data['start'].millisecondsSinceEpoch > b.data['start'].millisecondsSinceEpoch;
-      }
-    );
+  static List<Activity> byStartTime(List<Activity> activities, [ bool rev = false ]) {
+    return activities..sort((Activity a, Activity b) {
+      // if the activity does not contain the sort parameter, make sure it moves towards the end of the list.
+      if (!a.data.containsKey('start')) return 1;
+      else if (!b.data.containsKey('start')) return -1;
 
-    return sorted..addAll(unsorted);
+      final sort = a.data['start'].millisecondsSinceEpoch - b.data['start'].millisecondsSinceEpoch;
+      return rev ? -sort : sort;
+    });
   }
 
   static List<Activity> byEndTime(List<Activity> activities, [ bool rev = false ]) {
-    List sorted = <Activity>[], unsorted = <Activity>[];
-    // I hate how Dart does not promote type safety or functional programming with functors
-    // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
-    activities.forEach((act) {
-      if (act.data.containsKey('end')) sorted.add(act);
-      else unsorted.add(act);
+    return activities..sort((Activity a, Activity b) {
+      // if the activity does not contain the sort parameter, make sure it moves towards the end of the list.
+      if (!a.data.containsKey('end')) return 1;
+      else if (!b.data.containsKey('end')) return -1;
+
+      final sort = a.data['end'].millisecondsSinceEpoch - b.data['end'].millisecondsSinceEpoch;
+      return rev ? -sort : sort;
     });
-    if (unsorted.length > 0) printUnsorted('end', unsorted);    
-    if (sorted.length < 1) return activities;    
-
-    quicksort(
-      sorted,
-      0, sorted.length - 1,
-      (a, b, dir) {
-        return rev == dir
-          ? a.data['end'].millisecondsSinceEpoch < b.data['end'].millisecondsSinceEpoch
-          : a.data['end'].millisecondsSinceEpoch > b.data['end'].millisecondsSinceEpoch;
-      }
-    );
-
-    return sorted..addAll(unsorted);
   }
 
   static List<Activity> byPriority(List<Activity> activities, [ bool rev = false ]) {
-    List sorted = <Activity>[], unsorted = <Activity>[];
-    // I hate how Dart does not promote type safety or functional programming with functors
-    // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
-    activities.forEach((act) {
-      if (act.data.containsKey('priority')) sorted.add(act);
-      else unsorted.add(act);
+    return activities..sort((Activity a, Activity b) {
+      // if the activity does not contain the sort parameter, make sure it moves towards the end of the list.
+      if (!a.data.containsKey('priority')) return 1;
+      else if (!b.data.containsKey('priority')) return -1;
+
+      final sort = a.data['priority'] - b.data['priority'];
+      return rev ? -sort : sort;
     });
-    if (unsorted.length > 0) printUnsorted('priority', unsorted);
-    if (sorted.length < 1) return activities;    
-
-    quicksort(
-      sorted,
-      0, sorted.length - 1,
-      (a, b, dir) {
-        return rev == dir
-          ? a.data['priority'] < b.data['priority']
-          : a.data['priority'] > b.data['priority'];
-      }
-    );
-
-    return sorted..addAll(unsorted);
   }
 
   static List<Activity> byProgress(List<Activity> activities, [ bool rev = false ]) {
-    List sorted = <Activity>[], unsorted = <Activity>[];
-    // I hate how Dart does not promote type safety or functional programming with functors
-    // since all their List methods will only return an Iterable<dynamic>, which is a bitch to convert for some reason.
-    activities.forEach((act) {
-      if (act.data.containsKey('progress')) sorted.add(act);
-      else unsorted.add(act);
-    });
-    if (unsorted.length > 0) printUnsorted('progress', unsorted);
-    if (sorted.length < 1) return activities;
-    
-    quicksort(
-      sorted,
-      0, sorted.length - 1,
-      (a, b, dir) {
-        return rev == dir
-          ? a.data['progress'] < b.data['progress']
-          : a.data['progress'] > b.data['progress'];
-      }
-    );
+    return activities..sort((Activity a, Activity b) {
+      // if the activity does not contain the sort parameter, make sure it moves towards the end of the list.
+      if (!a.data.containsKey('progress')) return 1;
+      else if (!b.data.containsKey('progress')) return -1;
 
-    return sorted..addAll(unsorted);
+      final sort = a.data['progress'] - b.data['progress'];
+      return rev ? -sort : sort;
+    });
   }
 
   // order activities by type where type order is determined by
   // the number of activities associated with each type.
   static List<Activity> byType(List<Activity> activities, [ bool rev = false ]) {
-    if (activities.length < 1) return activities;
-    List<Activity> sorted = List.from(activities);
-
-    List<int> typeIds = sorted.map((activity) => activity.typeId).toList();
+    final typeIds = activities.map((activity) => activity.typeId);
     Map<int, int> typeOrder = Map.fromIterable(
       typeIds.map((id) => MapEntry(id, typeIds.where((i) => i == id).length)),
       key: (entry) => entry.key,
       value: (entry) => entry.value,
-      );
-
-    quicksort(
-      sorted,
-      0, sorted.length - 1,
-      (a, b, dir) => rev == dir
-        ? typeOrder[a.typeId] < typeOrder[b.typeId]
-        : typeOrder[a.typeId] > typeOrder[b.typeId]
     );
-
-    return sorted;
+    return activities..sort((Activity a, Activity b) {
+      final sort = typeOrder[b.typeId] - typeOrder[a.typeId];
+      return rev ? -sort : sort;
+    });
   }
 
 }
