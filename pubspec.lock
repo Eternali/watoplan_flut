@@ -78,6 +78,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
+  datetime_picker_formfield:
+    dependency: "direct main"
+    description:
+      name: datetime_picker_formfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.8"
   file:
     dependency: transitive
     description:
@@ -85,20 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.7"
-  firebase_analytics:
-    dependency: "direct main"
-    description:
-      name: firebase_analytics
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
-  firebase_core:
-    dependency: "direct main"
-    description:
-      name: firebase_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1+1"
   flutter:
     dependency: "direct main"
     description: flutter

@@ -49,7 +49,7 @@ class WatoplanLocalizations {
   String get select => 'Select';
   String get settingsTitle => 'Settings';
   String get start => 'Start';
-  String get type => 'Type';
+  String get to => 'to';
   String get undo => 'Undo';
   String get updateError => 'This is likely due to an update that caused a breaking change in configuration.'
     'To make the app usable, go to settings and select \'$resetApp\' from the overflow menu. Sorry :(';

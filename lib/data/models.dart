@@ -1,15 +1,20 @@
 import 'dart:math';
 
 import 'package:date_utils/date_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 // import 'package:contact_finder/contact_finder.dart';
 
+import 'package:watoplan/intents.dart';
+import 'package:watoplan/localizations.dart';
+import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
+import 'package:watoplan/widgets/popup_menu.dart';
 
 
 typedef dynamic OnCall(List);
@@ -86,8 +91,8 @@ class AppState {
     return activities.where((Activity a) =>
       filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) =>
         validParams.keys.contains(f.key)
-          ? validParams[f.key].applyFilter(f.value, a)
-          : filterApplicators[f.key](f.value, a)
+          ? validParams[f.key].filter.applyFilter(f.value, a)
+          : filterApplicators[f.key].applyFilter(f.value as List, a)
       )
     ).toList();
   }
@@ -228,36 +233,197 @@ class ParamType<T, U> {
   JsonConverter fromJson;
   JsonConverter toJson;
   Cloner<T> cloner;
-  WidgetBuilder filterBuilder;
-  FilterApplicator<U> applyFilter;
-  JsonConverter filterFromJson;
-  JsonConverter filterToJson;
+  Filter<U> filter;
 
   ParamType(this.type, {
     this.init,
     this.fromJson,
     this.toJson,
     this.cloner,
-    this.filterBuilder,
-    this.applyFilter,
-    this.filterFromJson,
-    this.filterToJson,
+    this.filter,
   }) {
     init ??= () => type;
     fromJson ??= (value) => value;
     toJson ??= (value) => value.toString();
     cloner ??= (value) => value;
-    applyFilter ??= (U filters, Activity activity) => true;
-    filterFromJson ??= (value) => value;
-    filterToJson ??= (value) => value.map((v) => v.toString());
   }
 
 }
 
-final Map<String, FilterApplicator<List>> filterApplicators = {
-  'type': (List types, Activity activity) {
-    return types.length < 1 || types.contains(activity.typeId);
-  },
+class Filter<T> {
+
+  final String name;
+  WidgetBuilder build;
+  FilterApplicator<T> applyFilter;
+  JsonConverter fromJson;
+  JsonConverter toJson;
+
+  Filter({ this.name, this.build, this.applyFilter, this.fromJson, this.toJson}) {
+    build ??= (BuildContext context) => Container();
+    applyFilter ??= (T filters, Activity activity) => true;
+    fromJson ??= (value) => value;
+    toJson ??= (value) => value.map((v) => v.toString());
+  }
+
+}
+
+bool timeFilter(List times, Function accessor) => times.length < 1 ||
+  times.fold(true, (bool acc, t) {
+    final first = t[0] == null || accessor() >= t[0];
+    final second = t[1] == null || accessor() <= t[1];
+    return first && second;
+  });
+
+WidgetBuilder buildTimeFilter(String name, Function saveFilter) => (BuildContext context) {
+  final locales = WatoplanLocalizations.of(context);
+  final AppState stateVal = Provider.of(context).value;
+  final List<DateTime> times = stateVal.filters[name].map((n) => DateTime.fromMillisecondsSinceEpoch(n));
+
+  return Padding(
+    padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Text(
+              locales.validSorts[name]().toUpperCase(),
+              style: TextStyle(
+                letterSpacing: 1.4,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Timeburner',
+              ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            DateTimePickerFormField(
+              
+            ),
+            ActionChip(
+              avatar: Icon(Icons.calendar_today),
+              label: Text(
+                times[0].toString(),
+              ),
+              onPressed: () {
+
+                Intents.applyFilter(Provider.of(context), name, saveFilter);
+              }
+            ),
+            Text(
+              locales.to.toLowerCase(),
+            ),
+            ActionChip(
+              avatar: Icon(Icons.calendar_today),
+              label: Text(
+                times[0].toString()
+              ),
+              onPressed: () {
+                Intents.applyFilter(Provider.of(context), name, saveFilter);
+              }
+            ),
+          ],
+        ),
+      ],
+    )
+  );
+};
+
+final Map<String, Filter<List>> filterApplicators = {
+  'type': Filter<List>(
+    name: 'type',
+    applyFilter: (List types, Activity activity) {
+      return types.length < 1 || types.contains(activity.typeId);
+    },
+    build: (BuildContext context) {
+      final locales = WatoplanLocalizations.of(context);
+      final AppState stateVal = Provider.of(context).value;
+      final theme = Theme.of(context);
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    locales.validSorts['type']().toUpperCase(),
+                    style: TextStyle(
+                      letterSpacing: 1.4,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Timeburner',
+                    )
+                  ),
+                  PopupMenuButton<ActivityType>(
+                    tooltip: locales.chooseType,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                    onSelected: (ActivityType type) {
+                      List typeList = stateVal.filters['type'];
+                      if (typeList == null || !typeList.contains(type.id)) {
+                        Intents.applyFilter(
+                          Provider.of(context),
+                          'type',
+                          () => typeList != null ? (typeList..add(type.id)) : [ type.id ]);
+                      }
+                    },
+                    child: Chip(
+                      avatar: Icon(Icons.add),
+                      backgroundColor: theme.accentColor,
+                      label: Text(
+                        locales.add.toUpperCase()
+                      ),
+                    ),
+                    itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
+                      value: t,
+                      enabled: true,
+                      child: Chip(
+                        avatar: Icon(t.icon),
+                        label: Text(
+                          t.name.toUpperCase()
+                        ),
+                        backgroundColor: t.color,
+                      ),
+                    )).toList(),
+                  ),
+                ]
+              ),
+            ),
+            Wrap(
+              children: (stateVal.filters.containsKey('type') ? stateVal.filters['type'].map<Widget>((f) {
+                final type = stateVal.activityTypes.firstWhere((t) => t.id == f);
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                  child: Chip(
+                    avatar: Icon(type.icon),
+                    backgroundColor: type.color,
+                    label: Text(type.name.toUpperCase()),
+                    onDeleted: () {
+                      Intents.applyFilter(
+                        Provider.of(context),
+                        'type',
+                        () => stateVal.filters['type']..remove(type.id));
+                    },
+                  ),
+                );
+              }).toList() : [])
+            ),
+          ],
+        ),
+      );
+    }
+  ),
+  'creation': Filter<List>(
+    name: 'creation',
+    applyFilter: (List times, Activity a) => timeFilter(times, () => a.creation),
+    build: buildTimeFilter('creation', )
+  ),
 };
 
 // this workaround is required because apparently [].runtimeType != List
