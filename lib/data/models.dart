@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:date_utils/date_utils.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 // import 'package:contact_finder/contact_finder.dart';
 
@@ -14,6 +13,7 @@ import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
+import 'package:watoplan/widgets/dual_datetime.dart';
 import 'package:watoplan/widgets/popup_menu.dart';
 
 
@@ -300,18 +300,20 @@ WidgetBuilder buildTimeFilter(String name, Function saveFilter) => (BuildContext
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            DateTimePickerFormField(
-              
-            ),
-            ActionChip(
-              avatar: Icon(Icons.calendar_today),
-              label: Text(
-                times[0].toString(),
-              ),
-              onPressed: () {
-
-                Intents.applyFilter(Provider.of(context), name, saveFilter);
-              }
+            DualDatetime(
+              when: times[0],
+              onSave: (DateTime d) {
+                Intents.applyFilter(Provider.of(context), name, saveFilter([ d, times[1] ]));
+              },
+              child: ActionChip(
+                avatar: Icon(Icons.calendar_today),
+                label: Text(
+                  times[0].toString(),
+                ),
+                onPressed: () {
+                  Intents.applyFilter(Provider.of(context), name, saveFilter);
+                }
+              )
             ),
             Text(
               locales.to.toLowerCase(),

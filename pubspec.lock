@@ -78,13 +78,6 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
-  datetime_picker_formfield:
-    dependency: "direct main"
-    description:
-      name: datetime_picker_formfield
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.8"
   file:
     dependency: transitive
     description:

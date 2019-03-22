@@ -25,7 +25,6 @@ dependencies:
   sam:
     path: ../sam
   sembast: ^1.15.1
-  datetime_picker_formfield: ^0.1.8
     # git:
     #   url: git://github.com/eternali/flutter_calendar.git
   # contact_finder:
