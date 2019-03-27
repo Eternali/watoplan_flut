@@ -34,7 +34,7 @@ class EditTextState extends State<EditText> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+      padding: EdgeInsets.symmetric(vertical: 2.0),
       child: TextField(
         keyboardType: widget.maxLines > 1 ? TextInputType.multiline : TextInputType.text,
         maxLines: widget.maxLines,

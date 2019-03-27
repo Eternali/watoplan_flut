@@ -104,7 +104,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 ) : null,
               stateVal.editingActivity.data.containsKey('desc')
                 ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: EditText(
                     maxLines: 3,
                     alignment: TextAlign.start,
@@ -115,7 +115,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 ) : null,
               stateVal.editingActivity.data.containsKey('long')
                 ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: EditText(
                     maxLines: 5,
                     alignment: TextAlign.start,
@@ -123,7 +123,59 @@ class AddEditScreenState extends State<AddEditScreen> {
                     initVal: stateVal.editingActivity.data['long'],
                     editField: (String changed) { stateVal.editingActivity.data['long'] = changed; },
                   ),
-                ) : null,         
+                ) : null,
+              stateVal.editingActivity.data.containsKey('tags')
+                ? Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              cursorColor: theme.accentColor,
+                              style: theme.textTheme.body1.copyWith(fontSize: 20),
+                              decoration: InputDecoration(
+                                hintText: locales.addTag.toUpperCase(),
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (String ntag) {
+                                setState(() {
+                                  stateVal.editingActivity.data['tags'].add(ntag);
+                                });
+                              },
+                            ),
+                          ),
+                          ActionChip(
+                            label: Text(
+                              locales.add,
+                              style: theme.textTheme.body1.copyWith(fontSize: 20),
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            avatar: const Icon(Icons.add),
+                            onPressed: () {
+
+                            },
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        children: stateVal.editingActivity.data['tags'].map<Widget>((String tag) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Chip(
+                            label: Text(tag),
+                            onDeleted: () {
+                              setState(() {
+                                stateVal.editingActivity.data['tags'].remove(tag);
+                              });
+                            },
+                          )
+                        )).toList()
+                      ),
+                    ],
+                  ),
+                ) : null,
               stateVal.editingActivity.data.containsKey('priority')
                 ? Padding(
                   padding: const EdgeInsets.only(top: 10.0),

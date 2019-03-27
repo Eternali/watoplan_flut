@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:date_utils/date_utils.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 // import 'package:contact_finder/contact_finder.dart';
 
@@ -13,7 +14,6 @@ import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/data_utils.dart';
-import 'package:watoplan/widgets/dual_datetime.dart';
 import 'package:watoplan/widgets/popup_menu.dart';
 
 
@@ -274,10 +274,26 @@ bool timeFilter(List times, Function accessor) => times.length < 1 ||
     return first && second;
   });
 
+void selectDateTime(BuildContext context, DateTime initial, Function onSave) async {
+  final date = await showDatePicker(
+    context: context,
+    initialDate: initial,
+    firstDate: DateTime(1970),
+    lastDate: DateTime(2100)
+  );
+  final time = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.fromDateTime(initial),
+  );
+  await onSave(Utils.fromTimeOfDay(date, time));
+}
 WidgetBuilder buildTimeFilter(String name, Function saveFilter) => (BuildContext context) {
   final locales = WatoplanLocalizations.of(context);
+  final ThemeData theme = Theme.of(context);
   final AppState stateVal = Provider.of(context).value;
-  final List<DateTime> times = stateVal.filters[name].map((n) => DateTime.fromMillisecondsSinceEpoch(n));
+  final DateFormat formatter = DateFormat('H:m, E, d MMM y');
+  final List<DateTime> times = stateVal.filters[name]?.map((n) => DateTime.fromMillisecondsSinceEpoch(n))?.toList()
+    ?? [ DateTime.now(), DateTime.now() ];
 
   return Padding(
     padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
@@ -300,32 +316,43 @@ WidgetBuilder buildTimeFilter(String name, Function saveFilter) => (BuildContext
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            DualDatetime(
-              when: times[0],
-              onSave: (DateTime d) {
-                Intents.applyFilter(Provider.of(context), name, saveFilter([ d, times[1] ]));
-              },
-              child: ActionChip(
-                avatar: Icon(Icons.calendar_today),
-                label: Text(
-                  times[0].toString(),
+            IntrinsicHeight(
+              child: Container(
+                // height: double.infinity,
+                width: 5,
+                decoration: BoxDecoration(
+                  color: theme.accentColor
                 ),
-                onPressed: () {
-                  Intents.applyFilter(Provider.of(context), name, saveFilter);
-                }
-              )
+              ),
+            ),
+            Column(
+              children: <Widget>[
+                ActionChip(
+                  avatar: Icon(Icons.calendar_today),
+                  label: Text(
+                    formatter.format(times[0]),
+                  ),
+                  onPressed: () {
+                    selectDateTime(context, times[0], (DateTime d) {
+                      Intents.applyFilter(Provider.of(context), name, saveFilter([ d, times[1] ]));
+                    });
+                  }
+                ),
+                ActionChip(
+                  avatar: Icon(Icons.calendar_today),
+                  label: Text(
+                    formatter.format(times[1])
+                  ),
+                  onPressed: () {
+                    selectDateTime(context, times[1], (DateTime d) {
+                      Intents.applyFilter(Provider.of(context), name, saveFilter([ times[0], d ]));
+                    });
+                  }
+                ),
+              ],
             ),
             Text(
               locales.to.toLowerCase(),
-            ),
-            ActionChip(
-              avatar: Icon(Icons.calendar_today),
-              label: Text(
-                times[0].toString()
-              ),
-              onPressed: () {
-                Intents.applyFilter(Provider.of(context), name, saveFilter);
-              }
             ),
           ],
         ),
@@ -424,7 +451,10 @@ final Map<String, Filter<List>> filterApplicators = {
   'creation': Filter<List>(
     name: 'creation',
     applyFilter: (List times, Activity a) => timeFilter(times, () => a.creation),
-    build: buildTimeFilter('creation', )
+    build: buildTimeFilter(
+      'creation',
+      (List<DateTime> dates) => () => dates.map((DateTime d) => d.millisecondsSinceEpoch).toList()
+    )
   ),
 };
 
@@ -434,6 +464,10 @@ final Map<String, dynamic> validParams = {
   'name': ParamType<String, List<String>>(''),
   'desc': ParamType<String, List<String>>(''),
   'long': ParamType<String, List<String>>(''),
+  'tags': ParamType<List<String>, List<String>>(
+    [],
+    cloner: (t) => List.from(t),
+  ),
   'priority': ParamType<int, List<int>>(
     0,
     fromJson: (v) => v is int ? v : int.parse(v),

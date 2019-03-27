@@ -16,6 +16,7 @@ class WatoplanLocalizations {
   String get addActivityType => 'Add Type';
   String get addFilter => 'Add Filter';
   String get addNotification => 'Add another notification';
+  String get addTag => 'Add tag';
   String get appTitle => 'WAToPlan';
   String get by => 'by';
   String get cancel => 'Cancel';
@@ -62,6 +63,7 @@ class WatoplanLocalizations {
     'name': () => 'name',
     'desc': () => 'short description',
     'long': () => 'description (Markdown)',
+    'tags': () => 'tags',
     'priority': () => 'priority',
     'progress': () => 'progress',
     'start': () => 'start',
@@ -69,7 +71,6 @@ class WatoplanLocalizations {
     'notis': () => 'notifications',
     'location': () => 'location',
     'contacts': () => 'contacts',
-    // 'tags': () => 'tags',
   };
 
   // Sort locales
