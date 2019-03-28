@@ -13,6 +13,7 @@ import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
+import 'package:watoplan/utils/color_utils.dart';
 import 'package:watoplan/utils/data_utils.dart';
 import 'package:watoplan/widgets/popup_menu.dart';
 
@@ -458,15 +459,34 @@ final Map<String, Filter<List>> filterApplicators = {
   ),
 };
 
+class Tag {
+
+  final String name;
+  final Color color;
+
+  Tag(this.name, { Color color }) : this.color = color ?? intToColor(name.hashCode);
+
+  Tag.fromJson(List raw)
+    : name = raw[0], color = Color(raw[1]);
+
+  List toJson() {
+    return [ name, color.value ];
+  }
+
+}
+
 // this workaround is required because apparently [].runtimeType != List
 // even though ''.runtimeType == String, and print('${[].runtimeType}') => List
 final Map<String, dynamic> validParams = {
   'name': ParamType<String, List<String>>(''),
   'desc': ParamType<String, List<String>>(''),
   'long': ParamType<String, List<String>>(''),
-  'tags': ParamType<List<String>, List<String>>(
-    [],
+  'tags': ParamType<List<Tag>, List<String>>(
+    <Tag>[],
+    init: () => <Tag>[],
     cloner: (t) => List.from(t),
+    fromJson: (raw) => raw.map((r) => Tag.fromJson(r)).toList(),
+    toJson: (tags) => tags.map((t) => t.toJson()).toList(),
   ),
   'priority': ParamType<int, List<int>>(
     0,

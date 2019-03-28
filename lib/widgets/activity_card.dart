@@ -128,7 +128,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               color: tmpType.color.withAlpha(40), // full item will always have this baseline
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,6 +172,20 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                                 data: widget.activity.data['long'],
                               ),
                             ],
+                          ) : null,
+                        widget.activity.data.containsKey('tags') && widget.activity.data['tags'].length > 0
+                          ? Wrap(
+                            children: widget.activity.data['tags'].map<Widget>((tag) => Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                              child: Chip(
+                                label: Text(
+                                  tag.name,
+                                  style: theme.textTheme.body1.copyWith(fontSize: 12),
+                                ),
+                                backgroundColor: tag.color,
+                                padding: const EdgeInsets.all(0),
+                              ),
+                            )).toList(),
                           ) : null,
                       ].where((it) => it != null).toList(),
                     ),

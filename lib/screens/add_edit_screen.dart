@@ -25,6 +25,20 @@ class AddEditScreen extends StatefulWidget {
 
 class AddEditScreenState extends State<AddEditScreen> {
 
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
@@ -134,37 +148,43 @@ class AddEditScreenState extends State<AddEditScreen> {
                         children: <Widget>[
                           Flexible(
                             child: TextField(
+                              controller: _controller,
                               cursorColor: theme.accentColor,
-                              style: theme.textTheme.body1.copyWith(fontSize: 20),
+                              style: theme.textTheme.body1.copyWith(fontSize: 18),
                               decoration: InputDecoration(
                                 hintText: locales.addTag.toUpperCase(),
                                 border: InputBorder.none,
                               ),
                               onSubmitted: (String ntag) {
                                 setState(() {
-                                  stateVal.editingActivity.data['tags'].add(ntag);
+                                  stateVal.editingActivity.data['tags'].add(Tag(ntag));
                                 });
+                                _controller.clear();
                               },
                             ),
                           ),
                           ActionChip(
                             label: Text(
                               locales.add,
-                              style: theme.textTheme.body1.copyWith(fontSize: 20),
+                              style: theme.textTheme.body1.copyWith(fontSize: 18),
                             ),
                             padding: const EdgeInsets.all(6),
                             avatar: const Icon(Icons.add),
                             onPressed: () {
-
+                              setState(() {
+                                stateVal.editingActivity.data['tags'].add(Tag(_controller.value.text));
+                              });
+                              _controller.clear();
                             },
                           ),
                         ],
                       ),
                       Wrap(
-                        children: stateVal.editingActivity.data['tags'].map<Widget>((String tag) => Padding(
+                        children: stateVal.editingActivity.data['tags'].map<Widget>((Tag tag) => Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 2),
                           child: Chip(
-                            label: Text(tag),
+                            label: Text(tag.name),
+                            backgroundColor: tag.color,
                             onDeleted: () {
                               setState(() {
                                 stateVal.editingActivity.data['tags'].remove(tag);
