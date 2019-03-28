@@ -31,8 +31,11 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
   @override
   initState() {
     super.initState();
-    controller = AnimationController(duration: Duration(milliseconds: 800), vsync: this);
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeOut);
+    controller = AnimationController(duration: Duration(milliseconds: 1000), vsync: this);
+    animation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
+      parent: controller,
+      curve: Interval(0.2, 1, curve: Curves.easeOut),
+    ));
     animation.addListener(() {
       setState(() {  });
     });
@@ -128,14 +131,14 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               color: tmpType.color.withAlpha(40), // full item will always have this baseline
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.only(left: 8.0, right: 16.0, top: 8.0, bottom: 8.0),
+                    padding: const EdgeInsets.only(left: 12, right: 6, top: 8, bottom: 8),
                     child: Icon(
                       tmpType.icon,
                       size: 30.0,
@@ -153,39 +156,48 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
                       children: <Widget>[
                         widget.activity.data.containsKey('name') && widget.activity.data['name'].length > 0
                           ? Padding(
-                            padding: const EdgeInsets.only(bottom: 4.0),
+                            padding: const EdgeInsets.only(bottom: 4, left: 4),
                             child: Text(
                               widget.activity.data['name'],
                               style: theme.textTheme.subhead.copyWith(fontSize: 18.0),
                             ),
                           ) : null,
                         widget.activity.data.containsKey('desc') && widget.activity.data['desc'].length > 0
-                          ? Text(
-                            widget.activity.data['desc'],
-                            style: theme.textTheme.body1.copyWith(fontSize: 14.0),
+                          ? Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: Text(
+                              widget.activity.data['desc'],
+                              style: theme.textTheme.body1.copyWith(fontSize: 14.0),
+                            ),
                           ) : null,
                         widget.activity.data.containsKey('long') && widget.activity.data['long'].length > 0
-                          ? Column(
-                            children: <Widget>[
-                              Divider(height: 4.0),
-                              MarkdownBody(
-                                data: widget.activity.data['long'],
-                              ),
-                            ],
+                          ? Padding(
+                            padding: const EdgeInsets.only(left: 4),
+                            child: Column(
+                              children: <Widget>[
+                                Divider(height: 4.0),
+                                MarkdownBody(
+                                  data: widget.activity.data['long'],
+                                ),
+                              ],
+                            ),
                           ) : null,
                         widget.activity.data.containsKey('tags') && widget.activity.data['tags'].length > 0
-                          ? Wrap(
-                            children: widget.activity.data['tags'].map<Widget>((tag) => Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 3),
-                              child: Chip(
-                                label: Text(
+                          ? Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Wrap(
+                              children: widget.activity.data['tags'].map<Widget>((tag) => Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: tag.color, width: 2),
+                                  borderRadius: BorderRadius.circular(32),
+                                ),
+                                child: Text(
                                   tag.name,
                                   style: theme.textTheme.body1.copyWith(fontSize: 12),
                                 ),
-                                backgroundColor: tag.color,
-                                padding: const EdgeInsets.all(0),
-                              ),
-                            )).toList(),
+                              )).toList(),
+                            ),
                           ) : null,
                       ].where((it) => it != null).toList(),
                     ),

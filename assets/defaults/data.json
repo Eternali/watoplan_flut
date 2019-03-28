@@ -97,7 +97,7 @@
   "homeLayout": "list",
   "homeOptions": {
     "list": {
-      "sorter": "start",
+      "sorter": "creation",
       "sortRev": false
     },
     "calendar": {

@@ -484,8 +484,8 @@ final Map<String, dynamic> validParams = {
   'tags': ParamType<List<Tag>, List<String>>(
     <Tag>[],
     init: () => <Tag>[],
-    cloner: (t) => List.from(t),
-    fromJson: (raw) => raw.map((r) => Tag.fromJson(r)).toList(),
+    cloner: (t) => List<Tag>.from(t),
+    fromJson: (raw) => raw.map<Tag>((r) => Tag.fromJson(r)).toList(),
     toJson: (tags) => tags.map((t) => t.toJson()).toList(),
   ),
   'priority': ParamType<int, List<int>>(
@@ -513,9 +513,9 @@ final Map<String, dynamic> validParams = {
   'notis': ParamType<List<Noti>, List<NotiType>>(
     <Noti>[],
     init: () => <Noti>[],
+    cloner: (v) => List<Noti>.from(v),
     fromJson: (v) => v.map<Noti>((n) => Noti.fromJson(n)).toList(),
     toJson: (v) => v.map((n) => n.toJson()).toList(),
-    cloner: (v) => List<Noti>.from(v),
   ),
   'location': ParamType<Location, List<Location>>(
     Location(lat: 0.0, long: 0.0),
