@@ -16,6 +16,10 @@ dependencies:
   # firebase_analytics: ^2.0.3
   flutter_local_notifications: ^0.3.7
   flutter_markdown: ^0.2.0
+  share:
+    git:
+      url: https://github.com/d-silveira/flutter-share.git
+  sembast: ^1.15.1
   date_utils:
     path: ../date_utils
     # git:
@@ -24,7 +28,6 @@ dependencies:
     path: ../flutter_calendar
   sam:
     path: ../sam
-  sembast: ^1.15.1
     # git:
     #   url: git://github.com/eternali/flutter_calendar.git
   # contact_finder:
@@ -44,7 +47,7 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  test: 1.5.3
+  test: 1.6.1
 
 flutter:
   assets:

@@ -1,6 +1,7 @@
 // we're overriding these menus in widgets/popup_menu.dart
 import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 import 'package:sam/sam.dart';
+import 'package:share/share.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/key_strings.dart';
@@ -9,14 +10,49 @@ import 'package:watoplan/routes.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
+import 'package:watoplan/data/shared_prefs.dart';
 import 'package:watoplan/widgets/popup_menu.dart';
 
 class HomeScreen extends StatefulWidget {
 
   final String title;
-  List<MenuChoice> overflow = const <MenuChoice>[
-    const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
-    const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
+  final List<MenuChoice> overflow = <MenuChoice>[
+    MenuChoice(title: 'Settings', icon: Icons.settings, onPressed: (BuildContext context) {
+      Navigator.of(context).pushNamed(Routes.settings);
+    }),
+    MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
+      Navigator.of(context).pushNamed(Routes.about);
+    }),
+    MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) {
+      final RenderBox box = context.findRenderObject();
+      if (SharedPrefs().isMobile) {
+        Share.file(
+          mimeType: ShareType.TYPE_FILE,
+          title: 'Watoplan Database',
+          path: Provider.of(context).value.dbpath
+        ).share(sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            final locales = WatoplanLocalizations.of(context);
+            return AlertDialog(
+              title: Text(locales.featureNotSupported),
+              content: Text(locales.needsMobile),
+              actions: <Widget>[
+                new FlatButton(
+                  child: Text(locales.close.toUpperCase()),
+                  textColor: Theme.of(context).accentColor,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          }
+        );
+      }
+    }),
   ];
 
   HomeScreen({ Key key, this.title }) : super(key: key);
@@ -98,7 +134,7 @@ class HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
-              Navigator.of(context).pushNamed(choice.route);
+              choice.onPressed(context);
             },
             itemBuilder: (BuildContext context) =>
               widget.overflow.map((MenuChoice choice) =>

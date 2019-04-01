@@ -102,7 +102,17 @@ class Noti {
   }
 
   Future<void> cancel(FlutterLocalNotificationsPlugin notiPlug) async {
-    await notiPlug?.cancel(id);
+    switch (type.name) {
+      case 'PUSH':
+        await notiPlug?.cancel(id);
+        break;
+      case 'EMAIL':
+
+        break;
+      case 'SMS':
+
+        break;
+    }
   }
 
   factory Noti.fromJson(Map<String, dynamic> jsonMap) {

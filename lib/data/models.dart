@@ -12,6 +12,7 @@ import 'package:watoplan/data/converters.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/location.dart';
 import 'package:watoplan/data/noti.dart';
+import 'package:watoplan/data/local_db.dart';
 import 'package:watoplan/utils/activity_sorters.dart';
 import 'package:watoplan/utils/color_utils.dart';
 import 'package:watoplan/utils/data_utils.dart';
@@ -101,6 +102,8 @@ class AppState {
   List<Activity> get timeSensitive => activities.where(
       (Activity a) => a.data.values.where((v) => v is DateTime).isNotEmpty
     ).toList();
+
+  String get dbpath => LocalDb().path;
 
   AppState({
     this.activities,
@@ -210,14 +213,15 @@ class AppStateObservable extends ValueNotifier<AppState> {
 }
 
 
+typedef void ContextMethod(BuildContext context);
 class MenuChoice {
   final String title;
   final IconData icon;
-  final String route;  
+  final ContextMethod onPressed;
   const MenuChoice({
     this.title,
     this.icon,
-    this.route,
+    this.onPressed,
   });
 }
 

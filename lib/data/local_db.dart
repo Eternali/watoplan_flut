@@ -22,18 +22,19 @@ class LocalDb {
   
   static LocalDb _self;
 
+  String path;
   File _db;
   DbCollection typeCollection;
   DbCollection activityCollection;
 
-  factory LocalDb([ String loc = '' ]) {
-    _self ??= LocalDb._init(loc);
+  factory LocalDb([ String path = '' ]) {
+    _self ??= LocalDb._init(path);
 
     return _self;
   }
 
-  LocalDb._init(loc) {
-    _db = File(loc);
+  LocalDb._init(this.path) {
+    _db = File(path);
     // _db.createSync();
   }
 

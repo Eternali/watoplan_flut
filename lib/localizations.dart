@@ -22,6 +22,7 @@ class WatoplanLocalizations {
   String get cancel => 'Cancel';
   String get chooseColor => 'Choose Color';
   String get chooseType => 'Choose Type';
+  String get close => 'Close';
   String get cont => 'Continue';
   String get contacts => 'Related Contacts';
   String get dataWarning => 'Warning, this will delete all your data, continue?';
@@ -30,12 +31,14 @@ class WatoplanLocalizations {
   String get editNoti => 'Edit Notification';
   String get end => 'End';
   String get featureUnavailable => 'This feature isn\'t here yet, sorry!';
+  String get featureNotSupported => 'This feature is not supported';
   String get featureComingSoon => 'This feature is coming soon!';
   String get filterBy => 'Filter By';
   String get invalidType => 'Make sure your type is valid before saving.';
   String get layoutList => 'List';
   String get layoutCalendar => 'Calendar';
   String get layoutUndefined => 'The specified layout can\'t be found.';
+  String get needsMobile => 'This feature is only available on iOS and Android devices.';
   String get newActivity => 'New Activity';
   String get newActivityType => 'New Type';
   String get newNoti => 'New Notification';
