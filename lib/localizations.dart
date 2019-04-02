@@ -21,6 +21,7 @@ class WatoplanLocalizations {
   String get by => 'by';
   String get cancel => 'Cancel';
   String get chooseColor => 'Choose Color';
+  String get chooseParam => 'Choose Parameter';
   String get chooseType => 'Choose Type';
   String get close => 'Close';
   String get cont => 'Continue';
@@ -84,6 +85,13 @@ class WatoplanLocalizations {
     'priority': () => 'priority',
     'progress': () => 'progress',
     'type': () => 'type',
+  };
+
+  // Filter locales
+  Map<String, StrGet> validFilters = {
+    'type': () => 'type',
+    'params': () => 'parameter',
+    'creation': () => 'creation time',
   };
 
 }

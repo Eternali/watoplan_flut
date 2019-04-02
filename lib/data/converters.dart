@@ -1,11 +1,6 @@
-import 'dart:convert' show json;
-
 import 'package:flutter/material.dart';
-// import 'package:contact_finder/contact_finder.dart';
 
-import 'package:watoplan/data/location.dart';
-import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/params.dart';
 
 class Converters {
 

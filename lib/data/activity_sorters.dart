@@ -1,6 +1,15 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/activity.dart';
+
+final Map<String, ActivitySort> validSorts = {
+  'creation': ActivitySorters.byCreation,
+  'start': ActivitySorters.byStartTime,
+  'end': ActivitySorters.byEndTime,
+  'priority': ActivitySorters.byPriority,
+  'progress': ActivitySorters.byProgress,
+  'type': ActivitySorters.byType,
+};
 
 typedef List<Activity> ActivitySort(List<Activity> activities, [ bool rev ]);
 

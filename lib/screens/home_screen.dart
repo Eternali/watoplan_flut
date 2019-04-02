@@ -187,7 +187,7 @@ class HomeScreenState extends State<HomeScreen> {
           ))..add(
             buildDrawerSubtitle(context, locales.filterBy),
           )..addAll(
-            filterApplicators.values.map((Filter f) => f.build(context))
+            filterApplicators.values.map((Filter<List> f) => f.build(stateVal.filters[f.name], context))
           )..addAll(validParams.values
             .where((p) => p.filter != null)
             .map((p) => p.filter.build(context))
