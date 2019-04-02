@@ -9,8 +9,9 @@ import 'package:watoplan/localizations.dart';
 import 'package:watoplan/data/models.dart';
 import 'package:watoplan/data/provider.dart';
 import 'package:watoplan/widgets/popup_menu.dart';
+import 'package:watoplan/utils/color_utils.dart';
 
-typedef bool FilterApplicator<T>(T filters, Activity activity);
+typedef bool FilterApplicator<T>(List<ActivityType> types, T filters, Activity activity);
 typedef Widget FilterBuilder<T>(T data, BuildContext context);
 
 class Filter<T> {
@@ -23,7 +24,7 @@ class Filter<T> {
 
   Filter({ this.name, this.build, this.applyFilter, this.fromJson, this.toJson}) {
     build ??= (T data, BuildContext context) => Container();
-    applyFilter ??= (T filters, Activity activity) => true;
+    applyFilter ??= (List<ActivityType> types, T filters, Activity activity) => true;
     fromJson ??= (value) => value;
     toJson ??= (value) => value.map((v) => v.toString());
   }
@@ -59,7 +60,7 @@ FilterBuilder<List> buildTimeFilter(String name, Function saveFilter) => (List d
     ?? [ DateTime.now(), DateTime.now() ];
 
   return Padding(
-    padding: const EdgeInsets.only(left: 14, right: 14, top: 8),
+    padding: const EdgeInsets.only(left: 14, right: 14, top: 14),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -127,7 +128,7 @@ FilterBuilder<List> buildTimeFilter(String name, Function saveFilter) => (List d
 final Map<String, Filter<List>> filterApplicators = {
   'type': Filter<List>(
     name: 'type',
-    applyFilter: (List types, Activity activity) {
+    applyFilter: (List<ActivityType> allTypes, List types, Activity activity) {
       return types.length < 1 || types.contains(activity.typeId);
     },
     build: (List data, BuildContext context) {
@@ -211,9 +212,10 @@ final Map<String, Filter<List>> filterApplicators = {
       );
     }
   ),
-  'params': Filter<List>(
-    name: 'params',
-    applyFilter: (List params, Activity a) => true,
+  'param': Filter<List>(
+    name: 'param',
+    applyFilter: (List<ActivityType> types, List params, Activity a) =>
+      a.getType(types).params.values.where((ParamType p) => params.contains(p.name)).length == params.length,
     build: (List data, BuildContext context) {
       final locales = WatoplanLocalizations.of(context);
       final AppState stateVal = Provider.of(context).value;
@@ -229,7 +231,7 @@ final Map<String, Filter<List>> filterApplicators = {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    locales.validFilters['params']().toUpperCase(),
+                    locales.validFilters['param']().toUpperCase(),
                     style: TextStyle(
                       letterSpacing: 1.4,
                       fontSize: 15,
@@ -237,16 +239,16 @@ final Map<String, Filter<List>> filterApplicators = {
                       fontFamily: 'Timeburner',
                     )
                   ),
-                  PopupMenuButton<ActivityType>(
+                  PopupMenuButton<ParamType>(
                     tooltip: locales.chooseParam,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                    onSelected: (ActivityType type) {
-                      List params = stateVal.filters['params'];
-                      if (params == null || !params.contains(type.id)) {
+                    onSelected: (ParamType param) {
+                      List params = stateVal.filters['param'];
+                      if (params == null || !params.contains(param.name)) {
                         Intents.applyFilter(
                           Provider.of(context),
-                          'type',
-                          () => params != null ? (params..add(type.id)) : [ type.id ]);
+                          'param',
+                          () => params != null ? (params..add(param.name)) : [ param.name ]);
                       }
                     },
                     child: Chip(
@@ -256,15 +258,14 @@ final Map<String, Filter<List>> filterApplicators = {
                         locales.add.toUpperCase()
                       ),
                     ),
-                    itemBuilder: (context) => stateVal.activityTypes.map((t) => PopupMenuItem<ActivityType>(
-                      value: t,
+                    itemBuilder: (context) => validParams.values.map((p) => PopupMenuItem<ParamType>(
+                      value: p,
                       enabled: true,
                       child: Chip(
-                        avatar: Icon(t.icon),
                         label: Text(
-                          t.name.toUpperCase()
+                          locales.validParams[p.name]().toUpperCase()
                         ),
-                        backgroundColor: t.color,
+                        backgroundColor: intToColor(p.name.hashCode),
                       ),
                     )).toList(),
                   ),
@@ -272,19 +273,18 @@ final Map<String, Filter<List>> filterApplicators = {
               ),
             ),
             Wrap(
-              children: (stateVal.filters.containsKey('type') ? stateVal.filters['type'].map<Widget>((f) {
-                final type = stateVal.activityTypes.firstWhere((t) => t.id == f);
+              children: (stateVal.filters.containsKey('param') ? stateVal.filters['param'].map<Widget>((f) {
+                final param = validParams[f];
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
                   child: Chip(
-                    avatar: Icon(type.icon),
-                    backgroundColor: type.color,
-                    label: Text(type.name.toUpperCase()),
+                    backgroundColor: intToColor(param.name.hashCode),
+                    label: Text(param.name.toUpperCase()),
                     onDeleted: () {
                       Intents.applyFilter(
                         Provider.of(context),
-                        'type',
-                        () => stateVal.filters['type']..remove(type.id));
+                        'param',
+                        () => stateVal.filters['param']..remove(param.name));
                     },
                   ),
                 );
@@ -297,7 +297,7 @@ final Map<String, Filter<List>> filterApplicators = {
   ),
   'creation': Filter<List>(
     name: 'creation',
-    applyFilter: (List times, Activity a) => timeFilter(times, () => a.creation),
+    applyFilter: (List<ActivityType> types, List times, Activity a) => timeFilter(times, () => a.creation),
     build: buildTimeFilter(
       'creation',
       (List<List<int>> original, List<DateTime> dates) => () =>

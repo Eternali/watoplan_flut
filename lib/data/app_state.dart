@@ -54,11 +54,11 @@ class AppState {
   
   List<Activity> get filteredActivities {
     return activities.where((Activity a) =>
-      filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) =>
+      filters.entries.fold(true, (bool acc, MapEntry<String, dynamic> f) => acc & (
         validParams.keys.contains(f.key)
           ? validParams[f.key].filter.applyFilter(f.value, a)
-          : filterApplicators[f.key].applyFilter(f.value as List, a)
-      )
+          : filterApplicators[f.key].applyFilter(activityTypes, f.value as List, a)
+      ))
     ).toList();
   }
 

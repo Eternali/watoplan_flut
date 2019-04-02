@@ -27,7 +27,12 @@ class ActivityTypeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(32.0)
         ),
         child: ListTile(
-          leading: Icon(data.icon),
+          leading: IconButton(
+            padding: const EdgeInsets.all(0),
+            alignment: Alignment.centerLeft,
+            icon: Icon(data.icon),
+            onPressed: () {},
+          ),
           dense: true,
           title: Text(
             data.name,

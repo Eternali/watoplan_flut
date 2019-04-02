@@ -90,7 +90,7 @@ class WatoplanLocalizations {
   // Filter locales
   Map<String, StrGet> validFilters = {
     'type': () => 'type',
-    'params': () => 'parameter',
+    'param': () => 'parameter',
     'creation': () => 'creation time',
   };
 
