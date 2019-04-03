@@ -1,7 +1,9 @@
 {"version":1,"sembast":1}
-{"key":"theme","value":"dark"}
+{"key":"theme","value":"light"}
 {"key":"homeLayout","value":"list"}
-{"key":"homeOptions","value":"{\"list\":{\"sorter\":\"creation\",\"sortRev\":false},\"calendar\":{}}"}
+{"key":"homeOptions","value":"{\"list\":{\"sorter\":\"priority\",\"sortRev\":false},\"calendar\":{}}"}
 {"key":"focusedDate","value":"1552996800000"}
 {"key":"filters","value":"{\"type\":[],\"param\":[]}"}
-{"key":"homeOptions","value":"{\"list\":{\"sorter\":\"creation\",\"sortRev\":false},\"calendar\":{}}"}
+{"key":"filters","value":"{\"type\":[],\"param\":[]}"}
+{"key":"filters","value":"{\"type\":[],\"param\":[]}"}
+{"key":"homeOptions","value":"{\"list\":{\"sorter\":\"priority\",\"sortRev\":false},\"calendar\":{}}"}

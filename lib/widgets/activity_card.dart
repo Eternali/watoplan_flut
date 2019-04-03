@@ -61,209 +61,191 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
     final AppStateObservable state = Provider.of(context);
     final ActivityType tmpType = widget.activity.getType(state.value.activityTypes);
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(32),
-        color: Colors.green,
+    return Dismissible(
+      key: Key(widget.activity.id.toString()),
+      background: Container(
+        decoration: BoxDecoration(
+          color: Colors.redAccent.withAlpha(250),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 14.0),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.delete),
+            Expanded(child: Container()),
+          ],
+        ),
       ),
-      child: Dismissible(
-        key: Key(widget.activity.id.toString()),
-        background: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32),
-            color: Colors.redAccent.withAlpha(200),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 14.0),
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.delete),
-              Expanded(child: Container()),
-            ],
-          ),
+      secondaryBackground: Container(
+        decoration: BoxDecoration(
+          color: Colors.redAccent.withAlpha(250),
         ),
-        secondaryBackground: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32),
-            color: Colors.redAccent.withAlpha(200),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 14.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(child: Container()),
-              Icon(Icons.delete),
-            ],
-          ),
+        padding: EdgeInsets.symmetric(horizontal: 14.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(child: Container()),
+            Icon(Icons.delete),
+          ],
         ),
-        onDismissed: (direction) {
-          int idx = getIdx(state.value.activities);
-          Intents.removeActivities(state, [widget.activity], notiPlug)
-            .then((activities) {
-                return Scaffold.of(context).showSnackBar(new SnackBar(
-                duration: const Duration(seconds: 3),
-                content: Text(
-                  'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',
-                ),
-                action: SnackBarAction(
-                  label: locales.undo.toUpperCase(),
-                  onPressed: () {
-                    Intents.insertActivity(state, activities[0], idx);
-                  },
-                ),
-              ));
-            });
-        },
-        child: Material(
-          borderRadius: BorderRadius.circular(32),
-          clipBehavior: Clip.antiAlias,
-          color: Colors.transparent,
-          child: InkWell(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(32),
+      ),
+      onDismissed: (direction) {
+        int idx = getIdx(state.value.activities);
+        Intents.removeActivities(state, [widget.activity], notiPlug)
+          .then((activities) {
+              return Scaffold.of(context).showSnackBar(new SnackBar(
+              duration: const Duration(seconds: 3),
+              content: Text(
+                'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',
               ),
-              child: Stack(
-                children: <Widget>[
-                  Positioned.fill(
-                    left: 0.0,
-                    right: widget.activity.data.containsKey('progress')
-                      ? MediaQuery.of(context).size.width
-                        - (widget.activity.data['progress'].toDouble() * animation.value * (MediaQuery.of(context).size.width / 100.0))
-                      : MediaQuery.of(context).size.width * (1 - animation.value),
-                    top: 0.0,
-                    bottom: 0.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 4.0,
-                          color: tmpType.color.withAlpha(
-                            widget.activity.data.containsKey('priority')
-                              ? (widget.activity.data['priority'] * 20) + 55
-                              : 55
-                          )
-                        ),
-                        borderRadius: BorderRadius.circular(32),
+              action: SnackBarAction(
+                label: locales.undo.toUpperCase(),
+                onPressed: () {
+                  Intents.insertActivity(state, activities[0], idx);
+                },
+              ),
+            ));
+          });
+      },
+      child: InkWell(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          decoration: BoxDecoration(
+            color: tmpType.color.withAlpha(
+              widget.activity.data.containsKey('priority')
+                ? (widget.activity.data['priority'] * 8) + 30
+                : 30,
+            )
+          ),
+          child: Stack(
+            children: <Widget>[
+              Positioned.fill(
+                left: 0.0,
+                right: widget.activity.data.containsKey('progress')
+                  ? MediaQuery.of(context).size.width
+                    - (widget.activity.data['progress'].toDouble() * animation.value * (MediaQuery.of(context).size.width / 100.0))
+                  : MediaQuery.of(context).size.width * (1 - animation.value),
+                top: 0.0,
+                bottom: 0.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 4.0,
+                      color: tmpType.color.withAlpha(
+                        widget.activity.data.containsKey('priority')
+                          ? (widget.activity.data['priority'] * 15) + 100
+                          : 100
+                      )
+                    ),
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(left: 12, right: 6, top: 8, bottom: 8),
+                      child: Icon(
+                        tmpType.icon,
+                        size: 30.0,
                         color: tmpType.color.withAlpha(
                           widget.activity.data.containsKey('priority')
-                            ? (widget.activity.data['priority'] * 10) + 40
-                            : 40,
-                        )
+                            ? (widget.activity.data['priority'] * 15) + 105
+                            : 105
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    decoration: BoxDecoration(
-                      color: tmpType.color.withAlpha(40), // full item will always have this baseline
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.only(left: 12, right: 6, top: 8, bottom: 8),
-                          child: Icon(
-                            tmpType.icon,
-                            size: 30.0,
-                            color: tmpType.color.withAlpha(
-                              widget.activity.data.containsKey('priority')
-                                ? (widget.activity.data['priority'] * 15) + 105
-                                : 105
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              widget.activity.data.containsKey('name') && widget.activity.data['name'].length > 0
-                                ? Padding(
-                                  padding: const EdgeInsets.only(bottom: 4, left: 4),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          widget.activity.data.containsKey('name') && widget.activity.data['name'].length > 0
+                            ? Padding(
+                              padding: const EdgeInsets.only(bottom: 4, left: 4),
+                              child: Text(
+                                widget.activity.data['name'],
+                                style: theme.textTheme.subhead.copyWith(fontSize: 18.0),
+                              ),
+                            ) : null,
+                          widget.activity.data.containsKey('desc') && widget.activity.data['desc'].length > 0
+                            ? Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: Text(
+                                widget.activity.data['desc'],
+                                style: theme.textTheme.body1.copyWith(fontSize: 14.0),
+                              ),
+                            ) : null,
+                          widget.activity.data.containsKey('long') && widget.activity.data['long'].length > 0
+                            ? Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: Column(
+                                children: <Widget>[
+                                  Divider(height: 4.0),
+                                  MarkdownBody(
+                                    data: widget.activity.data['long'],
+                                  ),
+                                ],
+                              ),
+                            ) : null,
+                          widget.activity.data.containsKey('tags') && widget.activity.data['tags'].length > 0
+                            ? Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Wrap(
+                                children: widget.activity.data['tags'].map<Widget>((tag) => Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: tag.color, width: 2),
+                                    borderRadius: BorderRadius.circular(32),
+                                  ),
                                   child: Text(
-                                    widget.activity.data['name'],
-                                    style: theme.textTheme.subhead.copyWith(fontSize: 18.0),
+                                    tag.name,
+                                    style: theme.textTheme.body1.copyWith(fontSize: 12),
                                   ),
-                                ) : null,
-                              widget.activity.data.containsKey('desc') && widget.activity.data['desc'].length > 0
-                                ? Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: Text(
-                                    widget.activity.data['desc'],
-                                    style: theme.textTheme.body1.copyWith(fontSize: 14.0),
-                                  ),
-                                ) : null,
-                              widget.activity.data.containsKey('long') && widget.activity.data['long'].length > 0
-                                ? Padding(
-                                  padding: const EdgeInsets.only(left: 4),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Divider(height: 4.0),
-                                      MarkdownBody(
-                                        data: widget.activity.data['long'],
-                                      ),
-                                    ],
-                                  ),
-                                ) : null,
-                              widget.activity.data.containsKey('tags') && widget.activity.data['tags'].length > 0
-                                ? Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Wrap(
-                                    children: widget.activity.data['tags'].map<Widget>((tag) => Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: tag.color, width: 2),
-                                        borderRadius: BorderRadius.circular(32),
-                                      ),
-                                      child: Text(
-                                        tag.name,
-                                        style: theme.textTheme.body1.copyWith(fontSize: 12),
-                                      ),
-                                    )).toList(),
-                                  ),
-                                ) : null,
-                            ].where((it) => it != null).toList(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 6.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                widget.activity.data.containsKey('start') ? Utils.formatEM(widget.activity.data['start']) : '',
-                                style: theme.textTheme.body1.copyWith(color: theme.hintColor),
+                                )).toList(),
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
-                                child: Icon(
-                                  widget.activity.data.containsKey('notis') && widget.activity.data['notis'].length > 0
-                                    ? Icons.notifications : IconData(0),
-                                  size: 12.0,
-                                )
-                              ),
-                              Text(
-                                widget.activity.data.containsKey('end') ? Utils.formatEM(widget.activity.data['end']) : '',
-                                style: theme.textTheme.body1.copyWith(color: theme.hintColor),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                            ) : null,
+                        ].where((it) => it != null).toList(),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            widget.activity.data.containsKey('start') ? Utils.formatEM(widget.activity.data['start']) : '',
+                            style: theme.textTheme.body1.copyWith(color: theme.hintColor),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 3.0),
+                            child: Icon(
+                              widget.activity.data.containsKey('notis') && widget.activity.data['notis'].length > 0
+                                ? Icons.notifications : IconData(0),
+                              size: 12.0,
+                            )
+                          ),
+                          Text(
+                            widget.activity.data.containsKey('end') ? Utils.formatEM(widget.activity.data['end']) : '',
+                            style: theme.textTheme.body1.copyWith(color: theme.hintColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            onTap: () {
-              Intents.setFocused(state, activity: widget.activity);
-              Intents.editEditing(state, Activity.from(widget.activity));
-              Navigator.of(context).pushNamed(Routes.addEditActivity);
-            },
+            ],
           ),
         ),
+        onTap: () {
+          Intents.setFocused(state, activity: widget.activity);
+          Intents.editEditing(state, Activity.from(widget.activity));
+          Navigator.of(context).pushNamed(Routes.addEditActivity);
+        },
       ),
     );
   }
