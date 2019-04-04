@@ -295,13 +295,13 @@ final Map<String, Filter<List>> filterApplicators = {
       );
     }
   ),
-  'creation': Filter<List>(
-    name: 'creation',
-    applyFilter: (List<ActivityType> types, List times, Activity a) => timeFilter(times, () => a.creation),
-    build: buildTimeFilter(
-      'creation',
-      (List<List<int>> original, List<DateTime> dates) => () =>
-        (original ?? [])..last = dates.map((d) => d.millisecondsSinceEpoch).toList()
-    )
-  ),
+  // 'creation': Filter<List>(
+  //   name: 'creation',
+  //   applyFilter: (List<ActivityType> types, List times, Activity a) => timeFilter(times, () => a.creation),
+  //   build: buildTimeFilter(
+  //     'creation',
+  //     (List<List<int>> original, List<DateTime> dates) => () =>
+  //       (original ?? [])..last = dates.map((d) => d.millisecondsSinceEpoch).toList()
+  //   )
+  // ),
 };

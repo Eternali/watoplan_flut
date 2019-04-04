@@ -29,13 +29,15 @@ class SharedPrefs {
   }
 
   SharedPrefs._init([ String loc ]) {
-    path = loc ?? '${Directory.current.path}/shared_prefs.db';
+    path = loc ?? (isMobile ? '' : '${Directory.current.path}/shared_prefs.db');
   }
 
   Future open() async {
     if (isMobile) {
+      print('\n\n\nMOBILE PREFS');
       _prefs ??= await SharedPreferences.getInstance();
     } else {
+      print('\n\n\nMOBILE PREFS');
       _db ??= await databaseFactoryIo.openDatabase(path);
       _store ??= StoreRef<String, dynamic>.main();
     }

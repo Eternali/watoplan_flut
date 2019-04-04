@@ -86,3 +86,13 @@
 ### Bugs Fixed:
 - __CALENDAR__ is back and fixed (sorry for the barrage of issues)
 - (__0012__) Parameter types have been completely reworked under the hood (automatic migration of the app db should work) and now notification editing across activities shouldn't be linked.
+
+0.10.0
+
+### New Features
+- Added ability to filter by activity type, and type parameters.
+- Added ability to order by creation time.
+- Redesigned `ActivityCard` widget.
+- Consolidated ways to create new activities by redesigning the creation floating action menu.
+- Added support for flutter desktop embedding (i.e. WAToPlan can now be run as a desktop app!)
+- Added ability to export database as a JSON file for backup.
