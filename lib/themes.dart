@@ -35,7 +35,16 @@ final Map<String, ThemeData> themes = {
   'light': LightTheme,
 };
 
+const PageTransitionsTheme transitionsTheme = const PageTransitionsTheme(
+  builders: <TargetPlatform, PageTransitionsBuilder>{
+    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+    TargetPlatform.fuchsia: OpenUpwardsPageTransitionsBuilder(),
+  },
+);
+
 final ThemeData DarkTheme = ThemeData.dark().copyWith(
+  pageTransitionsTheme: transitionsTheme,
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
   textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Roboto'),
@@ -44,6 +53,7 @@ final ThemeData DarkTheme = ThemeData.dark().copyWith(
 );
 
 final ThemeData LightTheme = ThemeData.light().copyWith(
+  pageTransitionsTheme: transitionsTheme,
   primaryColor: WatoplanColors.purple[400],
   accentColor: WatoplanColors.gold[400],
   textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Roboto'),

@@ -37,7 +37,7 @@ class SharedPrefs {
       print('\n\n\nMOBILE PREFS');
       _prefs ??= await SharedPreferences.getInstance();
     } else {
-      print('\n\n\nMOBILE PREFS');
+      print('\n\n\nDESKTOP PREFS');
       _db ??= await databaseFactoryIo.openDatabase(path);
       _store ??= StoreRef<String, dynamic>.main();
     }

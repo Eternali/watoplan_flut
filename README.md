@@ -39,6 +39,9 @@ If you do not want to go through Google Play, you can manually build the app fro
     - Android: ```flutter build apk --flavor free```
     - IOS: ```flutter build ios --flavor free```
 
+## Desktop Embedding
+The only modification to enable flutter desktop embeding is to make sure line 23 in `main.dart` is uncommented.
+
 ## Google Play Deployment Instructions
 After all development is complete.
 
