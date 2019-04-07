@@ -111,8 +111,8 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
           decoration: BoxDecoration(
             color: tmpType.color.withAlpha(
               widget.activity.data.containsKey('priority')
-                ? (widget.activity.data['priority'] * 8) + 30
-                : 30,
+                ? (widget.activity.data['priority'] * 8) + 50
+                : 50,
             )
           ),
           child: Stack(

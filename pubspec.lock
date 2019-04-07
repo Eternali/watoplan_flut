@@ -78,6 +78,15 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
+  esys_flutter_share:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: f5eaf543684f3157b920da99447795d518b77ff2
+      url: "https://github.com/esysberlin/esys-flutter-share.git"
+    source: git
+    version: "1.0.0"
   file:
     dependency: transitive
     description:
@@ -279,7 +288,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1"
+    version: "0.5.0+1"
   pedantic:
     dependency: transitive
     description:
@@ -343,15 +352,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.1"
-  share:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1f8b139ca0bd35b643ef4f5ccce3a1b09931f16a"
-      url: "https://github.com/d-silveira/flutter-share.git"
-    source: git
-    version: "0.6.0"
   shared_preferences:
     dependency: "direct main"
     description:

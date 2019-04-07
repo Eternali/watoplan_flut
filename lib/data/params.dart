@@ -38,7 +38,7 @@ final Map<String, dynamic> validParams = {
   'name': ParamType<String, List<String>>('name', ''),
   'desc': ParamType<String, List<String>>('desc', ''),
   'long': ParamType<String, List<String>>('long', ''),
-  'tags': ParamType<List<Tag>, List<String>>(
+  'tags': ParamType<List<Tag>, List<List<String>>>(
     'tags',
     <Tag>[],
     init: () => <Tag>[],

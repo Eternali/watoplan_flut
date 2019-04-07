@@ -8,11 +8,10 @@ export 'app_state.dart';
 export 'filters.dart';
 export 'params.dart';
 
-typedef void ContextMethod(BuildContext context);
 class MenuChoice {
   final String title;
   final IconData icon;
-  final ContextMethod onPressed;
+  final Function onPressed;
   const MenuChoice({
     this.title,
     this.icon,
@@ -30,7 +29,7 @@ class Tag {
   Tag(this.name, { Color color }) : this.color = color ?? intToColor(name.hashCode);
 
   Tag.fromJson(List raw)
-    : name = raw[0], color = Color(raw[1]);
+    : name = raw[0], color = raw.length > 1 ? Color(raw[1]) : intToColor(raw[0].hashCode);
 
   List toJson() {
     return [ name, color.value ];

@@ -29,6 +29,11 @@ class Intents {
       .then((_) => appState.value = tmp.value);
   }
 
+  static Future<List<int>> getRawDb(AppStateObservable appState) {
+    final file = File(appState.value.dbpath);
+    return file.readAsBytes();
+  }
+
   static Future<void> refresh(AppStateObservable appState) async {
     appState.value = Reducers.refresh(appState.value);
   }

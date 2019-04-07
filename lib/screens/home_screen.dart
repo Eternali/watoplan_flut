@@ -1,7 +1,7 @@
 // we're overriding these menus in widgets/popup_menu.dart
 import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 import 'package:sam/sam.dart';
-import 'package:share/share.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/key_strings.dart';
@@ -23,16 +23,16 @@ class HomeScreen extends StatefulWidget {
     MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
       Navigator.of(context).pushNamed(Routes.about);
     }),
-    MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) {
-      final RenderBox box = context.findRenderObject();
+    MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) async {
       if (SharedPrefs().isMobile) {
-        Share.file(
-          mimeType: ShareType.TYPE_FILE,
-          title: 'Watoplan Database',
-          path: Provider.of(context).value.dbpath
-        ).share(sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+        await Share.file(
+          'Watoplan Database',
+          'watoplan.json',
+          await Intents.getRawDb(Provider.of(context)),
+          'text/json',
+        );
       } else {
-        showDialog(
+        await showDialog(
           context: context,
           builder: (BuildContext context) {
             final locales = WatoplanLocalizations.of(context);

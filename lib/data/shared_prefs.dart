@@ -14,7 +14,7 @@ class SharedPrefs {
 
   String path;
 
-  bool get isMobile => Platform.isAndroid && Platform.isIOS;
+  bool get isMobile => Platform.isAndroid || Platform.isIOS;
 
   factory SharedPrefs([ String loc ]) {
     _self ??= SharedPrefs._init(loc);
@@ -34,10 +34,8 @@ class SharedPrefs {
 
   Future open() async {
     if (isMobile) {
-      print('\n\n\nMOBILE PREFS');
       _prefs ??= await SharedPreferences.getInstance();
     } else {
-      print('\n\n\nDESKTOP PREFS');
       _db ??= await databaseFactoryIo.openDatabase(path);
       _store ??= StoreRef<String, dynamic>.main();
     }
@@ -61,7 +59,7 @@ class SharedPrefs {
   }
 
   Future<dynamic> getJson(String key) async {
-    if (isMobile) return json.decode(await getString(key));
+    if (isMobile) return json.decode(await getString(key) ?? '{}');
     return json.decode(await _store.record(key).get(_db) ?? '{}');
   }
 
