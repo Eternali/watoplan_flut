@@ -23,6 +23,9 @@ class HomeScreen extends StatefulWidget {
     MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
       Navigator.of(context).pushNamed(Routes.about);
     }),
+    // MenuChoice(title: 'Import', icon: Icons.import_export, onPressed: (BuildContext context) {
+
+    // }),
     MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) async {
       if (SharedPrefs().isMobile) {
         await Share.file(
