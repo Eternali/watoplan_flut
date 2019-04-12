@@ -18,18 +18,20 @@ dependencies:
   flutter_markdown: ^0.2.0
   esys_flutter_share:
     git:
-      url: https://github.com/esysberlin/esys-flutter-share.git
+      url: git@github.com:esysberlin/esys-flutter-share.git
   sembast: ^1.15.1
   date_utils:
-    path: ../date_utils
-    # git:
-    #   url: git://github.com/eternali/date_utils.git
+    # path: ../date_utils
+    git:
+      url: git@github.com:eternali/date_utils.git
   flutter_calendar:
-    path: ../flutter_calendar
+    # path: ../flutter_calendar
+    git:
+      url: git@github.com:eternali/flutter_calendar.git
   sam:
-    path: ../sam
-    # git:
-    #   url: git://github.com/eternali/flutter_calendar.git
+    # path: ../sam
+    git:
+      url: git@github.com:eternali/sam.git
   # contact_finder:
   #   path: ../contact_finder/
     # git:

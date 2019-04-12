@@ -131,10 +131,13 @@ class AppState {
     Map<String, dynamic> optionOverrides,
     Map<String, dynamic> filters,
   }) {
+    // print(specificOptions.toString());
+    // print(this.homeOptions.toString());
     if (specificOptions != null) {
       homeOptions ??= this.homeOptions;
       homeOptions[homeLayout ?? this.homeLayout] = specificOptions;
     }
+    // print(homeOptions.toString());
     return AppState(
       activities: activities ?? this.activities,
       activityTypes: activityTypes ?? this.activityTypes,

@@ -74,9 +74,11 @@ packages:
   date_utils:
     dependency: "direct main"
     description:
-      path: "../date_utils"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "25585a2b242c34ea50126c6ca79a7e2be78e6149"
+      url: "git@github.com:eternali/date_utils.git"
+    source: git
     version: "0.1.0"
   esys_flutter_share:
     dependency: "direct main"
@@ -84,7 +86,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: f5eaf543684f3157b920da99447795d518b77ff2
-      url: "https://github.com/esysberlin/esys-flutter-share.git"
+      url: "git@github.com:esysberlin/esys-flutter-share.git"
     source: git
     version: "1.0.0"
   file:
@@ -102,9 +104,11 @@ packages:
   flutter_calendar:
     dependency: "direct main"
     description:
-      path: "../flutter_calendar"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: f06ab522ba0b71676cb270e2f38d37e3409c3f08
+      url: "git@github.com:eternali/flutter_calendar.git"
+    source: git
     version: "0.0.2"
   flutter_driver:
     dependency: "direct dev"
@@ -341,9 +345,11 @@ packages:
   sam:
     dependency: "direct main"
     description:
-      path: "../sam"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "2a2f68aadd70f954a7a337eaeee5a7a6e117eb2b"
+      url: "git@github.com:eternali/sam.git"
+    source: git
     version: "0.0.1"
   sembast:
     dependency: "direct main"

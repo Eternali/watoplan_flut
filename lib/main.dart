@@ -20,11 +20,11 @@ import 'package:watoplan/screens/about_screen.dart';
 
 void main() async {
   // for flutter desktop embedding
-  // debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
-  // SystemChannels.platform.setMockMethodCallHandler((MethodCall methodCall) async {
-  //   print(methodCall.method);
-  //   return Future.value(null);
-  // });
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  SystemChannels.platform.setMockMethodCallHandler((MethodCall methodCall) async {
+    print(methodCall.method);
+    return Future.value(null);
+  });
   runApp(
     Watoplan()
   );

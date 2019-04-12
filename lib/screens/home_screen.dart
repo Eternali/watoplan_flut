@@ -40,6 +40,7 @@ class HomeScreen extends StatefulWidget {
           builder: (BuildContext context) {
             final locales = WatoplanLocalizations.of(context);
             return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
               title: Text(locales.featureNotSupported),
               content: Text(locales.needsMobile),
               actions: <Widget>[

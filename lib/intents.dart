@@ -81,12 +81,13 @@ class Intents {
       'filters': await prefs.getJson('filters') ?? {}
     };
     settings = await ensureBackwardsCompatible(settings);
+    print(settings['homeLayout'].toString());
     return setTheme(appState, settings['theme'])
       .catchError((e) => setTheme(appState, 'light'))
-      .then((_) => switchHome(
-        appState,
-        layout: settings['homeLayout'],
-        options: settings['homeOptions'][settings['homeLayout']]
+      .then((_) => Reducers.setHome(
+        appState.value,
+        homeLayout: settings['homeLayout'],
+        homeOptions: Map<String, Map<String, dynamic>>.from(settings['homeOptions']),
       ))
       .then((_) => setFocused(appState, index: settings['focused']))
       .then((_) => focusOnDay(appState, settings['focusedDate']))
@@ -118,7 +119,9 @@ class Intents {
     final prefs = await SharedPrefs.getInstance();
     await prefs.setString('homeLayout', layout);
     await prefs.setString('homeOptions', json.encode(appState.value.homeOptions..[layout] = options));
+    // print(options);
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
+    print(appState.value.homeLayout);
     return layout;
     // validLayouts[layout].onChange(appState, options);
   }

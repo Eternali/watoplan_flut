@@ -70,6 +70,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
 
     return AlertDialog(
       contentPadding: EdgeInsets.all(0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       title: Center(
         child: Text(widget.isNew ? WatoplanLocalizations.of(context).newNoti : WatoplanLocalizations.of(context).editNoti),
       ),

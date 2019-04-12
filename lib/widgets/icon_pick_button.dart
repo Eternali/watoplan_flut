@@ -36,14 +36,15 @@ class IconPickButtonState extends State<IconPickButton> {
         ],
       ),
       onPressed: () {
-        IconPicker picker = IconPicker(icons: LoadDefaults.icons);
-        showDialog<IconData>(context: context, child: picker)
-          .then((IconData i) {
-            if (i != null) {
-              widget.changeIcon(i);
-              setState(() { curIcon = i; });
-            }
-          });
+        showDialog<IconData>(
+          context: context,
+          builder: (BuildContext context) => IconPicker(icons: LoadDefaults.icons)
+        ).then((IconData i) {
+          if (i != null) {
+            widget.changeIcon(i);
+            setState(() { curIcon = i; });
+          }
+        });
       },
     );
   }

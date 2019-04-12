@@ -27,6 +27,16 @@ class Reducers {
     );
   }
 
+  static AppState setHome(AppState oldState, {
+    String homeLayout,
+    Map<String, Map<String, dynamic>> homeOptions,
+  }) {
+    return oldState.copyWith(
+      homeLayout: homeLayout,
+      homeOptions: homeOptions,
+    );
+  }
+
   static AppState refresh(AppState oldState) {
     return oldState.copyWith(needsRefresh: false);
   }
@@ -100,10 +110,13 @@ class Reducers {
   }
 
   static AppState sortActivities(AppState oldState, Map<String, dynamic> sortOptions) {
-    return oldState.copyWith(
-      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev'] ?? false),
-      specificOptions: sortOptions,
-    );
+    if (sortOptions.containsKey('sorter') && sortOptions.containsKey('sortRev')) {
+      return oldState.copyWith(
+        activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev'] ?? false),
+        specificOptions: sortOptions,
+      );
+    }
+    return oldState;
   }
 
   static AppState setFocused(AppState oldState, int index, Activity activity, ActivityType activityType) {
