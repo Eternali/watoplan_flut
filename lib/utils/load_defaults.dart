@@ -20,7 +20,7 @@ class LoadDefaults {
         for (String point in points.trim().split('\n')) {
           int cp = int.parse(point.trim(), radix: 16);
           codepoints.add(cp);
-          icons.add(new IconData(cp, fontFamily: 'MaterialIcons'));
+          icons.add(IconData(cp, fontFamily: 'MaterialIcons'));
         }
       });
   }

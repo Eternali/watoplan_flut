@@ -36,10 +36,10 @@ class WatoplanDb {
     activityCollection = _db.collection('activities');
     
     success = await typeCollection.find().forEach((type) {
-      activityTypes.add(new ActivityType.fromJson(type));
+      activityTypes.add(ActivityType.fromJson(type));
     });
     success = await activityCollection.find().forEach((activity) {
-      activities.add(new Activity.fromJson(activity, activityTypes));
+      activities.add(Activity.fromJson(activity, activityTypes));
     });
 
     return success.isNotEmpty;

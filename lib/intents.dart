@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tuple/tuple.dart';
 
 import 'package:watoplan/themes.dart';
 import 'package:watoplan/data/converters.dart';
@@ -112,6 +113,21 @@ class Intents {
     appState.value = Reducers.firstDefault;
   }
 
+  static Future<Tuple2<List, Function>> importDb(AppStateObservable appState, File file) async {
+    List data = await LocalDb().loadAtOnce(file);
+    return Tuple2(
+      data,
+      () async {
+        List<ActivityType> activityTypes = (data[0] as List<ActivityType>).where((ActivityType t) =>
+          !appState.value.activityTypes.contains(t)
+        );
+        await addActivityTypes(appState, activityTypes);
+        List<Activity> activities = data[1];
+        await addActivities(appState, activities);
+      }
+    );
+  }
+
   static Future switchHome(
     AppStateObservable appState,
     { String layout, Map<String, dynamic> options }
@@ -126,10 +142,7 @@ class Intents {
   }
 
   static Future<bool> addActivityTypes(AppStateObservable appState, List<ActivityType> activityTypes) async {
-    for (ActivityType type in activityTypes) {
-    if (type.params.keys.length < 1 || type.name == '') return false;      
-      await LocalDb().add(type);
-    }
+    await LocalDb().addAll(activityTypes);
     appState.value = Reducers.addActivityTypes(appState.value, activityTypes);
     return true;
   }
@@ -162,8 +175,8 @@ class Intents {
     AppStateObservable appState, List<Activity> activities,
     [ FlutterLocalNotificationsPlugin notiPlug, String typeName ]
   ) async {
+    await LocalDb().addAll(activities);
     for (Activity activity in activities) {
-      await LocalDb().add(activity);
       if (activity.data.keys.contains('notis') && notiPlug != null) {
         for (Noti noti in activity.data['notis']) {
           await noti.schedule(

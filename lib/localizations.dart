@@ -25,6 +25,7 @@ class WatoplanLocalizations {
   String get chooseType => 'Choose Type';
   String get close => 'Close';
   String get cont => 'Continue';
+  String get continueImport => 'Continue Import?';
   String get contacts => 'Related Contacts';
   String get dataWarning => 'Warning, this will delete all your data, continue?';
   String get developFeedback => 'If you\'re a developer with ideas, issues, or just interested in '
@@ -109,6 +110,6 @@ class WatoplanLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      locale.languageCode.toLowerCase().contains('en');
+    locale.languageCode.toLowerCase().contains('en');
 
 }

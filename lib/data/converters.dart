@@ -14,7 +14,7 @@ class Converters {
 
   static String iconToString(IconData icon) {
     // extracts the unicode representation of the icon and makes it a valid hex code.
-    return icon.toString().split(new RegExp(r'[()]'))[1].replaceFirst('U+', '0x');
+    return icon.toString().split(RegExp(r'[()]'))[1].replaceFirst('U+', '0x');
   }
 
   static Color colorFromString(String colorStr) {
@@ -22,7 +22,7 @@ class Converters {
   }
 
   static String colorToString(Color color) {
-    return color.toString().split(new RegExp(r'[()]'))[1];
+    return color.toString().split(RegExp(r'[()]'))[1];
   }
 
   static DateTime dateTimeFromString(String millis) {

@@ -141,7 +141,7 @@ final Map<String, HomeLayout> validLayouts = {
             ),
           ],
         ),
-        trailing: Icon(new IconData(0)),
+        trailing: Icon(IconData(0)),
         children: <Widget>[
           Container(),
         ],

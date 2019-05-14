@@ -91,7 +91,7 @@ class ActivityCardState extends State<ActivityCard> with SingleTickerProviderSta
         int idx = getIdx(state.value.activities);
         Intents.removeActivities(state, [widget.activity], notiPlug)
           .then((activities) {
-              return Scaffold.of(context).showSnackBar(new SnackBar(
+              return Scaffold.of(context).showSnackBar(SnackBar(
               duration: const Duration(seconds: 3),
               content: Text(
                 'Deleted ${tmpType.name} ${activities[0].data.containsKey('name') ? activities[0].data['name'] : ''}',

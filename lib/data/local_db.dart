@@ -56,25 +56,26 @@ class LocalDb {
 
   }
 
-  Future<List> loadAtOnce() async {
+  Future<List> loadAtOnce([ File source ]) async {
 
+    File db = source ?? _db;
     List<ActivityType> activityTypes = [];
     List<Activity> activities = [];
 
-    return _db.readAsString()
+    return db.readAsString()
       .then((contents) => json.decode(contents))
       .then((parsed) {
         parsed['activityTypes'].forEach(
-          (type) { activityTypes.add(new ActivityType.fromJson(type)); }
+          (type) { activityTypes.add(ActivityType.fromJson(type)); }
         );
         parsed['activities'].forEach(
-          (activity) { activities.add(new Activity.fromJson(activity, activityTypes)); }
+          (activity) { activities.add(Activity.fromJson(activity, activityTypes)); }
         );
         return [activityTypes, activities];
       })
       .catchError((e) {
         print(e.toString());
-        print('The database at ${_db.path} is empty.');
+        print('The database at ${db.path} is empty.');
         return [activityTypes, activities];
       });
 
@@ -129,6 +130,18 @@ class LocalDb {
       data[0].add(item);
     } else if (item is Activity) {
       data[1].add(item);
+    }
+    await saveOver(data[0], data[1]);
+  }
+
+  Future<void> addAll(List<dynamic> items) async {
+    var data = await loadAtOnce();
+    for (var item in items) {
+      if (item is ActivityType) {
+        data[0].add(item);
+      } else if (item is Activity) {
+        data[1].add(item);
+      }
     }
     await saveOver(data[0], data[1]);
   }

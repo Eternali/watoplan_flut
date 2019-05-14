@@ -8,7 +8,7 @@ class Provider extends StatefulWidget {
   final AppStateObservable state;
   final Widget child;
 
-  const Provider({ this.state, this.child, });
+  const Provider({ this.state, this.child });
 
   static of(BuildContext context) {
     _InheritedProvider ip = context.inheritFromWidgetOfExactType(_InheritedProvider);

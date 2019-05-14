@@ -58,7 +58,7 @@ class ActivityTypeCard extends StatelessWidget {
             onPressed: () {
               List<Activity> activities = List.from(state.value.activities);
               Intents.removeActivityTypes(state, [data])
-                .then((tas) => Scaffold.of(context).showSnackBar(new SnackBar(  // tas = [types, activities] removed
+                .then((tas) => Scaffold.of(context).showSnackBar(SnackBar(  // tas = [types, activities] removed
                   duration: const Duration(seconds: 3),
                   content: Text(
                     'Deleted ${tas[0][0].name} and ${tas[1].length} associated activities',

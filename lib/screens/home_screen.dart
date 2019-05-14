@@ -1,7 +1,10 @@
+import 'dart:io';
 // we're overriding these menus in widgets/popup_menu.dart
 import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
 import 'package:sam/sam.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:tuple/tuple.dart';
 
 import 'package:watoplan/intents.dart';
 import 'package:watoplan/key_strings.dart';
@@ -15,17 +18,69 @@ import 'package:watoplan/widgets/popup_menu.dart';
 
 class HomeScreen extends StatefulWidget {
 
+  static Future showUnsupportedDialog(BuildContext context) => showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final locales = WatoplanLocalizations.of(context);
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        title: Text(locales.featureNotSupported),
+        content: Text(locales.needsMobile),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(locales.close.toUpperCase()),
+            textColor: Theme.of(context).accentColor,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    }
+  ); 
   final String title;
   final List<MenuChoice> overflow = <MenuChoice>[
     MenuChoice(title: 'Settings', icon: Icons.settings, onPressed: (BuildContext context) {
       Navigator.of(context).pushNamed(Routes.settings);
     }),
-    MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
-      Navigator.of(context).pushNamed(Routes.about);
+    MenuChoice(title: 'Import', icon: Icons.import_contacts, onPressed: (BuildContext context) async {
+      if (SharedPrefs().isMobile) {
+        File file = await FilePicker.getFile(type: FileType.ANY);
+        Tuple2<List, Function> data = await Intents.importDb(Provider.of(context), file);
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            final locales = WatoplanLocalizations.of(context);
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+              title: Text(locales.continueImport.toUpperCase()),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '${data.item1[1].length} activities and ' +
+                    '${data.item1[0].length} activity types will be imported.' +
+                    '\nContinue?'
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(locales.cancel.toUpperCase()),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                FlatButton(
+                  child: Text(locales.cont.toUpperCase()),
+                  onPressed: () => data.item2(data.item1)
+                )
+              ],
+            );
+          }
+        );
+      } else {
+        await showUnsupportedDialog(context);
+      }
     }),
-    // MenuChoice(title: 'Import', icon: Icons.import_export, onPressed: (BuildContext context) {
-
-    // }),
     MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) async {
       if (SharedPrefs().isMobile) {
         await Share.file(
@@ -35,27 +90,11 @@ class HomeScreen extends StatefulWidget {
           'text/json',
         );
       } else {
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            final locales = WatoplanLocalizations.of(context);
-            return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-              title: Text(locales.featureNotSupported),
-              content: Text(locales.needsMobile),
-              actions: <Widget>[
-                new FlatButton(
-                  child: Text(locales.close.toUpperCase()),
-                  textColor: Theme.of(context).accentColor,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          }
-        );
+        await showUnsupportedDialog(context);
       }
+    }),
+    MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
+      Navigator.of(context).pushNamed(Routes.about);
     }),
   ];
 

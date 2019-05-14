@@ -50,7 +50,7 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
                     : Intents.addActivityTypes(Provider.of(context), [stateVal.editingType])
                   ).then((valid) {
                     if (valid) Navigator.pop(context);
-                    else Scaffold.of(context).showSnackBar(new SnackBar(
+                    else Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
                         locales.invalidType,
                       ),
