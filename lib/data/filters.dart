@@ -125,6 +125,16 @@ FilterBuilder<List> buildTimeFilter(String name, Function saveFilter) => (List d
   );
 };
 
+typedef CompleteListGetter<T> = List<T> Function(AppState state);
+typedef FilterItemBuilder<T> = Widget Function(T item);
+FilterBuilder<List<T>> listFilterBuilder<T>({
+  String name,
+  CompleteListGetter<T> optionsGetter,
+  FilterItemBuilder<T> builder,
+}) {
+
+}
+
 final Map<String, Filter<List>> filterApplicators = {
   'type': Filter<List>(
     name: 'type',
@@ -294,6 +304,12 @@ final Map<String, Filter<List>> filterApplicators = {
         ),
       );
     }
+  ),
+  'tag': Filter<List>(
+    name: 'tag',
+    applyFilter: (List<ActivityType> types, List tags, Activity a) => a.data['tags'] == null
+      ? false : tags.every((t) => a.data['tags'].contains(t)),
+    build: listFilterBuilder<String>('tag', (AppState state) => state.activities.where(a) => a.data.)
   ),
   // 'creation': Filter<List>(
   //   name: 'creation',

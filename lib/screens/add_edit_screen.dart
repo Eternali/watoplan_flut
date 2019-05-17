@@ -65,9 +65,9 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               // validate activity times
+              final now = DateTime.now();
               if (stateVal.editingActivity.data.containsKey('notis')) {
                 for (Noti noti in stateVal.editingActivity.data['notis']) {
-                  var now = DateTime.now();
                   if (noti.when?.compareTo(now) ?? stateVal.editingActivity.data[
                       stateVal.editingActivity.data.containsKey('start') ? 'start': 'end'
                     ].millisecondsSinceEpoch - noti.offset - now.millisecondsSinceEpoch <= 0) {
@@ -84,10 +84,11 @@ class AddEditScreenState extends State<AddEditScreen> {
                   }
                 }
               }
+              stateVal.editingActivity.edited = now.millisecondsSinceEpoch;
               Future.value(stateVal.focused < 0)
                 .then((adding) {
                   if (adding) return
-                    Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
+                    Intents.addActivities(Provider.of(context), [ stateVal.editingActivity ], notiPlug, type.name)
                       .then((_) { Intents.setFocused(Provider.of(context), index: stateVal.activities.length - 1); });
                   else return Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
                 }).then((_) {

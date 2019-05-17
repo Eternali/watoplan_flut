@@ -102,7 +102,7 @@
   "homeLayout": "list",
   "homeOptions": {
     "list": {
-      "sorter": "creation",
+      "sorter": "edited",
       "sortRev": false
     },
     "calendar": {

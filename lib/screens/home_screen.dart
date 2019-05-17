@@ -46,6 +46,7 @@ class HomeScreen extends StatefulWidget {
     MenuChoice(title: 'Import', icon: Icons.import_contacts, onPressed: (BuildContext context) async {
       if (SharedPrefs().isMobile) {
         File file = await FilePicker.getFile(type: FileType.ANY);
+        if (file == null) return;
         Tuple2<List, Function> data = await Intents.importDb(Provider.of(context), file);
         await showDialog(
           context: context,
@@ -58,8 +59,8 @@ class HomeScreen extends StatefulWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(
-                    '${data.item1[1].length} activities and ' +
-                    '${data.item1[0].length} activity types will be imported.' +
+                    '${data.item1[1].length} activit${data.item1[1].length > 1 ? 'ies' : 'y'} and ' +
+                    '${data.item1[0].length} activity type${data.item1[0].length > 1 ? 's' : ''} will be imported.' +
                     '\nContinue?'
                   ),
                 ],
@@ -71,7 +72,7 @@ class HomeScreen extends StatefulWidget {
                 ),
                 FlatButton(
                   child: Text(locales.cont.toUpperCase()),
-                  onPressed: () => data.item2(data.item1)
+                  onPressed: () => data.item2().then((_) => Navigator.of(context).pop())
                 )
               ],
             );

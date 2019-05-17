@@ -9,6 +9,7 @@ class ActivityType {
   final int _id;
   int get id => _id;
   final int creation;
+  int edited;
   String name;
   IconData icon;
   Color color;
@@ -17,11 +18,13 @@ class ActivityType {
   ActivityType({
     int id,
     int creation,
+    int edited,
     this.name = '',
     this.icon = const IconData(0),
     this.color = const Color(0xffaaaaaa),
     List<String> params = const [],  // only allowed to pass a list of param names to avoid typing issues
-  }) : _id = id ?? generateId(), creation =creation ?? DateTime.now().millisecondsSinceEpoch {
+  }) : _id = id ?? generateId(), creation = creation ?? DateTime.now().millisecondsSinceEpoch,
+      edited = edited ?? DateTime.now().millisecondsSinceEpoch {
     params.forEach((name) {
       if (!validParams.keys.contains(name))
         throw Exception('$name is not a valid parameter');
@@ -29,10 +32,11 @@ class ActivityType {
     });
   }
 
-  factory ActivityType.from(ActivityType prev) {
+  factory ActivityType.from(ActivityType prev, { bool isNew = false }) {
     return ActivityType(
-      id: prev.id,
+      id: isNew ? null : prev.id,
       creation: prev.creation,
+      edited: prev.edited,
       name: prev.name,
       icon: prev.icon,
       color: prev.color,
@@ -44,6 +48,7 @@ class ActivityType {
     return ActivityType(
       id: jsonMap['_id'],
       creation: jsonMap['creation'],
+      edited: jsonMap['edited'],
       name: jsonMap['name'],
       icon: Converters.iconFromString(jsonMap['icon']),
       color: Converters.colorFromString(jsonMap['color']),
@@ -54,6 +59,7 @@ class ActivityType {
   ActivityType copyWith({
     int id,
     int creation,
+    int edited,
     String name,
     IconData icon,
     Color color,
@@ -61,6 +67,7 @@ class ActivityType {
   }) => ActivityType(
     id: id ?? this._id,
     creation: creation ?? this.creation,
+    edited: edited ?? this.edited,
     name: name ?? this.name,
     icon: icon ?? this.icon,
     color: color ?? this.color,
@@ -70,6 +77,7 @@ class ActivityType {
   Map<String, dynamic> toJson() => {
     '_id': _id,
     'creation': creation,
+    'edited': edited,
     'name': name,
     'icon': Converters.iconToString(icon),
     'color': Converters.colorToString(color),
@@ -84,7 +92,13 @@ class ActivityType {
   }
 
   @override
-  int get hashCode => id.hashCode + creation.hashCode + name.hashCode + icon.hashCode + color.hashCode + params.hashCode;
+  int get hashCode => id.hashCode +
+    creation.hashCode +
+    edited.hashCode +
+    name.hashCode +
+    icon.hashCode +
+    color.hashCode +
+    params.hashCode;
 
 }
 
@@ -98,14 +112,17 @@ class Activity {
   int get id => _id;
   int typeId;
   final int creation;
+  int edited;
   Map<String, dynamic> data;
 
   Activity({
     int id,
     dynamic type,
     int creation,
+    int edited,
     Map<String, dynamic> data
-  }) : _id = id ?? generateId(), creation = creation ?? DateTime.now().millisecondsSinceEpoch {
+  }) : _id = id ?? generateId(), creation = creation ?? DateTime.now().millisecondsSinceEpoch,
+      edited = edited ?? DateTime.now().millisecondsSinceEpoch {
     if (type is int) {
       typeId = type;
       this.data = data; 
@@ -115,11 +132,12 @@ class Activity {
     } else throw Exception('dynamic type parameter must be an int or an ActivityType');
   }
 
-  factory Activity.from(Activity prev) {
+  factory Activity.from(Activity prev, { bool isNew = false }) {
     return Activity(
-      id: prev.id,
+      id: isNew ? null : prev.id,
       type: prev.typeId,
       creation: prev.creation,
+      edited: prev.edited,
       data: Map<String, dynamic>.from(prev.data)
         .map((name, value) => MapEntry(name, validParams[name].cloner(value)))
     );
@@ -130,6 +148,7 @@ class Activity {
       id: jsonMap['_id'],
       type: jsonMap['typeId'],
       creation: jsonMap['creation'],
+      edited: jsonMap['edited'],
       data: Converters.paramsFromJson(jsonMap['data'], true),
     );
   }
@@ -138,6 +157,7 @@ class Activity {
     int id,
     dynamic type,
     int creation,
+    int edited,
     Map<String, dynamic> data,
     List<MapEntry<String, dynamic>> entries,
   }) {
@@ -145,6 +165,7 @@ class Activity {
       id: id ?? this._id,
       type: type ?? this.typeId,
       creation: creation ?? this.creation,
+      edited: edited ?? this.edited,
       data: data ?? Map<String, dynamic>.from(this.data)
         .map((name, value) => MapEntry(name, validParams[name].cloner(value))),
     );
@@ -156,13 +177,18 @@ class Activity {
   Map<String, dynamic> toJson() => {
     '_id': _id,
     'typeId': typeId,
-    'creation':creation,
+    'creation': creation,
+    'edited': edited,
     'data': Converters.paramsToJson(data, true),
   };
 
   ActivityType getType(List<ActivityType> types) => types.firstWhere((type) => type.id == typeId);
 
   @override
-  int get hashCode => id.hashCode + typeId.hashCode + creation.hashCode + data.hashCode;
+  int get hashCode => id.hashCode +
+    typeId.hashCode +
+    creation.hashCode +
+    edited.hashCode +
+    data.hashCode;
 
 }

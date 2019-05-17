@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:watoplan/data/activity.dart';
 
 final Map<String, ActivitySort> validSorts = {
+  'edited': ActivitySorters.byEdited,
   'creation': ActivitySorters.byCreation,
   'start': ActivitySorters.byStartTime,
   'end': ActivitySorters.byEndTime,
@@ -17,6 +18,13 @@ class ActivitySorters {
 
   static void printUnsorted(String name, List<Activity> unsorted) {
     debugPrint('${name.toUpperCase()}: Left ${unsorted.length} activities unsorted.');
+  }
+
+  static List<Activity> byEdited(List<Activity> activities, [ bool rev = false ]) {
+    return activities..sort((Activity a, Activity b) {
+      final int sort = a.edited == b.edited ? 0 : a.edited > b.edited ? -1 : 1;
+      return rev ? -sort : sort;
+    });
   }
 
   static List<Activity> byCreation(List<Activity> activities, [ bool rev = false ]) {

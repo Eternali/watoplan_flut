@@ -82,7 +82,6 @@ class Intents {
       'filters': await prefs.getJson('filters') ?? {}
     };
     settings = await ensureBackwardsCompatible(settings);
-    print(settings['homeLayout'].toString());
     return setTheme(appState, settings['theme'])
       .catchError((e) => setTheme(appState, 'light'))
       .then((_) => appState.value = Reducers.setHome(
@@ -118,11 +117,11 @@ class Intents {
     return Tuple2(
       data,
       () async {
-        List<ActivityType> activityTypes = (data[0] as List<ActivityType>).where((ActivityType t) =>
-          !appState.value.activityTypes.contains(t)
-        );
+        final activityTypes = (data[0] as List<ActivityType>).where((t) =>
+          !appState.value.activityTypes.any((u) => u.id == t.id)
+        ).toList();
         await addActivityTypes(appState, activityTypes);
-        List<Activity> activities = data[1];
+        final activities = (data[1] as List<Activity>).map((a) => Activity.from(a, isNew: true)).toList();
         await addActivities(appState, activities);
       }
     );
@@ -136,7 +135,6 @@ class Intents {
     await prefs.setString('homeLayout', layout);
     await prefs.setString('homeOptions', json.encode(appState.value.homeOptions..[layout] = options));
     appState.value = Reducers.switchHome(appState.value, layout: layout, options: options);
-    print(appState.value.homeLayout);
     return layout;
     // validLayouts[layout].onChange(appState, options);
   }
