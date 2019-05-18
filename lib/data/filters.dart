@@ -125,15 +125,97 @@ FilterBuilder<List> buildTimeFilter(String name, Function saveFilter) => (List d
   );
 };
 
-typedef CompleteListGetter<T> = List<T> Function(AppState state);
+typedef CompleteOptionsGetter<T> = Set<T> Function(AppState state);
+typedef Getter<T> = dynamic Function(T source);
 typedef FilterItemBuilder<T> = Widget Function(T item);
 FilterBuilder<List<T>> listFilterBuilder<T>({
   String name,
-  CompleteListGetter<T> optionsGetter,
+  CompleteOptionsGetter<T> optionsGetter,
+  Getter<T> getter,
   FilterItemBuilder<T> builder,
-}) {
+}) => (List<T> data, BuildContext context) {
+  getter ??= (T source) => source;
+  final locales = WatoplanLocalizations.of(context);
+  final AppState stateVal = Provider.of(context).value;
+  final theme = Theme.of(context);
 
-}
+  return Padding(
+    padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                locales.validFilters[name]().toUpperCase(),
+                style: TextStyle(
+                  letterSpacing: 1.4,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Timeburner',
+                )
+              ),
+              PopupMenuButton<T>(
+                tooltip: locales.chooseParam,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+                onSelected: (T param) {
+                  final p = getter(param);
+                  List params = stateVal.filters[name];
+                  if (params == null || !params.contains(getter(param))) {
+                    Intents.applyFilter(
+                      Provider.of(context),
+                      name,
+                      () => params != null ? (params..add(param.name)) : [ param.name ]);
+                  }
+                },
+                child: Chip(
+                  avatar: Icon(Icons.add),
+                  backgroundColor: theme.accentColor,
+                  label: Text(
+                    locales.add.toUpperCase()
+                  ),
+                ),
+                itemBuilder: (context) {
+                  final options = optionsGetter(Provider.of(context).value);
+                  return options.map((o) => PopupMenuItem<T>(
+                  value: o,
+                  enabled: true,
+                  child: Chip(
+                    label: Text(
+                      locales.validParams[p.name]().toUpperCase()
+                    ),
+                    backgroundColor: intToColor(p.name.hashCode),
+                  ),
+                )).toList(),
+              ),
+            ]
+          ),
+        ),
+        Wrap(
+          children: (stateVal.filters.containsKey('param') ? stateVal.filters['param'].map<Widget>((f) {
+            final param = validParams[f];
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+              child: Chip(
+                backgroundColor: intToColor(param.name.hashCode),
+                label: Text(param.name.toUpperCase()),
+                onDeleted: () {
+                  Intents.applyFilter(
+                    Provider.of(context),
+                    'param',
+                    () => stateVal.filters['param']..remove(param.name));
+                },
+              ),
+            );
+          }).toList() : [])
+        ),
+      ],
+    ),
+  );
+};
 
 final Map<String, Filter<List>> filterApplicators = {
   'type': Filter<List>(
@@ -309,7 +391,10 @@ final Map<String, Filter<List>> filterApplicators = {
     name: 'tag',
     applyFilter: (List<ActivityType> types, List tags, Activity a) => a.data['tags'] == null
       ? false : tags.every((t) => a.data['tags'].contains(t)),
-    build: listFilterBuilder<String>('tag', (AppState state) => state.activities.where(a) => a.data.)
+    build: listFilterBuilder<String>(
+      name: 'tag',
+      optionsGetter: (AppState state) => { for (var a in state.activities) if (a.data.containsKey('tags')) ...a.data['tags'] },
+    ),
   ),
   // 'creation': Filter<List>(
   //   name: 'creation',
