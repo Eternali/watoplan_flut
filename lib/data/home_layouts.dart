@@ -107,9 +107,9 @@ final Map<String, HomeLayout> validLayouts = {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0.0),
         shrinkWrap: true,
-        itemCount: stateVal.activities.length,
-        itemBuilder: (BuildContext context, int idx) {
-          return ActivityCard(stateVal.activities[idx]);
+        itemCount: stateVal.filteredActivities.length,
+        itemBuilder: (BuildContext context, int i) {
+          return ActivityCard(stateVal.filteredActivities[i]);
         },
       );
     }
@@ -141,7 +141,7 @@ final Map<String, HomeLayout> validLayouts = {
             ),
           ],
         ),
-        trailing: Icon(new IconData(0)),
+        trailing: Icon(IconData(0)),
         children: <Widget>[
           Container(),
         ],

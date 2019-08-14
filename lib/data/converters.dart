@@ -1,11 +1,6 @@
-import 'dart:convert' show json;
-
 import 'package:flutter/material.dart';
-// import 'package:contact_finder/contact_finder.dart';
 
-import 'package:watoplan/data/location.dart';
-import 'package:watoplan/data/noti.dart';
-import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/params.dart';
 
 class Converters {
 
@@ -19,7 +14,7 @@ class Converters {
 
   static String iconToString(IconData icon) {
     // extracts the unicode representation of the icon and makes it a valid hex code.
-    return icon.toString().split(new RegExp(r'[()]'))[1].replaceFirst('U+', '0x');
+    return icon.toString().split(RegExp(r'[()]'))[1].replaceFirst('U+', '0x');
   }
 
   static Color colorFromString(String colorStr) {
@@ -27,7 +22,7 @@ class Converters {
   }
 
   static String colorToString(Color color) {
-    return color.toString().split(new RegExp(r'[()]'))[1];
+    return color.toString().split(RegExp(r'[()]'))[1];
   }
 
   static DateTime dateTimeFromString(String millis) {

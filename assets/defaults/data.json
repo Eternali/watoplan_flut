@@ -8,7 +8,8 @@
       "params": [
         "name",
         "desc",
-        "priority"
+        "priority",
+        "tags"
       ]
     },
     {
@@ -20,7 +21,8 @@
         "name",
         "long",
         "progress",
-        "priority"
+        "priority",
+        "tags"
       ]
     },
     {
@@ -47,7 +49,8 @@
         "desc",
         "priority",
         "start",
-        "notis"
+        "notis",
+        "tags"
       ]
     },
     {
@@ -76,7 +79,8 @@
         "priority",
         "start",
         "end",        
-        "notis"
+        "notis",
+        "tags"
       ]
     }
   ],
@@ -87,7 +91,8 @@
       "data": {
         "name": "Welcome to WAToPlan",
         "desc": "Go ahead and press the little add button to get started! Need help? Just go to the about page to learn more!",
-        "priority": 7
+        "priority": 7,
+        "tags": [["welcome"]]
       }
     }
   ],
@@ -97,11 +102,11 @@
   "homeLayout": "list",
   "homeOptions": {
     "list": {
-      "sorter": "start",
+      "sorter": "edited",
       "sortRev": false
     },
     "calendar": {
-      
+
     }
   }
 }

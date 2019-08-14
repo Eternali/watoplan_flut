@@ -25,6 +25,20 @@ class AddEditScreen extends StatefulWidget {
 
 class AddEditScreenState extends State<AddEditScreen> {
 
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
@@ -33,7 +47,7 @@ class AddEditScreenState extends State<AddEditScreen> {
     final ActivityType type = stateVal.editingActivity.getType(stateVal.activityTypes);
 
     return Scaffold(
-      key: AppKeys.AddEditScreenKey,
+      key: AppKeys.addEditScreenKey,
       resizeToAvoidBottomPadding: false,  // get rid of render error when keyboard is onscreen (not using a ListView just yet ;)
       appBar: AppBar(
         backgroundColor: type.color,
@@ -51,13 +65,13 @@ class AddEditScreenState extends State<AddEditScreen> {
             ),
             onPressed: () {
               // validate activity times
+              final now = DateTime.now();
               if (stateVal.editingActivity.data.containsKey('notis')) {
                 for (Noti noti in stateVal.editingActivity.data['notis']) {
-                  var now = DateTime.now();
                   if (noti.when?.compareTo(now) ?? stateVal.editingActivity.data[
                       stateVal.editingActivity.data.containsKey('start') ? 'start': 'end'
                     ].millisecondsSinceEpoch - noti.offset - now.millisecondsSinceEpoch <= 0) {
-                    AppKeys.AddEditScreenKey.currentState.showSnackBar(
+                    AppKeys.addEditScreenKey.currentState.showSnackBar(
                       SnackBar(
                         content: Text(
                           locales.timeToEarly(what: 'Notifications'),
@@ -70,11 +84,12 @@ class AddEditScreenState extends State<AddEditScreen> {
                   }
                 }
               }
+              stateVal.editingActivity.edited = now.millisecondsSinceEpoch;
               Future.value(stateVal.focused < 0)
                 .then((adding) {
                   if (adding) return
-                    Intents.addActivities(Provider.of(context), [stateVal.editingActivity], notiPlug, type.name)
-                      .then((_) { Intents.setFocused(Provider.of(context), indice: stateVal.activities.length - 1); });
+                    Intents.addActivities(Provider.of(context), [ stateVal.editingActivity ], notiPlug, type.name)
+                      .then((_) { Intents.setFocused(Provider.of(context), index: stateVal.activities.length - 1); });
                   else return Intents.changeActivity(Provider.of(context), stateVal.editingActivity, notiPlug, type.name);
                 }).then((_) {
                   return Intents.sortActivities(Provider.of(context));
@@ -104,7 +119,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 ) : null,
               stateVal.editingActivity.data.containsKey('desc')
                 ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: EditText(
                     maxLines: 3,
                     alignment: TextAlign.start,
@@ -115,7 +130,7 @@ class AddEditScreenState extends State<AddEditScreen> {
                 ) : null,
               stateVal.editingActivity.data.containsKey('long')
                 ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: EditText(
                     maxLines: 5,
                     alignment: TextAlign.start,
@@ -123,7 +138,65 @@ class AddEditScreenState extends State<AddEditScreen> {
                     initVal: stateVal.editingActivity.data['long'],
                     editField: (String changed) { stateVal.editingActivity.data['long'] = changed; },
                   ),
-                ) : null,         
+                ) : null,
+              stateVal.editingActivity.data.containsKey('tags')
+                ? Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            child: TextField(
+                              controller: _controller,
+                              cursorColor: theme.accentColor,
+                              style: theme.textTheme.body1.copyWith(fontSize: 18),
+                              decoration: InputDecoration(
+                                hintText: locales.addTag.toUpperCase(),
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (String ntag) {
+                                setState(() {
+                                  stateVal.editingActivity.data['tags'].add(Tag(ntag));
+                                });
+                                _controller.clear();
+                              },
+                            ),
+                          ),
+                          ActionChip(
+                            label: Text(
+                              locales.add,
+                              style: theme.textTheme.body1.copyWith(fontSize: 18),
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            avatar: const Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                stateVal.editingActivity.data['tags'].add(Tag(_controller.value.text));
+                              });
+                              _controller.clear();
+                            },
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        children: stateVal.editingActivity.data['tags'].map<Widget>((Tag tag) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: Chip(
+                            label: Text(tag.name),
+                            backgroundColor: tag.color,
+                            onDeleted: () {
+                              setState(() {
+                                stateVal.editingActivity.data['tags'].remove(tag);
+                              });
+                            },
+                          )
+                        )).toList()
+                      ),
+                    ],
+                  ),
+                ) : null,
               stateVal.editingActivity.data.containsKey('priority')
                 ? Padding(
                   padding: const EdgeInsets.only(top: 10.0),

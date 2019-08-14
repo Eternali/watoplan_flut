@@ -1,4 +1,3 @@
-- (__0011__) The floating action menu animation duration resets to 0 whenever an activity type is added or removed.
 - (__0012__) When creating activities successively, data (usually notifications) are sometimes prepopulated from the previous activity.
 - (__0013__) Notification editing is inconsistent.
 - (__0016__) Editing activities with a notification parameter does not properly save.

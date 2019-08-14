@@ -114,7 +114,7 @@ class _RadioExpansionState<T> extends State<RadioExpansion> with SingleTickerPro
       if (widget.checked)
         _controller.forward();
       else
-        _controller.reverse().then<void>((Null value) {
+        _controller.reverse().then((value) {
           setState(() {
             // Rebuild without widget.children.
           });

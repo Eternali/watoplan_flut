@@ -32,9 +32,22 @@ __NOTE:__ If the app ever becomes corrupted due to the database getting into an 
 ## Installation
 If you do not want to go through Google Play, you can manually build the app from source:
 
-1. clone this repository: ```git clone https://github.com/eternali/watoplan_flut.git```
+1. Clone this repository: ```git clone https://github.com/eternali/watoplan_flut.git```
 2. Install Flutter from https://github.com/flutter/flutter
-3. change into the app directory: ```cd watoplan_flut```
+3. Change into the app directory: ```cd watoplan_flut```
 4. Build:
     - Android: ```flutter build apk --flavor free```
     - IOS: ```flutter build ios --flavor free```
+
+## Desktop Embedding
+The only modification to enable flutter desktop embeding is to make sure line 23 in `main.dart` is uncommented.
+
+## Google Play Deployment Instructions
+After all development is complete.
+
+1. Run tests.
+2. Increment `versionCode` and update `versionName` in `android/app/build.gradle`.
+3. Document changes in `CHANGELOG.md`.
+4. Merge to `master`.
+5. Merge to `release`.
+6. Run ```flutter build apk --flavor free``` in the `release` branch and upload built APK to google play.

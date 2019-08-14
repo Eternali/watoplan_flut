@@ -27,6 +27,16 @@ class Reducers {
     );
   }
 
+  static AppState setHome(AppState oldState, {
+    String homeLayout,
+    Map<String, Map<String, dynamic>> homeOptions,
+  }) {
+    return oldState.copyWith(
+      homeLayout: homeLayout,
+      homeOptions: homeOptions,
+    );
+  }
+
   static AppState refresh(AppState oldState) {
     return oldState.copyWith(needsRefresh: false);
   }
@@ -100,15 +110,18 @@ class Reducers {
   }
 
   static AppState sortActivities(AppState oldState, Map<String, dynamic> sortOptions) {
-    return oldState.copyWith(
-      activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev']),
-      specificOptions: sortOptions,
-    );
+    if (sortOptions.containsKey('sorter') && sortOptions.containsKey('sortRev')) {
+      return oldState.copyWith(
+        activities: validSorts[sortOptions['sorter']](oldState.activities, sortOptions['sortRev'] ?? false),
+        specificOptions: sortOptions,
+      );
+    }
+    return oldState;
   }
 
-  static AppState setFocused(AppState oldState, int indice, Activity activity, ActivityType activityType) {
+  static AppState setFocused(AppState oldState, int index, Activity activity, ActivityType activityType) {
     return oldState.copyWith(
-      focused: indice ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
+      focused: index ?? oldState.activities.indexOf(activity) ?? oldState.activityTypes.indexOf(activityType),
     );
   }
 
@@ -147,6 +160,12 @@ class Reducers {
   static AppState focusOnDay(AppState oldState, DateTime day) {
     return oldState.copyWith(
       focusedDate: day,
+    );
+  }
+
+  static AppState saveFilter(AppState oldState, String filter, dynamic data) {
+    return oldState.copyWith(
+      filters: Map.from(oldState.filters)..[filter] = data
     );
   }
 

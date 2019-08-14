@@ -1,9 +1,13 @@
 import 'dart:async';
 
-import 'package:watoplan/localizations.dart';
-import 'package:watoplan/data/models.dart';
+import 'package:watoplan/data/globals.dart';
 import 'package:watoplan/data/noti.dart';
 
-Future runDelayed() async {
-  
+Future runAlarms() async {
+  for (Noti email in emailAlarms) {
+
+  }
+  for (Noti sms in smsAlarms) {
+    
+  }
 }

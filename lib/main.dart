@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:watoplan/localizations.dart';
 import 'package:watoplan/init_plugs.dart';
@@ -17,10 +19,16 @@ import 'package:watoplan/screens/settings_screen.dart';
 import 'package:watoplan/screens/about_screen.dart';
 
 void main() async {
+  // for flutter desktop embedding
+  debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  SystemChannels.platform.setMockMethodCallHandler((MethodCall methodCall) async {
+    print(methodCall.method);
+    return Future.value(null);
+  });
   runApp(
     Watoplan()
   );
-  await runDelayed();
+  await runAlarms();
 }
 
 class Watoplan extends StatefulWidget {

@@ -41,7 +41,7 @@ class NotiListState extends State<NotiList> {
                   editor: widget.editor,
                 )
               ).fold(
-                [new Divider()],
+                [Divider()],
                 (acc, ele) => List.from(acc)..addAll([ele, Divider()])
               ).cast<Widget>(),
             )

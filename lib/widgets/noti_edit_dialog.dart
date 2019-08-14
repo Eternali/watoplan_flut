@@ -19,7 +19,7 @@ Widget checkedItem({ ActivatableString name, bool active, VoidCallback onTap, Th
             ),
           ),
           Expanded(child: Container()),
-          active && enabled ? Icon(Icons.check, color: theme.accentColor) : Icon(new IconData(0)),
+          active && enabled ? Icon(Icons.check, color: theme.accentColor) : Icon(IconData(0)),
         ],
       ),
     ),
@@ -70,6 +70,7 @@ class NotiEditDialogState extends State<NotiEditDialog> {
 
     return AlertDialog(
       contentPadding: EdgeInsets.all(0.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       title: Center(
         child: Text(widget.isNew ? WatoplanLocalizations.of(context).newNoti : WatoplanLocalizations.of(context).editNoti),
       ),

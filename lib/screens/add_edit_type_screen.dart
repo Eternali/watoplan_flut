@@ -44,13 +44,14 @@ class AddEditTypeScreenState extends State<AddEditTypeScreen> {
                 style: theme.textTheme.button.copyWith(color: Colors.white),
               ),
               onPressed: () {
+                stateVal.editingType.edited = DateTime.now().millisecondsSinceEpoch;
                 Future.value(stateVal.focused >= 0)
                   .then((editing) => editing
                     ? Intents.changeActivityType(Provider.of(context), stateVal.editingType)
-                    : Intents.addActivityTypes(Provider.of(context), [stateVal.editingType])
+                    : Intents.addActivityTypes(Provider.of(context), [ stateVal.editingType ])
                   ).then((valid) {
                     if (valid) Navigator.pop(context);
-                    else Scaffold.of(context).showSnackBar(new SnackBar(
+                    else Scaffold.of(context).showSnackBar(SnackBar(
                       content: Text(
                         locales.invalidType,
                       ),

@@ -1,21 +1,102 @@
-import 'package:date_utils/date_utils.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
+// we're overriding these menus in widgets/popup_menu.dart
+import 'package:flutter/material.dart' hide PopupMenuButton, PopupMenuEntry, PopupMenuItem;
+import 'package:sam/sam.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:tuple/tuple.dart';
 
-import 'package:watoplan/routes.dart';
-import 'package:watoplan/localizations.dart';
 import 'package:watoplan/intents.dart';
+import 'package:watoplan/key_strings.dart';
+import 'package:watoplan/localizations.dart';
+import 'package:watoplan/routes.dart';
 import 'package:watoplan/data/home_layouts.dart';
 import 'package:watoplan/data/models.dart';
-import 'package:watoplan/data/noti.dart';
 import 'package:watoplan/data/provider.dart';
-import 'package:watoplan/widgets/fam.dart';
+import 'package:watoplan/data/shared_prefs.dart';
+import 'package:watoplan/widgets/popup_menu.dart';
 
 class HomeScreen extends StatefulWidget {
 
+  static Future showUnsupportedDialog(BuildContext context) => showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      final locales = WatoplanLocalizations.of(context);
+      return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        title: Text(locales.featureNotSupported),
+        content: Text(locales.needsMobile),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(locales.close.toUpperCase()),
+            textColor: Theme.of(context).accentColor,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      );
+    }
+  ); 
   final String title;
-  List<MenuChoice> overflow = const <MenuChoice>[
-    const MenuChoice(title: 'Settings', icon: Icons.settings, route: Routes.settings),
-    const MenuChoice(title: 'About', icon: Icons.info, route: Routes.about)
+  final List<MenuChoice> overflow = <MenuChoice>[
+    MenuChoice(title: 'Settings', icon: Icons.settings, onPressed: (BuildContext context) {
+      Navigator.of(context).pushNamed(Routes.settings);
+    }),
+    MenuChoice(title: 'Import', icon: Icons.import_contacts, onPressed: (BuildContext context) async {
+      if (SharedPrefs().isMobile) {
+        File file = await FilePicker.getFile(type: FileType.ANY);
+        if (file == null) return;
+        Tuple2<List, Function> data = await Intents.importDb(Provider.of(context), file);
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            final locales = WatoplanLocalizations.of(context);
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+              title: Text(locales.continueImport.toUpperCase()),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '${data.item1[1].length} activit${data.item1[1].length > 1 ? 'ies' : 'y'} and ' +
+                    '${data.item1[0].length} activity type${data.item1[0].length > 1 ? 's' : ''} will be imported.' +
+                    '\nContinue?'
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(locales.cancel.toUpperCase()),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                FlatButton(
+                  child: Text(locales.cont.toUpperCase()),
+                  onPressed: () => data.item2().then((_) => Navigator.of(context).pop())
+                )
+              ],
+            );
+          }
+        );
+      } else {
+        await showUnsupportedDialog(context);
+      }
+    }),
+    MenuChoice(title: 'Export', icon: Icons.share, onPressed: (BuildContext context) async {
+      if (SharedPrefs().isMobile) {
+        await Share.file(
+          'Watoplan Database',
+          'watoplan.json',
+          await Intents.getRawDb(Provider.of(context)),
+          'text/json',
+        );
+      } else {
+        await showUnsupportedDialog(context);
+      }
+    }),
+    MenuChoice(title: 'About', icon: Icons.info, onPressed: (BuildContext context) {
+      Navigator.of(context).pushNamed(Routes.about);
+    }),
   ];
 
   HomeScreen({ Key key, this.title }) : super(key: key);
@@ -27,29 +108,15 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
 
-  final ValueNotifier<List<SubFAB>> subFabs;
-
-  HomeScreenState() : subFabs = ValueNotifier([]);
-
-  // Generate a list of 4 FABs to display the most used activityTypes for easy access
-  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types, List<Activity> activities) {
-    List toShow = types
-      .map((it) =>
-        [it, activities.where((act) => act.typeId == it.id).length]
-      ).toList()
-      ..sort((a, b) => (b[1] as int).compareTo(a[1] as int));
-
-    return toShow
-      .sublist(0, toShow.length >= 4 ? 4 : toShow.length)
-      .reversed.toList()
-      .map((it) => it[0] as ActivityType).toList()
+  List<SubFAB> typesToSubFabs(BuildContext context, List<ActivityType> types) {
+    return types
       .map((it) =>
         SubFAB(
           icon: it.icon,
           label: it.name,
           color: it.color,
           onPressed: () {
-            Intents.setFocused(Provider.of(context), indice: -(types.indexOf(it) + 1));
+            Intents.setFocused(Provider.of(context), index: -(types.indexOf(it) + 1));
             Intents.editEditing(
               Provider.of(context),
               it.createActivity()
@@ -60,54 +127,58 @@ class HomeScreenState extends State<HomeScreen> {
       ).toList();
   }
 
+  Widget buildDrawerSubtitle(BuildContext context, String text) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(32),
+                  color: Theme.of(context).accentColor
+                ),
+                margin: const EdgeInsets.symmetric(vertical: 18)
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                text.toUpperCase(),
+                style: TextStyle(
+                  letterSpacing: 2.0,
+                  fontSize: 18.0,
+                  fontFamily: 'Timeburner',
+                )
+              ),
+            ]
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppState stateVal = Provider.of(context).value;
     final locales = WatoplanLocalizations.of(context);
     final theme = Theme.of(context);
 
-    subFabs.value = typesToSubFabs(context, stateVal.activityTypes, stateVal.activities);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.title ?? locales.appTitle),
         actions: <Widget>[
-          PopupMenuButton<ActivityType>(
-            icon: Icon(Icons.add),
-            onSelected: (ActivityType type) {
-              Intents.setFocused(Provider.of(context), indice: -(stateVal.activityTypes.indexOf(type) + 1));
-              Intents.editEditing(
-                Provider.of(context),
-                Activity(
-                  type: type,
-                  data: type.params
-                    .map((key, value) => MapEntry(key, value is DateTime
-                      ? Utils.copyWith(DateTime.now(), second: 0, millisecond: 0)
-                      : value
-                    )),
-                )
-              );
-              Navigator.of(context).pushNamed(Routes.addEditActivity);
-            },
-            itemBuilder: (BuildContext context) =>
-              stateVal.activityTypes.map((type) =>
-                PopupMenuItem<ActivityType>(
-                  value: type,
-                  child: ListTileTheme(
-                    iconColor: type.color,
-                    textColor: type.color,
-                    child: ListTile(
-                      leading: Icon(type.icon),
-                      title: Text(type.name),
-                    ),
-                  ),
-                )
-              ).toList(),
-          ),
           PopupMenuButton<MenuChoice>(
             onSelected: (MenuChoice choice) {
-              Navigator.of(context).pushNamed(choice.route);
+              choice.onPressed(context);
             },
             itemBuilder: (BuildContext context) =>
               widget.overflow.map((MenuChoice choice) =>
@@ -144,11 +215,12 @@ class HomeScreenState extends State<HomeScreen> {
                         fontFamily: 'Timeburner',
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-            Divider(),
+            buildDrawerSubtitle(context, locales.viewAs)
+          // gotta love Dart not having any sort of spread operator, forcing the use of ..add and ..addAll all over the place
           ]..addAll(validLayouts.values.map((HomeLayout layout) =>
             layout.menuBuilder(context, (value) {
               return Intents.switchHome(
@@ -156,7 +228,14 @@ class HomeScreenState extends State<HomeScreen> {
                 layout: layout.name, options: stateVal.homeOptions[layout.name]
               );
             })
-          )),
+          ))..add(
+            buildDrawerSubtitle(context, locales.filterBy),
+          )..addAll(
+            filterApplicators.values.map((Filter<List> f) => f.build(stateVal.filters[f.name], context))
+          )..addAll(validParams.values
+            .where((p) => p.filter != null)
+            .map((p) => p.filter.build(context))
+          )
         ),
       ),
       body: SafeArea(
@@ -171,10 +250,11 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionMenu(
+      floatingActionButton: SAM(
+        // name: KeyStrings.createFam,
         color: Theme.of(context).accentColor,
-        entries: subFabs,
-        expanded: true,
+        entries: typesToSubFabs(context, stateVal.activityTypes),
+        buttonElevation: 0,
       ),
     );
   }

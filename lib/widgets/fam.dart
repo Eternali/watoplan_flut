@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'package:watoplan/key_strings.dart';
+
 class SubFAB {
   final IconData icon;
   final String label;
@@ -13,13 +15,28 @@ class SubFAB {
 
 class FloatingActionMenu extends StatefulWidget {
 
+  final String name;
   final Color color;
-  final entries;
+  final List<SubFAB> entries;
   final double width;
   final double height;
   final bool expanded;
+  final Axis expansionDirection;
+  final bool forceGrid;
+  final double spacing;
 
-  FloatingActionMenu({ this.color, this.width, this.height, this.entries, this.expanded = false });
+  FloatingActionMenu({
+    this.name = '',
+    this.color,
+    this.width,
+    this.height,
+    this.entries,
+    this.expanded = false,
+    this.expansionDirection = Axis.vertical,
+    this.forceGrid = false,
+    this.spacing = 8.0,
+    Key key,
+  }) : super(key: key);
 
   @override
   State<FloatingActionMenu> createState() => FloatingActionMenuState();
@@ -31,10 +48,12 @@ class FloatingActionMenuState
     with TickerProviderStateMixin {
 
   AnimationController _controller;
-  List<SubFAB> values;
-  int get animMillis => widget.entries.value.length * 70;
+  // helps keep track of when to update the _controller duration.
+  List<SubFAB> prevEntries = [];
+  int get animMillis => widget.entries.length * 70;
 
   Widget generateMenu() => FloatingActionButton(
+    key: Key(widget.name),
     heroTag: null,
     backgroundColor: widget.color,
     child: AnimatedBuilder(
@@ -55,6 +74,66 @@ class FloatingActionMenuState
     },
   );
 
+  Widget responsiveMenu() => widget.expanded ? Container(
+    alignment: FractionalOffset.bottomRight,
+    padding: const EdgeInsets.only(top: 8.0),
+    child: generateMenu(),
+  ) : generateMenu();
+
+  Widget generateWrap() => Wrap(
+    direction: widget.expansionDirection,
+    spacing: widget.spacing,
+    runSpacing: widget.spacing,
+    children: List.generate(widget.entries.length, (int i) {
+      SubFAB value = widget.entries[i];
+      Widget child = Container(
+        // if nothing is passed in, these will default to null,
+        // so the width and height will match the child
+        key: Key(KeyStrings.subFabs(widget.name, i)),
+        width: widget.width,
+        height: widget.height,
+        alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
+        child: ScaleTransition(
+          scale: CurvedAnimation(
+            parent: _controller,
+            curve: Interval(
+              0.0,
+              1.0 - i / widget.entries.length / 2.0,
+              curve: Curves.easeOut
+            ),
+          ),
+          child: widget.expanded ? Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: FloatingActionButton.extended(
+              heroTag: null,
+              tooltip: value.label,
+              label: Text(
+                value.label,
+              ),
+              backgroundColor: value.color,
+              icon: Icon(value.icon),
+              onPressed: () {
+                _controller.reverse();
+                value.onPressed();
+              },
+            ),
+          ) : FloatingActionButton(
+            heroTag: null,
+            tooltip: value.label,
+            mini: true,
+            backgroundColor: value.color,
+            child: Icon(value.icon),
+            onPressed: () {
+              _controller.reverse();
+              value.onPressed();
+            },
+          ),
+        ),
+      );
+      return child;
+    }).toList()
+  );
+
   void _updateController() {
     _controller.duration = Duration(milliseconds: animMillis);
     _controller.reset();
@@ -63,85 +142,42 @@ class FloatingActionMenuState
   @override
   initState() {
     super.initState();
+    prevEntries = List.from(widget.entries);
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: animMillis),
     );
-    if (widget.entries is ValueNotifier) {
-      widget.entries.addListener(_updateController);
-    }
   }
 
   @override
   dispose() {
-    if (widget.entries is ValueNotifier) {
-      widget.entries.removeListener(_updateController);
-    }
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.entries != prevEntries) {
+      prevEntries = List.from(widget.entries);
+      _updateController();
+    }
 
-    values = widget.entries is ValueNotifier ? widget.entries.value : widget.entries;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(values.length, (int indice) {
-        Widget child = Container(
-          // if nothing is passed in, these will default to null,
-          // so the width and height will match the child
-          width: widget.width,
-          height: widget.height,
-          alignment: widget.expanded ? FractionalOffset.topRight : FractionalOffset.topCenter,
-          child: ScaleTransition(
-            scale: CurvedAnimation(
-              parent: _controller,
-              curve: Interval(
-                0.0,
-                1.0 - indice / values.length / 2.0,
-                curve: Curves.easeOut
-              ),
-            ),
-            child: widget.expanded ? Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: FloatingActionButton.extended(
-                heroTag: null,
-                tooltip: values[indice].label,
-                label: Text(
-                  values[indice].label,
-                ),
-                backgroundColor: values[indice].color,
-                icon: Icon(values[indice].icon),
-                onPressed: () {
-                  _controller.reverse();
-                  values[indice].onPressed();
-                },
-              ),
-            ) : FloatingActionButton(
-              heroTag: null,
-              tooltip: values[indice].label,
-              mini: true,
-              backgroundColor: values[indice].color,
-              child: Icon(values[indice].icon),
-              onPressed: () {
-                _controller.reverse();
-                values[indice].onPressed();
-              },
-            ),
-          ),
-        );
-        return child;
-      }).toList()
-      ..add(
-        widget.expanded ? Container(
-          alignment: FractionalOffset.bottomRight,
-          padding: const EdgeInsets.only(top: 8.0),
-          child: generateMenu(),
-        ) : generateMenu()
-      ),
-    );
+    return widget.expansionDirection == Axis.vertical
+      ? Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          generateWrap(),
+          responsiveMenu()
+        ]
+      )
+      : Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          generateWrap(),
+          responsiveMenu()
+        ],
+      );
   }
 
 }
